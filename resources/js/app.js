@@ -7,14 +7,14 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-import VueFormWizard from 'vue-form-wizard'
-import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+import 'material-icons/iconfont/material-icons.css';
+import VueFormWizard from 'vue-form-wizard';
+import 'vue-form-wizard/dist/vue-form-wizard.min.css';
+import Vuesax from 'vuesax';
+import 'vuesax/dist/vuesax.css';
 Vue.use(VueFormWizard)
 
 
-import Vuesax from 'vuesax';
-import 'vuesax/dist/vuesax.css';
-import 'material-icons/iconfont/material-icons.css';
 Vue.use(Vuesax);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
@@ -29,5 +29,5 @@ Vue.component('component-customer-persona-natural', require('./components/admin/
 
 window.eventBus = new Vue();
 const app = new Vue({
-    el: '#app',
+  el: '#app',
 });
