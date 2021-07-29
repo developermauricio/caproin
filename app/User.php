@@ -49,15 +49,18 @@ class User extends Authenticatable
         $this->notify(new CustomResetPasswordNotification($token));
     }
 
-    public function identificationType(){
+    public function identificationType()
+    {
         return $this->belongsTo(IdentificationType::class, 'identification_type_id');
     }
 
-    public function city(){
+    public function city()
+    {
         return $this->belongsTo(City::class, 'city_id');
     }
 
-    public function country(){
+    public function country()
+    {
         return $this->belongsTo(Country::class, 'country_id');
     }
 }

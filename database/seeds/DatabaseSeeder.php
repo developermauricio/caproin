@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
 {
@@ -54,13 +56,12 @@ class DatabaseSeeder extends Seeder
         /*=============================================
           CREAMOS EL ADMINISTRADOR DEL SISTEMA
         =============================================*/
-        factory(\App\User::class, 1)->create([
+        $admin = factory(\App\User::class)->create([
             'name' => 'Admin',
             'last_name' => 'Sistema',
             'email' => 'admin@admin.co',
-        ])->each(function (\App\User $u) {
-            $u->roles()->attach([1]);
-        });
+        ]);
+        $admin->roles()->attach([1]);
 
         /*=============================================
             CREAMOS 20 CLIENTES COMO PERSONA NATURAL
