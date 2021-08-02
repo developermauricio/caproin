@@ -33,31 +33,31 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('last_name')->nullable();
             $table->string('address')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone')->nullable();
-            $table->text('biography')->nullable();
+//            $table->text('biography')->nullable();
             $table->string('slug');
-            $table->string('picture');
+            $table->string('picture')->nullable();
             $table->string('password')->nullable();
-            $table->date('birthday')->nullable();
+//            $table->date('birthday')->nullable();
             $table->enum('state', [
                 \App\User::ACTIVE,
                 \App\User::INACTIVE
             ])->default(\App\User::ACTIVE);
-            $table->unsignedBigInteger('country_id')->nullable();
-            $table->foreign('country_id')->references('id')->on('countries');
-            $table->unsignedBigInteger('city_id')->nullable();
-            $table->foreign('city_id')->references('id')->on('cities');
-            $table->string('url_facebook')->nullable();
-            $table->string('url_youtube')->nullable();
-            $table->string('url_instagram')->nullable();
-            $table->string('url_tiktok')->nullable();
-            $table->string('url_twitter')->nullable();
-            $table->string('url_twitch')->nullable();
-            $table->string('url_spotify')->nullable();
-            $table->string('url_apple_music')->nullable();
-            $table->string('web_site')->nullable();
+//            $table->unsignedBigInteger('country_id')->nullable();
+//            $table->foreign('country_id')->references('id')->on('countries');
+//            $table->unsignedBigInteger('city_id')->nullable();
+//            $table->foreign('city_id')->references('id')->on('cities');
+//            $table->string('url_facebook')->nullable();
+//            $table->string('url_youtube')->nullable();
+//            $table->string('url_instagram')->nullable();
+//            $table->string('url_tiktok')->nullable();
+//            $table->string('url_twitter')->nullable();
+//            $table->string('url_twitch')->nullable();
+//            $table->string('url_spotify')->nullable();
+//            $table->string('url_apple_music')->nullable();
+//            $table->string('web_site')->nullable();
 //            $table->unsignedInteger('gender_id')->nullable();
 //            $table->foreign('gender_id')->references('id')->on('genders');
 

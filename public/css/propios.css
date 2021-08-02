@@ -1,0 +1,11 @@
+@media (max-width:767px)  and (min-width:320px){
+    .tr-filter-dekstop-provider{
+        display: none !important;
+    }
+    .card-header .filter-select-movil-provider{
+        display: block !important;
+    }
+}
+.card-header .filter-select-movil-provider{
+    display: none;
+}

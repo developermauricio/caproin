@@ -11,6 +11,9 @@ import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 Vue.use(VueFormWizard)
 
+import CxltToastr from 'cxlt-vue2-toastr'
+Vue.use(CxltToastr)
+import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
@@ -23,9 +26,19 @@ Vue.use(Vuesax);
 /*COMPONENTES EXTERNOS*/
 Vue.component('input-form', require('./components/InputFormComponent.vue').default);
 
+/*=============================================
+COMPONENTES PARA LOS MODULOS CLIENTES
+=============================================*/
 Vue.component('create-customer', require('./components/admin/customer/CreateCustomer.vue').default);
 Vue.component('component-customer-type-legal', require('./components/admin/customer/components/CustomerTypeLegal').default);
 Vue.component('component-customer-persona-natural', require('./components/admin/customer/components/CustomerTypePersonNatural').default);
+
+/*=============================================
+COMPONENTES PARA LOS MODULOS PROVEEDORES
+=============================================*/
+Vue.component('create-provider', require('./components/admin/provider/CreateProvider.vue').default);
+Vue.component('show-provider', require('./components/admin/provider/ShowProvider.vue').default);
+Vue.component('table-list-providers', require('./components/admin/provider/components/TableListProviders.vue').default);
 
 window.eventBus = new Vue();
 const app = new Vue({

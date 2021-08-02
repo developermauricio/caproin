@@ -33,4 +33,9 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
         =============================================*/
         Route::get('/customers', 'CustomerController@index')->name('admin.customer.customers');
         Route::get('/create-customer', 'CustomerController@indexCreateCustomer')->name('admin.customer.create.customer');
+
+        /*=============================================
+          RUTAS PARA LOS MODULOS PROVEEDOR
+        =============================================*/
+        Route::get('/providers', 'ProviderController@index')->name('admin.provider.providers');
 });

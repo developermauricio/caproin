@@ -46,6 +46,14 @@ class Controller extends BaseController
         }
     }
 
+    public function validateIdentification($identification)
+    {
+        $check = User::whereIdentification($identification)->first();
+        if ($check) {
+            return response()->json('El número de identificación ya ha sido registrado, por favor ingrese otro', 200);
+        }
+    }
+
     public function getIdentificationType()
     {
         $getIdentificationType = IdentificationType::all();

@@ -19,8 +19,8 @@ MENU ADMIN
         </li>
     </ul>
 </li>
-<li class=" nav-item"><a class="d-flex align-items-center" href="app-email.html"><i data-feather="mail"></i><span
-            class="menu-title text-truncate" data-i18n="Email">Email</span></a>
+<li class="{{request()->is('providers') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.provider.providers') }}"><i data-feather='box'></i><span
+            class="menu-title text-truncate" data-i18n="Email">Proveedores</span></a>
 </li>
 <li class=" nav-item"><a class="d-flex align-items-center" href="app-chat.html"><i
             data-feather="message-square"></i><span class="menu-title text-truncate" data-i18n="Chat">Chat</span></a>

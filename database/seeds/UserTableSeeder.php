@@ -15,6 +15,11 @@ class UserTableSeeder extends Seeder
     public function run()
     {
         Role::create(['name' => 'Administrador']);
+        Role::create(['name' => 'Asistente Sucursal']);
+        Role::create(['name' => 'Gerencia']);
+        Role::create(['name' => 'Vendedor']);
+        Role::create(['name' => 'Logistica']);
+        Role::create(['name' => 'Finanzas']);
         Role::create(['name' => 'Cliente']);
         Role::create(['name' => 'Proveedor']);
 

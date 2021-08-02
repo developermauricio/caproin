@@ -6,8 +6,11 @@
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Theme JS-->
+<script src="/app-assets/vendors/js/extensions/sweetalert2.all.min.js"></script>
 <script src="/app-assets/js/core/app-menu.js"></script>
 <script src="/app-assets/js/core/app.js"></script>
+{{--<script src="/app-assets/js/scripts/extensions/ext-component-sweet-alerts.js"></script>--}}
+<script src="/app-assets/js/scripts/components/components-tooltips.js"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 <!-- END: Theme JS-->
 

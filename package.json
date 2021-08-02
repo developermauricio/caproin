@@ -24,7 +24,10 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "cxlt-vue2-toastr": "^1.1.1",
         "material-icons": "^1.0.0",
+        "sweetalert2": "^11.1.0",
+        "vue-bootstrap4-table": "^1.1.11",
         "vue-form-wizard": "^0.8.4",
         "vue-multiselect": "^2.1.6",
         "vue-phone-number-input": "^1.1.10",

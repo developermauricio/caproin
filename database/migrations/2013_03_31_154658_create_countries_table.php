@@ -11,21 +11,21 @@ class CreateCountriesTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('countries', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('criteria_id')->nullable();
-            $table->string('name');
-            $table->string('alpha2Code')->unique();
-            $table->string('capital');
-            $table->string('flag');
-            $table->string('target_type');
-            $table->string('status');
-            $table->string('canonical_name');
-            $table->timestamps();
-        });
-    }
+//    public function up()
+//    {
+////        Schema::create('countries', function (Blueprint $table) {
+////            $table->bigIncrements('id');
+////            $table->integer('criteria_id')->nullable();
+////            $table->string('name');
+////            $table->string('alpha2Code')->unique();
+////            $table->string('capital');
+////            $table->string('flag');
+////            $table->string('target_type');
+////            $table->string('status');
+////            $table->string('canonical_name');
+////            $table->timestamps();
+////        });
+//    }
 
     /**
      * Reverse the migrations.
