@@ -7,17 +7,17 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-import VueFormWizard from 'vue-form-wizard'
-import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+import 'material-icons/iconfont/material-icons.css';
+import VueFormWizard from 'vue-form-wizard';
+import 'vue-form-wizard/dist/vue-form-wizard.min.css';
+import Vuesax from 'vuesax';
+import 'vuesax/dist/vuesax.css';
 Vue.use(VueFormWizard)
 
 import CxltToastr from 'cxlt-vue2-toastr'
 Vue.use(CxltToastr)
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 
-import Vuesax from 'vuesax';
-import 'vuesax/dist/vuesax.css';
-import 'material-icons/iconfont/material-icons.css';
 Vue.use(Vuesax);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
@@ -42,5 +42,5 @@ Vue.component('table-list-providers', require('./components/admin/provider/compo
 
 window.eventBus = new Vue();
 const app = new Vue({
-    el: '#app',
+  el: '#app',
 });
