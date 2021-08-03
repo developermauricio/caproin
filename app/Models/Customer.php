@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
+    protected $fillable = ['business_name', 'user_id'];
     public function user(){
         return $this->belongsTo(User::class);
     }

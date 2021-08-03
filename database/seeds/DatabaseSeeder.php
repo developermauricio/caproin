@@ -85,7 +85,7 @@ class DatabaseSeeder extends Seeder
         /*=============================================
             CREAMOS 10 PROVEEDORES
         =============================================*/
-        factory(\App\User::class, 10)->create()
+        factory(\App\User::class, 500)->create()
             ->each(function (\App\User $u){
                 $u->roles()->attach([8]);
                 factory(\App\Models\Provider::class, 1)->create(
@@ -132,15 +132,18 @@ class DatabaseSeeder extends Seeder
             PRODUCTOS
         =============================================*/
         factory(\App\Models\Product::class, 50)->create();
+
         /*=============================================
-            CREAMOS 20 CLIENTES COMO PERSONA NATURAL
+            CREAMOS 10 CLIENTES
         =============================================*/
-//        factory(\App\User::class, 20)->create()
-//            ->each(function (\App\User $u) {
-//                $u->roles()->attach([2]);
-//                factory(\App\Models\Customer::class, 1)->create(['user_id' => $u->id, 'customer_type_id' => 2])
-//                    ->each(function (\App\Models\Customer $cn) use ($u) {
-//                    });
-//            });
+        factory(\App\User::class, 10)->create()
+            ->each(function (\App\User $u){
+                $u->roles()->attach([7]);
+                factory(\App\Models\Customer::class, 1)->create(
+                    [
+                        'user_id' => $u->id,
+                    ]
+                );
+            });
     }
 }

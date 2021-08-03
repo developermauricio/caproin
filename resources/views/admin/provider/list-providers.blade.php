@@ -43,15 +43,12 @@
                         <tr>
                             <th>#</th>
                             <th style="max-width: 30% !important;">Código</th>
-                            {{--                            <th>Tipo de Cliente</th>--}}
-                            {{--                            <th>Categoría</th>--}}
                             <th>Tipo</th>
                             <th>Tipo Identificación</th>
                             <th>Identificación</th>
                             <th>Nombre o razon social</th>
                             <th>Estado</th>
                             <th>Acciones</th>
-                            {{--                            <th>Acciones</th>--}}
                         </tr>
                         <tr class="tr-filter-dekstop-provider">
                             <th></th>
@@ -71,9 +68,9 @@
         <!--=====================================
 		    MODAL PARA CREAR UN NUEVO PROVEEDOR
         ======================================-->
-        <div class="modal fade text-left modal-primary" id="modal-new-provider" tabindex="-1" role="dialog"
+        <div class="modal fade text-left modal-primary" id="modal-new-provider" data-backdrop="static" tabindex="-1" role="dialog"
              aria-labelledby="myModalLabel160" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <create-provider></create-provider>
             </div>
         </div>
@@ -84,7 +81,7 @@
         <div class="modal fade text-left modal-primary" id="modal-show-provider" data-backdrop="static" tabindex="-1"
              role="dialog"
              aria-labelledby="myModalLabel160" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-lg" role="document">
                 <show-provider id="componet-show-provider" id-provider></show-provider>
             </div>
         </div>
@@ -112,7 +109,7 @@
             let table = null;
             setTimeout(() => {
                 table = $('.datatables-all-clients').DataTable({
-                    "ordering": false,
+                    "ordering": true,
                     "orderCellsTop": true,
                     "fixedHeader": true,
                     "initComplete": function () {
@@ -202,6 +199,8 @@
                     },
 
                     "processing": true,
+                    // "serverSide": true,
+                    // "deferLoading": 57,
                     "lengthMenu": [7, 10, 25, 50, 75, 100],
                     // "scrollY": 800,
                     // "scrollX": true,
@@ -298,18 +297,18 @@
                         },
                     ],
                     "language": {
-                        "sProcessing": "Procesando",
+                        "processing": '<div class="spinner"></div>',
                         "sLengthMenu": "Mostrar _MENU_ Registros",
                         "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "No hay datos",
+                        "sEmptyTable": 'No hay datos',
                         "sInfo": "Mostrando  _END_ de _TOTAL_ registros",
-                        "sInfoEmpty": "{{ __('mostrando_registros_del_cero') }}",
+                        "sInfoEmpty": '<div class="spinner"></div><p style="margin-left: 1rem; padding-bottom: 1.5rem">Cargando datos...</p>',
                         "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
                         "sInfoPostFix": "",
                         "sSearch": "Buscar:",
                         "sUrl": "",
                         "sInfoThousands": ",",
-                        "sLoadingRecords": "{{__('cargando')}}",
+                        "sLoadingRecords": "Cargando...",
                         "oPaginate": {
                             "sFirst": "Primero",
                             "sLast": "Último",
@@ -377,7 +376,7 @@
                                     "extend": 'copy',
                                     "text": feather.icons['copy'].toSvg({class: 'font-small-4 mr-50'}) + 'Copiar',
                                     "className": 'dropdown-item',
-                                    "exportOptions": {columns: [0, 1, 3, 4, 5, 6]}
+                                    "exportOptions": {columns: [ 1, 2, 3, 4, 5, 6]}
                                 }
                             ],
                             // init: function (api, node, config) {

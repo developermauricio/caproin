@@ -54,6 +54,7 @@ class Controller extends BaseController
         }
     }
 
+
     public function getIdentificationType()
     {
         $getIdentificationType = IdentificationType::all();
