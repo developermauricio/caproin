@@ -15,7 +15,7 @@
                             <input-form
                                 id="txtNameUserProviderEdit"
                                 label="Nombre y Apellido o Razón Social"
-                                pattern="alf"
+                                pattern="all"
                                 errorMsg="Ingrese nombre o razón social válido"
                                 requiredMsg="El nombre o razón social es obligatorio"
                                 :modelo.sync="provider.businessName"
@@ -133,8 +133,12 @@
 </template>
 
 <script>
+import Multiselect from "vue-multiselect";
 export default {
     name: "ShowProvider",
+  components: {
+    Multiselect,
+  },
     data() {
         return {
             idProvider: null,
@@ -313,6 +317,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.multiselect__tag {
+  background: #0082FB !important;
+}
 
+.multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
+  background: #283046 !important;
+}
+
+.multiselect__option--highlight {
+  background: #0082FB !important;
+}
 </style>

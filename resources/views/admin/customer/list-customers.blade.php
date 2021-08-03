@@ -37,12 +37,12 @@
             <div class="col-12">
                 <div class="card p-2">
                     <table
-                        class="datatables-all-clients hover datatablescreategica datatables-basic table table-striped"
+                        class="datatables-all-clients hover datatablescreategica table-responsive datatables-basic table table-striped"
                         style="width:100%">
                         <thead>
                         <tr>
                             <th style="max-width: 30% !important;">Código</th>
-                            <th>Nombre o razon social</th>
+                            <th>Nombre o razón social</th>
                             <th>Tipo Identificación</th>
                             <th>Identificación</th>
                             <th>Correo electrónico</th>
@@ -196,7 +196,7 @@
                     "lengthMenu": [7, 10, 25, 50, 75, 100],
                     // "scrollY": 800,
                     // "scrollX": true,
-                    "responsive": true,
+                    // "responsive": true,
                     // "scrollCollapse": true,
                     // "paging": false,
                     // "fixedColumns": {
