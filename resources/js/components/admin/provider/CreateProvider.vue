@@ -2,7 +2,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="myModalLabel160">Crear Proveedor</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" @click="reset()" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -216,6 +216,9 @@ export default {
             axios.get('/api/get-identificationtype').then(resp => {
                 this.optionsTypeIdentification = resp.data.data
             })
+        },
+        reset() {
+            eventBus.$emit("resetValidaciones");
         }
     },
     watch: {
@@ -276,7 +279,7 @@ export default {
                     }).catch(err => {
                 });
             }
-        },
+        }
     },
     mounted() {
         this.getApiTypeProviders();
