@@ -13,7 +13,7 @@
             <input-form
               id="txtNameUserCustomer"
               label="Nombre y Apellido o Razón Social"
-              pattern="alf"
+              pattern="all"
               errorMsg="Ingrese nombre o razón social válido"
               requiredMsg="El nombre o razón social es obligatorio"
               :modelo.sync="customer.businessName"
@@ -104,6 +104,7 @@
 <script>
 import Multiselect from "vue-multiselect";
 import VuePhoneNumberInput from "vue-phone-number-input";
+import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import vue2Dropzone from "vue2-dropzone";
 import Swal from 'sweetalert2'
 export default {

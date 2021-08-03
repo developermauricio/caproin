@@ -73,4 +73,32 @@ class CustomerController extends Controller
         Mail::to($user->email)->send(new NewCustomer($user->name, $password, $user->email));
         return response()->json('Registro Exitoso!');
     }
+
+    public function updateApiCustomer(Request $request){
+
+        $ramdon = Str::random(10);
+        $businessName = $request->businessName;
+        $typeIdentification = json_decode($request->typeIdentification);
+        $identification = $request->identification;
+        $email = $request->email;
+        $phone = $request->phone;
+        $stateCustomer = json_decode($request->state);
+        $idCustomer = $request->idCustomer;
+        $idUser = $request->idUser;
+        $slug = Str::slug($businessName . '-' . $ramdon, '-');
+
+        $user = User::where('id', $idUser)->update([
+            "name" =>  $businessName,
+            "slug" => $slug,
+            "identification_type_id" => $typeIdentification->id,
+            "identification" => $identification,
+            "email" => $email,
+            "phone" => $phone,
+            "state" => $stateCustomer->id
+        ]);
+
+        $customer = Customer::where('id', $idCustomer)->update([
+            "business_name" => $businessName,
+        ]);
+    }
 }

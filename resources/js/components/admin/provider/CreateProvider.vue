@@ -13,7 +13,7 @@
                         <input-form
                             id="txtNameUserProvider"
                             label="Nombre y Apellido o Razón Social"
-                            pattern="alf"
+                            pattern="all"
                             errorMsg="Ingrese nombre o razón social válido"
                             requiredMsg="El nombre o razón social es obligatorio"
                             :modelo.sync="provider.businessName"

@@ -15,7 +15,7 @@
               <input-form
                 id="txtNameUserCustomerEdit"
                 label="Nombre y Apellido o Razón Social"
-                pattern="alf"
+                pattern="all"
                 errorMsg="Ingrese nombre o razón social válido"
                 requiredMsg="El nombre o razón social es obligatorio"
                 :modelo.sync="customer.businessName"
@@ -60,10 +60,39 @@
                 :msgServer.sync="errors.identification"
               ></input-form>
               <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                 id="text-verify-identification-customer" class="text-danger">El número de identificación ya
+                 id="text-verify-identification-customer-edit" class="text-danger">El número de identificación ya
                 ha sido registrado</p>
             </div>
-
+            <div class="col-12 col-md-6 col-lg-6">
+              <input-form
+                id="txtUserEmailEdit"
+                label="Correo electrónico"
+                pattern="email"
+                errorMsg="Ingrese un correo electrónico válido"
+                requiredMsg="El correo el electrónico es obligatorio"
+                :modelo.sync="email"
+                :required="true"
+                :msgServer.sync="errors.email"
+              ></input-form>
+              <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                 id="text-verify-email-edit-customer" class="text-danger">Este correo electrónico ya ha sido
+                registrado</p>
+            </div>
+            <div class="col-12 col-md-6 col-lg-6">
+              <label class="form-control-label label-selects">Teléfono</label>
+              <VuePhoneNumberInput
+                v-model="phone"
+                :required="true"
+                requiredMsg="El teléfono es obligatorio"
+                @update="user.phoneI=$event.formatInternational"
+                :fetch-country="true"
+                :translations="{
+                                countrySelectorLabel: 'Código País',
+                                countrySelectorError: 'Selecciona un País',
+                                phoneNumberLabel: 'Número',
+                                example: 'Ejemplo'
+                            }"/>
+            </div>
             <div class="col-12 col-md-6 col-lg-6">
               <input-form
                 label="Estado del Cliente"
@@ -100,20 +129,37 @@
 </template>
 
 <script>
+import Multiselect from "vue-multiselect";
+import VuePhoneNumberInput from "vue-phone-number-input";
+import "vue-phone-number-input/dist/vue-phone-number-input.css";
+import Swal from 'sweetalert2'
+
 export default {
   name: "ShowCustomer",
+  components: {
+    Multiselect,
+    VuePhoneNumberInput,
+  },
   data() {
     return {
+      email: '',
+      emailValidate: '',
+      documentValidate: '',
+      emailverify: '',
       idCustomer: null,
       idUser: null,
       dataCustomer: null,
       identification: '',
       identificationVerify: '',
+      phone: '',
       customer: {
         businessName: '',
         typeIdentification: null,
         state: null,
 
+      },
+      user: {
+        phoneI: null
       },
       optionsTypeIdentification: [],
       optionsStateCustomer: [
@@ -139,7 +185,7 @@ export default {
         if (document.querySelectorAll("#validateEditCustomerForm .is-invalid").length > 0) {
           this.$toast.error({
             title: 'Error',
-            message: 'Revisa que todos los campos que son obligatorios tengan datos',
+            message: 'Revisa los campos.',
             showDuration: 2000,
             hideDuration: 9000,
             position: 'top right',
@@ -148,12 +194,14 @@ export default {
         }
 
         const data = new FormData()
-        data.append('businessName', this.provider.businessName);
-        data.append('typeIdentification', JSON.stringify(this.provider.typeIdentification));
+        data.append('businessName', this.customer.businessName);
+        data.append('typeIdentification', JSON.stringify(this.customer.typeIdentification));
         data.append('identification', this.identification);
-        data.append('state', JSON.stringify(this.provider.state));
+        data.append('state', JSON.stringify(this.customer.state));
         data.append('idCustomer', this.idCustomer);
         data.append('idUser', this.idUser);
+        data.append('email', this.email);
+        data.append('phone', this.user.phoneI);
 
         Swal.fire({
           title: 'Confirmar',
@@ -172,7 +220,7 @@ export default {
               color: '#3f4f6e',
               text: 'Actualizando Cliente...'
             })
-            axios.post('/api/update-provider', data).then(res => {
+            axios.post('/api/update-customer', data).then(res => {
               this.$toast.success({
                 title: '¡Muy bien!',
                 message: 'Cliente actualizado correctamente',
@@ -181,7 +229,7 @@ export default {
                 position: 'top right',
               })
               setTimeout(() => {
-                window.location = "/providers";
+                window.location = "/customers";
               }, 200)
             }).catch(err => {
               console.log('mostrando el error', err)
@@ -213,6 +261,10 @@ export default {
           this.idUser = this.dataCustomer.user.id
           this.customer.businessName = this.dataCustomer.business_name
           this.identification = this.dataCustomer.user.identification
+          this.documentValidate = this.dataCustomer.user.identification
+          this.phone = this.dataCustomer.user.phone
+          this.email = this.dataCustomer.user.email
+          this.emailValidate = this.dataCustomer.user.email
           this.customer.typeIdentification = this.dataCustomer.user.identification_type
           if (this.dataCustomer.user.state === '1') {
             this.customer.state = {name: "Activo", id: 1}
@@ -234,9 +286,82 @@ export default {
       this.customer.typeIdentification = null
     }
   },
-  // watch:{
-  //     idCustomer
-  // },
+  watch: {
+    identification: function (val) {
+      console.log(val)
+      let data = this
+      if (val) {
+        console.log('val', val)
+        console.log('identificación', this.documentValidate)
+        if (this.documentValidate !== val) {
+          setTimeout(() => {
+            this.$vs.loading({
+              color: '#3f4f6e',
+              text: 'Válidando número de identificación...'
+            })
+            axios.get('/api/verify-identification-user/' + val)
+              .then(resp => {
+                if (resp.data) {
+                  $("#txtIdentifacationCustomerEdit").addClass("is-invalid");
+                  $("#text-verify-identification-customer-edit").css("display", "block");
+                  this.$toast.error({
+                    title: '¡Atención!',
+                    message: 'El número de identificación ya ha sido registrado, por favor ingrese otro',
+                    showDuration: 1000,
+                    hideDuration: 8000,
+                  })
+                } else {
+                  data.identificationVerify = ''
+                  $("#txtIdentifacationCustomerEdit").removeClass("is-invalid");
+                  $("#text-verify-identification-customer-edit").css("display", "none");
+                }
+                this.$vs.loading.close()
+              }).catch(err => {
+            });
+          }, 200)
+          this.$vs.loading.close()
+        } else {
+          $("#txtIdentifacationCustomerEdit").removeClass("is-invalid");
+          $("#text-verify-identification-customer-edit").css("display", "none");
+        }
+      }
+    }
+    ,
+    email: function (val) {
+      let data = this
+      if (val) {
+
+        if (this.emailValidate !== val) {
+          setTimeout(() => {
+            this.$vs.loading({
+              color: '#3f4f6e',
+              text: 'Válidando correo electrónico...'
+            })
+            axios.get('/api/verify-email-user/' + val)
+              .then(resp => {
+                if (resp.data) {
+                  $("#txtUserEmailEdit").addClass("is-invalid");
+                  $("#text-verify-email-edit-customer").css("display", "block");
+                } else {
+                  data.emailverify = ''
+                  $("#txtUserEmailEdit").removeClass("is-invalid");
+                  $("#text-verify-email-edit-customer").css("display", "none");
+                }
+                this.$vs.loading.close()
+              }).catch(err => {
+            });
+
+          }, 200)
+          this.$vs.loading.close()
+        } else {
+          $("#txtUserEmailEdit").removeClass("is-invalid");
+          $("#text-verify-email-edit-customer").css("display", "none");
+        }
+
+      }
+    }
+    ,
+  },
   mounted() {
     this.getApiTypeIdentification();
   }
