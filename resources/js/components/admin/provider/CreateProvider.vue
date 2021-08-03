@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-              <button type="button" data-dismiss="modal" class="btn btn-danger">Cancelar</button>
+              <button type="button" data-dismiss="modal" class="btn btn-danger" @click="reset()">Cancelar</button>
               <button @click="createNewProvider()" type="button" class="btn btn-primary">Crear Proveedor</button>
             </div>
         </form>
@@ -156,6 +156,7 @@ export default {
                     })
                     return;
                 }
+                eventBus.$emit("resetValidaciones");
                 const data = new FormData()
                 data.append('businessName', this.provider.businessName);
                 data.append('typeIdentification', JSON.stringify(this.provider.typeIdentification));

@@ -291,7 +291,11 @@
                         },
                         {
                             render: function (data, type, JsonResultRow, meta) {
-                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-provider" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-provider btn-icon btn-primary"><i data-feather="edit-2"></i></button></div>'
+                                return `<div data-id="${JsonResultRow.id}" class="demo-inline-spacing text-center">
+                                    <button data-id="${JsonResultRow.id}" data-target="#modal-show-provider" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-provider btn-icon btn-primary">
+                                    <i data-id="${JsonResultRow.id}" data-feather="edit-2"></i>
+                                    </button>
+                                </div>`
 
                             },
                         },
@@ -412,12 +416,14 @@
 
 
             $('.datatables-all-clients').on('click', '.btn-show-provider', function (e) {
-                var dataTableProvider = table.row($(this).parents('tr')).data();
-                console.log(dataTableProvider.id);
-                $('#traerDatosBoton').val(dataTableProvider.id).click();
+                const id = e.target.getAttribute('data-id');
+                console.log(e.target);
+                console.log(id);
+                //var dataTableProvider = table.row($(this).parents('tr')).data();
+                //console.log(dataTableProvider.id);
+                $('#traerDatosBoton').val(id).click();
                 // window.idProvider = dataTableProvider.id
                 // localStorage.setItem('idProvider', dataTableProvider.id)
-                $('#componet-show-provider').attr("id-provider", dataTableProvider.id)
             });
         });
 
