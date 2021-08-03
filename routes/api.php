@@ -25,6 +25,9 @@ Route::group(['namespace' => 'Administrator'], function () {
     =============================================*/
     Route::get('all-customers', 'CustomerController@getApiCustomers')->name('api.all.customers');
     Route::get('get-customer-type', 'CustomerController@getApiCustomersType')->name('api.customers.type');
+    Route::post('register/store-customer', 'CustomerController@storeApiCustomer')->name('api.store.customer');
+    Route::get('data-customer/{id}', 'CustomerController@getApiDataCustomer')->name('api.data.customer');
+
 
     /*=============================================
       API LISTA COMPLETA DE PROVEEDORES

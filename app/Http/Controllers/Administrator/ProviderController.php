@@ -43,10 +43,11 @@ class ProviderController extends Controller
         $user = User::create([
             "name" =>  $businessName,
             "slug" => $slug,
+            "picture" => '/images/user-profile.png',
             "identification_type_id" => $typeIdentification->id,
             "identification" => $identification
         ]);
-
+        $user->roles()->attach([8]);
         $provider = Provider::create([
             "business_name" => $businessName,
             "code" => $code,

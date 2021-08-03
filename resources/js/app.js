@@ -30,15 +30,17 @@ Vue.component('input-form', require('./components/InputFormComponent.vue').defau
 COMPONENTES PARA LOS MODULOS CLIENTES
 =============================================*/
 Vue.component('create-customer', require('./components/admin/customer/CreateCustomer.vue').default);
-Vue.component('component-customer-type-legal', require('./components/admin/customer/components/CustomerTypeLegal').default);
-Vue.component('component-customer-persona-natural', require('./components/admin/customer/components/CustomerTypePersonNatural').default);
+Vue.component('show-customer', require('./components/admin/customer/ShowCustomer').default);
+
+// Vue.component('component-customer-type-legal', require('./components/admin/customer/components/CustomerTypeLegal').default);
+// Vue.component('component-customer-persona-natural', require('./components/admin/customer/components/CustomerTypePersonNatural').default);
 
 /*=============================================
 COMPONENTES PARA LOS MODULOS PROVEEDORES
 =============================================*/
 Vue.component('create-provider', require('./components/admin/provider/CreateProvider.vue').default);
 Vue.component('show-provider', require('./components/admin/provider/ShowProvider.vue').default);
-Vue.component('table-list-providers', require('./components/admin/provider/components/TableListProviders.vue').default);
+
 
 window.eventBus = new Vue();
 const app = new Vue({

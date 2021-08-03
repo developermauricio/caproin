@@ -102,7 +102,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button @click="createNewProvider()" type="button" class="btn btn-primary">Crear Proveedor</button>
+              <button type="button" data-dismiss="modal" class="btn btn-danger">Cancelar</button>
+              <button @click="createNewProvider()" type="button" class="btn btn-primary">Crear Proveedor</button>
             </div>
         </form>
     </div>
@@ -254,7 +255,7 @@ export default {
                 if (val === ''){
                     data.codeVerify = ''
                     $("#txtCodeProvider").removeClass("is-invalid");
-                    $("#text-verify-identification-provider").css("display", "none");
+                    $("#text-verify-code-provider").css("display", "none");
                 }
                 axios.get('/api/verify-code-provider/' + val)
                     .then(resp => {

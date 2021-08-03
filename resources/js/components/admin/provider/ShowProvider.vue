@@ -100,7 +100,7 @@
                         </div>
                         <div class="col-12 col-md-6 col-lg-6">
                             <input-form
-                                label="Estado del Proveedo"
+                                label="Estado del Proveedor"
                                 id="textStateProviderEdit"
                                 errorMsg
                                 requiredMsg="El estado del proveedor es obligatorio"
