@@ -182,6 +182,7 @@ export default {
                     })
                     return;
                 }
+                eventBus.$emit("resetValidaciones");
                 // if (this.identification){
                 //     axios.get('/api/verify-identification-user/' + this.identification)
                 //         .then(resp => {
@@ -299,6 +300,7 @@ export default {
             this.provider.code = ''
             this.provider.typeProvider = null
             this.provider.typeIdentification = null
+            eventBus.$emit("resetValidaciones");
         }
     },
     // watch:{

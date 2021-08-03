@@ -90,6 +90,24 @@ import { en, es } from "vuejs-datepicker/dist/locale";
 import Datepicker from "vuejs-datepicker";
 import Multiselect from "vue-multiselect";
 
+const validations = {
+  all: RegExp(".+"),
+
+  num: /^[0-9 ]+$/iu,
+  alf: /^[a-z á-ú ü à-ù]+$/iu,
+  alf_num: /^[a-z á-ú ü 0-9 à-ù]+$/iu,
+
+  email: RegExp(
+    "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
+  ),
+
+
+  url: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
+
+  datemdy: /^([0-2][0-9]|(3)[0-1])(.)(((0)[0-9])|((1)[0-2]))(.)\d{4}$/,
+  dateymd: /^\d{4}(.)(((0)[0-9])|((1)[0-2]))(.)([0-2][0-9]|(3)[0-1])$/,
+};
+
 export default {
   data: function () {
     return {
@@ -161,43 +179,18 @@ export default {
     if (this.type) {
       this.tipoInput = this.type;
     }
+
     eventBus.$on("validarFormulario", () => {
       this.changeFocus();
     });
 
-    switch (this.pattern) {
-      case "num":
-        this.validator = /^[0-9 ]+$/iu;
-        break;
-      case "alf":
-        this.validator = /^[a-z á-ú ü à-ù]+$/iu;
-        break;
-      case "alf_num":
-        this.validator = /^[a-z á-ú ü 0-9 à-ù]+$/iu;
-        break;
-      case "email":
-        this.validator = RegExp(
-          "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
-        );
-        break;
-      case "all":
-        this.validator = RegExp(".+");
-        break;
-      case "url":
-        this.validator =
-          /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
-        break;
-      case "datemdy":
-        this.validator =
-          /^([0-2][0-9]|(3)[0-1])(.)(((0)[0-9])|((1)[0-2]))(.)\d{4}$/;
-        break;
-      case "dateymd":
-        this.validator =
-          /^\d{4}(.)(((0)[0-9])|((1)[0-2]))(.)([0-2][0-9]|(3)[0-1])$/;
-        break;
-      default:
-        this.validator = RegExp(this.pattern);
-    }
+    eventBus.$on("resetValidaciones", () => {
+      this.validated = true;
+    });
+
+    this.validator = validations[this.pattern]
+      ? validations[this.pattern]
+      : RegExp(this.pattern);
   },
   methods: {
     change(val) {

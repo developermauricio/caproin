@@ -7,6 +7,8 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import CxltToastr from 'cxlt-vue2-toastr';
+import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 import 'material-icons/iconfont/material-icons.css';
 import VueFormWizard from 'vue-form-wizard';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css';
@@ -14,9 +16,7 @@ import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
 Vue.use(VueFormWizard)
 
-import CxltToastr from 'cxlt-vue2-toastr'
 Vue.use(CxltToastr)
-import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 
 Vue.use(Vuesax);
 // const files = require.context('./', true, /\.vue$/i)
