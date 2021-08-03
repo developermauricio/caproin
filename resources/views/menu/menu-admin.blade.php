@@ -4,20 +4,8 @@ MENU ADMIN
 <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Navegación</span><i
         data-feather="more-horizontal"></i>
 </li>
-<li class=" nav-item">
-    <a class="d-flex align-items-center" href="#"><i data-feather="users"></i><span
-            class="menu-title text-truncate" data-i18n="users">Clientes</span>
-    </a>
-    <ul class="menu-content">
-        <li class="{{request()->is('customers') ? 'active' : '' }}">
-            <a class="d-flex align-items-center" href="{{ route('admin.customer.customers') }}"><i data-feather="circle"></i><span
-                    class="menu-item text-truncate" data-i18n="List">Lista de Clientes</span></a>
-        </li>
-        <li class="{{request()->is('create-customer') ? 'active' : '' }}">
-            <a class="d-flex align-items-center" href="{{ route('admin.customer.create.customer') }}"><i data-feather="circle"></i><span
-                    class="menu-item text-truncate" data-i18n="Preview">Nuevo Cliente</span></a>
-        </li>
-    </ul>
+<li class="{{request()->is('customers') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.customer.customers') }}"><i data-feather="users"></i><span
+            class="menu-title text-truncate" data-i18n="Email">Clientes</span></a>
 </li>
 <li class="{{request()->is('providers') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.provider.providers') }}"><i data-feather='box'></i><span
             class="menu-title text-truncate" data-i18n="Email">Proveedores</span></a>

@@ -325,8 +325,7 @@ export default {
           $("#text-verify-identification-customer-edit").css("display", "none");
         }
       }
-    }
-    ,
+    },
     email: function (val) {
       let data = this
       if (val) {
