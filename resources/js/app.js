@@ -31,6 +31,7 @@ COMPONENTES PARA LOS MODULOS CLIENTES
 =============================================*/
 Vue.component('create-customer', require('./components/admin/customer/CreateCustomer.vue').default);
 Vue.component('show-customer', require('./components/admin/customer/ShowCustomer').default);
+Vue.component('import-data-customers', require('./components/admin/customer/components/ImportDataCustomer.vue').default);
 
 // Vue.component('component-customer-type-legal', require('./components/admin/customer/components/CustomerTypeLegal').default);
 // Vue.component('component-customer-persona-natural', require('./components/admin/customer/components/CustomerTypePersonNatural').default);

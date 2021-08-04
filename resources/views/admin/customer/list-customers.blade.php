@@ -33,6 +33,18 @@
 @endsection
 @section('content')
     <section id="basic-datatable">
+        @if(session()->has('success-import-data-customer'))
+            <div class="demo-spacing-0 pb-2">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div class="alert-body">
+                        {{session('success-import-data-customer')}}
+                    </div>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+            </div>
+        @endif
         <div class="row">
             <div class="col-12">
                 <div class="card p-2">
@@ -68,7 +80,8 @@
         <!--=====================================
 		    MODAL PARA CREAR UN NUEVO CLIENTE
         ======================================-->
-        <div class="modal fade text-left modal-primary" id="modal-new-provider" data-backdrop="static" tabindex="-1" role="dialog"
+        <div class="modal fade text-left modal-primary" id="modal-new-provider" data-backdrop="static" tabindex="-1"
+             role="dialog"
              aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <create-customer></create-customer>
@@ -83,6 +96,38 @@
              aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <show-customer id="componet-show-customer" id-customer></show-customer>
+            </div>
+        </div>
+
+        <!--=====================================
+		    MODAL PARA IMPORTAR CLIENTES
+        ======================================-->
+        <div class="modal fade text-left modal-primary" id="modal-import-customer" data-backdrop="static" tabindex="-1"
+             role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <import-data-customers></import-data-customers>
+{{--                <div class="modal-content">--}}
+{{--                    <div class="modal-header">--}}
+{{--                        <h5 class="modal-title" id="myModalLabel160">Importar Clientes</h5>--}}
+{{--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
+{{--                            <span aria-hidden="true">&times;</span>--}}
+{{--                        </button>--}}
+{{--                    </div>--}}
+{{--                    <form action="{{ route('import.data.customers') }}" method="POST" enctype="multipart/form-data">--}}
+{{--                        <div class="modal-body">--}}
+{{--                            @csrf--}}
+{{--                            <h6 class="text-center">Selecciona desde tu computadora el archivo Excel tipo--}}
+{{--                                <strong>xlsx</strong></h6>--}}
+{{--                            <input type="file" name="data-customers" class="form-control text-center" required--}}
+{{--                                   accept=".xls,.xlsx">--}}
+{{--                            <div class="text-center pt-1"><a href="/storage/import-excel-customers/data.xlsx"--}}
+{{--                                                             target="_blank">Descarga el ejemplo</a></div>--}}
+{{--                        </div>--}}
+{{--                        <div class="modal-footer">--}}
+{{--                            <button type="submit" type="button" class="btn btn-primary">Importar</button>--}}
+{{--                        </div>--}}
+{{--                    </form>--}}
+{{--                </div>--}}
             </div>
         </div>
     </section>
@@ -116,7 +161,7 @@
                         this.api().columns([2]).every(function () {
                             var column = this;
                             var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
-                                .appendTo('.datatables-all-clients .filter-'+column[0][0])
+                                .appendTo('.datatables-all-clients .filter-' + column[0][0])
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val(),
@@ -136,7 +181,7 @@
                         this.api().columns([6]).every(function () {
                             var column = this;
                             var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
-                                .appendTo('.datatables-all-clients .filter-'+column[0][0])
+                                .appendTo('.datatables-all-clients .filter-' + column[0][0])
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val(),
@@ -385,6 +430,17 @@
                             //         $(node).closest('.dt-buttons').removeClass('btn-group').addClass('d-inline-flex');
                             //     }, 50);
                             // }
+                        },
+                        {
+                            text: feather.icons['file-text'].toSvg({class: 'mr-50 font-small-4'}) + 'Importar',
+                            className: 'create-new btn btn-primary',
+                            attr: {
+                                'data-target': '#modal-import-customer',
+                                'data-toggle': 'modal',
+                            },
+                            init: function (api, node, config) {
+                                $(node).removeClass('btn-secondary');
+                            }
                         },
                         {
                             text: feather.icons['plus'].toSvg({class: 'mr-50 font-small-4'}) + 'Nuevo Cliente',

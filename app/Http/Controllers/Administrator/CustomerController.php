@@ -8,8 +8,10 @@ use App\Models\Customer;
 use App\Models\CustomerType;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class CustomerController extends Controller
 {
@@ -35,7 +37,8 @@ class CustomerController extends Controller
         return datatables()->of($customer)->toJson();
     }
 
-    public function getApiDataCustomer($id){
+    public function getApiDataCustomer($id)
+    {
         $customer = Customer::where('id', $id)->with('user.identificationType')->first();
         return response()->json(['data' => $customer]);
     }
@@ -74,7 +77,8 @@ class CustomerController extends Controller
         return response()->json('Registro Exitoso!');
     }
 
-    public function updateApiCustomer(Request $request){
+    public function updateApiCustomer(Request $request)
+    {
 
         $ramdon = Str::random(10);
         $businessName = $request->businessName;
@@ -88,7 +92,7 @@ class CustomerController extends Controller
         $slug = Str::slug($businessName . '-' . $ramdon, '-');
 
         $user = User::where('id', $idUser)->update([
-            "name" =>  $businessName,
+            "name" => $businessName,
             "slug" => $slug,
             "identification_type_id" => $typeIdentification->id,
             "identification" => $identification,
@@ -100,5 +104,48 @@ class CustomerController extends Controller
         $customer = Customer::where('id', $idCustomer)->update([
             "business_name" => $businessName,
         ]);
+    }
+
+    public function importDataCustomer(Request $request)
+    {
+        $data = $request->archive;
+        $success = true;
+        DB::beginTransaction();
+        try {
+        $user = (new FastExcel())->import($data, function ($line) use($request){
+
+            $ramdon = Str::random(10);
+            $slug = Str::slug($line['nombre o razon social'] . '-' . $ramdon, '-');
+            $user = User::create([
+                'name' => $line['nombre o razon social'],
+                'email' => $line['email'],
+                'phone' => $line['telefono'],
+                'identification' => $line['identificacion'],
+                'slug' => $slug,
+                "picture" => '/images/user-profile.png',
+                "identification_type_id" => $line['tipo de identificacion'],
+                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            ]);
+
+            $user->roles()->attach([7]);
+            $customer = Customer::create([
+                "business_name" => $line['nombre o razon social'],
+                "user_id" => $user->id,
+            ]);
+
+        });
+
+
+        } catch (\Exception $exception) {
+            $success = $exception->getMessage();
+            DB::rollBack();
+        }
+        if ($success === true){
+            DB::commit();
+            return response()->json('Transacción realizada exitosamente', 200);
+        }else{
+            return response()->json(['message' => $success], 500);
+        }
+
     }
 }

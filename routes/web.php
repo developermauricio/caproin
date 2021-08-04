@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
         =============================================*/
         Route::get('/customers', 'CustomerController@index')->name('admin.customer.customers');
         Route::get('/create-customer', 'CustomerController@indexCreateCustomer')->name('admin.customer.create.customer');
+        Route::post('/import-data-customer', 'CustomerController@importDataCustomer')->name('import.data.customers');
 
         /*=============================================
           RUTAS PARA LOS MODULOS PROVEEDOR

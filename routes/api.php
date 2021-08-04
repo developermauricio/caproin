@@ -28,6 +28,7 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::post('register/store-customer', 'CustomerController@storeApiCustomer')->name('api.store.customer');
     Route::get('data-customer/{id}', 'CustomerController@getApiDataCustomer')->name('api.data.customer');
     Route::post('update-customer', 'CustomerController@updateApiCustomer')->name('api.update.customer');
+    Route::post('import-data-customers', 'CustomerController@importDataCustomer')->name('api.import.data.customer');
 
 
     /*=============================================
