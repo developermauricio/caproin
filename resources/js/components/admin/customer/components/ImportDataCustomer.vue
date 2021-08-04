@@ -132,6 +132,7 @@ export default {
                 hideDuration: 7000,
                 position: 'top right',
               })
+              window.location = "/customers";
             }).catch(err => {
               console.log(err)
               this.archive = ''
