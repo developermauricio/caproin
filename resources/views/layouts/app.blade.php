@@ -100,6 +100,14 @@
         <div class="content-wrapper">
             @yield('header_page')
             <div class="content-body">
+                @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">¡Muy bien!</h4>
+                        <div class="alert-body">
+                            {{ session('status') }}
+                        </div>
+                    </div>
+                @endif
                 @yield('content')
 
             </div>
