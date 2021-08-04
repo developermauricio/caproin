@@ -31,7 +31,7 @@
         <input @change="previewFiles" type="file" class="form-control text-center" required
                accept=".xls,.xlsx">
         <div class="text-center pt-1">
-          <a href="/storage/import-excel-customers/caproin-import-customer.xlsx" target="_blank">Descarga el ejemplo</a>
+          <a href="/import-excel-customers/caproin-import-customer.xlsx" target="_blank">Descarga el ejemplo</a>
         </div>
         <div class="collapse-default pt-1">
           <div class="card collapse-icon">
