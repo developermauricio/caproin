@@ -2891,6 +2891,190 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ImportDataCustomer",
+  data: function data() {
+    return {
+      archive: null,
+      errorMessage: '',
+      optionsTypeIdentification: []
+    };
+  },
+  methods: {
+    submitDataExcel: function submitDataExcel(e) {
+      var _this = this;
+
+      e.preventDefault();
+      var config = {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      };
+      this.errorMessage = '';
+      var data = new FormData();
+      data.append('archive', this.archive);
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({
+        title: 'Confirmar',
+        text: '¿Estás seguro de importar este archivo?',
+        confirmButtonColor: "#0082FB",
+        cancelButtonColor: "#F05E7D",
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        customClass: "swal-confirmation",
+        showCancelButton: true,
+        reverseButtons: true,
+        allowOutsideClick: false
+      }).then(function (result) {
+        if (result.value) {
+          _this.$vs.loading({
+            color: '#3f4f6e',
+            text: 'Importando datos, por favor espere...'
+          });
+
+          axios.post('/api/import-data-customers', data, config).then(function (resp) {
+            _this.$toast.success({
+              title: '¡Muy bien!',
+              message: 'La importación se realizo correctamente',
+              showDuration: 1000,
+              hideDuration: 7000,
+              position: 'top right'
+            });
+
+            window.location = "/customers";
+          })["catch"](function (err) {
+            console.log(err);
+            _this.archive = '';
+            _this.errorMessage = err.response.data.message;
+
+            _this.$toast.error({
+              title: 'Algo salio mal',
+              message: 'Comunícate con el administrador',
+              showDuration: 1000,
+              hideDuration: 8000
+            });
+          });
+          setTimeout(function () {
+            _this.$vs.loading.close();
+          }, 2000);
+        }
+      });
+    },
+    previewFiles: function previewFiles(e) {
+      this.archive = e.target.files[0];
+    },
+    getApiTypeIdentification: function getApiTypeIdentification() {
+      var _this2 = this;
+
+      axios.get('/api/get-identificationtype').then(function (resp) {
+        _this2.optionsTypeIdentification = resp.data.data;
+      });
+    }
+  },
+  mounted: function mounted() {
+    this.getApiTypeIdentification();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/provider/CreateProvider.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/provider/CreateProvider.vue?vue&type=script&lang=js& ***!
@@ -26458,6 +26642,303 @@ var render = function() {
   ])
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=template&id=286b1b40&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=template&id=286b1b40&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "modal-content " }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _vm.errorMessage
+      ? _c("div", { staticClass: "demo-spacing-0" }, [
+          _c(
+            "div",
+            {
+              staticClass: "alert alert-danger alert-dismissible m-1 fade show",
+              attrs: { role: "alert" }
+            },
+            [
+              _c("div", { staticClass: "alert-body" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _c("p", [_c("code", [_vm._v(_vm._s(_vm.errorMessage))])]),
+                _vm._v(" "),
+                _vm._m(2)
+              ]),
+              _vm._v(" "),
+              _vm._m(3)
+            ]
+          )
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        attrs: { enctype: "multipart/form-data" },
+        on: { submit: _vm.submitDataExcel }
+      },
+      [
+        _c("div", { staticClass: "modal-body" }, [
+          _vm._m(4),
+          _vm._v(" "),
+          _c("input", {
+            staticClass: "form-control text-center",
+            attrs: { type: "file", required: "", accept: ".xls,.xlsx" },
+            on: { change: _vm.previewFiles }
+          }),
+          _vm._v(" "),
+          _vm._m(5),
+          _vm._v(" "),
+          _c("div", { staticClass: "collapse-default pt-1" }, [
+            _c("div", { staticClass: "card collapse-icon" }, [
+              _vm._m(6),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "collapse",
+                  attrs: {
+                    id: "collapse1",
+                    role: "tabpanel",
+                    "aria-labelledby": "headingCollapse1"
+                  }
+                },
+                [
+                  _c("div", { staticClass: "card-body" }, [
+                    _vm._m(7),
+                    _vm._v(" "),
+                    _vm._m(8),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "table-responsive" }, [
+                      _c("table", { staticClass: "table" }, [
+                        _vm._m(9),
+                        _vm._v(" "),
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.optionsTypeIdentification, function(
+                            tipoIdentification
+                          ) {
+                            return _c("tr", { key: tipoIdentification.id }, [
+                              _c("td", { staticClass: "text-center" }, [
+                                _c("span", {
+                                  staticClass: "font-weight-bold",
+                                  domProps: {
+                                    textContent: _vm._s(tipoIdentification.id)
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { staticClass: "text-center" }, [
+                                _c("span", {
+                                  staticClass: "font-weight-bold",
+                                  domProps: {
+                                    textContent: _vm._s(tipoIdentification.name)
+                                  }
+                                })
+                              ])
+                            ])
+                          }),
+                          0
+                        )
+                      ])
+                    ])
+                  ])
+                ]
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _vm._m(10)
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "myModalLabel160" } },
+        [_vm._v("Importar Clientes")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", [
+      _c("strong", [_vm._v("Error al importar.")]),
+      _vm._v(
+        " Verifique que no hay algún correo electrónico o número de identificación duplicado.\n          Tambien verifique que los nombres o titulos de las columnas esten tan cual el excel de ejemplo. A continuación puede ver el mensaje que arroja el servidor,\n          le puede dar una guia para solucionar el problema:\n\n        "
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "mt-1" }, [
+      _c("strong", [
+        _vm._v(
+          "Al generar este error, ningún dato ha sido importado. Intentelo nuevamente despues de encontrar la solución."
+        )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "alert",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h6", { staticClass: "text-center" }, [
+      _vm._v("Selecciona desde tu computadora el archivo Excel tipo\n        "),
+      _c("strong", [_vm._v("xlsx")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center pt-1" }, [
+      _c(
+        "a",
+        {
+          attrs: {
+            href: "/import-excel-customers/caproin-import-customer.xlsx",
+            target: "_blank"
+          }
+        },
+        [_vm._v("Descarga el ejemplo")]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "card-header",
+        attrs: {
+          id: "headingCollapse1",
+          "data-toggle": "collapse",
+          role: "button",
+          "data-target": "#collapse1",
+          "aria-expanded": "false",
+          "aria-controls": "collapse1"
+        }
+      },
+      [
+        _c("span", { staticClass: "lead collapse-title" }, [
+          _vm._v("Instrucciones")
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "card-text text-justify" }, [
+      _vm._v(
+        "\n                Para importar clientes debe cargar un archivo Excel en formato "
+      ),
+      _c("code", [_vm._v("xlsx")]),
+      _vm._v(".\n                Tenga en cuenta que el "),
+      _c("code", [_vm._v("correo electrónico")]),
+      _vm._v(" y el "),
+      _c("code", [_vm._v("número de identificación")]),
+      _vm._v(
+        " es\n                único, asi que verifique\n                que en su archivo de excel no existan correos electrónicos o números de identificación iguales.\n              "
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "card-text text-justify" }, [
+      _vm._v("\n                Para el "),
+      _c("code", [_vm._v("tipo de idenficación")]),
+      _vm._v(
+        " debe ingresar un número como se muestra en el archivo excel de ejemplo. A\n                continuación\n                la tabla con el nombre del tipo de identificación y el número.\n              "
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Número")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nombre tipo identificación")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c("button", { staticClass: "btn btn-primary" }, [_vm._v("Importar")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -73411,7 +73892,8 @@ COMPONENTES PARA LOS MODULOS CLIENTES
 =============================================*/
 
 Vue.component('create-customer', __webpack_require__(/*! ./components/admin/customer/CreateCustomer.vue */ "./resources/js/components/admin/customer/CreateCustomer.vue")["default"]);
-Vue.component('show-customer', __webpack_require__(/*! ./components/admin/customer/ShowCustomer */ "./resources/js/components/admin/customer/ShowCustomer.vue")["default"]); // Vue.component('component-customer-type-legal', require('./components/admin/customer/components/CustomerTypeLegal').default);
+Vue.component('show-customer', __webpack_require__(/*! ./components/admin/customer/ShowCustomer */ "./resources/js/components/admin/customer/ShowCustomer.vue")["default"]);
+Vue.component('import-data-customers', __webpack_require__(/*! ./components/admin/customer/components/ImportDataCustomer.vue */ "./resources/js/components/admin/customer/components/ImportDataCustomer.vue")["default"]); // Vue.component('component-customer-type-legal', require('./components/admin/customer/components/CustomerTypeLegal').default);
 // Vue.component('component-customer-persona-natural', require('./components/admin/customer/components/CustomerTypePersonNatural').default);
 
 /*=============================================
@@ -73708,6 +74190,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowCustomer_vue_vue_type_template_id_1532f4f1___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowCustomer_vue_vue_type_template_id_1532f4f1___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/customer/components/ImportDataCustomer.vue":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/admin/customer/components/ImportDataCustomer.vue ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ImportDataCustomer_vue_vue_type_template_id_286b1b40_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ImportDataCustomer.vue?vue&type=template&id=286b1b40&scoped=true& */ "./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=template&id=286b1b40&scoped=true&");
+/* harmony import */ var _ImportDataCustomer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ImportDataCustomer.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ImportDataCustomer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ImportDataCustomer_vue_vue_type_template_id_286b1b40_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ImportDataCustomer_vue_vue_type_template_id_286b1b40_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "286b1b40",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/customer/components/ImportDataCustomer.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportDataCustomer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./ImportDataCustomer.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportDataCustomer_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=template&id=286b1b40&scoped=true&":
+/*!*****************************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=template&id=286b1b40&scoped=true& ***!
+  \*****************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportDataCustomer_vue_vue_type_template_id_286b1b40_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./ImportDataCustomer.vue?vue&type=template&id=286b1b40&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/customer/components/ImportDataCustomer.vue?vue&type=template&id=286b1b40&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportDataCustomer_vue_vue_type_template_id_286b1b40_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportDataCustomer_vue_vue_type_template_id_286b1b40_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
