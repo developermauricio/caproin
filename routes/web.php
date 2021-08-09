@@ -38,4 +38,9 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
           RUTAS PARA LOS MODULOS PROVEEDOR
         =============================================*/
         Route::get('/providers', 'ProviderController@index')->name('admin.provider.providers');
+
+        /*=============================================
+          RUTAS PARA LOS MODULOS ORDENES DE COMPRA
+        =============================================*/
+        Route::get('/purchase_order', 'PurchaseOrderController@index')->name('admin.purchase_order.purchase_orders');
 });

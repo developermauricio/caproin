@@ -8,21 +8,17 @@
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
 @endpush
-@section('title', 'Lista de Proveedores')
+@section('title', 'Lista de ordenes de compra')
 @section('header_page')
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Lista de Proveedores</h2>
+                    <h2 class="content-header-title float-left mb-0">Lista de las ordenes de compra</h2>
                     <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb">
-                            {{--                            <li class="breadcrumb-item"><a href="index.html">Home</a>--}}
-                            {{--                            </li>--}}
-                            {{--                            <li class="breadcrumb-item"><a href="#">Layouts</a>--}}
-                            {{--                            </li>--}}
                             <li class="breadcrumb-item active">
-                                Proveedores
+                                Ordenes de compra
                             </li>
                         </ol>
                     </div>
@@ -42,23 +38,12 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th style="max-width: 30% !important;">Código</th>
-                            <th>Tipo</th>
-                            <th>Tipo Identificación</th>
-                            <th>Identificación</th>
-                            <th>Nombre o razon social</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                        <tr class="tr-filter-dekstop-provider">
-                            <th></th>
-                            <th style="max-width: 30% !important;"></th>
-                            <th class="filter-2"></th>
-                            <th class="filter-3"></th>
-                            <th></th>
-                            <th></th>
-                            <th class="filter-6"></th>
-                            <th></th>
+                            <th style="max-width: 30% !important;">Cliente</th>
+                            <th>Fecha Requerida</th>
+                            <th>Estado del pedido</th>
+                            <th>Descripcion</th>
+                            <th>Valor total</th>
+                            <th>Detalles</th>
                         </tr>
                         </thead>
                     </table>
@@ -68,21 +53,21 @@
         <!--=====================================
 		    MODAL PARA CREAR UN NUEVO PROVEEDOR
         ======================================-->
-        <div class="modal fade text-left modal-primary" id="modal-new-provider" data-backdrop="static" tabindex="-1" role="dialog"
+        <div class="modal fade text-left modal-primary" id="modal-new-purchase_order" data-backdrop="static" tabindex="-1" role="dialog"
              aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
-                <create-provider></create-provider>
+                <create-purchase-order></create-purchase-order>
             </div>
         </div>
 
         <!--=====================================
 		    MODAL PARA VER EL DETALLE DEL PROVEEDOR
         ======================================-->
-        <div class="modal fade text-left modal-primary" id="modal-show-provider" data-backdrop="static" tabindex="-1"
+        <div class="modal fade text-left modal-primary" id="modal-show-purchase-order" data-backdrop="static" tabindex="-1"
              role="dialog"
              aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
-                <show-provider id="componet-show-provider" id-provider></show-provider>
+                <show-purchase-order id="componet-show-purchase-order" ></show-purchase-order>
             </div>
         </div>
     </section>
@@ -159,7 +144,7 @@
                         this.api().columns([2, 3]).every(function () {
                             var column = this;
                             console.log('columna', column[0][0])
-                            var select = $(`<select class="form-control filter-select-movil-provider mb-1"><option hidden selected>Filtrar por ${column[0][0] == 2 ? 'Tipo' : 'Tipo de Identificación'}</option><option value="">Mostrar todos los registros</option></select>`)
+                            var select = $(`<select class="form-control filter-select-movil-purchase-order mb-1"><option hidden selected>Filtrar por ${column[0][0] == 2 ? 'Tipo' : 'Tipo de Identificación'}</option><option value="">Mostrar todos los registros</option></select>`)
                                 .appendTo('.card-header')
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
@@ -178,7 +163,7 @@
                         this.api().columns([6]).every(function () {
                             var column = this;
                             console.log(column)
-                            var select = $('<select class="form-control filter-select-movil-provider mb-1"><option hidden selected>Filtrar por Estado</option><option value="">Mostrar todos los registros</option></select>')
+                            var select = $('<select class="form-control filter-select-movil-purchase-order mb-1"><option hidden selected>Filtrar por Estado</option><option value="">Mostrar todos los registros</option></select>')
                                 .appendTo('.card-header')
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
@@ -225,7 +210,7 @@
                     // "order": [[1, 'asc']],
 
                     "ajax": {
-                        url: "{{route('api.all.providers')}}",
+                        url: "{{route('api.all.purchase-orders')}}",
                     },
                     "columns": [
                         {"data": "id"},
@@ -292,7 +277,7 @@
                         {
                             render: function (data, type, JsonResultRow, meta) {
                                 return `<div data-id="${JsonResultRow.id}" class="demo-inline-spacing text-center">
-                                    <button data-id="${JsonResultRow.id}" data-target="#modal-show-provider" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-provider btn-icon btn-primary">
+                                    <button data-id="${JsonResultRow.id}" data-target="#modal-show-purchase-order" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-purchase-order btn-icon btn-primary">
                                     <i data-id="${JsonResultRow.id}" data-feather="edit-2"></i>
                                     </button>
                                 </div>`
@@ -395,7 +380,7 @@
                             text: feather.icons['plus'].toSvg({class: 'mr-50 font-small-4'}) + 'Nuevo Proveedor',
                             className: 'create-new btn btn-primary',
                             attr: {
-                                'data-target': '#modal-new-provider',
+                                'data-target': '#modal-new-purchase-order',
                                 'data-toggle': 'modal',
                             },
                             init: function (api, node, config) {
@@ -415,15 +400,9 @@
             }, 5);
 
 
-            $('.datatables-all-clients').on('click', '.btn-show-provider', function (e) {
+            $('.datatables-all-clients').on('click', '.btn-show-purchase-order', function (e) {
                 const id = e.target.getAttribute('data-id');
-                //console.log(e.target);
-                //console.log(id);
-                //var dataTableProvider = table.row($(this).parents('tr')).data();
-                //console.log(dataTableProvider.id);
                 $('#traerDatosBoton').val(id).click();
-                // window.idProvider = dataTableProvider.id
-                // localStorage.setItem('idProvider', dataTableProvider.id)
             });
         });
 

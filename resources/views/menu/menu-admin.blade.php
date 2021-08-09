@@ -19,9 +19,29 @@ MENU ADMIN
         </li>
     </ul>
 </li>
-<li class="{{request()->is('providers') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.provider.providers') }}"><i data-feather='box'></i><span
-            class="menu-title text-truncate" data-i18n="Email">Proveedores</span></a>
+<li class="{{request()->is('providers') ? 'active' : '' }} nav-item">
+    <a class="d-flex align-items-center" href="{{ route('admin.provider.providers') }}">
+        <i data-feather='box'></i>
+        <span class="menu-title text-truncate" data-i18n="Email">Proveedores</span>
+    </a>
 </li>
+
+<li class="{{request()->is('providers') ? 'active' : '' }} nav-item">
+    <a class="d-flex align-items-center" href="{{ route('admin.provider.providers') }}">
+        <i data-feather='box'></i>
+        <span class="menu-title text-truncate" data-i18n="Email">Proveedores</span>
+    </a>
+</li>
+
+<li class="{{request()->is('purchase_orders') ? 'active' : '' }} nav-item">
+    <a class="d-flex align-items-center" href="{{ route('admin.purchase_order.purchase_orders') }}">
+        <i data-feather='box'></i>
+        <span class="menu-title text-truncate" data-i18n="Email">Ordenes de compra</span>
+    </a>
+</li>
+
+
+
 <li class=" nav-item"><a class="d-flex align-items-center" href="app-chat.html"><i
             data-feather="message-square"></i><span class="menu-title text-truncate" data-i18n="Chat">Chat</span></a>
 </li>

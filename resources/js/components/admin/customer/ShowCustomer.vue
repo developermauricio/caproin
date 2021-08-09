@@ -192,6 +192,8 @@ export default {
           })
           return;
         }
+        this.resetValidations()
+
 
         const data = new FormData()
         data.append('businessName', this.customer.businessName);
@@ -284,6 +286,10 @@ export default {
       this.customer.businessName = ''
       this.identification = ''
       this.customer.typeIdentification = null
+      this.resetValidations()
+    },
+    resetValidations(){
+      eventBus.$emit('resetValidaciones')
     }
   },
   watch: {

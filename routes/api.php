@@ -40,6 +40,8 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('all-type-providers', 'ProviderController@getApiTypeProviders')->name('api.all.type.providers');
     Route::get('/verify-code-provider/{code}', 'ProviderController@validateCode')->name('api.validate.code.provider');
 
+    Route::get('all-type-purchase-orders', 'ProviderController@getApiTypeProviders')->name('api.all.type.purchase-orders');
+
 });
 
 /*=============================================

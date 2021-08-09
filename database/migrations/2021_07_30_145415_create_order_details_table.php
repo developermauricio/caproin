@@ -15,9 +15,19 @@ class CreateOrderDetailsTable extends Migration
     {
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('purchase_orders_id')->nullable();
-            $table->foreign('purchase_orders_id')->references('id')->on('purchase_orders');
+
+            $table->unsignedBigInteger('purchase_order_id')->nullable();
+            $table->foreign('purchase_order_id')->references('id')->on('purchase_orders');
+
             $table->string('customer_product_description')->nullable();
+            $table->string('client_product_code')->unique();
+            $table->string('application');
+            $table->string('value');
+            $table->string('flat');
+
+            $table->unsignedBigInteger('type_coin_id')->nullable();
+            $table->foreign('type_coin_id')->references('id')->on('type_coins');
+
             $table->timestamps();
         });
     }
