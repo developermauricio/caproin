@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Route;
 
 
 Auth::routes();
-
+Route::get('/usuarios', function (){
+    $user = \App\User::role(['Logistica', 'Asistente Sucursal', 'Gerencia', 'Vendedor', 'Finanzas'])->with('roles')->get();
+    return $user;
+});
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function () {
@@ -44,4 +47,9 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
           RUTAS PARA LOS MODULOS SUSCURSALES
         =============================================*/
         Route::get('/sucursales', 'BranchOfficesController@index')->name('admin.branch_offices');
+
+        /*=============================================
+          RUTAS PARA LOS MODULOS USUARIOS
+        =============================================*/
+        Route::get('/usuarios', 'UserController@index')->name('admin.user.users');
 });

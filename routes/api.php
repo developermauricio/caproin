@@ -50,6 +50,14 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('get-branch-office/{id}', 'BranchOfficesController@getApiBranchOffice')->name('api.get.brach.office');
     Route::get('/verify-code-branch-office/{code}', 'BranchOfficesController@validateCode')->name('api.validate.code.branch.office');
 
+    /*=============================================
+      API PARA LOS USUARIOS
+    =============================================*/
+    Route::get('all-users', 'UserController@getApiUsers')->name('api.all.users');
+    Route::get('/get-branchofficetype', 'UserController@getBranchOfficeType')->name('api.get.branch.office.type');
+    Route::get('/get-rol', 'UserController@getRol')->name('api.get.rol.type');
+    Route::get('/get-type-user', 'UserController@getTypeUser')->name('api.get.type.user');
+    Route::post('register/store-user', 'UserController@storeApiUser')->name('api.store.customer');
 });
 
 /*=============================================

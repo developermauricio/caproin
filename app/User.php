@@ -4,6 +4,7 @@ namespace App;
 
 use App\Models\City;
 use App\Models\Country;
+use App\Models\Employee;
 use App\Models\IdentificationType;
 use App\Notifications\CustomResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -23,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'slug', 'address',
+        'name', 'last_name', 'email', 'password', 'slug', 'address',
         'phone', 'identification', 'identification_type_id',
         'picture'
     ];
@@ -64,5 +65,9 @@ class User extends Authenticatable
     public function country()
     {
         return $this->belongsTo(Country::class, 'country_id');
+    }
+
+    public function employes(){
+        return $this->hasOne(Employee::class);
     }
 }
