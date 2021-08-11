@@ -108,44 +108,42 @@ class CustomerController extends Controller
 
     public function importDataCustomer(Request $request)
     {
-        $data = $request->archive;
-        $success = true;
-        DB::beginTransaction();
-        try {
-        $user = (new FastExcel())->import($data, function ($line) use($request){
+        $file = $request->file('archive');
 
-            $ramdon = Str::random(10);
-            $slug = Str::slug($line['nombre o razon social'] . '-' . $ramdon, '-');
-            $user = User::create([
-                'name' => $line['nombre o razon social'],
-                'email' => $line['email'],
-                'phone' => $line['telefono'],
-                'identification' => $line['identificacion'],
-                'slug' => $slug,
-                "picture" => '/images/user-profile.png',
-                "identification_type_id" => $line['tipo de identificacion'],
-                'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            ]);
+        $lines = collect();
+        (new FastExcel())->import($file, function ($line) use (&$lines) {
+            DB::beginTransaction();
+            try {
+                $ramdon = Str::random(10);
+                $slug = Str::slug($line['nombre o razon social'] . '-' . $ramdon, '-');
+                $user = User::create([
+                    'name' => $line['nombre o razon social'],
+                    'email' => $line['email'],
+                    'phone' => $line['telefono'],
+                    'identification' => $line['identificacion'],
+                    'slug' => $slug,
+                    "picture" => '/images/user-profile.png',
+                    "identification_type_id" => $line['tipo de identificacion'],
+                    'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                ]);
 
-            $user->roles()->attach([7]);
-            $customer = Customer::create([
-                "business_name" => $line['nombre o razon social'],
-                "user_id" => $user->id,
-            ]);
-
+                $user->roles()->attach([7]);
+                $customer = Customer::create([
+                    "business_name" => $line['nombre o razon social'],
+                    "user_id" => $user->id,
+                ]);
+                DB::commit();
+            } catch (\Exception $exception) {
+                DB::rollBack();
+                $line['error'] = json_encode($exception);
+                $lines->add($line);
+            }
         });
 
-
-        } catch (\Exception $exception) {
-            $success = $exception->getMessage();
-            DB::rollBack();
+        if (!isset($lines[0])) {
+            return response()->json('Transacción realizada exitosamente', 201);
+        } else {
+            return (new FastExcel($lines))->download('errors-customer.xlsx');
         }
-        if ($success === true){
-            DB::commit();
-            return response()->json('Transacción realizada exitosamente', 200);
-        }else{
-            return response()->json(['message' => $success], 500);
-        }
-
     }
 }
