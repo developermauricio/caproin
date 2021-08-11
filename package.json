@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "cxlt-vue2-toastr": "^1.1.1",
+        "feather-icons": "^4.28.0",
         "material-icons": "^1.0.0",
         "sweetalert2": "^11.1.0",
         "vue-bootstrap4-table": "^1.1.11",

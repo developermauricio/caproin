@@ -57,9 +57,9 @@ class DatabaseSeeder extends Seeder
         /*=============================================
            CREANDO LAS SUCURSALES
         =============================================*/
-        factory(\App\Models\BranchOffice::class)->create(['name' => 'Sucursal 1']);
-        factory(\App\Models\BranchOffice::class)->create(['name' => 'Sucursal 2']);
-        factory(\App\Models\BranchOffice::class)->create(['name' => 'Sucursal 3']);
+        factory(\App\Models\BranchOffice::class)->create(['name' => 'Cali', 'code' => '218291831212']);
+        factory(\App\Models\BranchOffice::class)->create(['name' => 'Bogotá', 'code' => '54646514']);
+        factory(\App\Models\BranchOffice::class)->create(['name' => 'Medellín', 'code' => '64847961']);
 
         /*=============================================
             CREAMOS 6 EMPLEADOS ASISTENTE SUCURSAL
@@ -75,6 +75,66 @@ class DatabaseSeeder extends Seeder
                 ]
             );
         });
+
+        /*=============================================
+            CREAMOS 6 EMPLEADOS GERENCIA
+        =============================================*/
+        factory(\App\User::class, 6)->create()
+            ->each(function (\App\User $u){
+                $u->roles()->attach([3]);
+                factory(\App\Models\Employee::class, 1)->create(
+                    [
+                        'user_id' => $u->id,
+                        'type_employee_id' => \App\Models\TypeEmployee::all()->random()->id,
+                        'branch_offices_id' => \App\Models\BranchOffice::all()->random()->id,
+                    ]
+                );
+            });
+
+        /*=============================================
+            CREAMOS 6 VENDEDORES
+        =============================================*/
+        factory(\App\User::class, 6)->create()
+            ->each(function (\App\User $u){
+                $u->roles()->attach([4]);
+                factory(\App\Models\Employee::class, 1)->create(
+                    [
+                        'user_id' => $u->id,
+                        'type_employee_id' => \App\Models\TypeEmployee::all()->random()->id,
+                        'branch_offices_id' => \App\Models\BranchOffice::all()->random()->id,
+                    ]
+                );
+            });
+
+        /*=============================================
+            CREAMOS 6 LOGISTICA
+        =============================================*/
+        factory(\App\User::class, 6)->create()
+            ->each(function (\App\User $u){
+                $u->roles()->attach([5]);
+                factory(\App\Models\Employee::class, 1)->create(
+                    [
+                        'user_id' => $u->id,
+                        'type_employee_id' => \App\Models\TypeEmployee::all()->random()->id,
+                        'branch_offices_id' => \App\Models\BranchOffice::all()->random()->id,
+                    ]
+                );
+            });
+
+        /*=============================================
+            CREAMOS 6 FINANZAS
+        =============================================*/
+        factory(\App\User::class, 6)->create()
+            ->each(function (\App\User $u){
+                $u->roles()->attach([6]);
+                factory(\App\Models\Employee::class, 1)->create(
+                    [
+                        'user_id' => $u->id,
+                        'type_employee_id' => \App\Models\TypeEmployee::all()->random()->id,
+                        'branch_offices_id' => \App\Models\BranchOffice::all()->random()->id,
+                    ]
+                );
+            });
 
         /*=============================================
            CREANDO LOS TIPO DE PROVEEDORES DEL EMPLEADO

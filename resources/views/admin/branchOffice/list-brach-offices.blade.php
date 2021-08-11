@@ -31,3 +31,6 @@
         </div>
     </div>
 @endsection
+@section('content')
+        <branch-office></branch-office>
+@endsection

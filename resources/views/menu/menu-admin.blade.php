@@ -10,8 +10,11 @@ MENU ADMIN
 <li class="{{request()->is('providers') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.provider.providers') }}"><i data-feather='box'></i><span
             class="menu-title text-truncate" data-i18n="Email">Proveedores</span></a>
 </li>
-{{--<li class="{{request()->is('sucursales') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.branch_offices') }}"><i data-feather='box'></i><span--}}
-{{--            class="menu-title text-truncate" data-i18n="Email">Sucursales</span></a>--}}
+<li class="{{request()->is('sucursales') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.branch_offices') }}"><i data-feather='box'></i><span
+            class="menu-title text-truncate" data-i18n="Email">Sucursales</span></a>
+</li>
+<li class="{{request()->is('usuarios') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.user.users') }}"><i data-feather='box'></i><span
+            class="menu-title text-truncate" data-i18n="Email">Usuarios</span></a>
 </li>
 {{--<li class=" nav-item"><a class="d-flex align-items-center" href="app-chat.html"><i--}}
 {{--            data-feather="message-square"></i><span class="menu-title text-truncate" data-i18n="Chat">Chat</span></a>--}}

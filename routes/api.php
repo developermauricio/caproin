@@ -41,6 +41,23 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('all-type-providers', 'ProviderController@getApiTypeProviders')->name('api.all.type.providers');
     Route::get('/verify-code-provider/{code}', 'ProviderController@validateCode')->name('api.validate.code.provider');
 
+    /*=============================================
+      API PARA LAS SUCURSALES
+    =============================================*/
+    Route::get('all-branch-offices', 'BranchOfficesController@getApiBranchOffices')->name('api.all.branch.offices');
+    Route::post('register/store-branch-office', 'BranchOfficesController@storeApiBranchOffice')->name('api.store.brach.office');
+    Route::post('update-branch-office', 'BranchOfficesController@updateApiBranchOffice')->name('api.update.brach.office');
+    Route::get('get-branch-office/{id}', 'BranchOfficesController@getApiBranchOffice')->name('api.get.brach.office');
+    Route::get('/verify-code-branch-office/{code}', 'BranchOfficesController@validateCode')->name('api.validate.code.branch.office');
+
+    /*=============================================
+      API PARA LOS USUARIOS
+    =============================================*/
+    Route::get('all-users', 'UserController@getApiUsers')->name('api.all.users');
+    Route::get('/get-branchofficetype', 'UserController@getBranchOfficeType')->name('api.get.branch.office.type');
+    Route::get('/get-rol', 'UserController@getRol')->name('api.get.rol.type');
+    Route::get('/get-type-user', 'UserController@getTypeUser')->name('api.get.type.user');
+    Route::post('register/store-user', 'UserController@storeApiUser')->name('api.store.customer');
 });
 
 /*=============================================
