@@ -42,6 +42,7 @@ class ActivateAccountController extends User
             : $this->sendResetLinkFailedResponse($request, $response);
     }
 
+
     /**
      * Validate the email for the given request.
      *
