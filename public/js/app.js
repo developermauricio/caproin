@@ -2202,6 +2202,439 @@ var validations = {
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "BranchOffice",
+  data: function data() {
+    return {
+      dataBranchOffices: [],
+      name: '',
+      code: '',
+      idValidateCode: null,
+      codeValidet: '',
+      id: null,
+      searchQuery: null,
+      errors: {}
+    };
+  },
+  methods: {
+    udateBranchOffice: function udateBranchOffice() {
+      var _this = this;
+
+      eventBus.$emit("validarFormulario");
+      setTimeout(function () {
+        var resp = _this;
+        /***  VALIDANDO LOS ERRORES Y MOSTRANDO UNA ALERTA  ***/
+
+        if (document.querySelectorAll("#validateCreateBranchOfficesEdit .is-invalid").length > 0) {
+          _this.$toast.error({
+            title: 'Error',
+            message: 'Revisa que todos los campos que son obligatorios tengan datos',
+            showDuration: 2000,
+            hideDuration: 9000,
+            position: 'top right'
+          });
+
+          return;
+        }
+
+        var data = new FormData();
+        data.append('name', _this.name);
+        data.append('code', _this.code);
+        data.append('id', _this.id);
+        sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({
+          title: 'Confirmar',
+          text: '¿Estás seguro de actualizar esta sucursal?',
+          confirmButtonColor: "#0082FB",
+          cancelButtonColor: "#F05E7D",
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar',
+          customClass: "swal-confirmation",
+          showCancelButton: true,
+          reverseButtons: true,
+          allowOutsideClick: false
+        }).then(function (result) {
+          if (result.value) {
+            _this.$vs.loading({
+              color: '#3f4f6e',
+              text: 'Actualizando Sucursal...'
+            });
+
+            axios.post('/api/update-branch-office', data).then(function (res) {
+              _this.$toast.success({
+                title: '¡Muy bien!',
+                message: 'Sucursal actualizada correctamente',
+                showDuration: 1000,
+                hideDuration: 7000,
+                position: 'top right'
+              });
+
+              window.location = "/sucursales";
+            })["catch"](function (err) {
+              console.log('mostrando el error', err);
+
+              _this.$toast.error({
+                title: 'Algo salio mal',
+                message: 'Comunícate con el administrador',
+                showDuration: 1000,
+                hideDuration: 8000
+              });
+            });
+            setTimeout(function () {
+              _this.$vs.loading.close();
+            }, 2000);
+          }
+        });
+      }, 200);
+    },
+    createNewBranchOffice: function createNewBranchOffice() {
+      var _this2 = this;
+
+      eventBus.$emit("validarFormulario");
+      setTimeout(function () {
+        var resp = _this2;
+        /***  VALIDANDO LOS ERRORES Y MOSTRANDO UNA ALERTA  ***/
+
+        if (document.querySelectorAll("#validateCreateBranchOffices .is-invalid").length > 0) {
+          _this2.$toast.error({
+            title: 'Error',
+            message: 'Revisa que todos los campos que son obligatorios tengan datos',
+            showDuration: 2000,
+            hideDuration: 9000,
+            position: 'top right'
+          });
+
+          return;
+        }
+
+        var data = new FormData();
+        data.append('name', _this2.name);
+        data.append('code', _this2.code);
+        sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({
+          title: 'Confirmar',
+          text: '¿Estás seguro de realizar el registro?',
+          confirmButtonColor: "#0082FB",
+          cancelButtonColor: "#F05E7D",
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar',
+          customClass: "swal-confirmation",
+          showCancelButton: true,
+          reverseButtons: true,
+          allowOutsideClick: false
+        }).then(function (result) {
+          if (result.value) {
+            _this2.$vs.loading({
+              color: '#3f4f6e',
+              text: 'Registrando Sucursal...'
+            });
+
+            axios.post('/api/register/store-branch-office', data).then(function (res) {
+              _this2.$toast.success({
+                title: '¡Muy bien!',
+                message: 'Sucursal creada correctamente',
+                showDuration: 1000,
+                hideDuration: 7000,
+                position: 'top right'
+              });
+
+              window.location = "/sucursales";
+            })["catch"](function (err) {
+              console.log('mostrando el error', err);
+
+              _this2.$toast.error({
+                title: 'Algo salio mal',
+                message: 'Comunícate con el administrador',
+                showDuration: 1000,
+                hideDuration: 8000
+              });
+            });
+            setTimeout(function () {
+              _this2.$vs.loading.close();
+            }, 2000);
+          }
+        });
+      }, 200);
+    },
+    getBranchOfficeFirst: function getBranchOfficeFirst(id) {
+      var _this3 = this;
+
+      axios.get('/api/get-branch-office/' + id).then(function (resp) {
+        _this3.$vs.loading({
+          color: '#3f4f6e',
+          text: 'Cargando datos...'
+        });
+
+        _this3.name = resp.data.data.name;
+        _this3.code = resp.data.data.code;
+        _this3.id = resp.data.data.id;
+        _this3.codeValidet = resp.data.data.code;
+        _this3.idValidateCode = 1;
+        setTimeout(function () {
+          _this3.$vs.loading.close();
+        }, 1000);
+      })["catch"](function (err) {});
+    },
+    getBranchOffices: function getBranchOffices() {
+      var _this4 = this;
+
+      axios.get('/api/all-branch-offices').then(function (resp) {
+        _this4.dataBranchOffices = resp.data.data;
+      })["catch"](function (err) {
+        console.log('mostrando el error', err);
+
+        _this4.$toast.error({
+          title: 'Algo salio mal',
+          message: 'Comunícate con el administrador',
+          showDuration: 1000,
+          hideDuration: 8000
+        });
+      });
+    },
+    clearInputBranchOffice: function clearInputBranchOffice() {
+      this.name = '';
+      this.code = '';
+      this.codeValidet = '';
+      this.idValidateCode = '';
+    }
+  },
+  mounted: function mounted() {
+    this.getBranchOffices();
+  },
+  computed: {
+    resultQuery: function resultQuery() {
+      var _this5 = this;
+
+      if (this.searchQuery) {
+        return this.dataBranchOffices.filter(function (item) {
+          console.log(item);
+          return _this5.searchQuery.toLowerCase().split(' ').every(function (v) {
+            return item.code.toLowerCase().includes(v) || item.name.toLowerCase().includes(v);
+          });
+        });
+      } else {
+        return this.dataBranchOffices;
+      }
+    }
+  },
+  watch: {
+    code: function code(val) {
+      var _this6 = this;
+
+      var data = this;
+
+      if (val) {
+        console.log('codigo propio', this.codeValidet);
+        console.log('value', val);
+
+        if (this.codeValidet !== val) {
+          setTimeout(function () {
+            _this6.$vs.loading({
+              color: '#3f4f6e',
+              text: 'Válidando código...'
+            });
+
+            axios.get('/api/verify-code-branch-office/' + val).then(function (resp) {
+              if (resp.data) {
+                if (_this6.idValidateCode === 1) {
+                  $("#txtCodeBranchOfficesEdit").addClass("is-invalid");
+                  $("#text-verify-code-branch-office-edit").css("display", "block");
+                } else {
+                  $("#txtCodeBranchOffices").addClass("is-invalid");
+                  $("#text-verify-code-branch-office").css("display", "block");
+                }
+              } else {
+                data.emailverify = '';
+                $("#txtCodeBranchOffices").removeClass("is-invalid");
+                $("#text-verify-code-branch-office").css("display", "none");
+                $("#txtCodeBranchOfficesEdit").removeClass("is-invalid");
+                $("#text-verify-code-branch-office-edit").css("display", "none");
+              }
+
+              _this6.$vs.loading.close();
+            })["catch"](function (err) {});
+          }, 200);
+          this.$vs.loading.close();
+        } else {
+          $("#txtCodeBranchOfficesEdit").removeClass("is-invalid");
+          $("#text-verify-code-branch-office-edit").css("display", "none");
+        }
+      }
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/customer/CreateCustomer.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/customer/CreateCustomer.vue?vue&type=script&lang=js& ***!
@@ -25981,6 +26414,545 @@ var render = function() {
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=template&id=54454ed4&scoped=true&":
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=template&id=54454ed4&scoped=true& ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "row pb-1" }, [
+      _c("div", { staticClass: "col-12 demo-inline-spacing" }, [
+        _c(
+          "div",
+          {
+            staticClass: "icon-search-wrapper mx-auto",
+            staticStyle: { "margin-left": "0px !important" }
+          },
+          [
+            _c(
+              "div",
+              {
+                staticClass: "input-group input-group-merge",
+                staticStyle: { width: "22rem !important" }
+              },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.searchQuery,
+                      expression: "searchQuery"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    id: "icons-search",
+                    placeholder: "Buscar por nombre o código"
+                  },
+                  domProps: { value: _vm.searchQuery },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.searchQuery = $event.target.value
+                    }
+                  }
+                })
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _vm._m(1)
+      ])
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "row pt-2" },
+      _vm._l(_vm.resultQuery, function(branchsOffices) {
+        return _vm.resultQuery
+          ? _c(
+              "div",
+              {
+                key: branchsOffices.id,
+                staticClass: "col-md-6 col-lg-4 col-12"
+              },
+              [
+                _c("div", { staticClass: "card card-employee-task" }, [
+                  _c("div", { staticClass: "card-header" }, [
+                    _c("h4", { staticClass: "card-title" }, [
+                      _vm._v(_vm._s(branchsOffices.name))
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "dropdown" }, [
+                      _c("i", {
+                        staticClass:
+                          "font-medium-3  dropdown-toggle cursor-pointer",
+                        attrs: {
+                          "data-feather": "more-vertical",
+                          "data-toggle": "dropdown"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "dropdown-menu" }, [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "dropdown-item",
+                            attrs: {
+                              "data-target": "#modal-edit-branch-office",
+                              "data-toggle": "modal"
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.getBranchOfficeFirst(
+                                  branchsOffices.id
+                                )
+                              }
+                            }
+                          },
+                          [
+                            _c("i", {
+                              staticClass: "mr-50",
+                              attrs: { "data-feather": "edit-2" }
+                            }),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Editar")])
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(2, true)
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "card-body" }, [
+                    _c("p", [
+                      _vm._v("Código de la Sucursal: "),
+                      _c("strong", [_vm._v(_vm._s(branchsOffices.code))])
+                    ])
+                  ])
+                ])
+              ]
+            )
+          : _vm._e()
+      }),
+      0
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade text-left modal-primary",
+        attrs: {
+          id: "modal-new-branch-office",
+          "data-backdrop": "static",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "myModalLabel160",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "myModalLabel1600" }
+                  },
+                  [_vm._v("Crear Sucursal")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.clearInputBranchOffice()
+                      }
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  attrs: { id: "validateCreateBranchOffices", method: "post" }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "col-12" },
+                        [
+                          _c("input-form", {
+                            attrs: {
+                              id: "txtNameBranchOffices",
+                              label: "Nombre de la sucursal",
+                              pattern: "all",
+                              errorMsg: "Ingrese un nombre válido",
+                              requiredMsg: "El nombre es obligatorio",
+                              modelo: _vm.name,
+                              required: true,
+                              msgServer: _vm.errors.name
+                            },
+                            on: {
+                              "update:modelo": function($event) {
+                                _vm.name = $event
+                              },
+                              "update:msgServer": function($event) {
+                                return _vm.$set(_vm.errors, "name", $event)
+                              },
+                              "update:msg-server": function($event) {
+                                return _vm.$set(_vm.errors, "name", $event)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("input-form", {
+                            attrs: {
+                              id: "txtCodeBranchOffices",
+                              label: "Código",
+                              pattern: "all",
+                              errorMsg: "Ingrese un código válido",
+                              requiredMsg: "El código es obligatorio",
+                              modelo: _vm.code,
+                              required: true,
+                              msgServer: _vm.errors.code
+                            },
+                            on: {
+                              "update:modelo": function($event) {
+                                _vm.code = $event
+                              },
+                              "update:msgServer": function($event) {
+                                return _vm.$set(_vm.errors, "code", $event)
+                              },
+                              "update:msg-server": function($event) {
+                                return _vm.$set(_vm.errors, "code", $event)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "p",
+                            {
+                              staticClass: "text-danger",
+                              staticStyle: {
+                                "margin-top": "-1rem",
+                                "font-size": "0.9rem",
+                                display: "none"
+                              },
+                              attrs: { id: "text-verify-code-branch-office" }
+                            },
+                            [
+                              _vm._v(
+                                "El coódigo ya\n                    ha sido registrado"
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                        on: {
+                          click: function($event) {
+                            return _vm.clearInputBranchOffice()
+                          }
+                        }
+                      },
+                      [_vm._v("\n                Cancelar\n              ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.createNewBranchOffice()
+                          }
+                        }
+                      },
+                      [_vm._v("Crear Sucursal")]
+                    )
+                  ])
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade text-left modal-primary",
+        attrs: {
+          id: "modal-edit-branch-office",
+          "data-backdrop": "static",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "myModalLabel160",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "myModalLabel160" }
+                  },
+                  [_vm._v("Editar Sucursal")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "close",
+                    attrs: {
+                      type: "button",
+                      "data-dismiss": "modal",
+                      "aria-label": "Close"
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.clearInputBranchOffice()
+                      }
+                    }
+                  },
+                  [
+                    _c("span", { attrs: { "aria-hidden": "true" } }, [
+                      _vm._v("×")
+                    ])
+                  ]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  attrs: {
+                    id: "validateCreateBranchOfficesEdit",
+                    method: "post"
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "col-12" },
+                        [
+                          _c("input-form", {
+                            attrs: {
+                              id: "txtNameBranchOfficesEdit",
+                              label: "Nombre de la sucursal",
+                              pattern: "all",
+                              errorMsg: "Ingrese un nombre válido",
+                              requiredMsg: "El nombre es obligatorio",
+                              modelo: _vm.name,
+                              required: true,
+                              msgServer: _vm.errors.name
+                            },
+                            on: {
+                              "update:modelo": function($event) {
+                                _vm.name = $event
+                              },
+                              "update:msgServer": function($event) {
+                                return _vm.$set(_vm.errors, "name", $event)
+                              },
+                              "update:msg-server": function($event) {
+                                return _vm.$set(_vm.errors, "name", $event)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("input-form", {
+                            attrs: {
+                              id: "txtCodeBranchOfficesEdit",
+                              label: "Código",
+                              pattern: "all",
+                              errorMsg: "Ingrese un código válido",
+                              requiredMsg: "El código es obligatorio",
+                              modelo: _vm.code,
+                              required: true,
+                              msgServer: _vm.errors.code
+                            },
+                            on: {
+                              "update:modelo": function($event) {
+                                _vm.code = $event
+                              },
+                              "update:msgServer": function($event) {
+                                return _vm.$set(_vm.errors, "code", $event)
+                              },
+                              "update:msg-server": function($event) {
+                                return _vm.$set(_vm.errors, "code", $event)
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "p",
+                            {
+                              staticClass: "text-danger",
+                              staticStyle: {
+                                "margin-top": "-1rem",
+                                "font-size": "0.9rem",
+                                display: "none"
+                              },
+                              attrs: {
+                                id: "text-verify-code-branch-office-edit"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "El coódigo ya\n                    ha sido registrado"
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                        on: {
+                          click: function($event) {
+                            return _vm.clearInputBranchOffice()
+                          }
+                        }
+                      },
+                      [_vm._v("\n                Cancelar\n              ")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.udateBranchOffice()
+                          }
+                        }
+                      },
+                      [_vm._v("Actualizar Sucursal")]
+                    )
+                  ])
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "input-group-prepend" }, [
+      _c("span", { staticClass: "input-group-text" }, [
+        _c("i", { attrs: { "data-feather": "search" } })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-primary float-right",
+        attrs: {
+          "data-target": "#modal-new-branch-office",
+          "data-toggle": "modal"
+        }
+      },
+      [
+        _c("i", { staticClass: "mr-50", attrs: { "data-feather": "plus" } }),
+        _vm._v("Nueva Sucursal\n        ")
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "dropdown-item", attrs: { href: "" } }, [
+      _c("i", { staticClass: "mr-50", attrs: { "data-feather": "trash" } }),
+      _vm._v(" "),
+      _c("span", [_vm._v("Eliminar")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -73902,6 +74874,11 @@ COMPONENTES PARA LOS MODULOS PROVEEDORES
 
 Vue.component('create-provider', __webpack_require__(/*! ./components/admin/provider/CreateProvider.vue */ "./resources/js/components/admin/provider/CreateProvider.vue")["default"]);
 Vue.component('show-provider', __webpack_require__(/*! ./components/admin/provider/ShowProvider.vue */ "./resources/js/components/admin/provider/ShowProvider.vue")["default"]);
+/*=============================================
+COMPONENTES PARA LOS MODULOS DE SUCURSALES
+=============================================*/
+
+Vue.component('branch-office', __webpack_require__(/*! ./components/admin/branchOffice/BranchOffice.vue */ "./resources/js/components/admin/branchOffice/BranchOffice.vue")["default"]);
 window.eventBus = new Vue();
 var app = new Vue({
   el: '#app'
@@ -74016,6 +74993,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InputFormComponent_vue_vue_type_template_id_2ea1771a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InputFormComponent_vue_vue_type_template_id_2ea1771a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/branchOffice/BranchOffice.vue":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/admin/branchOffice/BranchOffice.vue ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BranchOffice_vue_vue_type_template_id_54454ed4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BranchOffice.vue?vue&type=template&id=54454ed4&scoped=true& */ "./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=template&id=54454ed4&scoped=true&");
+/* harmony import */ var _BranchOffice_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BranchOffice.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BranchOffice_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BranchOffice_vue_vue_type_template_id_54454ed4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BranchOffice_vue_vue_type_template_id_54454ed4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "54454ed4",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/branchOffice/BranchOffice.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BranchOffice_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./BranchOffice.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BranchOffice_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=template&id=54454ed4&scoped=true&":
+/*!****************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=template&id=54454ed4&scoped=true& ***!
+  \****************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BranchOffice_vue_vue_type_template_id_54454ed4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./BranchOffice.vue?vue&type=template&id=54454ed4&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/branchOffice/BranchOffice.vue?vue&type=template&id=54454ed4&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BranchOffice_vue_vue_type_template_id_54454ed4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BranchOffice_vue_vue_type_template_id_54454ed4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

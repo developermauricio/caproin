@@ -41,6 +41,15 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('all-type-providers', 'ProviderController@getApiTypeProviders')->name('api.all.type.providers');
     Route::get('/verify-code-provider/{code}', 'ProviderController@validateCode')->name('api.validate.code.provider');
 
+    /*=============================================
+      API PARA LAS SUCURSALES
+    =============================================*/
+    Route::get('all-branch-offices', 'BranchOfficesController@getApiBranchOffices')->name('api.all.branch.offices');
+    Route::post('register/store-branch-office', 'BranchOfficesController@storeApiBranchOffice')->name('api.store.brach.office');
+    Route::post('update-branch-office', 'BranchOfficesController@updateApiBranchOffice')->name('api.update.brach.office');
+    Route::get('get-branch-office/{id}', 'BranchOfficesController@getApiBranchOffice')->name('api.get.brach.office');
+    Route::get('/verify-code-branch-office/{code}', 'BranchOfficesController@validateCode')->name('api.validate.code.branch.office');
+
 });
 
 /*=============================================

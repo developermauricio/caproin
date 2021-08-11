@@ -42,6 +42,11 @@ COMPONENTES PARA LOS MODULOS PROVEEDORES
 Vue.component('create-provider', require('./components/admin/provider/CreateProvider.vue').default);
 Vue.component('show-provider', require('./components/admin/provider/ShowProvider.vue').default);
 
+/*=============================================
+COMPONENTES PARA LOS MODULOS DE SUCURSALES
+=============================================*/
+Vue.component('branch-office', require('./components/admin/branchOffice/BranchOffice.vue').default);
+
 
 window.eventBus = new Vue();
 const app = new Vue({

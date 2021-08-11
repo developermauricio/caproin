@@ -57,9 +57,9 @@ class DatabaseSeeder extends Seeder
         /*=============================================
            CREANDO LAS SUCURSALES
         =============================================*/
-        factory(\App\Models\BranchOffice::class)->create(['name' => 'Sucursal 1']);
-        factory(\App\Models\BranchOffice::class)->create(['name' => 'Sucursal 2']);
-        factory(\App\Models\BranchOffice::class)->create(['name' => 'Sucursal 3']);
+        factory(\App\Models\BranchOffice::class)->create(['name' => 'Sucursal 1', 'code' => '218291831212']);
+        factory(\App\Models\BranchOffice::class)->create(['name' => 'Sucursal 2', 'code' => '54646514']);
+        factory(\App\Models\BranchOffice::class)->create(['name' => 'Sucursal 3', 'code' => '64847961']);
 
         /*=============================================
             CREAMOS 6 EMPLEADOS ASISTENTE SUCURSAL
