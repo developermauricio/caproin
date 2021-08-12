@@ -8,7 +8,7 @@
     </label>
     <datepicker
       v-if="type === 'date'"
-      :language="language === 'es' ? es : en"
+      :language="es"
       :input-class="
         'form-control ' + (!validated || msgServer ? 'is-invalid' : '')
       "

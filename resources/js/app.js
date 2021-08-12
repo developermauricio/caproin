@@ -19,6 +19,9 @@ Vue.use(VueFormWizard)
 Vue.use(CxltToastr)
 
 Vue.use(Vuesax);
+
+import money from 'v-money'
+Vue.use(money, {precision: 3})
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
@@ -51,6 +54,18 @@ Vue.component('branch-office', require('./components/admin/branchOffice/BranchOf
 COMPONENTES PARA LOS MODULOS DE USUARIOS
 =============================================*/
 Vue.component('create-users', require('./components/admin/user/CreateUser.vue').default);
+Vue.component('show-user', require('./components/admin/user/ShowUser.vue').default);
+
+/*=============================================
+COMPONENTES PARA LOS MODULOS ZONES
+=============================================*/
+Vue.component('component-zones', require('./components/admin/zone/Zone.vue').default);
+
+/*=============================================
+COMPONENTES PARA LOS MODULOS FACTURAS
+=============================================*/
+Vue.component('create-invoice', require('./components/admin/invoice/CreateInvoice.vue').default);
+
 
 
 window.eventBus = new Vue();

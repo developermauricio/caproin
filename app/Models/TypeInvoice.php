@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Zone extends Model
+class TypeInvoice extends Model
 {
-    protected $fillable = ['name', 'code'];
+    //
 }

@@ -205,5 +205,21 @@ class DatabaseSeeder extends Seeder
                     ]
                 );
             });
+
+        /*=============================================
+           CREANDO TIPOS DE FACTURA
+        =============================================*/
+        factory(\App\Models\TypeInvoice::class)->create(['name' => 'Tipo 1']);
+        factory(\App\Models\TypeInvoice::class)->create(['name' => 'Tipo 2']);
+        factory(\App\Models\TypeInvoice::class)->create(['name' => 'Tipo 3']);
+
+        /*=============================================
+           CREANDO ESTADOS DE FACTURA
+        =============================================*/
+        factory(\App\Models\StateInvoice::class)->create(['name' => 'Revisión']);
+        factory(\App\Models\StateInvoice::class)->create(['name' => 'Pagado']);
+        factory(\App\Models\StateInvoice::class)->create(['name' => 'Entregado']);
+
+        factory(\App\Models\Invoice::class, 20)->create();
     }
 }

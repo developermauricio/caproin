@@ -16,6 +16,12 @@ MENU ADMIN
 <li class="{{request()->is('usuarios') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.user.users') }}"><i data-feather='box'></i><span
             class="menu-title text-truncate" data-i18n="Email">Usuarios</span></a>
 </li>
+<li class="{{request()->is('zonas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.zones') }}"><i data-feather='box'></i><span
+            class="menu-title text-truncate" data-i18n="Email">Zonas</span></a>
+</li>
+<li class="{{request()->is('facturas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.invoice') }}"><i data-feather='box'></i><span
+            class="menu-title text-truncate" data-i18n="Email">Facturas</span></a>
+</li>
 {{--<li class=" nav-item"><a class="d-flex align-items-center" href="app-chat.html"><i--}}
 {{--            data-feather="message-square"></i><span class="menu-title text-truncate" data-i18n="Chat">Chat</span></a>--}}
 {{--</li>--}}

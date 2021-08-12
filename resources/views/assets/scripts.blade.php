@@ -11,6 +11,8 @@
 <script src="/app-assets/js/core/app.js"></script>
 {{--<script src="/app-assets/js/scripts/extensions/ext-component-sweet-alerts.js"></script>--}}
 <script src="/app-assets/js/scripts/components/components-tooltips.js"></script>
+<script src="/js/moment.js"></script>
+<script src="/js/moment-locale.js"></script>
 <script src="{{ asset('js/app.js') }}"></script>
 <!-- END: Theme JS-->
 

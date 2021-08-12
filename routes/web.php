@@ -50,7 +50,17 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
     Route::get('/sucursales', 'BranchOfficesController@index')->name('admin.branch_offices');
 
     /*=============================================
+          RUTAS PARA LOS MODULOS ZONAS
+        =============================================*/
+    Route::get('/zonas', 'ZonesController@index')->name('admin.zones');
+
+    /*=============================================
           RUTAS PARA LOS MODULOS USUARIOS
         =============================================*/
     Route::get('/usuarios', 'UserController@index')->name('admin.user.users');
+
+    /*=============================================
+          RUTAS PARA LOS MODULOS FACTURAS
+        =============================================*/
+    Route::get('/facturas', 'InvoiceController@index')->name('admin.invoice');
 });

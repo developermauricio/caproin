@@ -12,22 +12,22 @@
           </div>
         </div>
         <button data-target="#modal-new-branch-office" data-toggle="modal" class="btn btn-primary float-right"><i
-          data-feather="plus" class="mr-50"></i>Nueva Sucursal
+          data-feather="plus" class="mr-50"></i>Nueva Zona
         </button>
       </div>
     </div>
     <div class="row pt-2">
-      <div v-if="resultQuery" v-for="branchsOffices in resultQuery" :key="branchsOffices.id"
+      <div v-if="resultQuery" v-for="zones in resultQuery" :key="zones.id"
            class="col-md-6 col-lg-4 col-12">
         <div class="card card-employee-task">
           <div class="card-header">
-            <h4 class="card-title">{{ branchsOffices.name }}</h4>
+            <h4 class="card-title">{{ zones.name }}</h4>
             <div class="dropdown">
               <i data-feather="more-vertical" class="font-medium-3  dropdown-toggle cursor-pointer"
                  data-toggle="dropdown"></i>
               <div class="dropdown-menu">
                 <a class="dropdown-item" data-target="#modal-edit-branch-office" data-toggle="modal"
-                   @click="getBranchOfficeFirst(branchsOffices.id)">
+                   @click="getBranchOfficeFirst(zones.id)">
                   <i data-feather="edit-2" class="mr-50"></i>
                   <span>Editar</span>
                 </a>
@@ -39,7 +39,7 @@
             </div>
           </div>
           <div class="card-body">
-            <p>Código de la Sucursal: <strong>{{ branchsOffices.code }}</strong></p>
+            <p>Código de la Sucursal: <strong>{{ zones.code }}</strong></p>
           </div>
         </div>
       </div>
@@ -52,13 +52,13 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="myModalLabel1600">Crear Sucursal</h5>
-            <button @click="clearInputBranchOffice()" type="button" class="close" data-dismiss="modal"
+            <h5 class="modal-title" id="myModalLabel1600">Crear Zona</h5>
+            <button @click="clearInputZone()" type="button" class="close" data-dismiss="modal"
                     aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form class="" id="validateCreateBranchOffices" method="post">
+          <form class="" id="validateCreateZone" method="post">
             <div class="modal-body">
               <div class="row">
                 <div class="col-12">
@@ -83,16 +83,16 @@
                     :msgServer.sync="errors.code"
                   ></input-form>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                     id="text-verify-code-branch-office" class="text-danger">El coódigo ya
+                     id="text-verify-code-zone" class="text-danger">El coódigo ya
                     ha sido registrado</p>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button @click="clearInputBranchOffice()" type="button" data-dismiss="modal" class="btn btn-danger">
+              <button @click="clearInputZone()" type="button" data-dismiss="modal" class="btn btn-danger">
                 Cancelar
               </button>
-              <button @click="createNewBranchOffice()" type="button" class="btn btn-primary">Crear Sucursal</button>
+              <button @click="createNewZone()" type="button" class="btn btn-primary">Crear Zona</button>
             </div>
           </form>
         </div>
@@ -108,12 +108,12 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="myModalLabel160">Editar Sucursal</h5>
-            <button @click="clearInputBranchOffice()" type="button" class="close" data-dismiss="modal"
+            <button @click="clearInputZone()" type="button" class="close" data-dismiss="modal"
                     aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form class="" id="validateCreateBranchOfficesEdit" method="post">
+          <form class="" id="validateCreateZoneEdit" method="post">
             <div class="modal-body">
               <div class="row">
                 <div class="col-12">
@@ -128,7 +128,7 @@
                     :msgServer.sync="errors.name"
                   ></input-form>
                   <input-form
-                    id="txtCodeBranchOfficesEdit"
+                    id="txtCodeZoneEdit"
                     label="Código"
                     pattern="all"
                     errorMsg="Ingrese un código válido"
@@ -138,16 +138,16 @@
                     :msgServer.sync="errors.code"
                   ></input-form>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                     id="text-verify-code-branch-office-edit" class="text-danger">El coódigo ya
+                     id="text-verify-code-zone-edit" class="text-danger">El coódigo ya
                     ha sido registrado</p>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button @click="clearInputBranchOffice()" type="button" data-dismiss="modal" class="btn btn-danger">
+              <button @click="clearInputZone()" type="button" data-dismiss="modal" class="btn btn-danger">
                 Cancelar
               </button>
-              <button @click="udateBranchOffice()" type="button" class="btn btn-primary">Actualizar Sucursal</button>
+              <button @click="udateBranchOffice()" type="button" class="btn btn-primary">Actualizar Zona</button>
             </div>
           </form>
         </div>
@@ -161,10 +161,10 @@
 import Swal from 'sweetalert2'
 
 export default {
-  name: "BranchOffice",
+  name: "Zone",
   data() {
     return {
-      dataBranchOffices: [],
+      dataZones: [],
       name: '',
       code: '',
       idValidateCode: null,
@@ -180,7 +180,7 @@ export default {
       setTimeout(() => {
         let resp = this;
         /***  VALIDANDO LOS ERRORES Y MOSTRANDO UNA ALERTA  ***/
-        if (document.querySelectorAll("#validateCreateBranchOfficesEdit .is-invalid").length > 0) {
+        if (document.querySelectorAll("#validateCreateZoneEdit .is-invalid").length > 0) {
           this.$toast.error({
             title: 'Error',
             message: 'Revisa que todos los campos que son obligatorios tengan datos',
@@ -210,17 +210,17 @@ export default {
           if (result.value) {
             this.$vs.loading({
               color: '#3f4f6e',
-              text: 'Actualizando Sucursal...'
+              text: 'Actualizando Zona...'
             })
-            axios.post('/api/update-branch-office', data).then(res => {
+            axios.post('/api/update-zone', data).then(res => {
               this.$toast.success({
                 title: '¡Muy bien!',
-                message: 'Sucursal actualizada correctamente',
+                message: 'Zona actualizada correctamente',
                 showDuration: 1000,
                 hideDuration: 7000,
                 position: 'top right',
               })
-              window.location = "/sucursales";
+              window.location = "/zonas";
             }).catch(err => {
               console.log('mostrando el error', err)
               this.$toast.error({
@@ -237,12 +237,12 @@ export default {
         })
       }, 200);
     },
-    createNewBranchOffice() {
+    createNewZone() {
       eventBus.$emit("validarFormulario");
       setTimeout(() => {
         let resp = this;
         /***  VALIDANDO LOS ERRORES Y MOSTRANDO UNA ALERTA  ***/
-        if (document.querySelectorAll("#validateCreateBranchOffices .is-invalid").length > 0) {
+        if (document.querySelectorAll("#validateCreateZone .is-invalid").length > 0) {
           this.$toast.error({
             title: 'Error',
             message: 'Revisa que todos los campos que son obligatorios tengan datos',
@@ -271,17 +271,17 @@ export default {
           if (result.value) {
             this.$vs.loading({
               color: '#3f4f6e',
-              text: 'Registrando Sucursal...'
+              text: 'Registrando Zona...'
             })
-            axios.post('/api/register/store-branch-office', data).then(res => {
+            axios.post('/api/register/store-zone', data).then(res => {
               this.$toast.success({
                 title: '¡Muy bien!',
-                message: 'Sucursal creada correctamente',
+                message: 'La zona ha sido creada correctamente',
                 showDuration: 1000,
                 hideDuration: 7000,
                 position: 'top right',
               })
-              window.location = "/sucursales";
+              window.location = "/zonas";
             }).catch(err => {
               console.log('mostrando el error', err)
               this.$toast.error({
@@ -300,7 +300,7 @@ export default {
       }, 200)
     },
     getBranchOfficeFirst(id) {
-      axios.get('/api/get-branch-office/' + id).then(resp => {
+      axios.get('/api/get-zone/' + id).then(resp => {
         this.$vs.loading({
           color: '#3f4f6e',
           text: 'Cargando datos...'
@@ -319,8 +319,8 @@ export default {
       })
     },
     getBranchOffices() {
-      axios.get('/api/all-branch-offices').then(resp => {
-        this.dataBranchOffices = resp.data.data
+      axios.get('/api/all-zones').then(resp => {
+        this.dataZones = resp.data.data
         setTimeout(()=>{
           window.feather.replace()
         }, 200)
@@ -335,7 +335,7 @@ export default {
         })
       })
     },
-    clearInputBranchOffice() {
+    clearInputZone() {
       this.name = '';
       this.code = '';
       this.codeValidet = '';
@@ -348,15 +348,15 @@ export default {
   computed: {
     resultQuery() {
       if (this.searchQuery) {
-
-        return this.dataBranchOffices.filter((item) => {
-          console.log(item)
+        window.feather.replace()
+        return this.dataZones.filter((item) => {
           return this.searchQuery.toLowerCase().split(' ').every(v =>
             item.code.toLowerCase().includes(v) || item.name.toLowerCase().includes(v),
           )
         })
       } else {
-        return this.dataBranchOffices;
+        window.feather.replace()
+        return this.dataZones;
       }
     }
   },
@@ -373,23 +373,23 @@ export default {
               color: '#3f4f6e',
               text: 'Válidando código...'
             })
-            axios.get('/api/verify-code-branch-office/' + val)
+            axios.get('/api/verify-code-zone/' + val)
               .then(resp => {
                 if (resp.data) {
                   if (this.idValidateCode === 1) {
-                    $("#txtCodeBranchOfficesEdit").addClass("is-invalid");
-                    $("#text-verify-code-branch-office-edit").css("display", "block");
+                    $("#txtCodeZoneEdit").addClass("is-invalid");
+                    $("#text-verify-code-zone-edit").css("display", "block");
                   } else {
                     $("#txtCodeBranchOffices").addClass("is-invalid");
-                    $("#text-verify-code-branch-office").css("display", "block");
+                    $("#text-verify-code-zone").css("display", "block");
                   }
                 } else {
                   data.emailverify = ''
                   $("#txtCodeBranchOffices").removeClass("is-invalid");
-                  $("#text-verify-code-branch-office").css("display", "none");
+                  $("#text-verify-code-zone").css("display", "none");
 
-                  $("#txtCodeBranchOfficesEdit").removeClass("is-invalid");
-                  $("#text-verify-code-branch-office-edit").css("display", "none");
+                  $("#txtCodeZoneEdit").removeClass("is-invalid");
+                  $("#text-verify-code-zone-edit").css("display", "none");
                 }
                 this.$vs.loading.close()
               }).catch(err => {
@@ -397,8 +397,8 @@ export default {
           }, 200)
           this.$vs.loading.close()
         } else {
-          $("#txtCodeBranchOfficesEdit").removeClass("is-invalid");
-          $("#text-verify-code-branch-office-edit").css("display", "none");
+          $("#txtCodeZoneEdit").removeClass("is-invalid");
+          $("#text-verify-code-zone-edit").css("display", "none");
         }
       }
     }
