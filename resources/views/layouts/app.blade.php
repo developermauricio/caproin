@@ -108,6 +108,14 @@
                         </div>
                     </div>
                 @endif
+                @if (session('error'))
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">¡Opps!</h4>
+                        <div class="alert-body">
+                            {{ session('error') }}
+                        </div>
+                    </div>
+                @endif
                 @yield('content')
 
             </div>

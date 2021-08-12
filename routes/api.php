@@ -18,7 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('download-excel', "ExcelController@download");
+
 Route::group(['namespace' => 'Administrator'], function () {
+
+
 
     /*=============================================
       API LISTA COMPLETA DE CLIENTES

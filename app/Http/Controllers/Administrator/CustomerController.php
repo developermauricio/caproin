@@ -141,9 +141,10 @@ class CustomerController extends Controller
         });
 
         if (!isset($lines[0])) {
-            return response()->json('Transacción realizada exitosamente', 201);
+            return back()->with('success', "Transacción realizada existosamente");
         } else {
-            return (new FastExcel($lines))->download('errors-customer.xlsx');
+            return back()->with('error', $lines->count()." datos no se importaron correctamente")->with('lines', $lines);
+            // return (new FastExcel($lines))->download('errors-customer.xlsx');
         }
     }
 }
