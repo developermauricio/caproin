@@ -62,6 +62,28 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('/get-rol', 'UserController@getRol')->name('api.get.rol.type');
     Route::get('/get-type-user', 'UserController@getTypeUser')->name('api.get.type.user');
     Route::post('register/store-user', 'UserController@storeApiUser')->name('api.store.customer');
+    Route::get('data-user/{id}', 'UserController@getApiDataUser')->name('api.data.user');
+    Route::post('update-user', 'UserController@updateApiUser')->name('api.update.user');
+
+    /*=============================================
+      API PARA LAS ZONAS
+    =============================================*/
+    Route::get('all-zones', 'ZonesController@getApiBranchZones')->name('api.all.zones');
+    Route::get('get-zone/{id}', 'ZonesController@getApiZone')->name('api.get.zone');
+    Route::post('register/store-zone', 'ZonesController@storeApiZone')->name('api.store.zone');
+    Route::get('/verify-code-zone/{code}', 'ZonesController@validateCode')->name('api.validate.code.zone');
+    Route::post('update-zone', 'ZonesController@updateApiZone')->name('api.update.zone');
+
+    /*=============================================
+      API PARA LAS FACTURAS
+    =============================================*/
+    Route::get('/all-invoices', 'InvoiceController@getApiInvoices')->name('api.all.invoices');
+    Route::get('/get-state-invoice', 'InvoiceController@getApiGetStateInvoices')->name('api.all.state.invoices');
+    Route::get('/get-type-invoice', 'InvoiceController@getApiGetTypeInvoices')->name('api.all.type.invoices');
+    Route::post('register/store-invoice', 'InvoiceController@storeApiInvoice')->name('api.store.invoice');
+
+
+
 });
 
 /*=============================================

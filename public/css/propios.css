@@ -29,3 +29,32 @@
     border-top-color: #333;
     animation: spinner .6s linear infinite;
 }
+
+.fullscreen-modal .modal-dialog {
+    margin: 0 !important;
+    margin-right: auto !important;
+    margin-left: auto !important;
+    width: 100% !important;
+}
+
+@media (min-width: 992px) {
+    .fullscreen-modal .modal-lg, .modal-xl {
+        max-width: 10200px;
+    }
+}
+
+@media (min-width: 768px) {
+    .fullscreen-modal .modal-dialog {
+        width: 750px !important;
+    }
+}
+@media (min-width: 992px) {
+    .fullscreen-modal .modal-dialog {
+        width: 970px !important;
+    }
+}
+@media (min-width: 1200px) {
+    .fullscreen-modal .modal-dialog {
+        width: 1170px !important;
+    }
+}

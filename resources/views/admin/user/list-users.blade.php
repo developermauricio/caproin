@@ -95,7 +95,7 @@
              role="dialog"
              aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
-{{--                <show-customer id="componet-show-customer" id-customer></show-customer>--}}
+                <show-user id="componet-show-user" id-user></show-user>
             </div>
         </div>
 
@@ -390,7 +390,7 @@
                         // },
                         {
                             render: function (data, type, JsonResultRow, meta) {
-                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-customer" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-customer btn-icon btn-primary"><i data-feather="edit-2"></i></button></div>'
+                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-customer" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-user btn-icon btn-primary"><i data-feather="edit-2"></i></button></div>'
 
                             },
                         },
@@ -486,17 +486,17 @@
                             //     }, 50);
                             // }
                         },
-                        {
-                            text: feather.icons['file-text'].toSvg({class: 'mr-50 font-small-4'}) + 'Importar',
-                            className: 'create-new btn btn-primary',
-                            attr: {
-                                'data-target': '#modal-import-customer',
-                                'data-toggle': 'modal',
-                            },
-                            init: function (api, node, config) {
-                                $(node).removeClass('btn-secondary');
-                            }
-                        },
+                        // {
+                        //     text: feather.icons['file-text'].toSvg({class: 'mr-50 font-small-4'}) + 'Importar',
+                        //     className: 'create-new btn btn-primary',
+                        //     attr: {
+                        //         'data-target': '#modal-import-customer',
+                        //         'data-toggle': 'modal',
+                        //     },
+                        //     init: function (api, node, config) {
+                        //         $(node).removeClass('btn-secondary');
+                        //     }
+                        // },
                         {
                             text: feather.icons['plus'].toSvg({class: 'mr-50 font-small-4'}) + 'Nuevo Usuario',
                             className: 'create-new btn btn-primary',
@@ -521,11 +521,11 @@
             }, 5);
 
 
-            $('.datatables-all-clients').on('click', '.btn-show-customer', function (e) {
-                var dataTableCustomer = table.row($(this).parents('tr')).data();
-                console.log(dataTableCustomer.id);
-                $('#traerDatosBotonCustomer').val(dataTableCustomer.id).click();
-                $('#componet-show-customer').attr("id-customer", dataTableCustomer.id)
+            $('.datatables-all-users').on('click', '.btn-show-user', function (e) {
+                var dataTableUser = table.row($(this).parents('tr')).data();
+                console.log(dataTableUser.id);
+                $('#traerDatosBotonUser').val(dataTableUser.id).click();
+                $('#componet-show-user').attr("id-user", dataTableUser.id)
             });
         });
 
