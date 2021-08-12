@@ -321,6 +321,10 @@ export default {
     getBranchOffices() {
       axios.get('/api/all-branch-offices').then(resp => {
         this.dataBranchOffices = resp.data.data
+        setTimeout(()=>{
+          window.feather.replace()
+        }, 200)
+
       }).catch(err => {
         console.log('mostrando el error', err)
         this.$toast.error({
