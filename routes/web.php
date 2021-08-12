@@ -13,9 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('password/activate/{token}', 'Auth\ResetPasswordController@showActivateForm');
 
 Auth::routes();
-Route::get('/usuarios', function (){
+Route::get('/usuarios', function () {
     $user = \App\User::role(['Logistica', 'Asistente Sucursal', 'Gerencia', 'Vendedor', 'Finanzas'])->with('roles')->get();
     return $user;
 });
@@ -27,29 +28,29 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
       RUTAS DEL LADO ADMINISTRADOR
     =============================================*/
 
-        Route::get('/', function () {
-            return view('layouts.app');
-        });
+    Route::get('/', function () {
+        return view('layouts.app');
+    });
 
-        /*=============================================
+    /*=============================================
           RUTAS PARA LOS MODULOS CLIENTE
         =============================================*/
-        Route::get('/customers', 'CustomerController@index')->name('admin.customer.customers');
-        Route::get('/create-customer', 'CustomerController@indexCreateCustomer')->name('admin.customer.create.customer');
-        Route::post('/import-data-customer', 'CustomerController@importDataCustomer')->name('import.data.customers');
+    Route::get('/customers', 'CustomerController@index')->name('admin.customer.customers');
+    Route::get('/create-customer', 'CustomerController@indexCreateCustomer')->name('admin.customer.create.customer');
+    Route::post('/import-data-customer', 'CustomerController@importDataCustomer')->name('import.data.customers');
 
-        /*=============================================
+    /*=============================================
           RUTAS PARA LOS MODULOS PROVEEDOR
         =============================================*/
-        Route::get('/providers', 'ProviderController@index')->name('admin.provider.providers');
+    Route::get('/providers', 'ProviderController@index')->name('admin.provider.providers');
 
-        /*=============================================
+    /*=============================================
           RUTAS PARA LOS MODULOS SUSCURSALES
         =============================================*/
-        Route::get('/sucursales', 'BranchOfficesController@index')->name('admin.branch_offices');
+    Route::get('/sucursales', 'BranchOfficesController@index')->name('admin.branch_offices');
 
-        /*=============================================
+    /*=============================================
           RUTAS PARA LOS MODULOS USUARIOS
         =============================================*/
-        Route::get('/usuarios', 'UserController@index')->name('admin.user.users');
+    Route::get('/usuarios', 'UserController@index')->name('admin.user.users');
 });

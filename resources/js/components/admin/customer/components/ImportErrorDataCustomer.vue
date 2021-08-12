@@ -53,6 +53,10 @@ export default {
       }
     },
     downloadReport() {
+      if (this.hrefDownload !== null) {
+        this.downloadLink(this.hrefDownload);
+        return;
+      }
       axios
         .post(
           "/api/download-excel",
@@ -64,12 +68,13 @@ export default {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
           });
           this.hrefDownload = URL.createObjectURL(blob);
-          setTimeout(() => {
-            document.getElementById("link_download").click();
-          }, 300);
-          // URL.revokeObjectURL(this.hrefDownload);
-          // this.hrefDownload = null;
+          this.downloadLink(this.hrefDownload);
         });
+    },
+    downloadLink(url) {
+      const link = document.getElementById("link_download");
+      link.href = url;
+      link.click();
     },
   },
 };

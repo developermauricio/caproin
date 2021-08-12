@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Administrator;
 
+use App\Http\Controllers\Auth\ActivateAccountController;
 use App\Http\Controllers\Controller;
 use App\Mail\Customer\NewCustomer;
 use App\Models\Customer;
@@ -132,6 +133,9 @@ class CustomerController extends Controller
                     "business_name" => $line['nombre o razon social'],
                     "user_id" => $user->id,
                 ]);
+
+                $activate = new ActivateAccountController();
+                $activate->sendResetLinkEmail($line['email']);
                 DB::commit();
             } catch (\Exception $exception) {
                 DB::rollBack();
@@ -141,10 +145,9 @@ class CustomerController extends Controller
         });
 
         if (!isset($lines[0])) {
-            return back()->with('success', "Transacción realizada existosamente");
+            return back()->with('status', "Transacción realizada existosamente");
         } else {
             return back()->with('error', $lines->count()." datos no se importaron correctamente")->with('lines', $lines);
-            // return (new FastExcel($lines))->download('errors-customer.xlsx');
         }
     }
 }
