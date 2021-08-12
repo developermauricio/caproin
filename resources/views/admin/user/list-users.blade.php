@@ -189,11 +189,14 @@
                                         .search(val ? '^' + val + '$' : '', true, false)
                                         .draw();
                                 });
-
-                            column.data().unique().sort().each(function (d, j) {
-                                console.log('VAMOS A VER', d)
-                                select.append('<option value="' + d + '">' + d + '</option>')
-                            });
+                            select.append('<option value="Asistente Sucursal">Asistente Sucursal</option>')
+                            select.append('<option value="Gerencia">Gerencia</option>')
+                            select.append('<option value="Logistica">Logistica</option>')
+                            select.append('<option value="Vendedor">Vendedor</option>')
+                            // column.data().unique().sort().each(function (d, j) {
+                            //     console.log('DATOS', j)
+                            //     select.append('<option value="' + d + '">' + d + '</option>')
+                            // });
                         });
                         this.api().columns([6]).every(function () {
                             var column = this;
@@ -203,7 +206,6 @@
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val(),
-                                        console.log('VAL', val)
                                     );
                                     console.log('que fue', val)
                                     column
@@ -212,6 +214,7 @@
                                 });
 
                             column.data().unique().sort().each(function (d, j) {
+
                                 select.append('<option value="' + d + '">' + d + '</option>')
                             });
                         });
@@ -268,7 +271,7 @@
 
                             column.data().unique().sort().each(function (d, j) {
                                 console.log(d)
-                                select.append('<option value="' + d.name + '">' + d.name + '</option>')
+                                select.append('<option value="' + d + '">' + d + '</option>')
                             });
                         });
                     },
@@ -340,19 +343,19 @@
                             },
                         },
                         {
-                            data: "employes.roles",
-                            render: {
-                                _: '[, ].name',
-                                sp: '[].name'
-                            },
-                            searchPanes: {
-                                orthogonal: 'sp'
-                            },
+                            // data: "roles",
+                            // render: {
+                            //     _: '[, ].name',
+                            //     sp: '[].name'
+                            // },
+                            // searchPanes: {
+                            //     orthogonal: 'sp'
+                            // },
                             // data: "employes.roles", "render": function (data) {
                             //     console.log('ESTA DATA', data)
                             //     return '<pre>' + data + '</pre>';
                             // },
-                            // data: "employes.roles.name",
+                            data: "roles",
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.roles === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
