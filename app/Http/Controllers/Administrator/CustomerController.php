@@ -110,9 +110,10 @@ class CustomerController extends Controller
     public function importDataCustomer(Request $request)
     {
         $file = $request->file('archive');
-
+        $total = 0;
         $lines = collect();
-        (new FastExcel())->import($file, function ($line) use (&$lines) {
+        (new FastExcel())->import($file, function ($line) use (&$lines, &$total) {
+            $total += 1;
             DB::beginTransaction();
             try {
                 $ramdon = Str::random(10);
@@ -147,7 +148,18 @@ class CustomerController extends Controller
         if (!isset($lines[0])) {
             return back()->with('status', "Transacción realizada existosamente");
         } else {
-            return back()->with('error', $lines->count()." datos no se importaron correctamente")->with('lines', $lines);
+            $errors = $lines->count();
+            $success = $total - $errors;
+            if ($success > 0) {
+                return back()
+                    ->with('error', $errors . " datos no se importaron correctamente")
+                    ->with('status', $success . " datos se importaron correctamente")
+                    ->with('lines', $lines);
+            } else {
+                return back()
+                    ->with('error', "Ningún dato se ha importado correctamente")
+                    ->with('lines', $lines);
+            }
         }
     }
 }
