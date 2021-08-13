@@ -31,13 +31,13 @@
 @endsection
 @section('content')
 @if (session('lines'))
-    <div class="row">
-        <div class="col-12">
-            <div class="card p-2">
-                <import-error-data-customer :lines="{{session('lines')}}"></import-error-data-customer>
-            </div>
+<div class="row">
+    <div class="col-12">
+        <div class="card p-2">
+            <import-error-data-customer :lines="{{session('lines')}}"></import-error-data-customer>
         </div>
     </div>
+</div>
 @endif
 
 <section id="basic-datatable">
@@ -121,6 +121,59 @@
                             <strong>xlsx</strong></h6>
                         <input type="file" name="archive" class="form-control text-center" required accept=".xls,.xlsx">
                         <div class="text-center pt-1"><a href="/storage/import-excel-customers/data.xlsx" target="_blank">Descarga el ejemplo</a></div>
+                        <div class="collapse-default pt-1">
+                            <div class="card collapse-icon">
+                                <div id="headingCollapse1" class="card-header" data-toggle="collapse" role="button" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                    <span class="lead collapse-title">Instrucciones</span>
+                                </div>
+                                <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1" class="collapse">
+                                    <div class="card-body">
+                                        <p class="card-text text-justify">
+                                            Para importar clientes debe cargar un archivo Excel en formato
+                                            <code>xlsx</code>. Tenga en cuenta que el
+                                            <code>correo electrónico</code> y el
+                                            <code>número de identificación</code> es único, asi que
+                                            verifique que en su archivo de excel no existan correos
+                                            electrónicos o números de identificación iguales.
+                                        </p>
+                                        <p class="card-text text-justify">
+                                            Para el <code>tipo de idenficación</code> debe ingresar un
+                                            número como se muestra en el archivo excel de ejemplo. A
+                                            continuación la tabla con el nombre del tipo de identificación
+                                            y el número.
+                                        </p>
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Número</th>
+                                                        <th>Nombre tipo identificación</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>Cédula de Ciudadania</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>Cédula de Extranjeria</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td>Pasaporte</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>4</td>
+                                                        <td>Nit</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button id="btn_importar" type="submit" type="button" class="btn btn-primary">Importar</button>
@@ -133,12 +186,13 @@
 @endsection
 @push('js')
 <script>
-document.getElementById('btn_importar').addEventListener('click', (e) => {
-    (new Vue()).$vs.loading({
-        color: '#3f4f6e',
-        text: 'Importando datos...'
+    document.getElementById('btn_importar').addEventListener('click', (e) => {
+        (new Vue()).$vs.loading({
+            color: '#3f4f6e'
+            , text: 'Importando datos...'
+        });
     });
-});
+
 </script>
 <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
 <script src="/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
