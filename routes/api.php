@@ -81,8 +81,8 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('/get-state-invoice', 'InvoiceController@getApiGetStateInvoices')->name('api.all.state.invoices');
     Route::get('/get-type-invoice', 'InvoiceController@getApiGetTypeInvoices')->name('api.all.type.invoices');
     Route::post('register/store-invoice', 'InvoiceController@storeApiInvoice')->name('api.store.invoice');
-
-
+    Route::get('data-invoice/{id}', 'InvoiceController@getApiDataInvoice')->name('api.data.invoice');
+    Route::post('/register/update-invoice', 'InvoiceController@updateApiInvoice')->name('api.update.invoice');
 
 });
 
