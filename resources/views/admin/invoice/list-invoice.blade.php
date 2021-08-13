@@ -37,7 +37,7 @@
             <div class="col-12">
                 <div class="card p-2">
                     <table
-                        class="datatables-all-clients hover datatablescreategica table-responsive datatables-basic table table-striped"
+                        class="datatables-all-invoices hover datatablescreategica table-responsive datatables-basic table table-striped"
                         style="width:100%">
                         <thead>
                         <tr>
@@ -66,7 +66,7 @@
             </div>
         </div>
         <!--=====================================
-                MODAL PARA CREAR UN NUEVO CLIENTE
+                MODAL PARA CREAR UNA NUEVA FACTURA
             ======================================-->
         <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-new-provider" data-backdrop="static"
              tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
@@ -76,12 +76,12 @@
         </div>
 
         <!--=====================================
-                MODAL PARA VER EL DETALLE DEL CLIENTE
+                MODAL PARA EDITAR LAS FACTURAS
             ======================================-->
-        <div class="modal fade text-left modal-primary" id="modal-show-customer" data-backdrop="static" tabindex="-1"
+        <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-show-customer" data-backdrop="static" tabindex="-1"
              role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <show-customer id="componet-show-customer" id-customer></show-customer>
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <edit-invoice id="componet-edit-invoice" id-invoice></edit-invoice>
             </div>
         </div>
 
@@ -140,7 +140,7 @@
             let table = null;
             let dollarUSLocale = Intl.NumberFormat('es-US');
             setTimeout(() => {
-                table = $('.datatables-all-clients').DataTable({
+                table = $('.datatables-all-invoices').DataTable({
                     "ordering": true
                     ,
                     "orderCellsTop": true
@@ -151,7 +151,7 @@
                         this.api().columns([3]).every(function () {
                             var column = this;
                             var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
-                                .appendTo('.datatables-all-clients .filter-' + column[0][0])
+                                .appendTo('.datatables-all-invoices .filter-' + column[0][0])
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val()
@@ -170,7 +170,7 @@
                         this.api().columns([6]).every(function () {
                             var column = this;
                             var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
-                                .appendTo('.datatables-all-clients .filter-' + column[0][0])
+                                .appendTo('.datatables-all-invoices .filter-' + column[0][0])
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val()
@@ -190,7 +190,7 @@
                         // this.api().columns([6]).every(function () {
                         //     var column = this;
                         //     var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
-                        //         .appendTo('.datatables-all-clients .filter-' + column[0][0])
+                        //         .appendTo('.datatables-all-invoices .filter-' + column[0][0])
                         //         .on('change', function () {
                         //             var val = $.fn.dataTable.util.escapeRegex(
                         //                 $(this).val()
@@ -369,7 +369,7 @@
                         // },
                         {
                             render: function (data, type, JsonResultRow, meta) {
-                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-customer" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-customer btn-icon btn-primary"><i data-feather="edit-2"></i></button></div>'
+                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-customer" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-invoice btn-icon btn-primary"><i data-feather="edit-2"></i></button></div>'
 
                             }
                             ,
@@ -528,11 +528,11 @@
             }, 5);
 
 
-            $('.datatables-all-clients').on('click', '.btn-show-customer', function (e) {
-                var dataTableCustomer = table.row($(this).parents('tr')).data();
-                console.log(dataTableCustomer.id);
-                $('#traerDatosBotonCustomer').val(dataTableCustomer.id).click();
-                $('#componet-show-customer').attr("id-customer", dataTableCustomer.id)
+            $('.datatables-all-invoices').on('click', '.btn-show-invoice', function (e) {
+                var dataTableInvoice = table.row($(this).parents('tr')).data();
+                console.log(dataTableInvoice.id);
+                $('#traerDatosBotonInvoice').val(dataTableInvoice.id).click();
+                $('#componet-edit-invoice').attr("id-invoice", dataTableInvoice.id)
             });
         });
 

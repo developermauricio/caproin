@@ -65,6 +65,7 @@ Vue.component('component-zones', require('./components/admin/zone/Zone.vue').def
 COMPONENTES PARA LOS MODULOS FACTURAS
 =============================================*/
 Vue.component('create-invoice', require('./components/admin/invoice/CreateInvoice.vue').default);
+Vue.component('edit-invoice', require('./components/admin/invoice/EditInvoice.vue').default);
 
 
 
