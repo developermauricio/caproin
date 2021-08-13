@@ -123,7 +123,7 @@
                         <div class="text-center pt-1"><a href="/storage/import-excel-customers/data.xlsx" target="_blank">Descarga el ejemplo</a></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" type="button" class="btn btn-primary">Importar</button>
+                        <button id="btn_importar" type="submit" type="button" class="btn btn-primary">Importar</button>
                     </div>
                 </form>
             </div>
@@ -132,6 +132,14 @@
 </section>
 @endsection
 @push('js')
+<script>
+document.getElementById('btn_importar').addEventListener('click', (e) => {
+    (new Vue()).$vs.loading({
+        color: '#3f4f6e',
+        text: 'Importando datos...'
+    });
+});
+</script>
 <script src="/app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js"></script>
 <script src="/app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js"></script>
 <script src="/app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js"></script>
