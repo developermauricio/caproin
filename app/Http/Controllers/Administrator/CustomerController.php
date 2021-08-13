@@ -126,7 +126,7 @@ class CustomerController extends Controller
                     'slug' => $slug,
                     "picture" => '/images/user-profile.png',
                     "identification_type_id" => $line['tipo de identificacion'],
-                    'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+                    'password' => ''
                 ]);
 
                 $user->roles()->attach([7]);
