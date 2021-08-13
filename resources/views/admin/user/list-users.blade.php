@@ -8,7 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
 @endpush
-@section('title', 'Lista de Sucursales')
+@section('title', 'Lista de Usuarios')
 @section('header_page')
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
