@@ -132,7 +132,6 @@ export default {
     }
   },
   methods: {
-
     createNewCustomer() {
       eventBus.$emit("validarFormulario");
       setTimeout(() => {

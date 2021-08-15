@@ -70,6 +70,10 @@ return [
             'driver' => 'eloquent',
             'model' => App\User::class,
         ],
+        'users_activate' => [
+            'driver' => 'eloquent',
+            'model' => App\UserActivate::class,
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -93,6 +97,12 @@ return [
     */
 
     'passwords' => [
+        'users_activate' => [
+            'provider' => 'users_activate',
+            'table' => 'password_resets',
+            'expire' => 60*24*60,
+            'throttle' => 60,
+        ],
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',

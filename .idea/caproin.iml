@@ -113,6 +113,11 @@
       <excludeFolder url="file://$MODULE_DIR$/public" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/laravel-permission" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-oracle" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rap2hpoutre/fast-excel" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/box/spout" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/barryvdh/laravel-debugbar" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/debug" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/maximebf/debugbar" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

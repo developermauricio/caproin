@@ -18,7 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('download-excel', "ExcelController@download");
+
 Route::group(['namespace' => 'Administrator'], function () {
+
+
 
     /*=============================================
       API LISTA COMPLETA DE CLIENTES
@@ -28,6 +32,7 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::post('register/store-customer', 'CustomerController@storeApiCustomer')->name('api.store.customer');
     Route::get('data-customer/{id}', 'CustomerController@getApiDataCustomer')->name('api.data.customer');
     Route::post('update-customer', 'CustomerController@updateApiCustomer')->name('api.update.customer');
+    Route::post('import-data-customers', 'CustomerController@importDataCustomer')->name('api.import.data.customer');
 
 
     /*=============================================
@@ -40,7 +45,44 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('all-type-providers', 'ProviderController@getApiTypeProviders')->name('api.all.type.providers');
     Route::get('/verify-code-provider/{code}', 'ProviderController@validateCode')->name('api.validate.code.provider');
 
-    Route::get('all-type-purchase-orders', 'ProviderController@getApiTypeProviders')->name('api.all.type.purchase-orders');
+    /*=============================================
+      API PARA LAS SUCURSALES
+    =============================================*/
+    Route::get('all-branch-offices', 'BranchOfficesController@getApiBranchOffices')->name('api.all.branch.offices');
+    Route::post('register/store-branch-office', 'BranchOfficesController@storeApiBranchOffice')->name('api.store.brach.office');
+    Route::post('update-branch-office', 'BranchOfficesController@updateApiBranchOffice')->name('api.update.brach.office');
+    Route::get('get-branch-office/{id}', 'BranchOfficesController@getApiBranchOffice')->name('api.get.brach.office');
+    Route::get('/verify-code-branch-office/{code}', 'BranchOfficesController@validateCode')->name('api.validate.code.branch.office');
+
+    /*=============================================
+      API PARA LOS USUARIOS
+    =============================================*/
+    Route::get('all-users', 'UserController@getApiUsers')->name('api.all.users');
+    Route::get('/get-branchofficetype', 'UserController@getBranchOfficeType')->name('api.get.branch.office.type');
+    Route::get('/get-rol', 'UserController@getRol')->name('api.get.rol.type');
+    Route::get('/get-type-user', 'UserController@getTypeUser')->name('api.get.type.user');
+    Route::post('register/store-user', 'UserController@storeApiUser')->name('api.store.customer');
+    Route::get('data-user/{id}', 'UserController@getApiDataUser')->name('api.data.user');
+    Route::post('update-user', 'UserController@updateApiUser')->name('api.update.user');
+
+    /*=============================================
+      API PARA LAS ZONAS
+    =============================================*/
+    Route::get('all-zones', 'ZonesController@getApiBranchZones')->name('api.all.zones');
+    Route::get('get-zone/{id}', 'ZonesController@getApiZone')->name('api.get.zone');
+    Route::post('register/store-zone', 'ZonesController@storeApiZone')->name('api.store.zone');
+    Route::get('/verify-code-zone/{code}', 'ZonesController@validateCode')->name('api.validate.code.zone');
+    Route::post('update-zone', 'ZonesController@updateApiZone')->name('api.update.zone');
+
+    /*=============================================
+      API PARA LAS FACTURAS
+    =============================================*/
+    Route::get('/all-invoices', 'InvoiceController@getApiInvoices')->name('api.all.invoices');
+    Route::get('/get-state-invoice', 'InvoiceController@getApiGetStateInvoices')->name('api.all.state.invoices');
+    Route::get('/get-type-invoice', 'InvoiceController@getApiGetTypeInvoices')->name('api.all.type.invoices');
+    Route::post('register/store-invoice', 'InvoiceController@storeApiInvoice')->name('api.store.invoice');
+    Route::get('data-invoice/{id}', 'InvoiceController@getApiDataInvoice')->name('api.data.invoice');
+    Route::post('/register/update-invoice', 'InvoiceController@updateApiInvoice')->name('api.update.invoice');
 
 });
 

@@ -9,9 +9,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
     <meta name="description"
-          content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
+          content="">
     <meta name="keywords"
-          content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
+          content="">
     <meta name="author" content="CREATEGICALATINA">
     <title>{{ config('app.name', 'Laravel') }} | @yield('title')</title>
     {{--    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">--}}
@@ -100,6 +100,22 @@
         <div class="content-wrapper">
             @yield('header_page')
             <div class="content-body">
+                @if (session('status'))
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">¡Muy bien!</h4>
+                        <div class="alert-body">
+                            {{ session('status') }}
+                        </div>
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">¡Opps!</h4>
+                        <div class="alert-body">
+                            {{ session('error') }}
+                        </div>
+                    </div>
+                @endif
                 @yield('content')
 
             </div>

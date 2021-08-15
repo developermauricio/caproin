@@ -19,6 +19,9 @@ Vue.use(VueFormWizard)
 Vue.use(CxltToastr)
 
 Vue.use(Vuesax);
+
+import money from 'v-money'
+Vue.use(money, {precision: 3})
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
@@ -31,6 +34,7 @@ COMPONENTES PARA LOS MODULOS CLIENTES
 =============================================*/
 Vue.component('create-customer', require('./components/admin/customer/CreateCustomer.vue').default);
 Vue.component('show-customer', require('./components/admin/customer/ShowCustomer').default);
+Vue.component('import-error-data-customer', require('./components/admin/customer/components/ImportErrorDataCustomer.vue').default);
 
 // Vue.component('component-customer-type-legal', require('./components/admin/customer/components/CustomerTypeLegal').default);
 // Vue.component('component-customer-persona-natural', require('./components/admin/customer/components/CustomerTypePersonNatural').default);
@@ -40,6 +44,29 @@ COMPONENTES PARA LOS MODULOS PROVEEDORES
 =============================================*/
 Vue.component('create-provider', require('./components/admin/provider/CreateProvider.vue').default);
 Vue.component('show-provider', require('./components/admin/provider/ShowProvider.vue').default);
+
+/*=============================================
+COMPONENTES PARA LOS MODULOS DE SUCURSALES
+=============================================*/
+Vue.component('branch-office', require('./components/admin/branchOffice/BranchOffice.vue').default);
+
+/*=============================================
+COMPONENTES PARA LOS MODULOS DE USUARIOS
+=============================================*/
+Vue.component('create-users', require('./components/admin/user/CreateUser.vue').default);
+Vue.component('show-user', require('./components/admin/user/ShowUser.vue').default);
+
+/*=============================================
+COMPONENTES PARA LOS MODULOS ZONES
+=============================================*/
+Vue.component('component-zones', require('./components/admin/zone/Zone.vue').default);
+
+/*=============================================
+COMPONENTES PARA LOS MODULOS FACTURAS
+=============================================*/
+Vue.component('create-invoice', require('./components/admin/invoice/CreateInvoice.vue').default);
+Vue.component('edit-invoice', require('./components/admin/invoice/EditInvoice.vue').default);
+
 
 
 window.eventBus = new Vue();

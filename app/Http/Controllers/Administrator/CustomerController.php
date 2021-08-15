@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Administrator;
 
+use App\Http\Controllers\Auth\ActivateAccountController;
 use App\Http\Controllers\Controller;
 use App\Mail\Customer\NewCustomer;
 use App\Models\Customer;
 use App\Models\CustomerType;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class CustomerController extends Controller
 {
@@ -35,7 +38,8 @@ class CustomerController extends Controller
         return datatables()->of($customer)->toJson();
     }
 
-    public function getApiDataCustomer($id){
+    public function getApiDataCustomer($id)
+    {
         $customer = Customer::where('id', $id)->with('user.identificationType')->first();
         return response()->json(['data' => $customer]);
     }
@@ -74,7 +78,8 @@ class CustomerController extends Controller
         return response()->json('Registro Exitoso!');
     }
 
-    public function updateApiCustomer(Request $request){
+    public function updateApiCustomer(Request $request)
+    {
 
         $ramdon = Str::random(10);
         $businessName = $request->businessName;
@@ -88,7 +93,7 @@ class CustomerController extends Controller
         $slug = Str::slug($businessName . '-' . $ramdon, '-');
 
         $user = User::where('id', $idUser)->update([
-            "name" =>  $businessName,
+            "name" => $businessName,
             "slug" => $slug,
             "identification_type_id" => $typeIdentification->id,
             "identification" => $identification,
@@ -100,5 +105,61 @@ class CustomerController extends Controller
         $customer = Customer::where('id', $idCustomer)->update([
             "business_name" => $businessName,
         ]);
+    }
+
+    public function importDataCustomer(Request $request)
+    {
+        $file = $request->file('archive');
+        $total = 0;
+        $lines = collect();
+        (new FastExcel())->import($file, function ($line) use (&$lines, &$total) {
+            $total += 1;
+            DB::beginTransaction();
+            try {
+                $ramdon = Str::random(10);
+                $slug = Str::slug($line['nombre o razon social'] . '-' . $ramdon, '-');
+                $user = User::create([
+                    'name' => $line['nombre o razon social'],
+                    'email' => $line['email'],
+                    'phone' => $line['telefono'],
+                    'identification' => $line['identificacion'],
+                    'slug' => $slug,
+                    "picture" => '/images/user-profile.png',
+                    "identification_type_id" => $line['tipo de identificacion'],
+                    'password' => ''
+                ]);
+
+                $user->roles()->attach([7]);
+                $customer = Customer::create([
+                    "business_name" => $line['nombre o razon social'],
+                    "user_id" => $user->id,
+                ]);
+
+                $activate = new ActivateAccountController();
+                $activate->sendResetLinkEmail($line['email']);
+                DB::commit();
+            } catch (\Exception $exception) {
+                DB::rollBack();
+                $line['error'] = json_encode($exception);
+                $lines->add($line);
+            }
+        });
+
+        if (!isset($lines[0])) {
+            return back()->with('status', "Transacción realizada existosamente");
+        } else {
+            $errors = $lines->count();
+            $success = $total - $errors;
+            if ($success > 0) {
+                return back()
+                    ->with('error', $errors . " datos no se importaron correctamente")
+                    ->with('status', $success . " datos se importaron correctamente")
+                    ->with('lines', $lines);
+            } else {
+                return back()
+                    ->with('error', "Ningún dato se ha importado correctamente")
+                    ->with('lines', $lines);
+            }
+        }
     }
 }

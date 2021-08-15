@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 
 class ResetPasswordController extends Controller
 {
@@ -26,7 +27,7 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/';
 
     /**
      * Get the password reset validation rules.
@@ -58,5 +59,21 @@ class ResetPasswordController extends Controller
         return [
             'password.regex' => "La contraseña debe contener por lo menos un número, una mayuscula, una minuscula y un caracter especial"
         ];
+    }
+
+    /**
+     * Display the password reset view for the given token.
+     *
+     * If no token is present, display the link request form.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  string|null  $token
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showActivateForm(Request $request, $token = null)
+    {
+        return view('auth.passwords.active')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
     }
 }
