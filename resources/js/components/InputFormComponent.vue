@@ -61,6 +61,7 @@
     <input
       :type="tipoInput"
       class="form-control"
+      :name="name"
       :class="!validated || msgServer ? 'is-invalid' : ''"
       :id="id"
       :placeholder="label"
@@ -122,6 +123,10 @@ export default {
     };
   },
   props: {
+    name: {
+      type: String,
+      default: ''
+    },
     disabled: Number,
     label: String,
     id: String,
