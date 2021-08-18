@@ -487,20 +487,20 @@
                         //     }, 50);
                         // }
                     }
-                        , {
-                            text: feather.icons['file-text'].toSvg({
-                                class: 'mr-50 font-small-4'
-                            }) + 'Importar'
-                            , className: 'create-new btn btn-primary'
-                            , attr: {
-                                'data-target': '#modal-import-customer'
-                                , 'data-toggle': 'modal'
-                                ,
-                            }
-                            , init: function (api, node, config) {
-                                $(node).removeClass('btn-secondary');
-                            }
-                        }
+                        // , {
+                        //     text: feather.icons['file-text'].toSvg({
+                        //         class: 'mr-50 font-small-4'
+                        //     }) + 'Importar'
+                        //     , className: 'create-new btn btn-primary'
+                        //     , attr: {
+                        //         'data-target': '#modal-import-customer'
+                        //         , 'data-toggle': 'modal'
+                        //         ,
+                        //     }
+                        //     , init: function (api, node, config) {
+                        //         $(node).removeClass('btn-secondary');
+                        //     }
+                        // }
                         , {
                             text: feather.icons['plus'].toSvg({
                                 class: 'mr-50 font-small-4'
