@@ -64,6 +64,7 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::post('register/store-user', 'UserController@storeApiUser')->name('api.store.customer');
     Route::get('data-user/{id}', 'UserController@getApiDataUser')->name('api.data.user');
     Route::post('update-user', 'UserController@updateApiUser')->name('api.update.user');
+    Route::post('import-data-users', 'UserController@importDataUser')->name('import.data.users');
 
     /*=============================================
       API PARA LAS ZONAS

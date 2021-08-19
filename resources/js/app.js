@@ -10,6 +10,7 @@ window.Vue = require('vue');
 import CxltToastr from 'cxlt-vue2-toastr';
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 import 'material-icons/iconfont/material-icons.css';
+import money from 'v-money';
 import VueFormWizard from 'vue-form-wizard';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import Vuesax from 'vuesax';
@@ -20,7 +21,6 @@ Vue.use(CxltToastr)
 
 Vue.use(Vuesax);
 
-import money from 'v-money'
 Vue.use(money, {precision: 3})
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
@@ -55,6 +55,7 @@ COMPONENTES PARA LOS MODULOS DE USUARIOS
 =============================================*/
 Vue.component('create-users', require('./components/admin/user/CreateUser.vue').default);
 Vue.component('show-user', require('./components/admin/user/ShowUser.vue').default);
+Vue.component('import-error-data-user', require('./components/admin/user/components/ImportErrorDataUser.vue').default);
 
 /*=============================================
 COMPONENTES PARA LOS MODULOS ZONES
