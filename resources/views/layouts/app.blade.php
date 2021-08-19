@@ -76,7 +76,8 @@
                             {{--                                </g>--}}
                             {{--                            </svg>--}}
                     </span>
-                        <h1 class="brand-text">Caproin</h1>
+{{--                        <h1 class="brand-text">Caproin</h1>--}}
+                        <img src="/images/logo-caproin-horizontal-v2.png" width="200" alt="">
                     </a></li>
                 {{--            <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>--}}
             </ul>
@@ -117,7 +118,15 @@
                     </div>
                 @endif
                 @yield('content')
+                <!--=====================================
+		            MODAL PARA EL PERFIL
+                ======================================-->
+                    <div class="modal fade text-left" id="default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
 
+                            <component-modal-profile :user="{{auth()->user()}}"></component-modal-profile>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>

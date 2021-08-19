@@ -127,7 +127,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button @click="closeModalShowProvider()" type="button" data-dismiss="modal" class="btn btn-danger">Cancelar
+          <button @click="closeModalShowProvider()" type="button" data-dismiss="modal" class="btn btn-gris">Cancelar
           </button>
           <button @click="editProvider()" type="button" class="btn btn-primary">Actualizar</button>
         </div>

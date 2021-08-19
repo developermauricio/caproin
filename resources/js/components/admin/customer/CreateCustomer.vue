@@ -2,7 +2,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h5 class="modal-title" id="myModalLabel160">Crear Cliente</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <button @click="clearInputsCustomer()" type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -93,7 +93,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn btn-danger">Cancelar</button>
+        <button @click="clearInputsCustomer()" type="button" data-dismiss="modal" class="btn btn-gris">Cancelar</button>
         <button @click="createNewCustomer()" type="button" class="btn btn-primary">Crear Cliente</button>
       </div>
     </form>
@@ -132,6 +132,9 @@ export default {
     }
   },
   methods: {
+    clearInputsCustomer(){
+      eventBus.$emit("resetValidaciones");
+    },
     createNewCustomer() {
       eventBus.$emit("validarFormulario");
       setTimeout(() => {

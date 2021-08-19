@@ -9,12 +9,14 @@ use App\Models\Employee;
 use App\Models\TypeEmployee;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+
     public function index(){
         return view('admin.user.list-users');
     }
@@ -118,6 +120,23 @@ class UserController extends Controller
             'type_employee_id' => $type_user->id,
             'branch_offices_id' => $branch_office->id,
         ]);
+    }
+
+    public function updateApiPasswordUser(Request $request){
+
+        $this->validate($request, [
+            'password' => ['required', 'confirmed', 'min:8', 'regex:/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}/'],
+        ], [
+            'regex' => 'La contraseña debe contener por lo menos un número, una mayuscula, una minuscula y un caracter especial'
+        ]);
+
+
+        $pass = bcrypt($request->password);
+        $user = User::where('id', $request->user_id)->update([
+           'password' => $pass
+        ]);
+
+        return response()->json('Contraseña actualizada correctamente');
     }
 
 }

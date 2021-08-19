@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoice;
 use App\Models\StateInvoice;
 use App\Models\TypeInvoice;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -16,6 +17,15 @@ class InvoiceController extends Controller
     }
 
     public function getApiInvoices(){
+
+
+//        $invoice = null;
+//        if (User::roleUserVendedor()){
+//            $user = User::where('id', User::user()->id)->with('employes.branchOffices')->first();
+//            $user->employes->branchOffices->id;
+//            $invoice = Invoice::with('customers', 'typeInvoice', 'state')->get();
+//        }
+
         $invoice = Invoice::with('customers', 'typeInvoice', 'state')->get();
         return datatables()->of($invoice)->toJson();
     }

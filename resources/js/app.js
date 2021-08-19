@@ -67,6 +67,16 @@ COMPONENTES PARA LOS MODULOS FACTURAS
 Vue.component('create-invoice', require('./components/admin/invoice/CreateInvoice.vue').default);
 Vue.component('edit-invoice', require('./components/admin/invoice/EditInvoice.vue').default);
 
+/*=============================================
+COMPONENTES PARA LOS MODULOS PRODUCTOS Y SERVICIOS
+=============================================*/
+Vue.component('component-create-product-service', require('./components/admin/product/CreateProductService.vue').default);
+Vue.component('edit-product-service', require('./components/admin/product/EditProductService.vue').default);
+
+/*=============================================
+COMPONENTES PARA EL PERFIL
+=============================================*/
+Vue.component('component-modal-profile', require('./components/admin/profile/ModalProfile.vue').default);
 
 
 window.eventBus = new Vue();

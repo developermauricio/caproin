@@ -22,6 +22,8 @@ class User extends Authenticatable
      *
      * @var array
      */
+    protected $table = 'users';
+
     protected $fillable = [
         'name', 'last_name', 'email', 'password', 'slug', 'address',
         'phone', 'identification', 'identification_type_id',
@@ -68,5 +70,12 @@ class User extends Authenticatable
 
     public function employes(){
         return $this->hasOne(Employee::class);
+    }
+
+    static public function roleUserVendedor(){
+        return auth()->user()->hasRole('Vendedor');
+    }
+    static public function user(){
+        return auth()->user();
     }
 }

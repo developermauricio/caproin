@@ -89,7 +89,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button @click="clearInputBranchOffice()" type="button" data-dismiss="modal" class="btn btn-danger">
+              <button @click="clearInputBranchOffice()" type="button" data-dismiss="modal" class="btn btn-gris">
                 Cancelar
               </button>
               <button @click="createNewBranchOffice()" type="button" class="btn btn-primary">Crear Sucursal</button>
@@ -144,7 +144,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button @click="clearInputBranchOffice()" type="button" data-dismiss="modal" class="btn btn-danger">
+              <button @click="clearInputBranchOffice()" type="button" data-dismiss="modal" class="btn btn-gris">
                 Cancelar
               </button>
               <button @click="udateBranchOffice()" type="button" class="btn btn-primary">Actualizar Sucursal</button>
