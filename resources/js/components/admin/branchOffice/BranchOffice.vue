@@ -31,15 +31,16 @@
                   <i data-feather="edit-2" class="mr-50"></i>
                   <span>Editar</span>
                 </a>
-<!--                <a class="dropdown-item" href="">-->
-<!--                  <i data-feather="trash" class="mr-50"></i>-->
-<!--                  <span>Eliminar</span>-->
-<!--                </a>-->
+                <!--                <a class="dropdown-item" href="">-->
+                <!--                  <i data-feather="trash" class="mr-50"></i>-->
+                <!--                  <span>Eliminar</span>-->
+                <!--                </a>-->
               </div>
             </div>
           </div>
           <div class="card-body">
             <p>Código de la Sucursal: <strong>{{ branchsOffices.code }}</strong></p>
+            <p>Estado: <strong>{{ branchsOffices.state == 1 ? 'Activo' : 'Inactivo' }}</strong></p>
           </div>
         </div>
       </div>
@@ -100,7 +101,7 @@
     </div>
 
     <!--=====================================
-		    MODAL PARA ELIMINAR SUCURSAL
+		    MODAL PARA EDITAR SUCURSAL
         ======================================-->
     <div class="modal fade text-left modal-primary" id="modal-edit-branch-office" data-backdrop="static" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
@@ -140,6 +141,27 @@
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                      id="text-verify-code-branch-office-edit" class="text-danger">El coódigo ya
                     ha sido registrado</p>
+                  <input-form
+                    label="Estado"
+                    id="textStateUserEdit"
+                    errorMsg
+                    requiredMsg="El estado es obligatorio"
+                    :required="true"
+                    :modelo.sync="state"
+                    :msgServer.sync="errors.state"
+                    type="multiselect"
+                    selectLabel="Estado"
+                    :multiselect="{ options: optionsStateBranchOffice,
+                                           selectLabel:'Seleccionar',
+                                           selectedLabel:'Seleccionado',
+                                           deselectLabel:'Desmarcar',
+                                           placeholder:'Estado',
+                                          taggable : false,
+                                          'track-by':'id',
+                                          label: 'name',
+                                          'custom-label': stateCBranchOffice=>stateCBranchOffice.name
+                                        }"
+                  ></input-form>
                 </div>
               </div>
             </div>
@@ -171,6 +193,17 @@ export default {
       codeValidet: '',
       id: null,
       searchQuery: null,
+      state: null,
+      optionsStateBranchOffice: [
+        {
+          name: 'Activo',
+          id: 1
+        },
+        {
+          name: 'Inactivo',
+          id: 2
+        }
+      ],
       errors: {},
     }
   },
@@ -321,7 +354,7 @@ export default {
     getBranchOffices() {
       axios.get('/api/all-branch-offices').then(resp => {
         this.dataBranchOffices = resp.data.data
-        setTimeout(()=>{
+        setTimeout(() => {
           window.feather.replace()
         }, 200)
 

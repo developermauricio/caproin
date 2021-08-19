@@ -121,10 +121,11 @@
                 <!--=====================================
 		            MODAL PARA EL PERFIL
                 ======================================-->
+
                     <div class="modal fade text-left" id="default" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
                         <div class="modal-dialog" role="document">
 
-                            <component-modal-profile :user="{{auth()->user()}}"></component-modal-profile>
+                            <component-modal-profile :user="{{\App\User::roleAuth()}}"></component-modal-profile>
                         </div>
                     </div>
             </div>
