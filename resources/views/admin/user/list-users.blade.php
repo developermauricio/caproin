@@ -1,14 +1,12 @@
 @extends('layouts.app')
 @push('css')
-    <link rel="stylesheet" type="text/css"
-          href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css"
-          href="/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/responsive.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
 @endpush
-@section('title', 'Lista de Usuarios')
+@section('title', 'Lista de Clientes')
 @section('header_page')
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
@@ -32,6 +30,15 @@
     </div>
 @endsection
 @section('content')
+@if (session('lines'))
+<div class="row">
+    <div class="col-12">
+        <div class="card p-2">
+            <import-error-data-user :lines="{{session('lines')}}"></import-error-data-user>
+        </div>
+    </div>
+</div>
+@endif
     <section id="basic-datatable">
         @if(session()->has('success-import-data-customer'))
             <div class="demo-spacing-0 pb-2">
@@ -105,29 +112,121 @@
         <div class="modal fade text-left modal-primary" id="modal-import-customer" data-backdrop="static" tabindex="-1"
              role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog" role="document">
-{{--                <import-data-customers></import-data-customers>--}}
-                {{--                <div class="modal-content">--}}
-                {{--                    <div class="modal-header">--}}
-                {{--                        <h5 class="modal-title" id="myModalLabel160">Importar Clientes</h5>--}}
-                {{--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-                {{--                            <span aria-hidden="true">&times;</span>--}}
-                {{--                        </button>--}}
-                {{--                    </div>--}}
-                {{--                    <form action="{{ route('import.data.customers') }}" method="POST" enctype="multipart/form-data">--}}
-                {{--                        <div class="modal-body">--}}
-                {{--                            @csrf--}}
-                {{--                            <h6 class="text-center">Selecciona desde tu computadora el archivo Excel tipo--}}
-                {{--                                <strong>xlsx</strong></h6>--}}
-                {{--                            <input type="file" name="data-customers" class="form-control text-center" required--}}
-                {{--                                   accept=".xls,.xlsx">--}}
-                {{--                            <div class="text-center pt-1"><a href="/storage/import-excel-customers/data.xlsx"--}}
-                {{--                                                             target="_blank">Descarga el ejemplo</a></div>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="modal-footer">--}}
-                {{--                            <button type="submit" type="button" class="btn btn-primary">Importar</button>--}}
-                {{--                        </div>--}}
-                {{--                    </form>--}}
-                {{--                </div>--}}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel160">Importar Usuarios</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('import.data.users') }}" method="POST" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            @csrf
+                            <h6 class="text-center">Selecciona desde tu computadora el archivo Excel tipo
+                                <strong>xlsx</strong></h6>
+                            <input type="file" name="archive" class="form-control text-center" required accept=".xls,.xlsx">
+                            <div class="text-center pt-1"><a href="/import-excel-users/caproin-import-users.xlsx" target="_blank">Descarga el ejemplo</a></div>
+                            <div class="collapse-default pt-1">
+                                <div class="card collapse-icon">
+                                    <div id="headingCollapse1" class="card-header" data-toggle="collapse" role="button" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                        <span class="lead collapse-title">Instrucciones</span>
+                                    </div>
+                                    <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1" class="collapse">
+                                        <div class="card-body">
+                                            <p class="card-text text-justify">
+                                                Para importar usuarios debe cargar un archivo Excel en formato
+                                                <code>xlsx</code>. Tenga en cuenta que el
+                                                <code>correo electrónico</code> es único, asi que
+                                                verifique que en su archivo de excel no existan correos
+                                                electrónicos iguales.
+                                            </p>
+                                            <div class="roles">
+                                                <p class="card-text text-justify">
+                                                    Para el <code>rol</code> debe ingresar un
+                                                    número como se muestra en el archivo excel de ejemplo. A
+                                                    continuación la tabla con el nombre del rol y el número.
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>rol</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach ($roles as $rol)
+                                                            <tr>
+                                                                <td>{{$rol->id}}</td>
+                                                                <td>{{$rol->name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div class="sucursales">
+                                                <p class="card-text text-justify">
+                                                    Para la <code>sucursal</code> debe ingresar un
+                                                    número como se muestra en el archivo excel de ejemplo. A
+                                                    continuación la tabla con el nombre de la sucursal y el número.
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>sucursal</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach ($branchOffices as $branchOffice)
+                                                            <tr>
+                                                                <td>{{$branchOffice->id}}</td>
+                                                                <td>{{$branchOffice->name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div class="user_types">
+                                                <p class="card-text text-justify">
+                                                    Para el <code>tipo de usuario</code> debe ingresar un
+                                                    número como se muestra en el archivo excel de ejemplo. A
+                                                    continuación la tabla con el nombre de tipo de usuario y el número.
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>sucursal</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach ($employeeTypes as $employeType)
+                                                            <tr>
+                                                                <td>{{$employeType->id}}</td>
+                                                                <td>{{$employeType->name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btn_importar" type="submit" type="button" class="btn btn-primary">Importar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -486,17 +585,17 @@
                             //     }, 50);
                             // }
                         },
-                        // {
-                        //     text: feather.icons['file-text'].toSvg({class: 'mr-50 font-small-4'}) + 'Importar',
-                        //     className: 'create-new btn btn-primary',
-                        //     attr: {
-                        //         'data-target': '#modal-import-customer',
-                        //         'data-toggle': 'modal',
-                        //     },
-                        //     init: function (api, node, config) {
-                        //         $(node).removeClass('btn-secondary');
-                        //     }
-                        // },
+                        {
+                            text: feather.icons['file-text'].toSvg({class: 'mr-50 font-small-4'}) + 'Importar',
+                            className: 'create-new btn btn-primary',
+                            attr: {
+                                'data-target': '#modal-import-customer',
+                                'data-toggle': 'modal',
+                            },
+                            init: function (api, node, config) {
+                                $(node).removeClass('btn-secondary');
+                            }
+                        },
                         {
                             text: feather.icons['plus'].toSvg({class: 'mr-50 font-small-4'}) + 'Nuevo Usuario',
                             className: 'create-new btn btn-primary',

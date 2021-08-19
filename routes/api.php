@@ -64,6 +64,7 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::post('register/store-user', 'UserController@storeApiUser')->name('api.store.user');
     Route::get('data-user/{id}', 'UserController@getApiDataUser')->name('api.data.user');
     Route::post('update-user', 'UserController@updateApiUser')->name('api.update.user');
+    Route::post('import-data-users', 'UserController@importDataUser')->name('import.data.users');
     Route::post('register/update-password', 'UserController@updateApiPasswordUser')->name('api.update.user.password');
 
     /*=============================================
@@ -112,4 +113,5 @@ Route::get('/verify-email-company/{email}', 'Controller@validateEmailCompany')->
 Route::get('/get-identificationtype', 'Controller@getIdentificationType')->name('api.get.identification.type');
 Route::get('/get-customer-category', 'Controller@customerCategory')->name('api.get.customer.category');
 Route::get('/get-customer-position', 'Controller@customerPosition')->name('api.get.customer.position');
+
 
