@@ -125,7 +125,7 @@
                             <h6 class="text-center">Selecciona desde tu computadora el archivo Excel tipo
                                 <strong>xlsx</strong></h6>
                             <input type="file" name="archive" class="form-control text-center" required accept=".xls,.xlsx">
-                            <div class="text-center pt-1"><a href="/storage/import-excel-customers/data.xlsx" target="_blank">Descarga el ejemplo</a></div>
+                            <div class="text-center pt-1"><a href="/import-excel-users/caproin-import-users.xlsx" target="_blank">Descarga el ejemplo</a></div>
                             <div class="collapse-default pt-1">
                                 <div class="card collapse-icon">
                                     <div id="headingCollapse1" class="card-header" data-toggle="collapse" role="button" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
@@ -134,46 +134,88 @@
                                     <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1" class="collapse">
                                         <div class="card-body">
                                             <p class="card-text text-justify">
-                                                Para importar clientes debe cargar un archivo Excel en formato
+                                                Para importar usuarios debe cargar un archivo Excel en formato
                                                 <code>xlsx</code>. Tenga en cuenta que el
-                                                <code>correo electrónico</code> y el
-                                                <code>número de identificación</code> es único, asi que
+                                                <code>correo electrónico</code> es único, asi que
                                                 verifique que en su archivo de excel no existan correos
-                                                electrónicos o números de identificación iguales.
+                                                electrónicos iguales.
                                             </p>
-                                            <p class="card-text text-justify">
-                                                Para el <code>tipo de idenficación</code> debe ingresar un
-                                                número como se muestra en el archivo excel de ejemplo. A
-                                                continuación la tabla con el nombre del tipo de identificación
-                                                y el número.
-                                            </p>
-                                            <div class="table-responsive">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Número</th>
-                                                            <th>Nombre tipo identificación</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Cédula de Ciudadania</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>2</td>
-                                                            <td>Cédula de Extranjeria</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>3</td>
-                                                            <td>Pasaporte</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>4</td>
-                                                            <td>Nit</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                            <div class="roles">
+                                                <p class="card-text text-justify">
+                                                    Para el <code>rol</code> debe ingresar un
+                                                    número como se muestra en el archivo excel de ejemplo. A
+                                                    continuación la tabla con el nombre del rol y el número.
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>rol</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach ($roles as $rol)
+                                                            <tr>
+                                                                <td>{{$rol->id}}</td>
+                                                                <td>{{$rol->name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div class="sucursales">
+                                                <p class="card-text text-justify">
+                                                    Para la <code>sucursal</code> debe ingresar un
+                                                    número como se muestra en el archivo excel de ejemplo. A
+                                                    continuación la tabla con el nombre de la sucursal y el número.
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>sucursal</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach ($branchOffices as $branchOffice)
+                                                            <tr>
+                                                                <td>{{$branchOffice->id}}</td>
+                                                                <td>{{$branchOffice->name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div class="user_types">
+                                                <p class="card-text text-justify">
+                                                    Para el <code>tipo de usuario</code> debe ingresar un
+                                                    número como se muestra en el archivo excel de ejemplo. A
+                                                    continuación la tabla con el nombre de tipo de usuario y el número.
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>sucursal</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach ($employeeTypes as $employeType)
+                                                            <tr>
+                                                                <td>{{$employeType->id}}</td>
+                                                                <td>{{$employeType->name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -21,8 +21,19 @@ class UserController extends Controller
 {
     use MessagesException;
 
-    public function index(){
-        return view('admin.user.list-users');
+    private $roles = null;
+
+    public function __construct()
+    {
+        $this->roles = Role::whereIn('name', ['Logistica', 'Asistente Sucursal', 'Gerencia', 'Vendedor', 'Finanzas'])->get();
+    }
+
+    public function index()
+    {
+        $branchOffices = BranchOffice::all(['id', 'name', 'code']);
+        $employeeTypes = TypeEmployee::all(['id', 'name']);
+        $roles = $this->roles;
+        return view('admin.user.list-users', compact(['branchOffices', 'employeeTypes', 'roles']));
     }
 
     public function getApiUsers()
@@ -74,6 +85,15 @@ class UserController extends Controller
         }
     }
 
+    private function getRoles($roles){
+        $roles = collect($roles);
+        return $this->roles->filter(function ($role) use ($roles) {
+            return $roles->contains($role->id);
+        })->map(function ($role){
+            return $role->id;
+        });
+    }
+
 
     private function createUser(
         $name,
@@ -100,7 +120,12 @@ class UserController extends Controller
                 "picture" => '/images/user-profile.png',
                 "phone" => $phone,
             ]);
-            $user->roles()->attach($arrayRolesId);
+            $roles = $this->getRoles($arrayRolesId);
+            if (!isset($roles[0])) {
+                DB::rollBack();
+                return new \Exception("Rol invalido", "-1");
+            }
+            $user->roles()->attach($roles);
             $employe = Employee::create([
                 'user_id' => $user->id,
                 'type_employee_id' => $type_employee_id,
@@ -208,7 +233,8 @@ class UserController extends Controller
         }
     }
 
-    public function updateApiPasswordUser(Request $request){
+    public function updateApiPasswordUser(Request $request)
+    {
 
         $this->validate($request, [
             'password' => ['required', 'confirmed', 'min:8', 'regex:/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}/'],
@@ -219,10 +245,9 @@ class UserController extends Controller
 
         $pass = bcrypt($request->password);
         $user = User::where('id', $request->user_id)->update([
-           'password' => $pass
+            'password' => $pass
         ]);
 
         return response()->json('Contraseña actualizada correctamente');
     }
-
 }

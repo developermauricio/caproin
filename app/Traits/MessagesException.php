@@ -1,21 +1,24 @@
 <?php
 
 namespace App\Traits;
-use Illuminate\Database\QueryException;
 
 trait MessagesException
 {
     /**
      * parser exceptions.
-     * @param Illuminate\Database\QueryException $exception
+     * @param  $exception
      * @return string
      */
-    public function parseException(QueryException $exception): string
+    public function parseException($exception): string
     {
-        $attributes = collect($exception->getBindings());
         $code = $exception->getCode();
-        $error_mensaje = $exception->getPrevious()->getMessage();
 
+        if ($code == "-1") {
+            return $exception->getMessage();
+        }
+
+        $attributes = collect($exception->getBindings());
+        $error_mensaje = $exception->getPrevious()->getMessage();
         $failData = null;
         $attributes->map(function ($attribute) use (&$failData, $error_mensaje) {
             if (strpos($error_mensaje, "".($attribute))) {
