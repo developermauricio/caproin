@@ -63,4 +63,11 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
           RUTAS PARA LOS MODULOS FACTURAS
         =============================================*/
     Route::get('/facturas', 'InvoiceController@index')->name('admin.invoice');
+
+    /*=============================================
+         RUTAS PARA LOS MODULOS DE PRODUCTOS Y SERVICIOS
+    =============================================*/
+    Route::get('/productos-servicios', 'ProductServiceController@index')->name('admin.products,services');
+
+
 });

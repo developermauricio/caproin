@@ -83,13 +83,13 @@
                     :msgServer.sync="errors.code"
                   ></input-form>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                     id="text-verify-code-zone" class="text-danger">El coódigo ya
+                     id="text-verify-code-zone" class="text-danger">El código ya
                     ha sido registrado</p>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button @click="clearInputZone()" type="button" data-dismiss="modal" class="btn btn-danger">
+              <button @click="clearInputZone()" type="button" data-dismiss="modal" class="btn btn-gris">
                 Cancelar
               </button>
               <button @click="createNewZone()" type="button" class="btn btn-primary">Crear Zona</button>
@@ -144,7 +144,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button @click="clearInputZone()" type="button" data-dismiss="modal" class="btn btn-danger">
+              <button @click="clearInputZone()" type="button" data-dismiss="modal" class="btn btn-gris">
                 Cancelar
               </button>
               <button @click="udateBranchOffice()" type="button" class="btn btn-primary">Actualizar Zona</button>

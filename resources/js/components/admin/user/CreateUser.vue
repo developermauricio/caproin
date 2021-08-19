@@ -53,7 +53,7 @@
               label="Sucursal"
               id="textSucursalUsuario"
               errorMsg
-              requiredMsg="La sucursal es obligatoria obligatorio"
+              requiredMsg="La sucursal es obligatoria"
               :required="true"
               :modelo.sync="typeBranchOffice"
               :msgServer.sync="errors.typeBranchOffice"
@@ -136,7 +136,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn btn-danger">Cancelar</button>
+        <button type="button" data-dismiss="modal" class="btn btn-gris">Cancelar</button>
         <button @click="createNewCustomer()" type="button" class="btn btn-primary">Crear Usuario</button>
       </div>
     </form>
@@ -329,7 +329,7 @@ export default {
 
 <style scoped>
 .multiselect__tag {
-  background: #0082FB !important;
+  background: #B33131 !important;
 }
 
 .multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
@@ -337,7 +337,7 @@ export default {
 }
 
 .multiselect__option--highlight {
-  background: #0082FB !important;
+  background: #B33131 !important;
 }
 </style>
 

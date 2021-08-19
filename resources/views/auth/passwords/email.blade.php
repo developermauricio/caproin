@@ -62,7 +62,9 @@
                                 </div>
                                 @endif
                                 <a href="javascript:void(0);" class="brand-logo">
-                                    <h1 class="brand-text text-primary ml-1">Caproin</h1>
+                                    <span class="pb-1">
+                                     <img src="/images/logo-caproin-horizontal-v2.png" width="300" alt="">
+                                     </span>
                                 </a>
 
                                 <h4 class="card-title mb-1">¿Ólvido su Contraseña? 🔒</h4>

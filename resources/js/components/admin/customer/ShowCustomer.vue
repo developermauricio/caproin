@@ -119,7 +119,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button @click="closeModalShowCustomer()" type="button" data-dismiss="modal" class="btn btn-danger">Cancelar
+          <button @click="closeModalShowCustomer()" type="button" data-dismiss="modal" class="btn btn-gris">Cancelar
           </button>
           <button @click="editCustomer()" type="button" class="btn btn-primary">Actualizar</button>
         </div>
@@ -177,6 +177,7 @@ export default {
   },
 
   methods: {
+
     editCustomer() {
       eventBus.$emit("validarFormulario");
       setTimeout(() => {
@@ -284,6 +285,7 @@ export default {
       this.customer.businessName = ''
       this.identification = ''
       this.customer.typeIdentification = null
+      eventBus.$emit("resetValidaciones");
     }
   },
   watch: {

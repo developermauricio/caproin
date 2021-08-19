@@ -102,7 +102,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-              <button type="button" data-dismiss="modal" class="btn btn-danger" @click="reset()">Cancelar</button>
+              <button type="button" data-dismiss="modal" class="btn btn-gris" @click="reset()">Cancelar</button>
               <button @click="createNewProvider()" type="button" class="btn btn-primary">Crear Proveedor</button>
             </div>
         </form>
