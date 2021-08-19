@@ -10,4 +10,7 @@ class BranchOffice extends Model
     const INACTIVE = 2;
     protected $fillable = ['name', 'code'];
 
+    public function employee(){
+        return $this->hasMany(Employee::class, 'branch_offices_id');
+    }
 }

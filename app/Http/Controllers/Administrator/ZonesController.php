@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use App\Models\Zone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ZonesController extends Controller
 {
@@ -50,13 +51,29 @@ class ZonesController extends Controller
     public function updateApiZone(Request $request){
         $name = $request->name;
         $code = $request->code;
+        $state = json_decode($request->state);
         $id = $request->id;
 
         Zone::where('id', $id)->update([
             'name' => $name,
-            'code' => $code
+            'code' => $code,
+            'state' => $state->id
         ]);
 
         return response()->json('¡Registro Exitoso!');
+    }
+
+    public function deleteZone(Request $request){
+        DB::table('zones')->where('id', $request->id)->delete();
+        return response()->json('Se eliminó correctamente');
+//        $zones = Zone::where('id', $request->id)->with('employee')->first();
+//
+//        if (count($zones->employee) > 0){
+//            return response()->json('No se eliminó por que tiene registros asociados', 301);
+//        }else{
+//            DB::table('zones')->where('id', $request->id)->delete();
+//            return response()->json('Se eliminó correctamente');
+//
+//        }
     }
 }

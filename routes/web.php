@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/ruta-prueba', function (){
+   $branch = \App\Models\BranchOffice::where('id', 6)->with('employee')->first();
+   dd($branch->employee);
+   return $branch;
+});
 
 Route::get('password/activate/{token}', 'Auth\ResetPasswordController@showActivateForm');
 

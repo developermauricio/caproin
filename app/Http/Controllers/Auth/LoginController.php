@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -40,8 +41,14 @@ class LoginController extends Controller
     }
 
     public function redirectTo()
-    {
-        return '/';
+    {   $userAuth = User::where('id', auth()->user()->id)->first();
+        if ($userAuth->remember_token == null){
+            session()->flash('message_login_first');
+            return '/';
+        }else{
+            return '/';
+        }
+
     }
 
     public function logout(Request $request)

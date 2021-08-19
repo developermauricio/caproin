@@ -62,6 +62,10 @@ class UserController extends Controller
 
     public function storeApiUser(Request $request)
     {
+        $ramdon = Str::random(10);
+        $password = Str::random(8);
+        $pass = bcrypt($password);
+
         $name = $request->name;
         $last_name = $request->last_name;
         $email = $request->email;
@@ -70,19 +74,48 @@ class UserController extends Controller
         $type_user = json_decode($request->type_user);
         $role = json_decode($request->role);
 
-        $errors = $this->createUser(
-            $name,
-            $last_name,
-            $email,
-            $phone,
-            [$role->id],
-            $type_user->id,
-            $branch_office->id
-        );
 
-        if (!$errors) {
-            return response()->json('Registro Exitoso!');
-        }
+        $slug = Str::slug($name . '-' . $ramdon, '-');
+
+        $user = User::create([
+            "name" => $name,
+            "last_name" => $last_name,
+            "email" => $email,
+            "password" => $pass,
+            "slug" => $slug,
+            "picture" => '/images/user-profile.png',
+            "phone" => $phone,
+        ]);
+        $user->roles()->attach([$role->id]);
+
+        $employe = Employee::create([
+            'user_id' => $user->id,
+            'type_employee_id' => $type_user->id,
+            'branch_offices_id' => $branch_office->id,
+        ]);
+        Mail::to($user->email)->send(new NewUser($user->name, $password, $user->email));
+        return response()->json('Registro Exitoso!');
+//        $name = $request->name;
+//        $last_name = $request->last_name;
+//        $email = $request->email;
+//        $phone = $request->phone;
+//        $branch_office = json_decode($request->branch_office);
+//        $type_user = json_decode($request->type_user);
+//        $role = json_decode($request->role);
+//
+//        $errors = $this->createUser(
+//            $name,
+//            $last_name,
+//            $email,
+//            $phone,
+//            [$role->id],
+//            $type_user->id,
+//            $branch_office->id
+//        );
+//
+//        if (!$errors) {
+//            return response()->json('Registro Exitoso!');
+//        }
     }
 
     private function getRoles($roles){
@@ -222,12 +255,12 @@ class UserController extends Controller
             $success = $total - $errors;
             if ($success > 0) {
                 return back()
-                    ->with('error', $errors . " datos no se importaron correctamente")
+                    ->with('error', $errors . " datos no se importaron correctamente. Quizás ya estan registrados o el correo electrónico y identificación ya se encuentra registrado. Asegurate que los datos del reporte o tabla, no esten registrados o no esten duplicados.")
                     ->with('status', $success . " datos se importaron correctamente")
                     ->with('lines', $lines);
             } else {
                 return back()
-                    ->with('error', "Ningún dato se ha importado correctamente")
+                    ->with('error', "Ningún dato se ha importado correctamente. Quizás ya estan registrados o el correo electrónico y identificación ya se encuentra registrado. Asegurate que los datos del reporte o tabla, no esten registrados o no esten duplicados.")
                     ->with('lines', $lines);
             }
         }

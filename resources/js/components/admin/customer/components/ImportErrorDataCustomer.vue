@@ -1,5 +1,6 @@
 <template>
   <div class="table-responsive">
+    <h3>Estos datos no fueron importados</h3>
     <div class="py-2">
       <a
         id="link_download"
@@ -13,16 +14,16 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>error</th>
+<!--          <th>error</th>-->
           <th>nombre o razón social</th>
           <th>email</th>
-          <th>telefono</th>
+          <th>teléfono</th>
           <th>identificación</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in lines" :key="item.identificacion + index">
-          <td>{{ getError(item["error"]) }}</td>
+<!--          <td>{{ getError(item["error"]) }}</td>-->
           <td>{{ item["nombre o razon social"] }}</td>
           <td>{{ item["email"] }}</td>
           <td>{{ item["telefono"] }}</td>

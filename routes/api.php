@@ -53,6 +53,7 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::post('update-branch-office', 'BranchOfficesController@updateApiBranchOffice')->name('api.update.brach.office');
     Route::get('get-branch-office/{id}', 'BranchOfficesController@getApiBranchOffice')->name('api.get.brach.office');
     Route::get('/verify-code-branch-office/{code}', 'BranchOfficesController@validateCode')->name('api.validate.code.branch.office');
+    Route::post('/delete-branchoffices', 'BranchOfficesController@deleteBranchOffice')->name('api.delete.branch.offices');
 
     /*=============================================
       API PARA LOS USUARIOS
@@ -75,6 +76,7 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::post('register/store-zone', 'ZonesController@storeApiZone')->name('api.store.zone');
     Route::get('/verify-code-zone/{code}', 'ZonesController@validateCode')->name('api.validate.code.zone');
     Route::post('update-zone', 'ZonesController@updateApiZone')->name('api.update.zone');
+    Route::post('/delete-zone', 'ZonesController@deleteZone')->name('api.delete.zone');
 
     /*=============================================
       API PARA LAS FACTURAS

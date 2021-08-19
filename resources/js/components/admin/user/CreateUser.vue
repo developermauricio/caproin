@@ -213,8 +213,8 @@ export default {
         Swal.fire({
           title: 'Confirmar',
           text: '¿Estás seguro de realizar el registro?',
-          confirmButtonColor: "#0082FB",
-          cancelButtonColor: "#F05E7D",
+          confirmButtonColor: "#D9393D",
+          cancelButtonColor: "#7D7E7E",
           confirmButtonText: 'Aceptar',
           cancelButtonText: 'Cancelar',
           customClass: "swal-confirmation",
@@ -247,7 +247,7 @@ export default {
             });
             setTimeout(() => {
               this.$vs.loading.close()
-            }, 200)
+            }, 2000)
           }
         })
 
