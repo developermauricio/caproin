@@ -126,7 +126,7 @@
                                                 <code>xlsx</code>.
                                             </p>
                                             <p class="card-text text-justify">
-                                                Para el <code>Cliente</code> debe ingresar el correo o la identificación.
+                                                Para el <code>Cliente</code> debe estar previamente registrado y se debe ingresar el correo o la identificación.
                                             </p>
                                             <div class="states">
                                                 <p class="card-text text-justify">
