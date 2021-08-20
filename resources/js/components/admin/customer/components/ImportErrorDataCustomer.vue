@@ -14,7 +14,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-<!--          <th>error</th>-->
+          <th>error</th>
           <th>nombre o razón social</th>
           <th>email</th>
           <th>teléfono</th>
