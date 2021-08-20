@@ -55,7 +55,9 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 <a href="javascript:void(0);" class="brand-logo">
-                                    <h2 class="brand-text text-primary ml-1">Caproin</h2>
+                                     <span class="pb-1">
+                                     <img src="/images/logo-caproin-horizontal-v2.png" width="300" alt="">
+                                     </span>
                                 </a>
 
                                 <h4 class="card-title mb-1">Bienvenido a nuestro sistema 🔒</h4>

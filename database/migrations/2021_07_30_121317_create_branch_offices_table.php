@@ -17,6 +17,10 @@ class CreateBranchOfficesTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('code')->nullable();
+            $table->enum('state', [
+                \App\Models\BranchOffice::ACTIVE,
+                \App\Models\BranchOffice::INACTIVE
+            ])->default(\App\Models\BranchOffice::ACTIVE);
             $table->timestamps();
         });
     }

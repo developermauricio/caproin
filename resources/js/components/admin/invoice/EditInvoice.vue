@@ -58,7 +58,7 @@
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Valor:</label>
-            <p>{{ value }}</p>
+            <p>${{  dollarUSLocale.format(value) }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
@@ -75,14 +75,14 @@
         </div>
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
-            <label>Valor:</label>
+            <label>Número de factura casa representante:</label>
             <p>{{ invoice_number_house_representative }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
             <label>Valor de la comisión:</label>
-            <p>{{ commission_value }}</p>
+            <p>${{ dollarUSLocale.format(commission_value) }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
@@ -405,7 +405,7 @@
           </button>
           <button v-if="showEditInvoice === true" @click="btnCancelEditInvoice"
                   type="button"
-                  class="btn btn-danger waves-effect waves-float waves-light"
+                  class="btn btn-gris waves-effect waves-float waves-light"
                   style="font-size: 0.92rem">
             Cancelar
           </button>
@@ -414,9 +414,9 @@
 
     </div>
     <div class="modal-footer">
-      <button v-if="showDetailInvoice === true" type="button" data-dismiss="modal" class="btn btn-danger">Cerrar
+      <button v-if="showDetailInvoice === true" type="button" data-dismiss="modal" class="btn btn-gris">Cerrar
       </button>
-      <button v-if="showEditInvoice === true" @click="btnCancelEditInvoice" class="btn btn-danger">Cancelar</button>
+      <button v-if="showEditInvoice === true" @click="btnCancelEditInvoice" class="btn btn-gris">Cancelar</button>
       <button v-if="showEditInvoice === true" @click="createNewInvoice()" type="button" class="btn btn-primary">
         Actualizar Factura
       </button>
@@ -453,6 +453,7 @@ export default {
       stateDetail: {
         name: null,
       },
+      dollarUSLocale: Intl.NumberFormat('es-US'),
       date_issue: null,
       expiration_date: null,
       invoice_type: null,
@@ -495,6 +496,7 @@ export default {
     btnCancelEditInvoice() {
       this.showEditInvoice = false;
       this.showDetailInvoice = true;
+
     },
 
     createNewInvoice() {
@@ -535,8 +537,8 @@ export default {
         Swal.fire({
           title: 'Confirmar',
           text: '¿Estás seguro de actualizar?',
-          confirmButtonColor: "#0082FB",
-          cancelButtonColor: "#F05E7D",
+          confirmButtonColor: "#D9393D",
+          cancelButtonColor: "#7D7E7E",
           confirmButtonText: 'Aceptar',
           cancelButtonText: 'Cancelar',
           customClass: "swal-confirmation",
@@ -557,7 +559,7 @@ export default {
                 hideDuration: 7000,
                 position: 'top right',
               })
-              // window.location = "/facturas";
+              window.location = "/facturas";
             }).catch(err => {
               console.log('mostrando el error', err)
               this.$toast.error({

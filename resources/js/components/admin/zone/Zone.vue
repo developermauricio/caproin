@@ -31,21 +31,23 @@
                   <i data-feather="edit-2" class="mr-50"></i>
                   <span>Editar</span>
                 </a>
-<!--                <a class="dropdown-item" href="">-->
-<!--                  <i data-feather="trash" class="mr-50"></i>-->
-<!--                  <span>Eliminar</span>-->
-<!--                </a>-->
+                <a class="dropdown-item" @click="deleteZone(zones.id)">
+                  <i data-feather="trash" class="mr-50"></i>
+                  <span>Eliminar</span>
+                </a>
               </div>
             </div>
           </div>
           <div class="card-body">
             <p>Código de la Sucursal: <strong>{{ zones.code }}</strong></p>
+            <p>Estado: <strong>{{ zones.state == 1 ? 'Activo' : 'Inactivo' }}</strong></p>
+
           </div>
         </div>
       </div>
     </div>
     <!--=====================================
-		    MODAL PARA CREAR UN NUEVA SUCURSAL
+		    MODAL PARA CREAR UN NUEVA ZONA
         ======================================-->
     <div class="modal fade text-left modal-primary" id="modal-new-branch-office" data-backdrop="static" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
@@ -83,13 +85,13 @@
                     :msgServer.sync="errors.code"
                   ></input-form>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                     id="text-verify-code-zone" class="text-danger">El coódigo ya
+                     id="text-verify-code-zone" class="text-danger">El código ya
                     ha sido registrado</p>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button @click="clearInputZone()" type="button" data-dismiss="modal" class="btn btn-danger">
+              <button @click="clearInputZone()" type="button" data-dismiss="modal" class="btn btn-gris">
                 Cancelar
               </button>
               <button @click="createNewZone()" type="button" class="btn btn-primary">Crear Zona</button>
@@ -100,7 +102,7 @@
     </div>
 
     <!--=====================================
-		    MODAL PARA ELIMINAR SUCURSAL
+		    MODAL PARA EDITAR ZONA
         ======================================-->
     <div class="modal fade text-left modal-primary" id="modal-edit-branch-office" data-backdrop="static" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
@@ -140,11 +142,32 @@
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                      id="text-verify-code-zone-edit" class="text-danger">El coódigo ya
                     ha sido registrado</p>
+                  <input-form
+                    label="Estado"
+                    id="textStateZonaEdit"
+                    errorMsg
+                    requiredMsg="El estado es obligatorio"
+                    :required="true"
+                    :modelo.sync="state"
+                    :msgServer.sync="errors.state"
+                    type="multiselect"
+                    selectLabel="Estado"
+                    :multiselect="{ options: optionsStateZone,
+                                           selectLabel:'Seleccionar',
+                                           selectedLabel:'Seleccionado',
+                                           deselectLabel:'Desmarcar',
+                                           placeholder:'Estado',
+                                          taggable : false,
+                                          'track-by':'id',
+                                          label: 'name',
+                                          'custom-label': stateZone=>stateZone.name
+                                        }"
+                  ></input-form>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button @click="clearInputZone()" type="button" data-dismiss="modal" class="btn btn-danger">
+              <button @click="clearInputZone()" type="button" data-dismiss="modal" class="btn btn-gris">
                 Cancelar
               </button>
               <button @click="udateBranchOffice()" type="button" class="btn btn-primary">Actualizar Zona</button>
@@ -169,12 +192,79 @@ export default {
       code: '',
       idValidateCode: null,
       codeValidet: '',
+      state:null,
       id: null,
       searchQuery: null,
       errors: {},
+      optionsStateZone: [
+        {
+          name: 'Activo',
+          id: 1
+        },
+        {
+          name: 'Inactivo',
+          id: 2
+        }
+      ],
     }
   },
   methods: {
+    deleteZone(id){
+      console.log('eliminar', id)
+      const data = new FormData()
+      data.append('id', id);
+
+      Swal.fire({
+        title: 'Confirmar',
+        text: '¿Estás seguro de eliminar esta zona?',
+        confirmButtonColor: "#D9393D",
+        cancelButtonColor: "#7D7E7E",
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        customClass: "swal-confirmation",
+        showCancelButton: true,
+        reverseButtons: true,
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.value) {
+          this.$vs.loading({
+            color: '#3f4f6e',
+            text: 'Eliminando Zona...'
+          })
+          axios.post('/api/delete-zone', data).then(resp => {
+            this.$toast.success({
+              title: '¡Muy bien!',
+              message: 'La Zona se eliminó correctamente',
+              showDuration: 1000,
+              hideDuration: 7000,
+              position: 'top right',
+            })
+            window.location = "/zonas";
+          }).catch(err => {
+            if (err.response.status === 301) {
+              console.log('mensaje',  err.response.data)
+              return this.$toast.error({
+                title: 'Atención',
+                message: err.response.data,
+                showDuration: 1000,
+                hideDuration: 7000,
+                position: 'top right',
+              })
+            }else {
+              this.$toast.error({
+                title: 'Algo salio mal',
+                message: 'Comunícate con el administrador',
+                showDuration: 1000,
+                hideDuration: 8000,
+              })
+            }
+          })
+          setTimeout(() => {
+            this.$vs.loading.close()
+          }, 2000)
+        }
+      })
+    },
     udateBranchOffice() {
       eventBus.$emit("validarFormulario");
       setTimeout(() => {
@@ -194,12 +284,13 @@ export default {
         data.append('name', this.name);
         data.append('code', this.code);
         data.append('id', this.id);
+        data.append('state', JSON.stringify(this.state));
 
         Swal.fire({
           title: 'Confirmar',
-          text: '¿Estás seguro de actualizar esta sucursal?',
-          confirmButtonColor: "#0082FB",
-          cancelButtonColor: "#F05E7D",
+          text: '¿Estás seguro de actualizar esta zona?',
+          confirmButtonColor: "#D9393D",
+          cancelButtonColor: "#7D7E7E",
           confirmButtonText: 'Aceptar',
           cancelButtonText: 'Cancelar',
           customClass: "swal-confirmation",
@@ -259,8 +350,8 @@ export default {
         Swal.fire({
           title: 'Confirmar',
           text: '¿Estás seguro de realizar el registro?',
-          confirmButtonColor: "#0082FB",
-          cancelButtonColor: "#F05E7D",
+          confirmButtonColor: "#D9393D",
+          cancelButtonColor: "#7D7E7E",
           confirmButtonText: 'Aceptar',
           cancelButtonText: 'Cancelar',
           customClass: "swal-confirmation",
@@ -310,6 +401,11 @@ export default {
         this.id = resp.data.data.id
         this.codeValidet = resp.data.data.code
         this.idValidateCode = 1
+        if (resp.data.data.state === '1') {
+          this.state = {name: "Activo", id: 1}
+        } else {
+          this.state = {name: "Inactivo", id: 2}
+        }
 
         setTimeout(() => {
           this.$vs.loading.close()

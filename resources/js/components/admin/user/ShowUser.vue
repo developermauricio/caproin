@@ -164,7 +164,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button @click="closeModalShowUser()" type="button" data-dismiss="modal" class="btn btn-danger">Cancelar
+          <button @click="closeModalShowUser()" type="button" data-dismiss="modal" class="btn btn-gris">Cancelar
           </button>
           <button @click="editUser()" type="button" class="btn btn-primary">Actualizar</button>
         </div>
@@ -265,8 +265,8 @@ export default {
         Swal.fire({
           title: 'Confirmar',
           text: '¿Estás seguro de actualizar?',
-          confirmButtonColor: "#0082FB",
-          cancelButtonColor: "#F05E7D",
+          confirmButtonColor: "#D9393D",
+          cancelButtonColor: "#7D7E7E",
           confirmButtonText: 'Aceptar',
           cancelButtonText: 'Cancelar',
           customClass: "swal-confirmation",
@@ -409,7 +409,7 @@ export default {
 
 <style>
 .multiselect__tag {
-  background: #0082FB !important;
+  background: #B33131 !important;
 }
 
 .multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
@@ -417,7 +417,7 @@ export default {
 }
 
 .multiselect__option--highlight {
-  background: #0082FB !important;
+  background: #B33131 !important;
 }
 </style>
 

@@ -120,7 +120,7 @@
                         <h6 class="text-center">Selecciona desde tu computadora el archivo Excel tipo
                             <strong>xlsx</strong></h6>
                         <input type="file" name="archive" class="form-control text-center" required accept=".xls,.xlsx">
-                        <div class="text-center pt-1"><a href="/storage/import-excel-customers/data.xlsx" target="_blank">Descarga el ejemplo</a></div>
+                        <div class="text-center pt-1"><a href="/import-excel-customers/caproin-import-customer.xlsx" target="_blank">Descarga el ejemplo</a></div>
                         <div class="collapse-default pt-1">
                             <div class="card collapse-icon">
                                 <div id="headingCollapse1" class="card-header" data-toggle="collapse" role="button" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">

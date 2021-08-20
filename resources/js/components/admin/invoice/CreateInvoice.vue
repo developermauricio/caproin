@@ -2,7 +2,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h5 class="modal-title" id="myModalLabel160">Crear Factura</h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <button @click="clearInputsInvoice()" type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -290,7 +290,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn btn-danger">Cancelar</button>
+        <button @click="clearInputsInvoice()" type="button" data-dismiss="modal" class="btn btn-gris">Cancelar</button>
         <button @click="createNewInvoice()" type="button" class="btn btn-primary">Crear Factura</button>
       </div>
     </form>
@@ -343,6 +343,9 @@ export default {
     }
   },
   methods: {
+    clearInputsInvoice(){
+      eventBus.$emit("resetValidaciones");
+    },
     createNewInvoice(){
       eventBus.$emit("validarFormulario");
       setTimeout(() => {
@@ -380,8 +383,8 @@ export default {
           Swal.fire({
             title: 'Confirmar',
             text: '¿Estás seguro de realizar el registro?',
-            confirmButtonColor: "#0082FB",
-            cancelButtonColor: "#F05E7D",
+            confirmButtonColor: "#D9393D",
+            cancelButtonColor: "#7D7E7E",
             confirmButtonText: 'Aceptar',
             cancelButtonText: 'Cancelar',
             customClass: "swal-confirmation",

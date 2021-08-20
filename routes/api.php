@@ -53,6 +53,7 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::post('update-branch-office', 'BranchOfficesController@updateApiBranchOffice')->name('api.update.brach.office');
     Route::get('get-branch-office/{id}', 'BranchOfficesController@getApiBranchOffice')->name('api.get.brach.office');
     Route::get('/verify-code-branch-office/{code}', 'BranchOfficesController@validateCode')->name('api.validate.code.branch.office');
+    Route::post('/delete-branchoffices', 'BranchOfficesController@deleteBranchOffice')->name('api.delete.branch.offices');
 
     /*=============================================
       API PARA LOS USUARIOS
@@ -61,9 +62,11 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('/get-branchofficetype', 'UserController@getBranchOfficeType')->name('api.get.branch.office.type');
     Route::get('/get-rol', 'UserController@getRol')->name('api.get.rol.type');
     Route::get('/get-type-user', 'UserController@getTypeUser')->name('api.get.type.user');
-    Route::post('register/store-user', 'UserController@storeApiUser')->name('api.store.customer');
+    Route::post('register/store-user', 'UserController@storeApiUser')->name('api.store.user');
     Route::get('data-user/{id}', 'UserController@getApiDataUser')->name('api.data.user');
     Route::post('update-user', 'UserController@updateApiUser')->name('api.update.user');
+    Route::post('import-data-users', 'UserController@importDataUser')->name('import.data.users');
+    Route::post('register/update-password', 'UserController@updateApiPasswordUser')->name('api.update.user.password');
 
     /*=============================================
       API PARA LAS ZONAS
@@ -73,6 +76,7 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::post('register/store-zone', 'ZonesController@storeApiZone')->name('api.store.zone');
     Route::get('/verify-code-zone/{code}', 'ZonesController@validateCode')->name('api.validate.code.zone');
     Route::post('update-zone', 'ZonesController@updateApiZone')->name('api.update.zone');
+    Route::post('/delete-zone', 'ZonesController@deleteZone')->name('api.delete.zone');
 
     /*=============================================
       API PARA LAS FACTURAS
@@ -100,6 +104,20 @@ Route::group(['namespace' => 'Administrator'], function () {
     // Route::post('register/store-invoice', 'InvoiceController@storeApiInvoice')->name('api.store.invoice');
     // Route::get('data-invoice/{id}', 'InvoiceController@getApiDataInvoice')->name('api.data.invoice');
     // Route::post('/register/update-invoice', 'InvoiceController@updateApiInvoice')->name('api.update.invoice');
+    /*=============================================
+               API PARA LOS PRODUCTOS
+    =============================================*/
+    Route::get('/all-products-services', 'ProductServiceController@getApiInvoices')->name('api.all.products.services');
+    Route::get('/verify-code-product/{code}', 'ProductServiceController@validateCode')->name('api.validate.code.product.service');
+    Route::get('/get-product-service', 'ProductServiceController@getApiTypeProductService')->name('api.type.product.service');
+    Route::post('register/store-product-service', 'ProductServiceController@storeApiProductService')->name('api.store.product.service');
+    Route::get('data-product-service/{id}', 'ProductServiceController@getApiDataProductService')->name('api.data.product.service');
+    Route::post('/register/update-product-service', 'ProductServiceController@updateApiProductService')->name('api.update.invoice');
+
+
+
+
+
 });
 
 /*=============================================
@@ -113,4 +131,5 @@ Route::get('/verify-email-company/{email}', 'Controller@validateEmailCompany')->
 Route::get('/get-identificationtype', 'Controller@getIdentificationType')->name('api.get.identification.type');
 Route::get('/get-customer-category', 'Controller@customerCategory')->name('api.get.customer.category');
 Route::get('/get-customer-position', 'Controller@customerPosition')->name('api.get.customer.position');
+
 

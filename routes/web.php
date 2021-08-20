@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/ruta-prueba', function (){
+   $branch = \App\Models\BranchOffice::where('id', 6)->with('employee')->first();
+   dd($branch->employee);
+   return $branch;
+});
 
 Route::get('password/activate/{token}', 'Auth\ResetPasswordController@showActivateForm');
 
@@ -69,4 +74,12 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
           ORDENES DE COMPRA
         =============================================*/
     Route::get('/ordenes-compra', 'PurchaseOrderController@index')->name('admin.purchase_order.purchase_orders');
+    Route::post('/import-data-invoice', 'InvoiceController@importDataInvoice')->name('import.data.invoices');
+
+    /*=============================================
+         RUTAS PARA LOS MODULOS DE PRODUCTOS Y SERVICIOS
+    =============================================*/
+    Route::get('/productos-servicios', 'ProductServiceController@index')->name('admin.products,services');
+
+
 });

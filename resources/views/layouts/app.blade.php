@@ -76,7 +76,8 @@
                             {{--                                </g>--}}
                             {{--                            </svg>--}}
                     </span>
-                        <h1 class="brand-text">Caproin</h1>
+                        {{--                        <h1 class="brand-text">Caproin</h1>--}}
+                        <img src="/images/logo-caproin-horizontal-v2.png" width="200" alt="">
                     </a></li>
                 {{--            <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc" data-ticon="disc"></i></a></li>--}}
             </ul>
@@ -108,6 +109,14 @@
                         </div>
                     </div>
                 @endif
+                @if (session('message_login_first'))
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">¡Bienvenido a Caproin System!</h4>
+                        <div class="alert-body">
+                            Recuerda cambiar tu contraseña <a data-toggle="modal" data-target="#default" href="">Has clic aquí </a>o en la parte superior derecha donde esta tu nombre y luego perfil.
+                        </div>
+                    </div>
+                @endif
                 @if (session('error'))
                     <div class="alert alert-danger" role="alert">
                         <h4 class="alert-heading">¡Opps!</h4>
@@ -115,9 +124,19 @@
                             {{ session('error') }}
                         </div>
                     </div>
-                @endif
-                @yield('content')
+            @endif
+            @yield('content')
 
+            <!--=====================================
+		            MODAL PARA EL PERFIL
+                ======================================-->
+                <div class="modal fade text-left" id="default" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+
+                        <component-modal-profile :user="{{\App\User::roleAuth()}}"></component-modal-profile>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

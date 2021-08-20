@@ -31,15 +31,16 @@
                   <i data-feather="edit-2" class="mr-50"></i>
                   <span>Editar</span>
                 </a>
-<!--                <a class="dropdown-item" href="">-->
-<!--                  <i data-feather="trash" class="mr-50"></i>-->
-<!--                  <span>Eliminar</span>-->
-<!--                </a>-->
+                <a class="dropdown-item" @click="deleteBranchOffice(branchsOffices.id)">
+                  <i data-feather="trash" class="mr-50"></i>
+                  <span>Eliminar</span>
+                </a>
               </div>
             </div>
           </div>
           <div class="card-body">
             <p>Código de la Sucursal: <strong>{{ branchsOffices.code }}</strong></p>
+            <p>Estado: <strong>{{ branchsOffices.state == 1 ? 'Activo' : 'Inactivo' }}</strong></p>
           </div>
         </div>
       </div>
@@ -89,7 +90,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button @click="clearInputBranchOffice()" type="button" data-dismiss="modal" class="btn btn-danger">
+              <button @click="clearInputBranchOffice()" type="button" data-dismiss="modal" class="btn btn-gris">
                 Cancelar
               </button>
               <button @click="createNewBranchOffice()" type="button" class="btn btn-primary">Crear Sucursal</button>
@@ -100,7 +101,7 @@
     </div>
 
     <!--=====================================
-		    MODAL PARA ELIMINAR SUCURSAL
+		    MODAL PARA EDITAR SUCURSAL
         ======================================-->
     <div class="modal fade text-left modal-primary" id="modal-edit-branch-office" data-backdrop="static" tabindex="-1"
          role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
@@ -140,11 +141,32 @@
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                      id="text-verify-code-branch-office-edit" class="text-danger">El coódigo ya
                     ha sido registrado</p>
+                  <input-form
+                    label="Estado"
+                    id="textStateBranchOfficeEdit"
+                    errorMsg
+                    requiredMsg="El estado es obligatorio"
+                    :required="true"
+                    :modelo.sync="state"
+                    :msgServer.sync="errors.state"
+                    type="multiselect"
+                    selectLabel="Estado"
+                    :multiselect="{ options: optionsStateBranchOffice,
+                                           selectLabel:'Seleccionar',
+                                           selectedLabel:'Seleccionado',
+                                           deselectLabel:'Desmarcar',
+                                           placeholder:'Estado',
+                                          taggable : false,
+                                          'track-by':'id',
+                                          label: 'name',
+                                          'custom-label': stateBranchOffice=>stateBranchOffice.name
+                                        }"
+                  ></input-form>
                 </div>
               </div>
             </div>
             <div class="modal-footer">
-              <button @click="clearInputBranchOffice()" type="button" data-dismiss="modal" class="btn btn-danger">
+              <button @click="clearInputBranchOffice()" type="button" data-dismiss="modal" class="btn btn-gris">
                 Cancelar
               </button>
               <button @click="udateBranchOffice()" type="button" class="btn btn-primary">Actualizar Sucursal</button>
@@ -171,10 +193,77 @@ export default {
       codeValidet: '',
       id: null,
       searchQuery: null,
+      state: null,
+      optionsStateBranchOffice: [
+        {
+          name: 'Activo',
+          id: 1
+        },
+        {
+          name: 'Inactivo',
+          id: 2
+        }
+      ],
       errors: {},
     }
   },
   methods: {
+    deleteBranchOffice(id) {
+      console.log('eliminar', id)
+      const data = new FormData()
+      data.append('id', id);
+
+      Swal.fire({
+        title: 'Confirmar',
+        text: '¿Estás seguro de eliminar esta sucursal?',
+        confirmButtonColor: "#D9393D",
+        cancelButtonColor: "#7D7E7E",
+        confirmButtonText: 'Aceptar',
+        cancelButtonText: 'Cancelar',
+        customClass: "swal-confirmation",
+        showCancelButton: true,
+        reverseButtons: true,
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.value) {
+          this.$vs.loading({
+            color: '#3f4f6e',
+            text: 'Eliminando Sucursal...'
+          })
+          axios.post('/api/delete-branchoffices', data).then(resp => {
+            this.$toast.success({
+              title: '¡Muy bien!',
+              message: 'Sucursal se eliminó correctamente',
+              showDuration: 1000,
+              hideDuration: 7000,
+              position: 'top right',
+            })
+            window.location = "/sucursales";
+          }).catch(err => {
+            if (err.response.status === 301) {
+              console.log('mensaje',  err.response.data)
+              return this.$toast.error({
+                title: 'Atención',
+                message: err.response.data,
+                showDuration: 1000,
+                hideDuration: 7000,
+                position: 'top right',
+              })
+            }else {
+              this.$toast.error({
+                title: 'Algo salio mal',
+                message: 'Comunícate con el administrador',
+                showDuration: 1000,
+                hideDuration: 8000,
+              })
+            }
+          })
+          setTimeout(() => {
+            this.$vs.loading.close()
+          }, 2000)
+        }
+      })
+    },
     udateBranchOffice() {
       eventBus.$emit("validarFormulario");
       setTimeout(() => {
@@ -194,12 +283,13 @@ export default {
         data.append('name', this.name);
         data.append('code', this.code);
         data.append('id', this.id);
+        data.append('state', JSON.stringify(this.state));
 
         Swal.fire({
           title: 'Confirmar',
           text: '¿Estás seguro de actualizar esta sucursal?',
-          confirmButtonColor: "#0082FB",
-          cancelButtonColor: "#F05E7D",
+          confirmButtonColor: "#D9393D",
+          cancelButtonColor: "#7D7E7E",
           confirmButtonText: 'Aceptar',
           cancelButtonText: 'Cancelar',
           customClass: "swal-confirmation",
@@ -259,8 +349,8 @@ export default {
         Swal.fire({
           title: 'Confirmar',
           text: '¿Estás seguro de realizar el registro?',
-          confirmButtonColor: "#0082FB",
-          cancelButtonColor: "#F05E7D",
+          confirmButtonColor: "#D9393D",
+          cancelButtonColor: "#7D7E7E",
           confirmButtonText: 'Aceptar',
           cancelButtonText: 'Cancelar',
           customClass: "swal-confirmation",
@@ -305,11 +395,18 @@ export default {
           color: '#3f4f6e',
           text: 'Cargando datos...'
         })
+        // console.log(resp.data.data)
         this.name = resp.data.data.name
         this.code = resp.data.data.code
         this.id = resp.data.data.id
         this.codeValidet = resp.data.data.code
         this.idValidateCode = 1
+
+        if (resp.data.data.state === '1') {
+          this.state = {name: "Activo", id: 1}
+        } else {
+          this.state = {name: "Inactivo", id: 2}
+        }
 
         setTimeout(() => {
           this.$vs.loading.close()
@@ -321,7 +418,7 @@ export default {
     getBranchOffices() {
       axios.get('/api/all-branch-offices').then(resp => {
         this.dataBranchOffices = resp.data.data
-        setTimeout(()=>{
+        setTimeout(() => {
           window.feather.replace()
         }, 200)
 

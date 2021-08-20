@@ -14,20 +14,26 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>error</th>
-          <th>nombre o razón social</th>
-          <th>email</th>
+<!--          <th>error</th>-->
+          <th>nombres</th>
+          <th>apellidos</th>
+          <th>correo</th>
           <th>teléfono</th>
-          <th>identificación</th>
+          <th>roles</th>
+          <th>tipo usuario</th>
+          <th>oficina</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in lines" :key="item.identificacion + index">
-          <td>{{ item["error"] }}</td>
-          <td>{{ item["nombre o razon social"] }}</td>
-          <td>{{ item["email"] }}</td>
-          <td>{{ item["telefono"] }}</td>
-          <td>{{ item["identificacion"] }}</td>
+<!--          <td>{{ item["error"] }}</td>-->
+          <td>{{ item["nombres"] }}</td>
+          <td>{{ item["apellidos"] }}</td>
+          <td>{{ item["correo"] }}</td>
+          <td>{{ item["teléfono"] }}</td>
+          <td>{{ item["roles"] }}</td>
+          <td>{{ item["tipo usuario"] }}</td>
+          <td>{{ item["oficina"] }}</td>
         </tr>
       </tbody>
     </table>
@@ -36,11 +42,12 @@
 
 <script>
 export default {
-  name: "ImportErrorDataCustomer",
+  name: "ImportErrorDataUser",
   props: ["lines"],
   data() {
     return {
-      nameReportDownload: "errors-customer",
+      nameReportDownload: "errors-users",
+      hrefDownload: null,
     };
   },
   methods: {

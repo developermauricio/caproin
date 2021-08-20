@@ -184,9 +184,8 @@ class DatabaseSeeder extends Seeder
         /*=============================================
             TIPOS DE PRODUCTO PRODUCTO
         =============================================*/
-        factory(\App\Models\TypeProduct::class)->create(['name' => 'Tipo 1']);
-        factory(\App\Models\TypeProduct::class)->create(['name' => 'Tipo 2']);
-        factory(\App\Models\TypeProduct::class)->create(['name' => 'Tipo 3']);
+        factory(\App\Models\TypeProduct::class)->create(['name' => 'Producto']);
+        factory(\App\Models\TypeProduct::class)->create(['name' => 'Servicio']);
 
         /*=============================================
             PRODUCTOS

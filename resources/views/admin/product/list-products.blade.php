@@ -8,21 +8,17 @@
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
 @endpush
-@section('title', 'Lista de Facturas')
+@section('title', 'Lista de Productos y Servicios')
 @section('header_page')
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Lista de Facturas</h2>
+                    <h2 class="content-header-title float-left mb-0">Lista de Productos y Servicios</h2>
                     <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb">
-                            {{-- <li class="breadcrumb-item"><a href="index.html">Home</a>--}}
-                            {{-- </li>--}}
-                            {{-- <li class="breadcrumb-item"><a href="#">Layouts</a>--}}
-                            {{-- </li>--}}
                             <li class="breadcrumb-item active">
-                                Facturas
+                                Productos y Servicios
                             </li>
                         </ol>
                     </div>
@@ -32,41 +28,26 @@
     </div>
 @endsection
 @section('content')
-@if (session('lines'))
-<div class="row">
-    <div class="col-12">
-        <div class="card p-2">
-            <import-error-data-invoice :lines="{{session('lines')}}"></import-error-data-invoice>
-        </div>
-    </div>
-</div>
-@endif
     <section id="basic-datatable">
         <div class="row">
             <div class="col-12">
                 <div class="card p-2">
                     <table
-                        class="datatables-all-invoices hover datatablescreategica table-responsive datatables-basic table table-striped"
+                        class="datatables-all-products-services hover datatablescreategica table-responsive datatables-basic table table-striped"
                         style="width:100%">
                         <thead>
                         <tr>
-                            <th style="max-width: 30% !important;">Número Factura</th>
-                            <th>Fecha de Emisión</th>
-                            <th>Cliente</th>
-                            <th>Tipo de Factura</th>
-                            <th>Valor Total</th>
-                            <th>Fecha de Pago Cliente</th>
-                            <th>Estado</th>
+                            <th style="max-width: 30% !important;">Código</th>
+                            <th>Tipo</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
                             <th>Acciones</th>
                         </tr>
                         <tr class="tr-filter-dekstop-provider">
                             <th></th>
+                            <th class="filter-1" style="max-width: 30% !important;"></th>
                             <th></th>
                             <th></th>
-                            <th class="filter-3" style="max-width: 30% !important;"></th>
-                            <th></th>
-                            <th></th>
-                            <th class="filter-6"></th>
                             <th></th>
                         </tr>
                         </thead>
@@ -75,118 +56,51 @@
             </div>
         </div>
         <!--=====================================
-                MODAL PARA CREAR UNA NUEVA FACTURA
+                MODAL PARA CREAR NUEVOS PRODUCTOS SERVICIOS
             ======================================-->
-        <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-new-provider" data-backdrop="static"
+        <div class="modal fade text-left modal-primary" id="modal-new-product-service" data-backdrop="static"
              tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <create-invoice></create-invoice>
+                <component-create-product-service></component-create-product-service>
             </div>
         </div>
 
         <!--=====================================
                 MODAL PARA EDITAR LAS FACTURAS
             ======================================-->
-        <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-show-customer" data-backdrop="static" tabindex="-1"
+        <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-show-product-service" data-backdrop="static" tabindex="-1"
              role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <edit-invoice id="componet-edit-invoice" id-invoice></edit-invoice>
+                <edit-product-service id="component-edit-product-service" id-product-service></edit-product-service>
             </div>
         </div>
 
         <!--=====================================
-                MODAL PARA IMPORTAR FACTURAS
+                MODAL PARA IMPORTAR CLIENTES
             ======================================-->
-        <div class="modal fade text-left modal-primary" id="modal-import-invoices" data-backdrop="static" tabindex="-1"
+        <div class="modal fade text-left modal-primary" id="modal-import-customer" data-backdrop="static" tabindex="-1"
              role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog" role="document">
+                {{-- <import-data-customers></import-data-customers> --}}
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="myModalLabel160">Importar Facturas</h5>
+                        <h5 class="modal-title" id="myModalLabel160">Importar Clientes</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{ route('import.data.invoices') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('import.data.customers') }}" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">
                             @csrf
                             <h6 class="text-center">Selecciona desde tu computadora el archivo Excel tipo
                                 <strong>xlsx</strong></h6>
-                            <input type="file" name="archive" class="form-control text-center" required accept=".xls,.xlsx">
-                            <div class="text-center pt-1"><a href="/import-excel-invoices/caproin-import-invoices.xlsx" target="_blank">Descarga el ejemplo</a></div>
-                            <div class="collapse-default pt-1">
-                                <div class="card collapse-icon">
-                                    <div id="headingCollapse1" class="card-header" data-toggle="collapse" role="button" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
-                                        <span class="lead collapse-title">Instrucciones</span>
-                                    </div>
-                                    <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1" class="collapse">
-                                        <div class="card-body">
-                                            <p class="card-text text-justify">
-                                                Para importar facturas debe cargar un archivo Excel en formato
-                                                <code>xlsx</code>.
-                                            </p>
-                                            <p class="card-text text-justify">
-                                                Para el <code>Cliente</code> debe estar previamente registrado y se debe ingresar el correo o la identificación.
-                                            </p>
-                                            <div class="states">
-                                                <p class="card-text text-justify">
-                                                    Para el <code>estado</code> debe ingresar un
-                                                    número como se muestra en el archivo excel de ejemplo. A
-                                                    continuación la tabla con el nombre del estado y el número.
-                                                </p>
-                                                <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Número</th>
-                                                                <th>Estado</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        @foreach ($states as $state)
-                                                            <tr>
-                                                                <td>{{$state->id}}</td>
-                                                                <td>{{$state->name}}</td>
-                                                            </tr>
-                                                        @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-
-                                            <div class="typeInvoices">
-                                                <p class="card-text text-justify">
-                                                    Para el <code>Tipo de Factura</code> debe ingresar un
-                                                    número como se muestra en el archivo excel de ejemplo. A
-                                                    continuación la tabla con el nombre de tipo de factura y el número.
-                                                </p>
-                                                <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Número</th>
-                                                                <th>Tipo Factura</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                        @foreach ($typeInvoices as $typeInvoice)
-                                                            <tr>
-                                                                <td>{{$typeInvoice->id}}</td>
-                                                                <td>{{$typeInvoice->name}}</td>
-                                                            </tr>
-                                                        @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <input type="file" name="archive" class="form-control text-center" required
+                                   accept=".xls,.xlsx">
+                            <div class="text-center pt-1"><a href="/storage/import-excel-customers/data.xlsx"
+                                                             target="_blank">Descarga el ejemplo</a></div>
                         </div>
                         <div class="modal-footer">
-                            <button id="btn_importar" type="submit" type="button" class="btn btn-primary">Importar</button>
+                            <button type="submit" type="button" class="btn btn-primary">Importar</button>
                         </div>
                     </form>
                 </div>
@@ -216,7 +130,7 @@
             let table = null;
             let dollarUSLocale = Intl.NumberFormat('es-US');
             setTimeout(() => {
-                table = $('.datatables-all-invoices').DataTable({
+                table = $('.datatables-all-products-services').DataTable({
                     "ordering": true
                     ,
                     "orderCellsTop": true
@@ -224,10 +138,10 @@
                     "fixedHeader": true
                     ,
                     "initComplete": function () {
-                        this.api().columns([3]).every(function () {
+                        this.api().columns([1]).every(function () {
                             var column = this;
                             var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
-                                .appendTo('.datatables-all-invoices .filter-' + column[0][0])
+                                .appendTo('.datatables-all-products-services .filter-' + column[0][0])
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val()
@@ -243,30 +157,30 @@
                             });
                         });
 
-                        this.api().columns([6]).every(function () {
-                            var column = this;
-                            var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
-                                .appendTo('.datatables-all-invoices .filter-' + column[0][0])
-                                .on('change', function () {
-                                    var val = $.fn.dataTable.util.escapeRegex(
-                                        $(this).val()
-                                        ,);
-                                    console.log('que fue', val)
-                                    column
-                                        .search(val ? '^' + val + '$' : '', true, false)
-                                        .draw();
-                                });
-
-                            column.data().unique().sort().each(function (d, j) {
-                                select.append('<option value="' + d + '">' + d + '</option>')
-                            });
-                        });
+                        // this.api().columns([6]).every(function () {
+                        //     var column = this;
+                        //     var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
+                        //         .appendTo('.datatables-all-products-services .filter-' + column[0][0])
+                        //         .on('change', function () {
+                        //             var val = $.fn.dataTable.util.escapeRegex(
+                        //                 $(this).val()
+                        //                 ,);
+                        //             console.log('que fue', val)
+                        //             column
+                        //                 .search(val ? '^' + val + '$' : '', true, false)
+                        //                 .draw();
+                        //         });
+                        //
+                        //     column.data().unique().sort().each(function (d, j) {
+                        //         select.append('<option value="' + d + '">' + d + '</option>')
+                        //     });
+                        // });
 
 
                         // this.api().columns([6]).every(function () {
                         //     var column = this;
                         //     var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
-                        //         .appendTo('.datatables-all-invoices .filter-' + column[0][0])
+                        //         .appendTo('.datatables-all-products-services .filter-' + column[0][0])
                         //         .on('change', function () {
                         //             var val = $.fn.dataTable.util.escapeRegex(
                         //                 $(this).val()
@@ -282,7 +196,7 @@
                         //     });
                         // });
 
-                        this.api().columns([3]).every(function () {
+                        this.api().columns([1]).every(function () {
                             var column = this;
                             var select = $(`<select class="form-control filter-select-movil-provider mb-1"><option hidden selected>Filtrar por tipo de identificación</option><option value="">Mostrar todos los registros</option></select>`)
                                 .appendTo('.card-header')
@@ -299,27 +213,27 @@
                                 select.append('<option value="' + d + '">' + d + '</option>')
                             });
                         });
-                        this.api().columns([6]).every(function () {
-                            var column = this;
-                            console.log(column)
-                            var select = $('<select class="form-control filter-select-movil-provider mb-1"><option hidden selected>Filtrar por Estado</option><option value="">Mostrar todos los registros</option></select>')
-                                .appendTo('.card-header')
-                                .on('change', function () {
-                                    var val = $.fn.dataTable.util.escapeRegex(
-                                        $(this).val()
-                                        ,);
-                                    console.log('que fue', val)
-                                    column
-                                        .search(val ? '^' + val + '$' : '', true, false)
-                                        .draw();
-                                });
-
-                            column.data().unique().sort().each(function (d, j) {
-                                console.log('ESTAD0', d)
-                                const state = (d == 1 ? 'Activo' : 'Inactivo');
-                                select.append('<option value="' + state + '">' + state + '</option>')
-                            });
-                        });
+                        // this.api().columns([6]).every(function () {
+                        //     var column = this;
+                        //     console.log(column)
+                        //     var select = $('<select class="form-control filter-select-movil-provider mb-1"><option hidden selected>Filtrar por Estado</option><option value="">Mostrar todos los registros</option></select>')
+                        //         .appendTo('.card-header')
+                        //         .on('change', function () {
+                        //             var val = $.fn.dataTable.util.escapeRegex(
+                        //                 $(this).val()
+                        //                 ,);
+                        //             console.log('que fue', val)
+                        //             column
+                        //                 .search(val ? '^' + val + '$' : '', true, false)
+                        //                 .draw();
+                        //         });
+                        //
+                        //     column.data().unique().sort().each(function (d, j) {
+                        //         console.log('ESTAD0', d)
+                        //         const state = (d == 1 ? 'Activo' : 'Inactivo');
+                        //         select.append('<option value="' + state + '">' + state + '</option>')
+                        //     });
+                        // });
                     },
 
                     "processing": true
@@ -351,7 +265,7 @@
                     // "order": [[1, 'asc']],
 
                     "ajax": {
-                        url: "{{route('api.all.invoices')}}"
+                        url: "{{route('api.all.products.services')}}"
                         ,
                     }
                     ,
@@ -359,93 +273,50 @@
                         // {"data": "id"},
                         {
                             render: function (data, type, JsonResultRow, meta) {
-                                if (JsonResultRow.invoice_number === null) {
+                                if (JsonResultRow.code === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
                                 } else {
-                                    return `<span class="label text-center font-weight-bold">${JsonResultRow.invoice_number}</span>`;
+                                    return `<span class="label text-center font-weight-bold">${JsonResultRow.code}</span>`;
+                                }
+                            }
+                            ,
+                        }
+                        , {
+                            data: "product_type.name",
+                            render: function (data, type, JsonResultRow, meta) {
+                                if (JsonResultRow.product_type === null) {
+                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                } else {
+                                    return `<span class="label text-center font-weight-bold">${JsonResultRow.product_type.name}</span>`;
                                 }
                             }
                             ,
                         }
                         , {
                             render: function (data, type, JsonResultRow, meta) {
-                                if (JsonResultRow.date_issue === null) {
+                                if (JsonResultRow.name === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
                                 } else {
-                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_issue).locale('es').format("dddd, MMMM Do YYYY")}</span>`;
+                                    return `<span class="label text-center font-weight-bold">${JsonResultRow.name}</span>`;
                                 }
                             }
                             ,
                         }
                         , {
                             render: function (data, type, JsonResultRow, meta) {
-                                if (JsonResultRow.customers.business_name === null) {
+                                if (JsonResultRow.description === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
                                 } else {
-                                    return `<span class="label text-center font-weight-bold">${JsonResultRow.customers.business_name}</span>`;
+                                    return `<span class="label text-center font-weight-bold">${JsonResultRow.description}</span>`;
                                 }
                             }
                             ,
                         }
-                        , {
-                            data: "type_invoice.name",
-                            render: function (data, type, JsonResultRow, meta) {
-                                if (JsonResultRow.type_invoice.name === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
-                                } else {
-                                    return `<span class="label text-center font-weight-bold">${JsonResultRow.type_invoice.name}</span>`;
-                                }
-                            }
-                            ,
-                        }
-                        , {
-                            render: function (data, type, JsonResultRow, meta) {
-                                if (JsonResultRow.value_total === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
-                                } else {
-                                    return `<span class="label text-center font-weight-bold">$${dollarUSLocale.format(JsonResultRow.value_total)}</span>`;
-                                }
-                            }
-                            ,
-                        },
+                        ,
 
                         {
                             render: function (data, type, JsonResultRow, meta) {
-                                if (JsonResultRow.date_payment_client === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
-                                } else {
-                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_payment_client).locale('es').format("dddd, MMMM Do YYYY")}</span>`;
-                                }
-                            }
-                            ,
-                        },
-
-                        {
-                            data: "state.name",
-                            render: function (data, type, JsonResultRow, meta) {
-                                if (JsonResultRow.state.name === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
-                                } else {
-                                    return `<span class="label text-center font-weight-bold">${JsonResultRow.state.name}</span>`;
-                                }
-                            }
-                            ,
-                        },
-
-                        // {
-                        //     data: "state.name"
-                        //     , render: function (data, type, JsonResultRow, meta) {
-                        //         if (JsonResultRow.state === "1") {
-                        //             return '<div class="badge badge-pill badge-light-success mr-1">Activo</div>'
-                        //         } else {
-                        //             return `<div class="badge badge-pill badge-light-danger mr-1">Inactivo</div>`;
-                        //         }
-                        //     }
-                        //     ,
-                        // },
-                        {
-                            render: function (data, type, JsonResultRow, meta) {
-                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-customer" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-invoice btn-icon btn-primary"><i data-feather="edit-2"></i></button></div>'
+                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-product-service" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-invoice btn-icon btn-primary"><i data-feather="edit-2"></i></button></div>'
 
                             }
                             ,
@@ -492,7 +363,7 @@
                             }) + 'Imprimir'
                             , "className": 'dropdown-item'
                             , "exportOptions": {
-                                columns: [0, 1, 2, 3, 4, 5, 6]
+                                columns: [0, 1, 2, 3]
                             }
                             , "customize": function (win) {
                                 $(win.document.body)
@@ -513,7 +384,7 @@
                                 }) + 'Csv'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3, 4, 5, 6]
+                                    columns: [0, 1, 2, 3]
                                 }
                             }
                             , {
@@ -523,7 +394,7 @@
                                 }) + 'Excel'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3, 4, 5, 6]
+                                    columns: [0, 1, 2, 3]
                                 }
                             }
                             , {
@@ -533,7 +404,7 @@
                                 }) + 'Pdf'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3, 4, 5, 6]
+                                    columns: [0, 1, 2, 3]
                                 }
                                 , "orientation": 'landscape',
                                 // "customize": function (doc) {
@@ -551,7 +422,7 @@
                                 }) + 'Copiar'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3, 4, 5, 6]
+                                    columns: [0, 1, 2, 3]
                                 }
                             }
                         ],
@@ -562,28 +433,28 @@
                         //         $(node).closest('.dt-buttons').removeClass('btn-group').addClass('d-inline-flex');
                         //     }, 50);
                         // }
-                    },
-                        {
-                             text: feather.icons['file-text'].toSvg({
-                                 class: 'mr-50 font-small-4'
-                             }) + 'Importar'
-                             , className: 'create-new btn btn-primary'
-                             , attr: {
-                                 'data-target': '#modal-import-invoices'
-                                 , 'data-toggle': 'modal'
-                                 ,
-                             }
-                             , init: function (api, node, config) {
-                                 $(node).removeClass('btn-secondary');
-                             }
-                         }
+                    }
+                        // , {
+                        //     text: feather.icons['file-text'].toSvg({
+                        //         class: 'mr-50 font-small-4'
+                        //     }) + 'Importar'
+                        //     , className: 'create-new btn btn-primary'
+                        //     , attr: {
+                        //         'data-target': '#modal-import-customer'
+                        //         , 'data-toggle': 'modal'
+                        //         ,
+                        //     }
+                        //     , init: function (api, node, config) {
+                        //         $(node).removeClass('btn-secondary');
+                        //     }
+                        // }
                         , {
                             text: feather.icons['plus'].toSvg({
                                 class: 'mr-50 font-small-4'
-                            }) + 'Nueva Factura '
+                            }) + 'Nuevo Producto o Servicio '
                             , className: 'create-new btn btn-primary'
                             , attr: {
-                                'data-target': '#modal-new-provider'
+                                'data-target': '#modal-new-product-service'
                                 , 'data-toggle': 'modal'
                                 ,
                             }
@@ -594,7 +465,7 @@
                     ],
 
                 })
-                let text = 'Todas las facturas registradas'
+                let text = 'Todas los productos y servicios registrados'
                 $('div.head-label').html(`<h6 class="mb-0">${text}</h6>`);
                 // table.on('order.dt search.dt', function () {
                 //     table.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
@@ -604,11 +475,11 @@
             }, 5);
 
 
-            $('.datatables-all-invoices').on('click', '.btn-show-invoice', function (e) {
-                var dataTableInvoice = table.row($(this).parents('tr')).data();
-                console.log(dataTableInvoice.id);
-                $('#traerDatosBotonInvoice').val(dataTableInvoice.id).click();
-                $('#componet-edit-invoice').attr("id-invoice", dataTableInvoice.id)
+            $('.datatables-all-products-services').on('click', '.btn-show-invoice', function (e) {
+                var dataTableProducService = table.row($(this).parents('tr')).data();
+                console.log(dataTableProducService.id);
+                $('#traerDatosBotonProductService').val(dataTableProducService.id).click();
+                $('#component-edit-product-service').attr("id-product-service", dataTableProducService.id)
             });
         });
 

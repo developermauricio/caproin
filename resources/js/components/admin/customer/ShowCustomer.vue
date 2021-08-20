@@ -119,7 +119,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button @click="closeModalShowCustomer()" type="button" data-dismiss="modal" class="btn btn-danger">Cancelar
+          <button @click="closeModalShowCustomer()" type="button" data-dismiss="modal" class="btn btn-gris">Cancelar
           </button>
           <button @click="editCustomer()" type="button" class="btn btn-primary">Actualizar</button>
         </div>
@@ -177,6 +177,7 @@ export default {
   },
 
   methods: {
+
     editCustomer() {
       eventBus.$emit("validarFormulario");
       setTimeout(() => {
@@ -208,8 +209,8 @@ export default {
         Swal.fire({
           title: 'Confirmar',
           text: '¿Estás seguro de actualizar?',
-          confirmButtonColor: "#0082FB",
-          cancelButtonColor: "#F05E7D",
+          confirmButtonColor: "#D9393D",
+          cancelButtonColor: "#7D7E7E",
           confirmButtonText: 'Aceptar',
           cancelButtonText: 'Cancelar',
           customClass: "swal-confirmation",

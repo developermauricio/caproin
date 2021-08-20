@@ -55,6 +55,7 @@ COMPONENTES PARA LOS MODULOS DE USUARIOS
 =============================================*/
 Vue.component('create-users', require('./components/admin/user/CreateUser.vue').default);
 Vue.component('show-user', require('./components/admin/user/ShowUser.vue').default);
+Vue.component('import-error-data-user', require('./components/admin/user/components/ImportErrorDataUser.vue').default);
 
 /*=============================================
 COMPONENTES PARA LOS MODULOS ZONES
@@ -66,7 +67,18 @@ COMPONENTES PARA LOS MODULOS FACTURAS
 =============================================*/
 Vue.component('create-invoice', require('./components/admin/invoice/CreateInvoice.vue').default);
 Vue.component('edit-invoice', require('./components/admin/invoice/EditInvoice.vue').default);
+Vue.component('import-error-data-invoice', require('./components/admin/invoice/components/ImportErrorDataInvoice.vue').default);
 
+/*=============================================
+COMPONENTES PARA LOS MODULOS PRODUCTOS Y SERVICIOS
+=============================================*/
+Vue.component('component-create-product-service', require('./components/admin/product/CreateProductService.vue').default);
+Vue.component('edit-product-service', require('./components/admin/product/EditProductService.vue').default);
+
+/*=============================================
+COMPONENTES PARA EL PERFIL
+=============================================*/
+Vue.component('component-modal-profile', require('./components/admin/profile/ModalProfile.vue').default);
 
 /*=============================================
 COMPONENTES PARA MODULOS ORDENES DE COMPRA

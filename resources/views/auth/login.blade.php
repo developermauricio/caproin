@@ -58,10 +58,10 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 <a href="javascript:void(0);" class="brand-logo">
-                                    {{-- <span class="">--}}
-                                    {{-- <img width="250" src="{{ env('IMG_LOGO') }}" alt="">--}}
-                                    {{-- </span>--}}
-                                    <h1 class="brand-text text-primary ml-1">Caproin</h1>
+                                     <span class="pb-1">
+                                     <img src="/images/logo-caproin-horizontal-v2.png" width="300" alt="">
+                                     </span>
+{{--                                    <h1 class="brand-text text-primary ml-1">Caproin</h1>--}}
                                 </a>
 
                                 <h5 class="card-title display- mb-1">Bievenido! 👋</h5>
