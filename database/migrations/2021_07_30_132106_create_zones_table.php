@@ -17,6 +17,10 @@ class CreateZonesTable extends Migration
             $table->id();
             $table->string('code')->nullable();
             $table->string('name');
+            $table->enum('state', [
+                \App\Models\Zone::ACTIVE,
+                \App\Models\Zone::INACTIVE
+            ])->default(\App\Models\Zone::ACTIVE);
             $table->timestamps();
         });
     }

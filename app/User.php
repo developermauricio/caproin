@@ -72,6 +72,11 @@ class User extends Authenticatable
         return $this->hasOne(Employee::class);
     }
 
+    static public function roleAuth(){
+        $user = User::where('id', auth()->user()->id)->with('roles')->first();
+        return $user;
+    }
+
     static public function roleUserVendedor(){
         return auth()->user()->hasRole('Vendedor');
     }

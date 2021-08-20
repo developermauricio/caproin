@@ -33,6 +33,12 @@
               <p>{{ user.email }}</p>
             </div>
           </div>
+          <div class="col-12 col-md-6 col-lg-6">
+            <div class="form-group">
+              <label class="font-weight-bold">Rol:</label>
+              <p>{{ user.roles[0].name }}</p>
+            </div>
+          </div>
         </div>
         <hr>
         <div class="row pb-1 ">
@@ -129,8 +135,8 @@ export default {
         Swal.fire({
           title: 'Confirmar',
           text: '¿Estás seguro de actualizar la contraseña?',
-          confirmButtonColor: "#0082FB",
-          cancelButtonColor: "#F05E7D",
+          confirmButtonColor: "#D9393D",
+          cancelButtonColor: "#7D7E7E",
           confirmButtonText: 'Aceptar',
           cancelButtonText: 'Cancelar',
           customClass: "swal-confirmation",
