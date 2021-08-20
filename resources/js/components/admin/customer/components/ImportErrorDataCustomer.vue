@@ -41,15 +41,10 @@ export default {
   data() {
     return {
       nameReportDownload: "errors-customer",
-      hrefDownload: null,
     };
   },
   methods: {
     downloadReport() {
-      if (this.hrefDownload !== null) {
-        this.downloadLink(this.hrefDownload);
-        return;
-      }
       axios
         .post(
           "/api/download-excel",

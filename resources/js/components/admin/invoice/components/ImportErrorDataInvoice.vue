@@ -38,18 +38,18 @@
           <td>{{ item["Número de Factura"] }}</td>
           <td>{{ item["Número Factura electrónica"] }}</td>
           <td>{{ item["Estado"] }}</td>
-          <td>{{ item["Fecha de emisión"] }}</td>
-          <td>{{ item["Fecha de expiración"] }}</td>
+          <td>{{ getDate(item["Fecha de emisión"]) }}</td>
+          <td>{{ getDate(item["Fecha de expiración"]) }}</td>
           <td>{{ item["Tipo de Factura"] }}</td>
           <td>{{ item["Cliente"] }}</td>
           <td>{{ item["Valor"] }}</td>
-          <td>{{ item["Fecha de recibo por parte del cliente"] }}</td>
-          <td>{{ item["Fecha de pago por parte del cliente"] }}</td>
-          <td>{{ item["Fecha de factura casa representante"] }}</td>
+          <td>{{ getDate(item["Fecha de recibo por parte del cliente"]) }}</td>
+          <td>{{ getDate(item["Fecha de pago por parte del cliente"]) }}</td>
+          <td>{{ getDate(item["Fecha de factura casa representante"]) }}</td>
           <td>{{ item["Número de factura casa representante"] }}</td>
           <td>{{ item["Valor de la comisión"] }}</td>
-          <td>{{ item["Fecha de recibo de comisión"] }}</td>
-          <td>{{ item["Nueva fecha concertada de pago"] }}</td>
+          <td>{{ getDate(item["Fecha de recibo de comisión"]) }}</td>
+          <td>{{ getDate(item["Nueva fecha concertada de pago"]) }}</td>
           <td>{{ item["Comentarios u observaciones"] }}</td>
         </tr>
       </tbody>
@@ -68,19 +68,13 @@ export default {
     };
   },
   methods: {
-    getError(data) {
-      try {
-        const error = JSON.parse(data);
-        return error.errorInfo[2];
-      } catch (e) {
-        return e;
+    getDate(data) {
+      if (data.date) {
+        return data.date
       }
+      return data;
     },
     downloadReport() {
-      if (this.hrefDownload !== null) {
-        this.downloadLink(this.hrefDownload);
-        return;
-      }
       axios
         .post(
           "/api/download-excel",

@@ -125,6 +125,9 @@
                                                 Para importar facturas debe cargar un archivo Excel en formato
                                                 <code>xlsx</code>.
                                             </p>
+                                            <p class="card-text text-justify">
+                                                Para el <code>Cliente</code> debe ingresar el correo o la identificación.
+                                            </p>
                                             <div class="states">
                                                 <p class="card-text text-justify">
                                                     Para el <code>estado</code> debe ingresar un
