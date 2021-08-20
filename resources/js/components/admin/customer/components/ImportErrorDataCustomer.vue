@@ -22,7 +22,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in lines" :key="item.identificacion + index">
-          <td>{{ getError(item["error"]) }}</td>
+          <td>{{ item["error"] }}</td>
           <td>{{ item["nombre o razon social"] }}</td>
           <td>{{ item["email"] }}</td>
           <td>{{ item["telefono"] }}</td>
@@ -44,14 +44,6 @@ export default {
     };
   },
   methods: {
-    getError(data) {
-      try {
-        const error = JSON.parse(data);
-        return error.errorInfo[2];
-      } catch (e) {
-        return e;
-      }
-    },
     downloadReport() {
       if (this.hrefDownload !== null) {
         this.downloadLink(this.hrefDownload);

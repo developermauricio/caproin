@@ -67,6 +67,7 @@ COMPONENTES PARA LOS MODULOS FACTURAS
 =============================================*/
 Vue.component('create-invoice', require('./components/admin/invoice/CreateInvoice.vue').default);
 Vue.component('edit-invoice', require('./components/admin/invoice/EditInvoice.vue').default);
+Vue.component('import-error-data-invoice', require('./components/admin/invoice/components/ImportErrorDataInvoice.vue').default);
 
 /*=============================================
 COMPONENTES PARA LOS MODULOS PRODUCTOS Y SERVICIOS

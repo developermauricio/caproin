@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\Customer\NewCustomer;
 use App\Models\Customer;
 use App\Models\CustomerType;
+use App\Traits\MessagesException;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,8 @@ use Rap2hpoutre\FastExcel\FastExcel;
 
 class CustomerController extends Controller
 {
+    use MessagesException;
+
     public function index()
     {
         return view('admin.customer.list-customers');
@@ -140,7 +143,7 @@ class CustomerController extends Controller
                 DB::commit();
             } catch (\Exception $exception) {
                 DB::rollBack();
-                $line['error'] = json_encode($exception);
+                $line['error'] = $this->parseException($exception, $line);
                 $lines->add($line);
             }
         });
