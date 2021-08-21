@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/file-uploaders/dropzone.min.css">
+    <link rel="stylesheet" type="text/css" href="/app-assets/css/plugins/forms/form-file-uploader.css">
 @endpush
 @section('title', 'Lista de Facturas')
 @section('header_page')
@@ -45,6 +47,7 @@
                             <th>Fecha de Emisión</th>
                             <th>Cliente</th>
                             <th>Tipo de Factura</th>
+                            <th>Tipo de Pago</th>
                             <th>Valor Total</th>
                             <th>Fecha de Pago Cliente</th>
                             <th>Estado</th>
@@ -55,9 +58,10 @@
                             <th></th>
                             <th></th>
                             <th class="filter-3" style="max-width: 30% !important;"></th>
+                            <th class="filter-4" style="max-width: 30% !important;"></th>
                             <th></th>
                             <th></th>
-                            <th class="filter-6"></th>
+                            <th class="filter-7"></th>
                             <th></th>
                         </tr>
                         </thead>
@@ -167,7 +171,26 @@
                             });
                         });
 
-                        this.api().columns([6]).every(function () {
+                        this.api().columns([4]).every(function () {
+                            var column = this;
+                            var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
+                                .appendTo('.datatables-all-invoices .filter-' + column[0][0])
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                        ,);
+                                    console.log('que fue', val)
+                                    column
+                                        .search(val ? '^' + val + '$' : '', true, false)
+                                        .draw();
+                                });
+
+                            column.data().unique().sort().each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>')
+                            });
+                        });
+
+                        this.api().columns([7]).every(function () {
                             var column = this;
                             var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
                                 .appendTo('.datatables-all-invoices .filter-' + column[0][0])
@@ -296,7 +319,7 @@
                                 if (JsonResultRow.date_issue === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
                                 } else {
-                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_issue).locale('es').format("dddd, MMMM Do YYYY")}</span>`;
+                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_issue).locale('es').format("LL")}</span>`;
                                 }
                             }
                             ,
@@ -323,6 +346,17 @@
                             ,
                         }
                         , {
+                            data: "payment_type.name",
+                            render: function (data, type, JsonResultRow, meta) {
+                                if (JsonResultRow.payment_type.name === null) {
+                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                } else {
+                                    return `<span class="label text-center font-weight-bold">${JsonResultRow.payment_type.name}</span>`;
+                                }
+                            }
+                            ,
+                        }
+                        , {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.value_total === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
@@ -338,7 +372,7 @@
                                 if (JsonResultRow.date_payment_client === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
                                 } else {
-                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_payment_client).locale('es').format("dddd, MMMM Do YYYY")}</span>`;
+                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_payment_client).locale('es').format("LL")}</span>`;
                                 }
                             }
                             ,
@@ -369,7 +403,7 @@
                         // },
                         {
                             render: function (data, type, JsonResultRow, meta) {
-                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-customer" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-invoice btn-icon btn-primary"><i data-feather="edit-2"></i></button></div>'
+                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-customer" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-invoice btn-icon btn-primary"><i data-feather="eye"></i></button></div>'
 
                             }
                             ,
@@ -416,7 +450,7 @@
                             }) + 'Imprimir'
                             , "className": 'dropdown-item'
                             , "exportOptions": {
-                                columns: [0, 1, 2, 3, 4, 5, 6]
+                                columns: [0, 1, 2, 3, 4, 5, 6, 7]
                             }
                             , "customize": function (win) {
                                 $(win.document.body)
@@ -437,7 +471,7 @@
                                 }) + 'Csv'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3, 4, 5, 6]
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
                                 }
                             }
                             , {
@@ -447,7 +481,7 @@
                                 }) + 'Excel'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3, 4, 5, 6]
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
                                 }
                             }
                             , {
@@ -457,7 +491,7 @@
                                 }) + 'Pdf'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3, 4, 5, 6]
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
                                 }
                                 , "orientation": 'landscape',
                                 // "customize": function (doc) {
@@ -475,7 +509,7 @@
                                 }) + 'Copiar'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3, 4, 5, 6]
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7]
                                 }
                             }
                         ],

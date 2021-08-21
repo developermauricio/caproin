@@ -59,6 +59,29 @@
                id="text-verify-code-product-service" class="text-danger">El código ya
               ha sido registrado</p>
           </div>
+          <div class="col-12 col-md-6 col-lg-6">
+            <input-form
+              label="Estado"
+              id="textStateZonaEdit"
+              errorMsg
+              requiredMsg="El estado es obligatorio"
+              :required="true"
+              :modelo.sync="state"
+              :msgServer.sync="errors.state"
+              type="multiselect"
+              selectLabel="Estado"
+              :multiselect="{ options: optionsStateProduct,
+                                           selectLabel:'Seleccionar',
+                                           selectedLabel:'Seleccionado',
+                                           deselectLabel:'Desmarcar',
+                                           placeholder:'Estado',
+                                          taggable : false,
+                                          'track-by':'id',
+                                          label: 'name',
+                                          'custom-label': stateProduct=>stateProduct.name
+                                        }"
+            ></input-form>
+          </div>
         </div>
         <div class="row">
           <div class="col-12">
@@ -101,7 +124,8 @@
       </div>
       <div class="modal-footer">
         <button @click="clearInputProduct()" type="button" data-dismiss="modal" class="btn btn-gris">Cancelar</button>
-        <button @click="createNewProductService()" type="button" class="btn btn-primary">Crear Producto/Servicio</button>
+        <button @click="createNewProductService()" type="button" class="btn btn-primary">Crear Producto/Servicio
+        </button>
       </div>
     </form>
   </div>
@@ -131,7 +155,10 @@ export default {
       description: '',
 
       identification: '',
-
+      state: {
+        name: 'Activo',
+        id: 1
+      },
       identificationVerify: '',
       codeVerify: '',
       customer: {
@@ -140,7 +167,16 @@ export default {
       },
       optionsTypeIdentification: [],
 
-
+      optionsStateProduct: [
+        {
+          name: 'Activo',
+          id: 1
+        },
+        {
+          name: 'Inactivo',
+          id: 2
+        }
+      ],
       typeBranchOffice: null,
       user: {
         name: '',
@@ -157,7 +193,7 @@ export default {
     }
   },
   methods: {
-    clearInputProduct(){
+    clearInputProduct() {
       eventBus.$emit("resetValidaciones");
     },
     createNewProductService() {
@@ -178,6 +214,7 @@ export default {
         const data = new FormData()
         data.append('name', this.name);
         data.append('typeProductService', JSON.stringify(this.typeProductService));
+        data.append('state', JSON.stringify(this.state));
         data.append('code', this.code);
         data.append('descriptionShort', this.descriptionShort);
         data.append('description', this.description);
@@ -236,7 +273,7 @@ export default {
     code: function (val) {
       let data = this
       if (val) {
-        axios.get('/api/verify-code-product/'+ val)
+        axios.get('/api/verify-code-product/' + val)
           .then(resp => {
             if (resp.data) {
               $("#txtCodeProductService").addClass("is-invalid");

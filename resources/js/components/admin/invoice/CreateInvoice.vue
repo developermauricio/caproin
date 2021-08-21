@@ -46,6 +46,43 @@
           </div>
           <div class="col-12 col-md-4 col-lg-4">
             <input-form
+              label="Tipo de Pago"
+              id="txtInvoicePaymentType"
+              errorMsg
+              requiredMsg="El tipo de pago es obligatorio"
+              :required="true"
+              :modelo.sync="paymentType"
+              :msgServer.sync="errors.paymentType"
+              type="multiselect"
+              selectLabel="Tipo de Pago"
+              :multiselect="{ options: optionsPaymentType,
+                                           selectLabel:'Seleccionar',
+                                           selectedLabel:'Seleccionado',
+                                           deselectLabel:'Desmarcar',
+                                           placeholder:'Tipo de Pago',
+                                          taggable : false,
+                                          'track-by':'id',
+                                          label: 'name',
+                                          'custom-label': paymentType=>paymentType.name
+                                        }"
+            ></input-form>
+          </div>
+          <div class="col-12 col-md-4 col-lg-4" v-if="paymentType.id === 2">
+            <input-form
+              type="money"
+              label="Valor Pagado"
+              id="txtValueInvoicePaymentParcial"
+              pattern="num"
+              errorMsg="Ingrese un valor válido"
+              requiredMsg="Agregar el valor pagado"
+              :required="true"
+              :modelo.sync="valuePaymentParcial"
+              :msgServer.sync="errors.valuePaymentParcial"
+              :money="money"
+            ></input-form>
+          </div>
+          <div class="col-12 col-md-4 col-lg-4">
+            <input-form
               id="txtInvoiceElectronicNumber"
               label="Número de factura electrónica"
               pattern="all"
@@ -143,7 +180,7 @@
               type="money"
               label="Valor"
               id="txtValueInvoice"
-              pattern="all"
+              pattern="num"
               errorMsg="Ingrese un valor válido"
               requiredMsg="El valor es obligatorio"
               :required="true"
@@ -223,7 +260,7 @@
               type="money"
               label="Valor de la comisión"
               id="txtValueCommisionInvoice"
-              pattern="all"
+              pattern="num"
               errorMsg="Ingrese un valor de comisión válido"
               requiredMsg="El valor de la comisión es obligatorio"
               :required="true"
@@ -288,6 +325,21 @@
             </input-form>
           </div>
         </div>
+        <div class="row">
+          <div class="col-12">
+            <label class="form-control-label" id="add-archive-dropzone-team">Agregar Archivos</label>
+            <vue2Dropzone class="dropzone upload-logo dropzone-area dz-clickable"
+                          ref="myVueDropzone"
+                          @vdropzone-sending="sendingEvent"
+                          @vdropzone-max-files-exceeded="maxFiles"
+                          @vdropzone-success="addArchiveTeam"
+                          @vdropzone-removed-file="removedArchiveDropzoneTeam"
+                          id="dpz-archives-customer-company"
+                          :options="dropzoneOptionsTeamArchive">
+
+            </vue2Dropzone>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button @click="clearInputsInvoice()" type="button" data-dismiss="modal" class="btn btn-gris">Cancelar</button>
@@ -303,14 +355,17 @@ import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 import {en, es} from 'vuejs-datepicker/dist/locale'
 import Swal from "sweetalert2";
+import vue2Dropzone from 'vue2-dropzone'
+
 export default {
   name: "CreateInvoice",
   components: {
     Multiselect,
     Datepicker,
+    vue2Dropzone,
     moment
   },
-  data(){
+  data() {
     return {
       invoice_number: '',
       electronic_invoice_number: '',
@@ -320,14 +375,17 @@ export default {
       expiration_date: null,
       invoice_type: null,
       customer: null,
+      valuePaymentParcial: '',
+      urlsArchiveInvoice: [],
+      paymentType: {id: null},
       date_received_client: null,
       date_payment_client: null,
       invoice_date_house_manufacturer: null,
       invoice_number_house_representative: null,
       commission_receipt_date: null,
       new_agreed_payment_date: null,
-      value: '0',
-      commission_value: '0',
+      value: '',
+      commission_value: '',
       errors: {},
       money: {
         decimal: ",",
@@ -336,17 +394,104 @@ export default {
         suffix: "",
         precision: 0
       },
-
+      dropzoneOptionsTeamArchive: {
+        url: '/api/upload-archive-invoice',
+        // thumbnailWidth: 200,
+        maxFilesize: 5,
+        maxFiles: 10,
+        paramName: 'archive',
+        acceptedFiles: "application/pdf,.doc,.docx,.xls,.xlsx,.csv,.tsv,.ppt,.pptx,.pages,.odt,.rtf",
+        addRemoveLinks: true,
+        dictDefaultMessage: 'Clic aquí o arrastra tus documentos',
+        dictMaxFilesExceeded: 'No es posible agregar más archivos. Limite maximo 2',
+        dictFileTooBig: 'El archivo es demasiado grande, su peso es' + " ({{filesize}}MiB). " + 'Tamaño máximo del archivo:' + " {{maxFilesize}}MiB.",
+        dictRemoveFile: 'Remover Archivo',
+        dictInvalidFileType: 'No puede cargar archivos de este tipo.',
+        headers: {
+          'X-CSRF-TOKEN': this.csrf_token //Este token lo pasamos por los props
+        },
+        // params: {id: this.entity_get_data.id}  //Para enviar parametros
+      },
       optionsStateInvoice: [],
       optionsTypeInvoice: [],
+      optionsPaymentType: [],
       optionsCustomerInvoice: [],
     }
   },
   methods: {
-    clearInputsInvoice(){
+    sendingEvent(file, xhr, formData) {
+
+      console.log('upload file', file);
+      formData.append('nameInvoice', this.userName);
+      formData.append('nameId', file.upload.uuid);
+    },
+
+    maxFiles(file) {
+      this.$refs.myVueDropzone.removeFile(file);
+      this.$toast.error({
+        title: 'Atención',
+        message: 'No es posible agregar más archivos. Limite maximo 2',
+        showDuration: 1000,
+        hideDuration: 8000,
+        position: 'top right',
+      })
+    },
+
+    addArchiveTeam(file, response) {
+
+      this.urlsArchiveInvoice.push({
+        nameArchive: file.name,
+        urlArchive: response.data,
+        uuid: response.uuid,
+        extension: response.extension
+      })
+      console.log(this.urlsArchiveInvoice);
+      setTimeout(() => {
+        this.$toast.success({
+          title: '¡Muy bien!',
+          message: 'Archivo subido correctamente',
+          showDuration: 1000,
+          hideDuration: 5000,
+          position: 'top right',
+        })
+      }, 1000);
+    },
+
+    removedArchiveDropzoneTeam(file, error, xhr) {
+      console.log('remove file ', file.upload.uuid);
+      let uuid = file.upload.uuid
+
+      for (let i = 0; i < this.urlsArchiveInvoice.length; i++)
+        if (this.urlsArchiveInvoice[i].uuid === uuid) {
+          const data = new FormData();
+          data.append("archiveInvoice", this.urlsArchiveInvoice[i].urlArchive);
+          axios.post('/api/removed-archive-invoice', data)
+            .then(resp => {
+              this.$toast.success({
+                title: '¡Muy bien!',
+                message: 'Se quitó correctamente',
+                showDuration: 1000,
+                hideDuration: 5000,
+                position: 'top right',
+              })
+              this.urlsArchiveInvoice.splice(i, 1);
+            }).catch(err => {
+            this.$toast.error({
+              title: 'Error',
+              message: '¡Algo salió mal!',
+              showDuration: 1000,
+              hideDuration: 5000,
+              position: 'top right',
+            })
+          });
+          break;
+        }
+    },
+
+    clearInputsInvoice() {
       eventBus.$emit("resetValidaciones");
     },
-    createNewInvoice(){
+    createNewInvoice() {
       eventBus.$emit("validarFormulario");
       setTimeout(() => {
         let resp = this;
@@ -369,87 +514,98 @@ export default {
         data.append('date_issue', moment(this.date_issue).format("YYYY-MM-DD HH:mm:ss"));
         data.append('expiration_date', moment(this.expiration_date).format("YYYY-MM-DD HH:mm:ss"));
         data.append('invoice_type', JSON.stringify(this.invoice_type));
+        data.append('paymentType', JSON.stringify(this.paymentType));
         data.append('customer', JSON.stringify(this.customer));
         data.append('value', this.value);
+        data.append('valuePaymentParcial', this.valuePaymentParcial);
         data.append('date_received_client', moment(this.date_received_client).format("YYYY-MM-DD HH:mm:ss"));
         data.append('date_payment_client', moment(this.date_payment_client).format("YYYY-MM-DD HH:mm:ss"));
         data.append('invoice_date_house_manufacturer', moment(this.invoice_date_house_manufacturer).format("YYYY-MM-DD HH:mm:ss"));
         data.append('invoice_number_house_representative', this.invoice_number_house_representative);
         data.append('commission_value', this.commission_value);
-        data.append('commission_receipt_date',  moment(this.commission_receipt_date).format("YYYY-MM-DD HH:mm:ss"));
-        data.append('new_agreed_payment_date',  moment(this.new_agreed_payment_date).format("YYYY-MM-DD HH:mm:ss"));
+        data.append('commission_receipt_date', moment(this.commission_receipt_date).format("YYYY-MM-DD HH:mm:ss"));
+        data.append('new_agreed_payment_date', moment(this.new_agreed_payment_date).format("YYYY-MM-DD HH:mm:ss"));
         data.append('comments', this.comments);
+        data.append('archives', JSON.stringify(this.urlsArchiveInvoice));
 
-          Swal.fire({
-            title: 'Confirmar',
-            text: '¿Estás seguro de realizar el registro?',
-            confirmButtonColor: "#D9393D",
-            cancelButtonColor: "#7D7E7E",
-            confirmButtonText: 'Aceptar',
-            cancelButtonText: 'Cancelar',
-            customClass: "swal-confirmation",
-            showCancelButton: true,
-            reverseButtons: true,
-            allowOutsideClick: false,
-          }).then((result) => {
-            if (result.value) {
-              this.$vs.loading({
-                color: '#3f4f6e',
-                text: 'Registrando Factura...'
+        Swal.fire({
+          title: 'Confirmar',
+          text: '¿Estás seguro de realizar el registro?',
+          confirmButtonColor: "#D9393D",
+          cancelButtonColor: "#7D7E7E",
+          confirmButtonText: 'Aceptar',
+          cancelButtonText: 'Cancelar',
+          customClass: "swal-confirmation",
+          showCancelButton: true,
+          reverseButtons: true,
+          allowOutsideClick: false,
+        }).then((result) => {
+          if (result.value) {
+            this.$vs.loading({
+              color: '#3f4f6e',
+              text: 'Registrando Factura...'
+            })
+            axios.post('/api/register/store-invoice', data).then(res => {
+              this.$toast.success({
+                title: '¡Muy bien!',
+                message: 'Factura creada correctamente',
+                showDuration: 1000,
+                hideDuration: 7000,
+                position: 'top right',
               })
-              axios.post('/api/register/store-invoice', data).then(res => {
-                this.$toast.success({
-                  title: '¡Muy bien!',
-                  message: 'Factura creada correctamente',
-                  showDuration: 1000,
-                  hideDuration: 7000,
-                  position: 'top right',
-                })
-                window.location = "/facturas";
-              }).catch(err => {
-                console.log('mostrando el error', err)
-                this.$toast.error({
-                  title: 'Algo salio mal',
-                  message: 'Comunícate con el administrador',
-                  showDuration: 1000,
-                  hideDuration: 8000,
-                })
-              });
-              setTimeout(() => {
-                this.$vs.loading.close()
-              }, 2000)
-            }
-          })
-      },200);
+              window.location = "/facturas";
+            }).catch(err => {
+              console.log('mostrando el error', err)
+              this.$toast.error({
+                title: 'Algo salio mal',
+                message: 'Comunícate con el administrador',
+                showDuration: 1000,
+                hideDuration: 8000,
+              })
+            });
+            setTimeout(() => {
+              this.$vs.loading.close()
+            }, 2000)
+          }
+        })
+      }, 200);
     },
 
-    getApiStateInvoice(){
-      axios.get('/api/get-state-invoice').then(resp =>{
-          this.optionsStateInvoice = resp.data.data
+    getApiStateInvoice() {
+      axios.get('/api/get-state-invoice').then(resp => {
+        this.optionsStateInvoice = resp.data.data
       });
     },
 
-    getApiTypeInvoice(){
-      axios.get('/api/get-type-invoice').then(resp =>{
+    getApiTypeInvoice() {
+      axios.get('/api/get-type-invoice').then(resp => {
         this.optionsTypeInvoice = resp.data.data
       });
     },
 
-    getApiCustomer(){
-      axios.get('/api/all-customers').then(resp =>{
+    getApiPaymentType() {
+      axios.get('/api/get-payment-type').then(resp => {
+        this.optionsPaymentType = resp.data.data
+      });
+    },
+
+    getApiCustomer() {
+      axios.get('/api/all-customers').then(resp => {
         this.optionsCustomerInvoice = resp.data.data
       });
     }
-  },
+  }
+  ,
   mounted() {
     this.getApiStateInvoice();
     this.getApiTypeInvoice();
     this.getApiCustomer();
+    this.getApiPaymentType();
   }
 }
 </script>
 
-<style >
+<style>
 .multiselect__tag {
   background: #0082FB !important;
 }

@@ -84,9 +84,13 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('/all-invoices', 'InvoiceController@getApiInvoices')->name('api.all.invoices');
     Route::get('/get-state-invoice', 'InvoiceController@getApiGetStateInvoices')->name('api.all.state.invoices');
     Route::get('/get-type-invoice', 'InvoiceController@getApiGetTypeInvoices')->name('api.all.type.invoices');
+    Route::get('/get-payment-type', 'InvoiceController@getApiGetPaymentType')->name('api.all.payment.type');
     Route::post('register/store-invoice', 'InvoiceController@storeApiInvoice')->name('api.store.invoice');
     Route::get('data-invoice/{id}', 'InvoiceController@getApiDataInvoice')->name('api.data.invoice');
     Route::post('/register/update-invoice', 'InvoiceController@updateApiInvoice')->name('api.update.invoice');
+    Route::post('/upload-archive-invoice','InvoiceController@uploadArchiveInvoice')->name('api.upload.archive.invoice');
+    Route::post('/removed-archive-invoice','InvoiceController@removedArchiveInvoice')->name('api.removed.archive.invoice');
+    Route::post('/removed-archive-invoice-db','InvoiceController@removedArchiveInvoiceDb')->name('api.removed.archive.invoice');
 
     /*=============================================
       API PARA LOS PRODUCTOS

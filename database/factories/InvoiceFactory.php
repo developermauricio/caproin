@@ -11,6 +11,7 @@ $factory->define(Invoice::class, function (Faker $faker) {
         'date_issue' => $faker->dateTime(),
         'customer_id' => \App\Models\Customer::all()->random()->id,
         'type_invoice_id' => \App\Models\TypeInvoice::all()->random()->id,
+        'payment_type_id' => \App\Models\PaymentType::all()->random()->id,
         'state_id' => \App\Models\StateInvoice::all()->random()->id,
         'value_total' => 150000000,
         'date_payment_client' => $faker->dateTime(),

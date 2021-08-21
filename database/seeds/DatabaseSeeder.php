@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
         // DB::statement('DEFAULT CHARACTER SET utf8;');
 
         Storage::deleteDirectory('users');
+        Storage::deleteDirectory('archives');
         Storage::makeDirectory('users');
+        Storage::makeDirectory('archives');
 
         $this->call(UserTableSeeder::class);
 
@@ -37,16 +39,6 @@ class DatabaseSeeder extends Seeder
         factory(\App\Models\CustomerType::class)->create(['name' => 'Persona Natural']);
         factory(\App\Models\CustomerType::class)->create(['name' => 'Juridica']);
 
-
-        /*=============================================
-          CREAMOS EL ADMINISTRADOR DEL SISTEMA
-        =============================================*/
-        $admin = factory(\App\User::class)->create([
-            'name' => 'Admin',
-            'last_name' => 'Sistema',
-            'email' => 'admin@admin.co',
-        ]);
-        $admin->roles()->attach([1]);
 
         /*=============================================
            CREANDO LOS TIPO DE CONTRATO DEL EMPLEADO
@@ -141,6 +133,8 @@ class DatabaseSeeder extends Seeder
         =============================================*/
         factory(\App\Models\TypeProvider::class)->create(['name' => 'Fabricante']);
         factory(\App\Models\TypeProvider::class)->create(['name' => 'Servicio']);
+        factory(\App\Models\TypeProvider::class)->create(['name' => 'Internacional']);
+        factory(\App\Models\TypeProvider::class)->create(['name' => 'Nacional']);
 
         /*=============================================
             CREAMOS 10 PROVEEDORES
@@ -186,6 +180,7 @@ class DatabaseSeeder extends Seeder
         =============================================*/
         factory(\App\Models\TypeProduct::class)->create(['name' => 'Producto']);
         factory(\App\Models\TypeProduct::class)->create(['name' => 'Servicio']);
+        factory(\App\Models\TypeProduct::class)->create(['name' => 'Representación']);
 
         /*=============================================
             PRODUCTOS
@@ -206,18 +201,44 @@ class DatabaseSeeder extends Seeder
             });
 
         /*=============================================
+          CREAMOS EL ADMINISTRADOR DEL SISTEMA
+        =============================================*/
+
+        factory(\App\User::class, 1)->create(
+            [
+                'name' => 'Admin',
+                'last_name' => 'Sistema',
+                'email' => 'admin@admin.co',
+            ]
+        )->each(function (\App\User $u){
+            $u->roles()->attach([1]);
+            factory(\App\Models\Employee::class, 1)->create(
+                [
+                    'user_id' => $u->id,
+                    'type_employee_id' => \App\Models\TypeEmployee::all()->random()->id,
+                    'branch_offices_id' => \App\Models\BranchOffice::all()->random()->id,
+                ]
+            );
+        });
+
+        /*=============================================
            CREANDO TIPOS DE FACTURA
         =============================================*/
-        factory(\App\Models\TypeInvoice::class)->create(['name' => 'Tipo 1']);
-        factory(\App\Models\TypeInvoice::class)->create(['name' => 'Tipo 2']);
-        factory(\App\Models\TypeInvoice::class)->create(['name' => 'Tipo 3']);
+        factory(\App\Models\TypeInvoice::class)->create(['name' => 'Normal']);
+        factory(\App\Models\TypeInvoice::class)->create(['name' => 'Comisión']);
+
+        /*=============================================
+           CREANDO TIPOS DE PAGOS
+        =============================================*/
+        factory(\App\Models\PaymentType::class)->create(['name' => 'Pago Completo']);
+        factory(\App\Models\PaymentType::class)->create(['name' => 'Pago Parcial']);
 
         /*=============================================
            CREANDO ESTADOS DE FACTURA
         =============================================*/
-        factory(\App\Models\StateInvoice::class)->create(['name' => 'Revisión']);
+        factory(\App\Models\StateInvoice::class)->create(['name' => 'Por Pagar']);
         factory(\App\Models\StateInvoice::class)->create(['name' => 'Pagado']);
-        factory(\App\Models\StateInvoice::class)->create(['name' => 'Entregado']);
+        factory(\App\Models\StateInvoice::class)->create(['name' => 'Retrasado']);
 
         factory(\App\Models\Invoice::class, 20)->create();
     }

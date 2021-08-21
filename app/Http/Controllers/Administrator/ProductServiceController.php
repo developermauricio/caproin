@@ -35,10 +35,11 @@ class ProductServiceController extends Controller
     public function storeApiProductService(Request $request){
 
         $typeProduct = json_decode($request->typeProductService);
-
+        $state = json_decode($request->state);
         Product::create([
            'name' => $request->name,
            'code' => $request->code,
+           'state' => $state->id,
            'short_description' => $request->descriptionShort,
            'description' => $request->description,
            'type_products_id' => $typeProduct->id,
@@ -49,10 +50,11 @@ class ProductServiceController extends Controller
 
     public function updateApiProductService(Request $request){
         $typeProduct = json_decode($request->typeProductService);
-
+        $state = json_decode($request->state);
         Product::where('id', $request->idProductService)->update([
             'name' => $request->name,
             'code' => $request->code,
+            'state' => $state->id,
             'short_description' => $request->descriptionShort,
             'description' => $request->description,
             'type_products_id' => $typeProduct->id,

@@ -60,6 +60,29 @@
                id="text-verify-code-product-service-edit" class="text-danger">El código ya
               ha sido registrado</p>
           </div>
+          <div class="col-12 col-md-6 col-lg-6">
+            <input-form
+              label="Estado"
+              id="textStateZonaEdit"
+              errorMsg
+              requiredMsg="El estado es obligatorio"
+              :required="true"
+              :modelo.sync="state"
+              :msgServer.sync="errors.state"
+              type="multiselect"
+              selectLabel="Estado"
+              :multiselect="{ options: optionsStateProduct,
+                                           selectLabel:'Seleccionar',
+                                           selectedLabel:'Seleccionado',
+                                           deselectLabel:'Desmarcar',
+                                           placeholder:'Estado',
+                                          taggable : false,
+                                          'track-by':'id',
+                                          label: 'name',
+                                          'custom-label': stateProduct=>stateProduct.name
+                                        }"
+            ></input-form>
+          </div>
         </div>
         <div class="row">
           <div class="col-12">
@@ -131,6 +154,17 @@ export default {
       descriptionShort: '',
       description: '',
       codeValidet: null,
+      state:null,
+      optionsStateProduct: [
+        {
+          name: 'Activo',
+          id: 1
+        },
+        {
+          name: 'Inactivo',
+          id: 2
+        }
+      ],
       idProductService: null,
       errors: {},
     }
@@ -154,6 +188,7 @@ export default {
         const data = new FormData()
         data.append('name', this.name);
         data.append('typeProductService', JSON.stringify(this.typeProductService));
+        data.append('state', JSON.stringify(this.state));
         data.append('code', this.code);
         data.append('descriptionShort', this.descriptionShort);
         data.append('description', this.description);
@@ -220,6 +255,11 @@ export default {
           this.descriptionShort = resp.data.data.short_description
           this.description = resp.data.data.description
           this.typeProductService = resp.data.data.product_type
+          if (resp.data.data.state === '1') {
+            this.state = {name: "Activo", id: 1}
+          } else {
+            this.state = {name: "Inactivo", id: 2}
+          }
 
         })
 
