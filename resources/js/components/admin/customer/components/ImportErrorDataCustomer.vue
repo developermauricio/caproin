@@ -14,7 +14,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-<!--          <th>error</th>-->
+          <th>error</th>
           <th>nombre o razón social</th>
           <th>email</th>
           <th>teléfono</th>
@@ -23,7 +23,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in lines" :key="item.identificacion + index">
-<!--          <td>{{ getError(item["error"]) }}</td>-->
+          <td>{{ item["error"] }}</td>
           <td>{{ item["nombre o razon social"] }}</td>
           <td>{{ item["email"] }}</td>
           <td>{{ item["telefono"] }}</td>
@@ -41,23 +41,10 @@ export default {
   data() {
     return {
       nameReportDownload: "errors-customer",
-      hrefDownload: null,
     };
   },
   methods: {
-    getError(data) {
-      try {
-        const error = JSON.parse(data);
-        return error.errorInfo[2];
-      } catch (e) {
-        return e;
-      }
-    },
     downloadReport() {
-      if (this.hrefDownload !== null) {
-        this.downloadLink(this.hrefDownload);
-        return;
-      }
       axios
         .post(
           "/api/download-excel",

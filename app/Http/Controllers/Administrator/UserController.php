@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\TypeEmployee;
 use App\Traits\MessagesException;
 use App\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -118,11 +119,12 @@ class UserController extends Controller
 //        }
     }
 
-    private function getRoles($roles){
+    private function getRoles($roles)
+    {
         $roles = collect($roles);
         return $this->roles->filter(function ($role) use ($roles) {
             return $roles->contains($role->id);
-        })->map(function ($role){
+        })->map(function ($role) {
             return $role->id;
         });
     }
@@ -221,31 +223,36 @@ class UserController extends Controller
         $file = $request->file('archive');
         $total = 0;
         $lines = collect();
-        (new FastExcel())->import($file, function ($line) use (&$lines, &$total) {
-            $total += 1;
-            $name = $line['nombres'];
-            $last_name = $line['apellidos'];
-            $email = $line["correo"];
-            $phone = $line["teléfono"];
-            $roles = explode(',', $line["roles"]);
-            $type_user_id = $line["tipo usuario"];
-            $branch_office_id = $line["oficina"];
+        try {
+            (new FastExcel())->import($file, function ($line) use (&$lines, &$total) {
+                $total += 1;
+                $name = $line['nombres'];
+                $last_name = $line['apellidos'];
+                $email = $line["correo"];
+                $phone = $line["teléfono"];
+                $roles = explode(',', $line["roles"]);
+                $type_user_id = $line["tipo usuario"];
+                $branch_office_id = $line["oficina"];
 
-            $exception = $this->createUser(
-                $name,
-                $last_name,
-                $email,
-                $phone,
-                $roles,
-                $type_user_id,
-                $branch_office_id
-            );
+                $exception = $this->createUser(
+                    $name,
+                    $last_name,
+                    $email,
+                    $phone,
+                    $roles,
+                    $type_user_id,
+                    $branch_office_id
+                );
 
-            if ($exception) {
-                $line['error'] = $this->parseException($exception);
-                $lines->add($line);
-            }
-        });
+                if ($exception) {
+                    $line['error'] = $this->parseException($exception, $line);
+                    $lines->add($line);
+                }
+            });
+        } catch (\Throwable $th) {
+            $line['error'] = "El excel es invalido (".$th->getMessage().")";
+            $lines->add($line);
+        }
 
 
         if (!isset($lines[0])) {

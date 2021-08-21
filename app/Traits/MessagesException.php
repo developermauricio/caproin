@@ -9,7 +9,7 @@ trait MessagesException
      * @param  $exception
      * @return string
      */
-    public function parseException($exception): string
+    public function parseException($exception, $attributes): string
     {
         $code = $exception->getCode();
 
@@ -17,18 +17,28 @@ trait MessagesException
             return $exception->getMessage();
         }
 
-        $attributes = collect($exception->getBindings());
-        $error_mensaje = $exception->getPrevious()->getMessage();
+        if ($exception->getPrevious()) {
+            $error_mensaje = $exception->getPrevious()->getMessage();
+        } else {
+            $error_mensaje = $exception->getMessage();
+        }
+
         $failData = null;
-        $attributes->map(function ($attribute) use (&$failData, $error_mensaje) {
-            if (strpos($error_mensaje, "".($attribute))) {
-                $failData = $attribute;
+        $failKey = null;
+        collect($attributes)->map(function ($attribute, $key) use (&$failData, &$failKey, $error_mensaje) {
+            try {
+                echo $error_mensaje.":::".$attribute;
+                echo "<br/>";
+                if (strpos($error_mensaje, "'" . ($attribute)) || strpos($error_mensaje, '"' . ($attribute))) {
+                    $failData = $attribute;
+                    $failKey = $key;
+                }
+            } catch (\Throwable $th) {
             }
         });
-
-        switch($code) {
+        switch ($code) {
             case "23000":
-                return "(".$failData.") ya se encuentra registrado";
+                return $failKey." ya existe (" . $failData . ")";
         }
         return $error_mensaje;
     }

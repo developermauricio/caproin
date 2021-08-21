@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
           RUTAS PARA LOS MODULOS FACTURAS
         =============================================*/
     Route::get('/facturas', 'InvoiceController@index')->name('admin.invoice');
+    Route::post('/import-data-invoice', 'InvoiceController@importDataInvoice')->name('import.data.invoices');
 
     /*=============================================
          RUTAS PARA LOS MODULOS DE PRODUCTOS Y SERVICIOS

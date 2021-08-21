@@ -34,6 +34,15 @@
     </div>
 @endsection
 @section('content')
+@if (session('lines'))
+<div class="row">
+    <div class="col-12">
+        <div class="card p-2">
+            <import-error-data-invoice :lines="{{session('lines')}}"></import-error-data-invoice>
+        </div>
+    </div>
+</div>
+@endif
     <section id="basic-datatable">
         <div class="row">
             <div class="col-12">
@@ -90,31 +99,98 @@
         </div>
 
         <!--=====================================
-                MODAL PARA IMPORTAR CLIENTES
+                MODAL PARA IMPORTAR FACTURAS
             ======================================-->
-        <div class="modal fade text-left modal-primary" id="modal-import-customer" data-backdrop="static" tabindex="-1"
+        <div class="modal fade text-left modal-primary" id="modal-import-invoices" data-backdrop="static" tabindex="-1"
              role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                {{-- <import-data-customers></import-data-customers> --}}
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="myModalLabel160">Importar Clientes</h5>
+                        <h5 class="modal-title" id="myModalLabel160">Importar Facturas</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{ route('import.data.customers') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('import.data.invoices') }}" method="POST" enctype="multipart/form-data">
                         <div class="modal-body">
                             @csrf
                             <h6 class="text-center">Selecciona desde tu computadora el archivo Excel tipo
                                 <strong>xlsx</strong></h6>
-                            <input type="file" name="archive" class="form-control text-center" required
-                                   accept=".xls,.xlsx">
-                            <div class="text-center pt-1"><a href="/storage/import-excel-customers/data.xlsx"
-                                                             target="_blank">Descarga el ejemplo</a></div>
+                            <input type="file" name="archive" class="form-control text-center" required accept=".xls,.xlsx">
+                            <div class="text-center pt-1"><a href="/import-excel-invoices/caproin-import-invoices.xlsx" target="_blank">Descarga el ejemplo</a></div>
+                            <div class="collapse-default pt-1">
+                                <div class="card collapse-icon">
+                                    <div id="headingCollapse1" class="card-header" data-toggle="collapse" role="button" data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                        <span class="lead collapse-title">Instrucciones</span>
+                                    </div>
+                                    <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1" class="collapse">
+                                        <div class="card-body">
+                                            <p class="card-text text-justify">
+                                                Para importar facturas debe cargar un archivo Excel en formato
+                                                <code>xlsx</code>.
+                                            </p>
+                                            <p class="card-text text-justify">
+                                                Para el <code>Cliente</code> debe estar previamente registrado y se debe ingresar el correo o la identificación.
+                                            </p>
+                                            <div class="states">
+                                                <p class="card-text text-justify">
+                                                    Para el <code>estado</code> debe ingresar un
+                                                    número como se muestra en el archivo excel de ejemplo. A
+                                                    continuación la tabla con el nombre del estado y el número.
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>Estado</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach ($states as $state)
+                                                            <tr>
+                                                                <td>{{$state->id}}</td>
+                                                                <td>{{$state->name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <div class="typeInvoices">
+                                                <p class="card-text text-justify">
+                                                    Para el <code>Tipo de Factura</code> debe ingresar un
+                                                    número como se muestra en el archivo excel de ejemplo. A
+                                                    continuación la tabla con el nombre de tipo de factura y el número.
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>Tipo Factura</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach ($typeInvoices as $typeInvoice)
+                                                            <tr>
+                                                                <td>{{$typeInvoice->id}}</td>
+                                                                <td>{{$typeInvoice->name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" type="button" class="btn btn-primary">Importar</button>
+                            <button id="btn_importar" type="submit" type="button" class="btn btn-primary">Importar</button>
                         </div>
                     </form>
                 </div>
@@ -520,21 +596,21 @@
                         //         $(node).closest('.dt-buttons').removeClass('btn-group').addClass('d-inline-flex');
                         //     }, 50);
                         // }
-                    }
-                        // , {
-                        //     text: feather.icons['file-text'].toSvg({
-                        //         class: 'mr-50 font-small-4'
-                        //     }) + 'Importar'
-                        //     , className: 'create-new btn btn-primary'
-                        //     , attr: {
-                        //         'data-target': '#modal-import-customer'
-                        //         , 'data-toggle': 'modal'
-                        //         ,
-                        //     }
-                        //     , init: function (api, node, config) {
-                        //         $(node).removeClass('btn-secondary');
-                        //     }
-                        // }
+                    },
+                        {
+                             text: feather.icons['file-text'].toSvg({
+                                 class: 'mr-50 font-small-4'
+                             }) + 'Importar'
+                             , className: 'create-new btn btn-primary'
+                             , attr: {
+                                 'data-target': '#modal-import-invoices'
+                                 , 'data-toggle': 'modal'
+                                 ,
+                             }
+                             , init: function (api, node, config) {
+                                 $(node).removeClass('btn-secondary');
+                             }
+                         }
                         , {
                             text: feather.icons['plus'].toSvg({
                                 class: 'mr-50 font-small-4'
