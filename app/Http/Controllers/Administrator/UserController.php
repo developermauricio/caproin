@@ -39,7 +39,7 @@ class UserController extends Controller
 
     public function getApiUsers()
     {
-        $users = User::role(['Logistica', 'Asistente Sucursal', 'Gerencia', 'Vendedor', 'Finanzas'])->with('roles')->with('identificationType', 'employes.branchOffices', 'employes.typeEmploye')->get();
+        $users = User::role(['Logistica', 'Asistente Sucursal', 'Gerencia', 'Vendedor', 'Finanzas', 'Administrador'])->with('roles')->with('identificationType', 'employes.branchOffices', 'employes.typeEmploye')->get();
         return datatables()->of($users)->toJson();
     }
 

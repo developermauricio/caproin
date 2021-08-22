@@ -19,8 +19,12 @@ class CreateProductsTable extends Migration
             $table->foreign('type_products_id')->references('id')->on('type_products');
             $table->string('name');
             $table->text('description');
-            $table->text('short_description');
+            $table->text('short_description')->nullable();
             $table->string('code');
+            $table->enum('state', [
+                \App\Models\Product::ACTIVE,
+                \App\Models\Product::INACTIVE
+            ])->default(\App\Models\Zone::ACTIVE);
             $table->timestamps();
         });
     }

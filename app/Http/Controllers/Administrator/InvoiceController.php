@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Invoice;
+use App\Models\PaymentType;
 use App\Models\StateInvoice;
 use App\Models\TypeInvoice;
 use App\Traits\MessagesException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Rap2hpoutre\FastExcel\FastExcel;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class InvoiceController extends Controller
 {
@@ -34,7 +37,7 @@ class InvoiceController extends Controller
         //            $invoice = Invoice::with('customers', 'typeInvoice', 'state')->get();
         //        }
 
-        $invoice = Invoice::with('customers', 'typeInvoice', 'state')->get();
+        $invoice = Invoice::with('customers', 'typeInvoice', 'state', 'paymentType', 'archive')->get();
         return datatables()->of($invoice)->toJson();
     }
 
@@ -50,6 +53,15 @@ class InvoiceController extends Controller
         return response()->json(['data' => $typeInvoice]);
     }
 
+    public function getApiGetPaymentType()
+    {
+        $paymentType = PaymentType::all();
+        return response()->json(['data' => $paymentType]);
+    }
+
+    public function getApiDataInvoice($id)
+    {
+        $invoice = Invoice::where('id', $id)->with('customers', 'typeInvoice', 'state', 'paymentType', 'archive')->first();
     public function getApiDataInvoice($id)
     {
         $invoice = Invoice::where('id', $id)->with('customers', 'typeInvoice', 'state')->first();
@@ -65,8 +77,11 @@ class InvoiceController extends Controller
         $date_issue = $request->date_issue;
         $expiration_date = $request->expiration_date;
         $invoice_type = json_decode($request->invoice_type);
+        $paymentType = json_decode($request->paymentType);
         $customer = json_decode($request->customer);
+        $archives = json_decode($request->archives);
         $value = $request->value;
+        $valuePaymentParcial = $request->valuePaymentParcial;
         $date_received_client = $request->date_received_client;
         $date_payment_client = $request->date_payment_client;
         $invoice_date_house_manufacturer = $request->invoice_date_house_manufacturer;
@@ -81,8 +96,10 @@ class InvoiceController extends Controller
         $invoice->date_issue = $date_issue;
         $invoice->customer_id = $customer->id;
         $invoice->type_invoice_id = $invoice_type->id;
+        $invoice->payment_type_id = $paymentType->id;
         $invoice->state_id = $state->id;
         $invoice->value_total = $value;
+        $invoice->value_payment = $valuePaymentParcial;
         $invoice->date_payment_client = $date_payment_client;
         $invoice->electronic_invoice_number = $electronic_invoice_number;
         $invoice->expiration_date = $expiration_date;
@@ -96,6 +113,17 @@ class InvoiceController extends Controller
 
         $invoice->save();
 
+        for ($i = 0; $i < count($archives); $i++) {
+            $invoice->archive()->create([
+                'nameArchive' => $archives[$i]->nameArchive,
+                'uuid' => $archives[$i]->uuid,
+                'type' => $archives[$i]->extension,
+                'archive' => $archives[$i]->urlArchive,
+                'archivable_id' => $invoice->id,
+                'archivable_type' => get_class($invoice)
+            ]);
+        }
+
         return response()->json('Registro Exitoso!');
     }
 
@@ -108,8 +136,11 @@ class InvoiceController extends Controller
         $date_issue = $request->date_issue;
         $expiration_date = $request->expiration_date;
         $invoice_type = json_decode($request->invoice_type);
+        $paymentType = json_decode($request->paymentType);
         $customer = json_decode($request->customer);
+        $archives = json_decode($request->archives);
         $value = $request->value;
+        $valuePaymentParcial = $request->valuePaymentParcial;
         $date_received_client = $request->date_received_client;
         $date_payment_client = $request->date_payment_client;
         $invoice_date_house_manufacturer = $request->invoice_date_house_manufacturer;
@@ -119,26 +150,74 @@ class InvoiceController extends Controller
         $new_agreed_payment_date = $request->new_agreed_payment_date;
         $comments = $request->comments;
 
-        $invoice = Invoice::where('id', $request->idInvoice)->update([
-            "invoice_number" => $invoice_number,
-            "date_issue" => $date_issue,
-            "customer_id" => $customer->id,
-            "type_invoice_id" => $invoice_type->id,
-            "state_id" => $state->id,
-            "value_total" => $value,
-            "date_payment_client" => $date_payment_client,
-            "electronic_invoice_number" => $electronic_invoice_number,
-            "expiration_date" => $expiration_date,
-            "date_received_client" => $date_received_client,
-            "invoice_date_house_manufacturer" => $invoice_date_house_manufacturer,
-            "commission_receipt_date" => $commission_receipt_date,
-            "new_agreed_payment_date" => $new_agreed_payment_date,
-            "invoice_number_house_representative" => $invoice_number_house_representative,
-            "commission_value" => $commission_value,
-            "comments" => $comments,
-        ]);
+        $invoice = Invoice::findOrFail($request->idInvoice);
+        $invoice->invoice_number = $invoice_number;
+        $invoice->date_issue = $date_issue;
+        $invoice->customer_id = $customer->id;
+        $invoice->type_invoice_id = $invoice_type->id;
+        $invoice->payment_type_id = $paymentType->id;
+        $invoice->state_id = $state->id;
+        $invoice->value_total = $value;
+        if ($valuePaymentParcial == 'null'){
+            $invoice->value_payment = null;
+        }else{
+            $invoice->value_payment = $valuePaymentParcial;
+        }
+        $invoice->date_payment_client = $date_payment_client;
+        $invoice->electronic_invoice_number = $electronic_invoice_number;
+        $invoice->expiration_date = $expiration_date;
+        $invoice->date_received_client = $date_received_client;
+        $invoice->invoice_date_house_manufacturer = $invoice_date_house_manufacturer;
+        $invoice->commission_receipt_date = $commission_receipt_date;
+        $invoice->new_agreed_payment_date = $new_agreed_payment_date;
+        $invoice->invoice_number_house_representative = $invoice_number_house_representative;
+        $invoice->commission_value = $commission_value;
+        $invoice->comments = $comments;
+
+        $invoice->update();
+
+        for ($i = 0; $i < count($archives); $i++) {
+            $invoice->archive()->create([
+                'nameArchive' => $archives[$i]->nameArchive,
+                'uuid' => $archives[$i]->uuid,
+                'type' => $archives[$i]->extension,
+                'archive' => $archives[$i]->urlArchive,
+                'archivable_id' => $invoice->id,
+                'archivable_type' => get_class($invoice)
+            ]);
+        }
         return response()->json('Actualizado Correctamente!');
     }
+
+    public function uploadArchiveInvoice(Request $request){
+        $nameCompany = $request->input('nameInvoice');
+        $uuid = $request->input('nameId');
+        $archive = $request->file('archive');
+        $archiveExtension = $archive->getClientOriginalExtension();
+        $ramdon = Str::random(10);
+        $nameArchive = $ramdon . '-' . strtolower($archive->getClientOriginalName());
+        $path = Storage::disk('public')->put('/archives/' . $nameArchive, file_get_contents($archive));
+        $urlFinal = '/storage/archives/' . $nameArchive;
+        return response()->json(['data' => $urlFinal, 'uuid' => $uuid, 'extension' => $archiveExtension]);
+    }
+
+    public function removedArchiveInvoice(Request $request){
+        $pathArchive = $request->get('archiveInvoice');
+        $partes_ruta = pathinfo($pathArchive);
+        Storage::delete('archives/' . $partes_ruta['basename']);
+        dd($pathArchive);
+    }
+
+    public function removedArchiveInvoiceDb(Request $request){
+        $pathArchive = $request->archiveInvoiceUrl;
+        $uuidArchive = $request->archiveInvoiceUuid;
+
+        $partes_ruta = pathinfo($pathArchive);
+        Storage::delete('archives/' . $partes_ruta['basename']);
+
+        DB::table('archives')->where('uuid', $uuidArchive)->delete();
+        return response()->json('Se eliminó correctamente');
+
 
 
     public function importDataInvoice(Request $request)

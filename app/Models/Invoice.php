@@ -14,8 +14,10 @@ class Invoice extends Model
         'date_issue',
         'customer_id',
         'type_invoice_id',
+        'payment_type_id',
         'state_id',
         'value_total',
+        'value_payment',
         'date_payment_client',
         'electronic_invoice_number',
         'expiration_date',
@@ -38,8 +40,17 @@ class Invoice extends Model
         return $this->belongsTo(TypeInvoice::class, 'type_invoice_id');
     }
 
+    public function paymentType()
+    {
+        return $this->belongsTo(PaymentType::class, 'payment_type_id');
+    }
+
     public function state()
     {
         return $this->belongsTo(StateInvoice::class, 'state_id');
+    }
+
+    public function archive(){
+        return $this->morphMany(Archives::class, 'archivable');
     }
 }

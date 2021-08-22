@@ -41,6 +41,7 @@
                             <th>Tipo</th>
                             <th>Nombre</th>
                             <th>Descripción</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                         <tr class="tr-filter-dekstop-provider">
@@ -48,6 +49,7 @@
                             <th class="filter-1" style="max-width: 30% !important;"></th>
                             <th></th>
                             <th></th>
+                            <th class="filter-4" style="max-width: 30% !important;"></th>
                             <th></th>
                         </tr>
                         </thead>
@@ -177,24 +179,24 @@
                         // });
 
 
-                        // this.api().columns([6]).every(function () {
-                        //     var column = this;
-                        //     var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
-                        //         .appendTo('.datatables-all-products-services .filter-' + column[0][0])
-                        //         .on('change', function () {
-                        //             var val = $.fn.dataTable.util.escapeRegex(
-                        //                 $(this).val()
-                        //                 ,);
-                        //             column
-                        //                 .search(val ? '^' + val + '$' : '', true, false)
-                        //                 .draw();
-                        //         });
-                        //
-                        //     column.data().unique().sort().each(function (d, j) {
-                        //         const state = (d == "1" ? 'Activo' : 'Inactivo');
-                        //         select.append('<option value="' + state + '">' + state + '</option>')
-                        //     });
-                        // });
+                        this.api().columns([4]).every(function () {
+                            var column = this;
+                            var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
+                                .appendTo('.datatables-all-products-services .filter-' + column[0][0])
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                        $(this).val()
+                                        ,);
+                                    column
+                                        .search(val ? '^' + val + '$' : '', true, false)
+                                        .draw();
+                                });
+
+                            column.data().unique().sort().each(function (d, j) {
+                                const state = (d == "1" ? 'Activo' : 'Inactivo');
+                                select.append('<option value="' + state + '">' + state + '</option>')
+                            });
+                        });
 
                         this.api().columns([1]).every(function () {
                             var column = this;
@@ -301,8 +303,7 @@
                                 }
                             }
                             ,
-                        }
-                        , {
+                        },{
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.description === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
@@ -311,9 +312,17 @@
                                 }
                             }
                             ,
-                        }
-                        ,
-
+                        },
+                        {
+                            data: "state",
+                            render: function (data, type, JsonResultRow, meta) {
+                                if (JsonResultRow.state === "1") {
+                                    return '<div class="badge badge-pill badge-light-success mr-1">Activo</div>'
+                                } else {
+                                    return `<div class="badge badge-pill badge-light-danger mr-1">Inactivo</div>`;
+                                }
+                            },
+                        },
                         {
                             render: function (data, type, JsonResultRow, meta) {
                                 return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-product-service" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-invoice btn-icon btn-primary"><i data-feather="edit-2"></i></button></div>'
