@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/file-uploaders/dropzone.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/css/plugins/forms/form-file-uploader.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.1.0/css/dataTables.dateTime.min.css">
 @endpush
 @section('title', 'Lista de Facturas')
 @section('header_page')
@@ -47,6 +48,16 @@
         <div class="row">
             <div class="col-12">
                 <div class="card p-2">
+{{--                    <table border="0" cellspacing="5" cellpadding="5">--}}
+{{--                        <tbody><tr>--}}
+{{--                            <td>Minimum date:</td>--}}
+{{--                            <td><input type="text" id="min" name="min"></td>--}}
+{{--                        </tr>--}}
+{{--                        <tr>--}}
+{{--                            <td>Maximum date:</td>--}}
+{{--                            <td><input type="text" id="max" name="max"></td>--}}
+{{--                        </tr>--}}
+{{--                        </tbody></table>--}}
                     <table
                         class="datatables-all-invoices hover datatablescreategica table-responsive datatables-basic table table-striped"
                         style="width:100%">
@@ -184,6 +195,33 @@
                                                 </div>
                                             </div>
 
+
+                                            <div class="paymentTypes">
+                                                <p class="card-text text-justify">
+                                                    Para el <code>Tipo de Pago</code> debe ingresar un
+                                                    número como se muestra en el archivo excel de ejemplo. A
+                                                    continuación la tabla con el nombre del tipo de pago y el número.
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>Tipo Pago</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach ($paymentTypes as $paymentType)
+                                                            <tr>
+                                                                <td>{{$paymentType->id}}</td>
+                                                                <td>{{$paymentType->name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -213,10 +251,46 @@
     <script src="/app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js"></script>
     <script src="/app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js"></script>
     <script src="https://cdn.datatables.net/fixedcolumns/3.3.2/js/dataTables.fixedColumns.min.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.1.0/js/dataTables.dateTime.min.js"></script>
 @endpush
 @push('js')
     <script>
         $(function () {
+
+            var minDate, maxDate;
+
+// Custom filtering function which will search data in column four between two values
+            $.fn.dataTable.ext.search.push(
+                function( settings, data, dataIndex ) {
+                    var min = minDate.val();
+                    var max = maxDate.val();
+                    var date = new Date( data[4] );
+
+                    if (
+                        ( min === null && max === null ) ||
+                        ( min === null && date <= max ) ||
+                        ( min <= date   && max === null ) ||
+                        ( min <= date   && date <= max )
+                    ) {
+                        return true;
+                    }
+                    return false;
+                }
+            );
+
+            minDate = new DateTime($('#min'), {
+                format: 'MMMM Do YYYY'
+            });
+            maxDate = new DateTime($('#max'), {
+                format: 'MMMM Do YYYY'
+            });
+
+            // Refilter the table
+            $('#min, #max').on('change', function () {
+                table.draw();
+            });
+
+
             let table = null;
             let dollarUSLocale = Intl.NumberFormat('es-US');
             setTimeout(() => {

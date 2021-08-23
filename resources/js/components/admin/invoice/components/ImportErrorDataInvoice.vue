@@ -21,6 +21,8 @@
           <th>Fecha de expiración</th>
           <th>Tipo de Factura</th>
           <th>Cliente</th>
+          <th>Tipo de pago</th>
+          <th>Valor Pagado</th>
           <th>Valor</th>
           <th>Fecha de recibo por parte del cliente</th>
           <th>Fecha de pago por parte del cliente</th>
@@ -42,6 +44,8 @@
           <td>{{ getDate(item["Fecha de expiración"]) }}</td>
           <td>{{ item["Tipo de Factura"] }}</td>
           <td>{{ item["Cliente"] }}</td>
+          <td>{{ item["Tipo de pago"] }}</td>
+          <td>{{ item["Valor Pagado"] }}</td>
           <td>{{ item["Valor"] }}</td>
           <td>{{ getDate(item["Fecha de recibo por parte del cliente"]) }}</td>
           <td>{{ getDate(item["Fecha de pago por parte del cliente"]) }}</td>

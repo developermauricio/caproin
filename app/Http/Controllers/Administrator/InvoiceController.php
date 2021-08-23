@@ -23,7 +23,8 @@ class InvoiceController extends Controller
     {
         $states = StateInvoice::all();
         $typeInvoices = TypeInvoice::all();
-        return view('admin.invoice.list-invoice', compact('states', 'typeInvoices'));
+        $paymentTypes = PaymentType::all(['id', 'name', 'description']);
+        return view('admin.invoice.list-invoice', compact('states', 'typeInvoices', 'paymentTypes'));
     }
 
     public function getApiInvoices()
@@ -62,11 +63,13 @@ class InvoiceController extends Controller
     public function getApiDataInvoice($id)
     {
         $invoice = Invoice::where('id', $id)->with('customers', 'typeInvoice', 'state', 'paymentType', 'archive')->first();
-    public function getApiDataInvoice($id)
-    {
-        $invoice = Invoice::where('id', $id)->with('customers', 'typeInvoice', 'state')->first();
         return response()->json(['data' => $invoice]);
     }
+    //    public function getApiDataInvoice($id)
+    //    {
+    //        $invoice = Invoice::where('id', $id)->with('customers', 'typeInvoice', 'state')->first();
+    //        return response()->json(['data' => $invoice]);
+    //    }
 
     public function storeApiInvoice(Request $request)
     {
@@ -158,9 +161,9 @@ class InvoiceController extends Controller
         $invoice->payment_type_id = $paymentType->id;
         $invoice->state_id = $state->id;
         $invoice->value_total = $value;
-        if ($valuePaymentParcial == 'null'){
+        if ($valuePaymentParcial == 'null') {
             $invoice->value_payment = null;
-        }else{
+        } else {
             $invoice->value_payment = $valuePaymentParcial;
         }
         $invoice->date_payment_client = $date_payment_client;
@@ -189,7 +192,8 @@ class InvoiceController extends Controller
         return response()->json('Actualizado Correctamente!');
     }
 
-    public function uploadArchiveInvoice(Request $request){
+    public function uploadArchiveInvoice(Request $request)
+    {
         $nameCompany = $request->input('nameInvoice');
         $uuid = $request->input('nameId');
         $archive = $request->file('archive');
@@ -201,14 +205,16 @@ class InvoiceController extends Controller
         return response()->json(['data' => $urlFinal, 'uuid' => $uuid, 'extension' => $archiveExtension]);
     }
 
-    public function removedArchiveInvoice(Request $request){
+    public function removedArchiveInvoice(Request $request)
+    {
         $pathArchive = $request->get('archiveInvoice');
         $partes_ruta = pathinfo($pathArchive);
         Storage::delete('archives/' . $partes_ruta['basename']);
         dd($pathArchive);
     }
 
-    public function removedArchiveInvoiceDb(Request $request){
+    public function removedArchiveInvoiceDb(Request $request)
+    {
         $pathArchive = $request->archiveInvoiceUrl;
         $uuidArchive = $request->archiveInvoiceUuid;
 
@@ -217,8 +223,7 @@ class InvoiceController extends Controller
 
         DB::table('archives')->where('uuid', $uuidArchive)->delete();
         return response()->json('Se eliminó correctamente');
-
-
+    }
 
     public function importDataInvoice(Request $request)
     {
@@ -254,7 +259,12 @@ class InvoiceController extends Controller
                 $new_agreed_payment_date = $line["Nueva fecha concertada de pago"];
                 $comments = $line["Comentarios u observaciones"];
 
-                $invoice = new Invoice;
+                $paymentTypeId = $line['Tipo de pago'];
+                $valuePaymentParcial = $line['Valor Pagado'];
+
+                $invoice = new Invoice();
+                $invoice->payment_type_id = $paymentTypeId;
+                $invoice->value_payment = $valuePaymentParcial;
                 $invoice->invoice_number = $invoice_number;
                 $invoice->date_issue = $date_issue;
                 $invoice->customer_id = $customer->id;

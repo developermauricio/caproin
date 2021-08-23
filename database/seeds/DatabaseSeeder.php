@@ -240,6 +240,17 @@ class DatabaseSeeder extends Seeder
         factory(\App\Models\StateInvoice::class)->create(['name' => 'Pagado']);
         factory(\App\Models\StateInvoice::class)->create(['name' => 'Retrasado']);
 
+        /*=============================================
+           CREANDO TIPOS DE MONEDA
+        =============================================*/
+        factory(\App\Models\Currency::class)->create(['code' => 'USD']);
+        factory(\App\Models\Currency::class)->create(['code' => 'COP']);
+
+        /*=============================================
+           CREANDO 20 ACUERDOS COMERCIALES
+        =============================================*/
+        factory(\App\Models\TradeAgreement::class, 20)->create();
+
         factory(\App\Models\Invoice::class, 20)->create();
     }
 }
