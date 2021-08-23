@@ -58,6 +58,7 @@ export default {
   display: inline-block;
   width: 60em;
   height: 34em;
+  cursor: pointer;
 }
 
 .switch input {

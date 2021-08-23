@@ -337,6 +337,60 @@
         :required="true"
       ></input-form>
     </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        type="date"
+        id="txt_actual_delivery_date"
+        name="actual_delivery_date"
+        label="Fecha de entrega real"
+        pattern="all"
+        errorMsg="Ingrese una fecha válida"
+        requiredMsg="La fecha de recibo es obligatoria"
+        :modelo.sync="purchase_order.actual_delivery_date"
+        :msgServer.sync="errors.actual_delivery_date"
+        :required="true"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        id="txt_way_to_pay"
+        type="multiselect"
+        :multiselect="{
+          selectLabel: 'Seleccionar',
+          selectedLabel: 'Seleccionado',
+          deselectLabel: 'Desmarcar',
+          placeholder: 'Seleccionar forma de pago',
+          taggable: false,
+          label: 'name',
+          options: way_to_pays,
+          'custom-label': (way_to_pay) => way_to_pay,
+        }"
+        :modelo.sync="purchase_order.way_to_pay"
+        :msgServer.sync="errors.way_to_pay"
+        name="way_to_pay"
+        label="Forma de pago"
+        pattern="all"
+        errorMsg="Forma de pago no seleccionado"
+        requiredMsg="La forma de pago es obligatoria"
+        :required="true"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        id="txt_contact_number"
+        name="contact_number"
+        label="Número de contacto"
+        pattern="all"
+        errorMsg="Ingrese un número de contacto válido"
+        requiredMsg="El número de contacto es obligatorio"
+        :modelo.sync="purchase_order.contact_number"
+        :msgServer.sync="errors.contact_number"
+        :required="true"
+      ></input-form>
+    </div>
   </div>
 </template>
 
@@ -353,26 +407,12 @@ export default {
       sellers: [],
       type_coins: [],
       conveyors: [],
+      way_to_pays: ["contado", "otro"],
     };
   },
   created() {
-    axios.get("/api/all-customer-list").then((response) => {
-      this.customers = response.data;
-    });
-    axios.get("/api/all-order-type-list").then((response) => {
-      this.orderTypes = response.data;
-    });
-    axios.get("/api/all-zone-list").then((response) => {
-      this.zones = response.data;
-    });
-    axios.get("/api/all-seller-list").then((response) => {
-      this.sellers = response.data;
-    });
-    axios.get("/api/all-coin-type-list").then((response) => {
-      this.type_coins = response.data;
-    });
-    axios.get("/api/all-conveyor-list").then((response) => {
-      this.conveyors = response.data;
+    this.getData().catch((err) => {
+      console.log(err);
     });
   },
   props: {
@@ -385,6 +425,16 @@ export default {
     purchase_order: {
       type: Object,
       require: true,
+    },
+  },
+  methods: {
+    async getData() {
+      this.customers = (await axios.get("/api/all-customer-list")).data;
+      this.orderTypes = (await axios.get("/api/all-order-type-list")).data;
+      this.zones = (await axios.get("/api/all-zone-list")).data;
+      this.sellers = (await axios.get("/api/all-seller-list")).data;
+      this.type_coins = (await axios.get("/api/all-coin-type-list")).data;
+      this.conveyors = (await axios.get("/api/all-conveyor-list")).data;
     },
   },
   computed: {

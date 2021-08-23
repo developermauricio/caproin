@@ -9,11 +9,9 @@
     <datepicker
       v-if="type === 'date'"
       :language="es"
-      :input-class="
-        'form-control ' + (!validated || msgServer ? 'is-invalid' : '')
-      "
+      :input-class="'form-control ' + (hasError ? 'is-invalid' : '')"
       placeholder="formato 1998-06-06"
-      :class="!validated || msgServer ? 'is-invalid' : ''"
+      :class="hasError ? 'is-invalid' : ''"
       :full-month-name="true"
       format="yyyy-MM-dd"
       :value="modelo"
@@ -25,7 +23,7 @@
     <textarea
       v-else-if="type === 'textarea'"
       class="form-control"
-      :class="!validated || msgServer ? 'is-invalid' : ''"
+      :class="hasError ? 'is-invalid' : ''"
       :id="id"
       :placeholder="label"
       :value="modelo"
@@ -36,7 +34,7 @@
     ></textarea>
     <multiselect
       v-else-if="type === 'multiselect'"
-      :class="!validated || msgServer ? 'is-invalid' : ''"
+      :class="hasError ? 'is-invalid' : ''"
       :id="id"
       :label="label"
       :required="required"
@@ -50,19 +48,19 @@
       v-bind:value="modelo"
       v-bind="money"
       class="form-control"
-      :class="!validated || msgServer ? 'is-invalid' : ''"
+      :class="hasError ? 'is-invalid' : ''"
     ></money>
     <ckeditor
       v-else-if="type === 'ckeditor'"
       @input="onEditorInput"
       v-bind="options"
-      :class="!validated || msgServer ? 'is-invalid' : ''"
+      :class="hasError ? 'is-invalid' : ''"
     ></ckeditor>
     <input
       :type="tipoInput"
       class="form-control"
       :name="name"
-      :class="!validated || msgServer ? 'is-invalid' : ''"
+      :class="hasError ? 'is-invalid' : ''"
       :id="id"
       :placeholder="label"
       :required="required"
@@ -75,14 +73,8 @@
       v-else
       :disabled="disabled == 1"
     />
-    <div class="invalid-feedback" v-if="!validated || msgServer">
-      {{
-        msgServer
-          ? msgServer[0]
-          : !validated && noValue
-          ? requiredMsg
-          : errorMsg
-      }}
+    <div class="invalid-feedback" v-if="hasError">
+      {{ messageError }}
     </div>
   </div>
 </template>
@@ -102,7 +94,6 @@ const validations = {
     "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
   ),
 
-
   url: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
 
   datemdy: /^([0-2][0-9]|(3)[0-1])(.)(((0)[0-9])|((1)[0-2]))(.)\d{4}$/,
@@ -113,7 +104,7 @@ export default {
   data: function () {
     return {
       validator: null,
-      validated: true,
+      isValid: true,
       valorActual: null,
       tipoInput: "text",
       es: es,
@@ -125,7 +116,7 @@ export default {
   props: {
     name: {
       type: String,
-      default: ''
+      default: "",
     },
     disabled: Number,
     label: String,
@@ -179,6 +170,18 @@ export default {
       var vm = this;
       return Object.assign({}, this.$listeners);
     },
+    hasError() {
+      return !this.isValid || this.msgServer;
+    },
+    messageError() {
+      if (this.msgServer) return this.msgServer[0];
+
+      if (!this.isValid && this.noValue) {
+        return this.requiredMsg;
+      } else {
+        return this.errorMsg;
+      }
+    },
   },
   mounted() {
     if (this.type) {
@@ -190,7 +193,7 @@ export default {
     });
 
     eventBus.$on("resetValidaciones", () => {
-      this.validated = true;
+      this.isValid = true;
     });
 
     this.validator = validations[this.pattern]
@@ -218,17 +221,17 @@ export default {
       }
 
       if (this.type === "date") {
-        this.validated = this.required ? !this.isEmpty(this.valorActual) : true;
+        this.isValid = this.required ? !this.isEmpty(this.valorActual) : true;
       } else if (this.customValid) {
-        this.validated = this.customValid(this.valorActual);
+        this.isValid = this.customValid(this.valorActual);
       } else if (typeof value !== "string") {
         this.validRequired(this.valorActual);
       } else if (value === "$ 0") {
         this.noValue = true;
-        this.validated = !this.required;
+        this.isValid = !this.required;
       } else {
         if (this.validator) {
-          this.validated = this.validator.test(this.valorActual);
+          this.isValid = this.validator.test(this.valorActual);
         }
         this.validRequired(this.valorActual);
       }
@@ -237,7 +240,7 @@ export default {
       this.noValue = false;
       this.isEmpty(val);
       if (this.noValue) {
-        this.validated = !this.required;
+        this.isValid = !this.required;
       }
     },
     isEmpty(value) {
@@ -253,15 +256,15 @@ export default {
         case "object":
           if (Array.isArray(value)) {
             this.noValue = value.length < 1;
-            this.validated = this.required ? !this.noValue : true;
+            this.isValid = this.required ? !this.noValue : true;
           } else {
             this.noValue = !value;
-            this.validated = this.required ? !this.noValue : true;
+            this.isValid = this.required ? !this.noValue : true;
           }
           break;
         case "number":
           this.noValue = false;
-          this.validated = true;
+          this.isValid = true;
           break;
         default:
           this.noValue = true;

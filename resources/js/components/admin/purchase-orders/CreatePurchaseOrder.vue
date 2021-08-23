@@ -51,7 +51,7 @@ export default {
         seller: null,
         house: '',
         description: '',
-        has_blueprint: '',
+        has_blueprint: false,
         type_coin_id: '',
         type_coin: null,
         total_value: '',
