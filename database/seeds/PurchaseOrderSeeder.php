@@ -1,7 +1,7 @@
 <?php
 
-use App\OrderType;
-use App\StateOrder;
+use App\Models\OrderType;
+use App\Models\StateOrder;
 use Illuminate\Database\Seeder;
 
 class PurchaseOrderSeeder extends Seeder

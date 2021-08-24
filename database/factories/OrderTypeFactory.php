@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\OrderType;
+use App\Models\OrderType;
 use Faker\Generator as Faker;
 
 $factory->define(OrderType::class, function (Faker $faker) {

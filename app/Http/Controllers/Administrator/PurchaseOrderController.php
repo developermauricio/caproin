@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Conveyor;
 use App\Models\Currency;
 use App\Models\Customer;
+use App\Models\OrderType;
 use App\Models\PurchaseOrder;
 use App\Models\Zone;
-use App\OrderType;
 use App\User;
 use Illuminate\Http\Request;
 

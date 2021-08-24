@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PurchaseOrderStateHistory;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
-class PurchaseOrderStateHistoryController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class PurchaseOrderStateHistoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\PurchaseOrderStateHistory  $purchaseOrderStateHistory
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(PurchaseOrderStateHistory $purchaseOrderStateHistory)
+    public function show(Comment $comment)
     {
         //
     }
@@ -52,10 +52,10 @@ class PurchaseOrderStateHistoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\PurchaseOrderStateHistory  $purchaseOrderStateHistory
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit(PurchaseOrderStateHistory $purchaseOrderStateHistory)
+    public function edit(Comment $comment)
     {
         //
     }
@@ -64,10 +64,10 @@ class PurchaseOrderStateHistoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PurchaseOrderStateHistory  $purchaseOrderStateHistory
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PurchaseOrderStateHistory $purchaseOrderStateHistory)
+    public function update(Request $request, Comment $comment)
     {
         //
     }
@@ -75,10 +75,10 @@ class PurchaseOrderStateHistoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\PurchaseOrderStateHistory  $purchaseOrderStateHistory
+     * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PurchaseOrderStateHistory $purchaseOrderStateHistory)
+    public function destroy(Comment $comment)
     {
         //
     }
