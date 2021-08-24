@@ -101,9 +101,7 @@
 </template>
 
 <script>
-import SwitchComponent from "../../../SwitchComponent.vue";
 export default {
-  components: { SwitchComponent },
   name: "ConveyorOrder",
   props: {
     errors: {

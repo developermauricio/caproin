@@ -101,7 +101,9 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('/all-zone-list', 'PurchaseOrderController@getAllZone');
     Route::get('/all-seller-list', 'PurchaseOrderController@getAllSeller');
     Route::get('/all-coin-type-list', 'PurchaseOrderController@getAllTypeCoin');
+    Route::get('/all-state-ordes', 'PurchaseOrderController@getAllStateOrders');
     Route::get('/all-conveyor-list', 'PurchaseOrderController@getAllConveyor');
+    Route::get('/purchase-order-state-history', 'PurchaseOrderStateHistoryController@index');
 
     // Route::get('/get-state-invoice', 'InvoiceController@getApiGetStateInvoices')->name('api.all.state.invoices');
     // Route::get('/get-type-invoice', 'InvoiceController@getApiGetTypeInvoices')->name('api.all.type.invoices');

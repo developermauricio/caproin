@@ -43,8 +43,6 @@ class CreatePurchaseOrdersTable extends Migration
 
             $table->double('total_value');
 
-            // $table->unsignedBigInteger('state_order_id');
-            // $table->foreign('state_order_id')->references('id')->on('state_orders');
 
             $table->string('internal_quote_number');
             $table->string('manufacturer_house_quotation_number');

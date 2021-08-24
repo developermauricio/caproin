@@ -8,6 +8,7 @@ use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\OrderType;
 use App\Models\PurchaseOrder;
+use App\Models\StateOrder;
 use App\Models\Zone;
 use App\User;
 use Illuminate\Http\Request;
@@ -37,6 +38,11 @@ class PurchaseOrderController extends Controller
     public function getAllOrderTypes() {
         $orderTypes = OrderType::all();
         return response()->json($orderTypes);
+    }
+
+    public function getAllStateOrders() {
+        $stateOrders = StateOrder::all();
+        return response()->json($stateOrders);
     }
 
     public function getAllZone() {

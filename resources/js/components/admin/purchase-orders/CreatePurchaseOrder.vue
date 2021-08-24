@@ -32,9 +32,9 @@
     </tab-content>
 
     <tab-content title="Estado del pedido" :beforeChange="validarTab">
-      <conveyor-order
-        :purchase_order.sync="purchase_order"
-        :conveyors="conveyors"
+      <status-purchase-order
+        :state_histories.sync="state_histories"
+        :state_orders="state_orders"
       />
     </tab-content>
 
@@ -74,9 +74,14 @@
 <script>
 import ConveyorOrder from "./components/ConveyorOrder.vue";
 import HeaderPurchaseOrder from "./components/HeaderPurchaseOrder.vue";
+import StatusPurchaseOrder from "./components/StatusPurchaseOrder.vue";
 export default {
   name: "CreatePurchaseOrder",
-  components: { HeaderPurchaseOrder, ConveyorOrder },
+  components: {
+    HeaderPurchaseOrder,
+    ConveyorOrder,
+    StatusPurchaseOrder,
+  },
   data() {
     return {
       currentTab: 0,
@@ -122,6 +127,8 @@ export default {
       type_currencies: [],
       payments: [],
       conveyors: [],
+      state_histories: [],
+      state_orders: [],
     };
   },
   created() {
@@ -138,6 +145,10 @@ export default {
       this.type_currencies = (await axios.get("/api/all-coin-type-list")).data;
       this.conveyors = (await axios.get("/api/all-conveyor-list")).data;
       this.payments = (await axios.get("/api/get-payment-type")).data.data;
+      this.state_orders = (await axios.get("/api/all-state-ordes")).data;
+      this.state_histories = (
+        await axios.get("/api/purchase-order-state-history")
+      ).data;
     },
     validarTab() {
       eventBus.$emit("validarFormulario");

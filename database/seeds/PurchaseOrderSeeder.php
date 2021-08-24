@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\OrderDetail;
 use App\Models\OrderType;
+use App\Models\PurchaseOrder;
+use App\Models\PurchaseOrderStateHistory;
 use App\Models\StateOrder;
 use Illuminate\Database\Seeder;
 
@@ -33,5 +36,21 @@ class PurchaseOrderSeeder extends Seeder
             ['name' => 'Facturado'],
             ['name' => 'Pagado'],
         ]);
+
+        $this->setDataFaker();
+    }
+
+    private function setDataFaker() {
+        $purchaseOrders = factory(PurchaseOrder::class, 10)->create();
+
+        foreach ($purchaseOrders as $purchaseOrder) {
+            factory(OrderDetail::class)->create([
+                'purchase_order_id' => $purchaseOrder->id
+            ]);
+
+            factory(PurchaseOrderStateHistory::class, 3)->create([
+                'purchase_order_id' => $purchaseOrder->id
+            ]);
+        }
     }
 }

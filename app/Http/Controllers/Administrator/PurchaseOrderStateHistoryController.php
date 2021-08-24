@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Administrator;
 
+use App\Http\Controllers\Controller;
 use App\Models\PurchaseOrderStateHistory;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class PurchaseOrderStateHistoryController extends Controller
      */
     public function index()
     {
-        //
+        $histories = PurchaseOrderStateHistory::with('state_order')->where('purchase_order_id', 1)->get();
+        return response()->json($histories);
     }
 
     /**
