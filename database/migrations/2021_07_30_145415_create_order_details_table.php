@@ -35,7 +35,7 @@ class CreateOrderDetailsTable extends Migration
             $table->string('blueprint_file');
 
             $table->unsignedBigInteger('type_coin_id')->nullable();
-            $table->foreign('type_coin_id')->references('id')->on('type_coins');
+            $table->foreign('type_coin_id')->references('id')->on('currencies');
 
             $table->string('value');
 

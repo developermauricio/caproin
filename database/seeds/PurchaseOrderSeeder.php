@@ -14,24 +14,24 @@ class PurchaseOrderSeeder extends Seeder
     public function run()
     {
         factory(OrderType::class)->createMany([
-            ['description' => '', 'name' => 'Productos'],
-            ['description' => '', 'name' => 'Servicios'],
-            ['description' => '', 'name' => 'Representación'],
+            ['name' => 'Productos'],
+            ['name' => 'Servicios'],
+            ['name' => 'Representación'],
         ]);
 
         factory(StateOrder::class)->createMany([
-            ['description' => '', 'name' => 'Inicio'],
-            ['description' => '', 'name' => 'Adquisición'],
-            ['description' => '', 'name' => 'Producción'],
-            ['description' => '', 'name' => 'Reparación'],
-            ['description' => '', 'name' => 'Importación de insumos'],
-            ['description' => '', 'name' => 'Remisión'],
-            ['description' => '', 'name' => 'En proceso de Importación'],
-            ['description' => '', 'name' => 'En proceso de alistamiento'],
-            ['description' => '', 'name' => 'Despachado'],
-            ['description' => '', 'name' => 'Recibido por el cliente'],
-            ['description' => '', 'name' => 'Facturado'],
-            ['description' => '', 'name' => 'Pagado'],
+            ['name' => 'Inicio'],
+            ['name' => 'Adquisición'],
+            ['name' => 'Producción'],
+            ['name' => 'Reparación'],
+            ['name' => 'Importación de insumos'],
+            ['name' => 'Remisión'],
+            ['name' => 'En proceso de Importación'],
+            ['name' => 'En proceso de alistamiento'],
+            ['name' => 'Despachado'],
+            ['name' => 'Recibido por el cliente'],
+            ['name' => 'Facturado'],
+            ['name' => 'Pagado'],
         ]);
     }
 }
