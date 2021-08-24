@@ -59,7 +59,9 @@ class CreatePurchaseOrdersTable extends Migration
             $table->date('expected_dispatch_date');
             $table->date('actual_dispatch_date');
             $table->date('actual_delivery_date');
-            $table->string('way_to_pay');
+
+            $table->unsignedBigInteger('payment_id');
+            $table->foreign('payment_id')->references('id')->on('payment_types');
 
             $table->unsignedBigInteger('invoice_id');
             $table->foreign('invoice_id')->references('id')->on('invoices');

@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
 use App\Models\Conveyor;
+use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\PurchaseOrder;
-use App\Models\TypeCoin;
 use App\Models\Zone;
 use App\OrderType;
 use App\User;
@@ -17,6 +17,10 @@ class PurchaseOrderController extends Controller
     public function index()
     {
         return view('admin.purchase-order.list-purchase-orders');
+    }
+
+    public function create() {
+        return view('admin.purchase-order.create-purchase-order');
     }
 
     public function getApiPurchaseOrdes()
@@ -46,7 +50,7 @@ class PurchaseOrderController extends Controller
     }
 
     public function getAllTypeCoin() {
-        $typeCoins = TypeCoin::all();
+        $typeCoins = Currency::all();
         return response()->json($typeCoins);
     }
 

@@ -15,12 +15,10 @@ import VueFormWizard from 'vue-form-wizard';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
+
 Vue.use(VueFormWizard)
-
 Vue.use(CxltToastr)
-
 Vue.use(Vuesax);
-
 Vue.use(money, {precision: 3})
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))

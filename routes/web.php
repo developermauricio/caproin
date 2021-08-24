@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
           ORDENES DE COMPRA
         =============================================*/
     Route::get('/ordenes-compra', 'PurchaseOrderController@index')->name('admin.purchase_order.purchase_orders');
+    Route::get('/ordenes-compra/crear', 'PurchaseOrderController@create')->name('admin.purchase_order.create');
     Route::post('/import-data-invoice', 'InvoiceController@importDataInvoice')->name('import.data.invoices');
 
     /*=============================================

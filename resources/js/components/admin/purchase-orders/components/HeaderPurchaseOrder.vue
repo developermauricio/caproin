@@ -64,7 +64,7 @@
           placeholder: 'Seleccionar tipo',
           taggable: false,
           label: 'name',
-          options: orderTypes,
+          options: order_types,
           'custom-label': (orderType) => orderType.name,
         }"
         :modelo.sync="purchase_order.orderType"
@@ -227,12 +227,12 @@
           placeholder: 'Seleccionar tipo de moneda',
           taggable: false,
           label: 'type_moneda',
-          options: type_coins,
-          'custom-label': (type_coin) => type_coin.name,
+          options: type_currencies,
+          'custom-label': (type_currency) => type_currency.code,
         }"
-        :modelo.sync="purchase_order.type_coin"
-        :msgServer.sync="errors.type_coin"
-        name="type_coin"
+        :modelo.sync="purchase_order.type_currency"
+        :msgServer.sync="errors.type_currency"
+        name="type_currency"
         label="Tipo de moneda"
         pattern="all"
         errorMsg="Tipo de moneda no seleccionado"
@@ -286,76 +286,7 @@
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
-        id="txt_dispatch_guide_number"
-        name="dispatch_guide_number"
-        label="Número de guia de despacho despacho"
-        pattern="all"
-        errorMsg="Ingrese un número de cotización válido"
-        requiredMsg="El número de cotización del fabricante es obligatorio"
-        :modelo.sync="purchase_order.dispatch_guide_number"
-        :msgServer.sync="errors.dispatch_guide_number"
-        :required="true"
-      ></input-form>
-    </div>
-
-    <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        id="txt_conveyor"
-        type="multiselect"
-        :multiselect="{
-          selectLabel: 'Seleccionar',
-          selectedLabel: 'Seleccionado',
-          deselectLabel: 'Desmarcar',
-          placeholder: 'Seleccionar cliente',
-          taggable: false,
-          label: 'name',
-          options: conveyors,
-          'custom-label': (conveyor) => conveyor.name,
-        }"
-        :modelo.sync="purchase_order.conveyor"
-        :msgServer.sync="errors.conveyor"
-        name="conveyor"
-        label="transportadora"
-        pattern="all"
-        errorMsg="Transportadora no seleccionada"
-        requiredMsg="La transportadora es obligatoria"
-        :required="true"
-      ></input-form>
-    </div>
-
-    <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        type="date"
-        id="txt_order_receipt_date"
-        name="order_receipt_date"
-        label="Fecha de despacho orden"
-        pattern="all"
-        errorMsg="Ingrese una fecha válida"
-        requiredMsg="La fecha de recibo es obligatoria"
-        :modelo.sync="purchase_order.order_receipt_date"
-        :msgServer.sync="errors.order_receipt_date"
-        :required="true"
-      ></input-form>
-    </div>
-
-    <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        type="date"
-        id="txt_actual_delivery_date"
-        name="actual_delivery_date"
-        label="Fecha de entrega real"
-        pattern="all"
-        errorMsg="Ingrese una fecha válida"
-        requiredMsg="La fecha de recibo es obligatoria"
-        :modelo.sync="purchase_order.actual_delivery_date"
-        :msgServer.sync="errors.actual_delivery_date"
-        :required="true"
-      ></input-form>
-    </div>
-
-    <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        id="txt_way_to_pay"
+        id="txt_payment"
         type="multiselect"
         :multiselect="{
           selectLabel: 'Seleccionar',
@@ -364,12 +295,12 @@
           placeholder: 'Seleccionar forma de pago',
           taggable: false,
           label: 'name',
-          options: way_to_pays,
-          'custom-label': (way_to_pay) => way_to_pay,
+          options: payments,
+          'custom-label': (payment) => payment.name,
         }"
-        :modelo.sync="purchase_order.way_to_pay"
-        :msgServer.sync="errors.way_to_pay"
-        name="way_to_pay"
+        :modelo.sync="purchase_order.payment"
+        :msgServer.sync="errors.payment"
+        name="payment"
         label="Forma de pago"
         pattern="all"
         errorMsg="Forma de pago no seleccionado"
@@ -399,22 +330,6 @@ import SwitchComponent from "../../../SwitchComponent.vue";
 export default {
   components: { SwitchComponent },
   name: "HeaderPurchaseOrder",
-  data() {
-    return {
-      customers: [],
-      orderTypes: [],
-      zones: [],
-      sellers: [],
-      type_coins: [],
-      conveyors: [],
-      way_to_pays: ["contado", "otro"],
-    };
-  },
-  created() {
-    this.getData().catch((err) => {
-      console.log(err);
-    });
-  },
   props: {
     errors: {
       type: Object,
@@ -426,21 +341,47 @@ export default {
       type: Object,
       require: true,
     },
-  },
-  methods: {
-    async getData() {
-      this.customers = (await axios.get("/api/all-customer-list")).data;
-      this.orderTypes = (await axios.get("/api/all-order-type-list")).data;
-      this.zones = (await axios.get("/api/all-zone-list")).data;
-      this.sellers = (await axios.get("/api/all-seller-list")).data;
-      this.type_coins = (await axios.get("/api/all-coin-type-list")).data;
-      this.conveyors = (await axios.get("/api/all-conveyor-list")).data;
+    customers: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    order_types: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    zones: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    sellers: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    type_currencies: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    payments: {
+      type: Array,
+      default: function () {
+        return []
+      }
     },
   },
   computed: {
     moneyConfig() {
-      const id = this.purchase_order.type_coin
-        ? this.purchase_order.type_coin.id
+      const id = this.purchase_order.type_currency
+        ? this.purchase_order.type_currency.id
         : 1;
       switch (id) {
         case 1:
@@ -448,7 +389,7 @@ export default {
             decimal: ".",
             thousands: ",",
             prefix: "$ ",
-            suffix: "COP",
+            suffix: "USD",
             precision: 0,
           };
         case 2:
@@ -456,7 +397,7 @@ export default {
             decimal: ".",
             thousands: ",",
             prefix: "$ ",
-            suffix: "USD",
+            suffix: "COP",
             precision: 0,
           };
         case 3:

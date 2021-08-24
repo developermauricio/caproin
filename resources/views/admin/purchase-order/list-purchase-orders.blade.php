@@ -87,7 +87,7 @@
 <script src="{{asset('js/purchase-orders-table.js')}}"></script>
 <script>
 $(function () {
-  initTable(`{{route('api.all.purchase-orders')}}`);
+  initTable(`{{route('api.all.purchase-orders')}}`, `{{route('admin.purchase_order.create')}}`);
 });
 </script>
 @endpush
