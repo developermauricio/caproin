@@ -22,6 +22,10 @@ Vue.use(CxltToastr)
 Vue.use(Vuesax);
 
 Vue.use(money, {precision: 3})
+
+import VueGoodTablePlugin from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css'
+Vue.use(VueGoodTablePlugin);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
@@ -79,6 +83,12 @@ Vue.component('edit-product-service', require('./components/admin/product/EditPr
 COMPONENTES PARA EL PERFIL
 =============================================*/
 Vue.component('component-modal-profile', require('./components/admin/profile/ModalProfile.vue').default);
+
+/*=============================================
+COMPONENTES PARA EL ACUERDO COMERCIAL
+=============================================*/
+Vue.component('create-trade-agreement', require('./components/admin/tradeAgreement/CreateTradeAgreement.vue').default);
+Vue.component('show-edit-trade-agreement', require('./components/admin/tradeAgreement/ShowEditTradeAgreement.vue').default);
 
 
 window.eventBus = new Vue();
