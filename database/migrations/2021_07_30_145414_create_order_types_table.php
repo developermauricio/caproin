@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTypeCoinsTable extends Migration
+class CreateOrderTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateTypeCoinsTable extends Migration
      */
     public function up()
     {
-        Schema::create('type_coins', function (Blueprint $table) {
+        Schema::create('order_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description')->nullable();
+            $table->string('description');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateTypeCoinsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('type_coins');
+        Schema::dropIfExists('order_types');
     }
 }

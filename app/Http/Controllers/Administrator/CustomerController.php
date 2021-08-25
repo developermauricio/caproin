@@ -149,7 +149,7 @@ class CustomerController extends Controller
         });
 
         if (!isset($lines[0])) {
-            return back()->with('status', "Transacción realizada existosamente");
+            return back()->with('status', "Transacción realizada exitosamente");
         } else {
             $errors = $lines->count();
             $success = $total - $errors;

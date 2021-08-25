@@ -15,12 +15,10 @@ import VueFormWizard from 'vue-form-wizard';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
+
 Vue.use(VueFormWizard)
-
 Vue.use(CxltToastr)
-
 Vue.use(Vuesax);
-
 Vue.use(money, {precision: 3})
 
 import VueGoodTablePlugin from 'vue-good-table';
@@ -90,6 +88,10 @@ COMPONENTES PARA EL ACUERDO COMERCIAL
 Vue.component('create-trade-agreement', require('./components/admin/tradeAgreement/CreateTradeAgreement.vue').default);
 Vue.component('show-edit-trade-agreement', require('./components/admin/tradeAgreement/ShowEditTradeAgreement.vue').default);
 
+/*=============================================
+COMPONENTES PARA MODULOS ORDENES DE COMPRA
+=============================================*/
+Vue.component('create-purchase-order', require('./components/admin/purchase-orders/CreatePurchaseOrder.vue').default);
 
 window.eventBus = new Vue();
 const app = new Vue({

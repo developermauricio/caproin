@@ -169,13 +169,6 @@ class DatabaseSeeder extends Seeder
         factory(\App\Models\Conveyor::class)->create(['name' => 'Transportador 5']);
 
         /*=============================================
-            TIPO MONEDA
-        =============================================*/
-        factory(\App\Models\TypeCoin::class)->create(['name' => 'COP']);
-        factory(\App\Models\TypeCoin::class)->create(['name' => 'USD']);
-        factory(\App\Models\TypeCoin::class)->create(['name' => 'EURO']);
-
-        /*=============================================
             TIPOS DE PRODUCTO PRODUCTO
         =============================================*/
         factory(\App\Models\TypeProduct::class)->create(['name' => 'Producto']);
@@ -252,5 +245,7 @@ class DatabaseSeeder extends Seeder
         factory(\App\Models\TradeAgreement::class, 20)->create();
 
         factory(\App\Models\Invoice::class, 20)->create();
+
+        $this->call(PurchaseOrderSeeder::class);
     }
 }

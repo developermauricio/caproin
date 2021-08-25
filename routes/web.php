@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -68,6 +69,12 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
           RUTAS PARA LOS MODULOS FACTURAS
         =============================================*/
     Route::get('/facturas', 'InvoiceController@index')->name('admin.invoice');
+
+    /*=============================================
+          ORDENES DE COMPRA
+        =============================================*/
+    Route::get('/ordenes-compra', 'PurchaseOrderController@index')->name('admin.purchase_order.purchase_orders');
+    Route::get('/ordenes-compra/crear', 'PurchaseOrderController@create')->name('admin.purchase_order.create');
     Route::post('/import-data-invoice', 'InvoiceController@importDataInvoice')->name('import.data.invoices');
 
     /*=============================================
