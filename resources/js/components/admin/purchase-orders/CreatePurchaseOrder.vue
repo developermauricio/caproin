@@ -80,7 +80,6 @@ export default {
   components: {
     HeaderPurchaseOrder,
     ConveyorOrder,
-    StatusPurchaseOrder,
   },
   data() {
     return {
