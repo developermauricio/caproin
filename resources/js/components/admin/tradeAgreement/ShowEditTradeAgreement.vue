@@ -324,6 +324,47 @@
                 :msgServer.sync="errors.deliveryTimeDetail"
               ></input-form>
             </div>
+            <!--=====================================
+		          PRODUCTOS ASIGNADOS
+            ======================================-->
+            <div class="row m-1" v-if="productsTradeAgreement.length > 0">
+              <div class="col-12">
+                <label>Productos Asignados</label>
+                <div class="table-responsive">
+                  <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Tipo</th>
+                      <th>Nombre</th>
+                      <th>Descripción</th>
+                      <th>Cantidad Mínima</th>
+                      <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="product in productsTradeAgreement" :key="product.code">
+                      <td>{{ product.code }}</td>
+                      <td>{{ product.product_type.name }}</td>
+                      <td>{{ product.name }}</td>
+                      <td>{{ product.description }}</td>
+                      <td>
+                        <input-form
+                          id="txtMiniumAmount"
+                          label=""
+                          pattern="num"
+                          errorMsg="Ingrese una cantidad minima válido"
+                          requiredMsg="La cantidad minima es obligatorio"
+                          :modelo.sync="product.pivot.minimum_amount"
+                          :msgServer.sync="errors.product"
+                          :required="true"
+                        ></input-form>
+                      </td>
+                      <td> <button @click="removedProducts(product)" class="btn btn-primary">Quitar Producto o Servicio</button></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
 
           </div>
           <!--=====================================

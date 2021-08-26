@@ -7,8 +7,10 @@ use App\Models\Conveyor;
 use App\Models\Currency;
 use App\Models\Customer;
 use App\Models\OrderType;
+use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\StateOrder;
+use App\Models\TypeProduct;
 use App\Models\Zone;
 use App\User;
 use Illuminate\Http\Request;
@@ -20,7 +22,8 @@ class PurchaseOrderController extends Controller
         return view('admin.purchase-order.list-purchase-orders');
     }
 
-    public function create() {
+    public function create()
+    {
         return view('admin.purchase-order.create-purchase-order');
     }
 
@@ -30,38 +33,57 @@ class PurchaseOrderController extends Controller
         return datatables()->of($purchase_ordes)->toJson();
     }
 
-    public function getAllCustomers() {
+    public function getAllCustomers()
+    {
         $customers = Customer::all();
         return response()->json($customers);
     }
 
-    public function getAllOrderTypes() {
+    public function getAllOrderTypes()
+    {
         $orderTypes = OrderType::all();
         return response()->json($orderTypes);
     }
 
-    public function getAllStateOrders() {
+    public function getAllStateOrders()
+    {
         $stateOrders = StateOrder::all();
         return response()->json($stateOrders);
     }
 
-    public function getAllZone() {
+    public function getAllProductTypes()
+    {
+        $productTypes = TypeProduct::all();
+        return $productTypes;
+    }
+
+    public function getAllZone()
+    {
         $zones = Zone::all();
         return response()->json($zones);
     }
 
-    public function getAllSeller() {
+    public function getAllSeller()
+    {
         $sellers = User::all();
         return response()->json($sellers);
     }
 
-    public function getAllTypeCoin() {
+    public function getAllTypeCoin()
+    {
         $typeCoins = Currency::all();
         return response()->json($typeCoins);
     }
 
-    public function getAllConveyor() {
+    public function getAllConveyor()
+    {
         $conveyors = Conveyor::all();
         return response()->json($conveyors);
+    }
+
+    public function getAllProductByType(Request $request)
+    {
+        $products = Product::where('type_products_id', $request->input('type'))->get();
+        return $products;
     }
 }

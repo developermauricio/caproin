@@ -38,8 +38,8 @@ class CreatePurchaseOrdersTable extends Migration
             $table->text('description');
             $table->boolean('has_blueprint');
 
-            $table->unsignedBigInteger('type_coin_id');
-            $table->foreign('type_coin_id')->references('id')->on('currencies');
+            $table->unsignedBigInteger('currency_id');
+            $table->foreign('currency_id')->references('id')->on('currencies');
 
             $table->double('total_value');
 

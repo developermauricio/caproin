@@ -11,6 +11,7 @@ import CxltToastr from 'cxlt-vue2-toastr';
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 import 'material-icons/iconfont/material-icons.css';
 import money from 'v-money';
+import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import Vuesax from 'vuesax';
