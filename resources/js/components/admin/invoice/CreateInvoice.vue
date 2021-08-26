@@ -607,14 +607,14 @@ export default {
 
 <style>
 .multiselect__tag {
-  background: #0082FB !important;
+  background: #D9393D !important;
 }
 
 .multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
-  background: #283046 !important;
+  background: #7D7E7E !important;
 }
 
 .multiselect__option--highlight {
-  background: #0082FB !important;
+  background: #D9393D !important;
 }
 </style>

@@ -535,6 +535,16 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
+.multiselect__tag {
+  background: #D9393D !important;
+}
 
+.multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
+  background: #7D7E7E !important;
+}
+
+.multiselect__option--highlight {
+  background: #D9393D !important;
+}
 </style>

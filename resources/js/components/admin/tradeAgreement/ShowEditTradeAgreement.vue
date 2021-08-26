@@ -469,6 +469,15 @@
         </div>
       </div>
     </div>
+    <div class="modal-footer">
+      <button @click="closeModalEditTradeAgreement()" v-if="showDetailTradeAgreement === true" type="button" data-dismiss="modal"
+              class="btn btn-gris">Cerrar
+      </button>
+      <button v-if="showEditTradeAgreement === true" @click="btnCancelEditTradeAgreement()" class="btn btn-gris">Cancelar</button>
+      <button v-if="showEditTradeAgreement === true" @click="updateTradeAgreement()" type="button" class="btn btn-primary">
+        Actualizar Factura
+      </button>
+    </div>
   </div>
 </template>
 
@@ -478,6 +487,7 @@ import Multiselect from "vue-multiselect";
 import Datepicker from "vuejs-datepicker";
 import vue2Dropzone from "vue2-dropzone";
 import {en, es} from "vuejs-datepicker/dist/locale";
+import Swal from "sweetalert2";
 
 export default {
   name: "ShowEditTradeAgreement",
@@ -578,7 +588,9 @@ export default {
       this.showDetailTradeAgreement = true;
 
     },
+    closeModalEditTradeAgreement(){
 
+    },
     traerDatosTradeAgreement(e) {
       e.preventDefault();
       // this.getApiProducts();
@@ -617,6 +629,86 @@ export default {
         })
         this.$vs.loading.close()
       }, 2000)
+    },
+    updateTradeAgreement(){
+      eventBus.$emit("validarFormulario");
+      setTimeout(() => {
+        let resp = this;
+        /***  VALIDANDO LOS ERRORES Y MOSTRANDO UNA ALERTA  ***/
+        if (document.querySelectorAll("#validateEditTradeAgreement .is-invalid").length > 0) {
+          this.$toast.error({
+            title: 'Error',
+            message: 'Revisa que todos los campos que son obligatorios tengan datos',
+            showDuration: 2000,
+            hideDuration: 9000,
+            position: 'top right',
+          })
+          return;
+        }
+        const data = new FormData()
+
+        data.append('consecutive_Offer', this.consecutiveOfferDetail);
+        data.append('version', this.versionDetail);
+        data.append('idTradeAgreement', this.idTradeAgreement);
+        data.append('customer', JSON.stringify(this.customer));
+        data.append('state', JSON.stringify(this.stateTradeAgreementDetail));
+        data.append('short_description', this.descriptionShortDetail);
+        data.append('internal_product_code', this.InternalProductCodeDetail);
+        data.append('client_product_code', this.ClientProductCodeDetail);
+        data.append('currency', JSON.stringify(this.currency));
+        data.append('creation_date', moment(this.dateCreateDetail).format("YYYY-MM-DD HH:mm:ss"));
+        data.append('final_date', moment(this.dateFinalDetail).format("YYYY-MM-DD HH:mm:ss"));
+        data.append('delivery_time', this.deliveryTimeDetail);
+        data.append('unit_value', this.valueUnitDetail);
+        data.append('TRM', this.TRMDetail);
+        data.append('products', JSON.stringify(this.productsTradeAgreement.id));
+
+          Swal.fire({
+            title: 'Confirmar',
+            text: '¿Estás seguro de actualizar el acuerdo comercial?',
+            confirmButtonColor: "#D9393D",
+            cancelButtonColor: "#7D7E7E",
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            customClass: "swal-confirmation",
+            showCancelButton: true,
+            reverseButtons: true,
+            allowOutsideClick: false,
+          }).then((result) => {
+            if (result.value) {
+              this.$vs.loading({
+                color: '#3f4f6e',
+                text: 'Actualizando Acuerdo Comercial...'
+              })
+              axios.post('/api/register/update-trade-agreement', data).then(resp =>{
+                this.$toast.success({
+                  title: '¡Muy bien!',
+                  message: 'Acuerdo comercial actualizado correctamente',
+                  showDuration: 1000,
+                  hideDuration: 7000,
+                  position: 'top right',
+                })
+                // window.location = "/acuerdos-comerciales";
+              }).catch(err => {
+                console.log('mostrando el error', err)
+                this.$toast.error({
+                  title: 'Algo salio mal',
+                  message: 'Comunícate con el administrador',
+                  showDuration: 1000,
+                  hideDuration: 8000,
+                })
+              })
+              setTimeout(() => {
+                this.$vs.loading.close()
+              }, 2000)
+            }
+          })
+
+      },200)
+    },
+
+    btnCancelEditTrade(){
+
     },
 
     addProducts(product) {
@@ -683,6 +775,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.multiselect__tag {
+  background: #D9393D !important;
+}
 
+.multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
+  background: #7D7E7E !important;
+}
+
+.multiselect__option--highlight {
+  background: #D9393D !important;
+}
 </style>
