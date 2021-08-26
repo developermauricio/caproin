@@ -228,11 +228,11 @@
           taggable: false,
           label: 'type_moneda',
           options: type_currencies,
-          'custom-label': (type_currency) => type_currency.code,
+          'custom-label': (currency) => currency.code,
         }"
-        :modelo.sync="purchase_order.type_currency"
-        :msgServer.sync="errors.type_currency"
-        name="type_currency"
+        :modelo.sync="purchase_order.currency"
+        :msgServer.sync="errors.currency"
+        name="currency"
         label="Tipo de moneda"
         pattern="all"
         errorMsg="Tipo de moneda no seleccionado"
@@ -380,8 +380,8 @@ export default {
   },
   computed: {
     moneyConfig() {
-      const id = this.purchase_order.type_currency
-        ? this.purchase_order.type_currency.id
+      const id = this.purchase_order.currency
+        ? this.purchase_order.currency.id
         : 1;
       switch (id) {
         case 1:
@@ -413,6 +413,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

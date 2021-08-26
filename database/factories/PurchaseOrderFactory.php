@@ -27,7 +27,7 @@ $factory->define(PurchaseOrder::class, function (Faker $faker) {
         'house' => $faker->company(),
         'description' => $faker->paragraph(1),
         'has_blueprint' => $faker->randomElement([0, 1]),
-        'type_coin_id' => Currency::inRandomOrder()->first()->id,
+        'currency_id' => Currency::inRandomOrder()->first()->id,
         'total_value' => $faker->randomFloat(2, 1000, 200000),
         'internal_quote_number' => $faker->numberBetween(5000),
         'manufacturer_house_quotation_number' => $faker->numberBetween(5000),

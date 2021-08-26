@@ -1,5 +1,5 @@
 <template>
-  <dir>
+  <div>
     <div
       v-for="(history, index) in state_histories"
       :key="history.id"
@@ -36,7 +36,7 @@
             placeholder: 'Seleccionar el estado',
             taggable: false,
             label: 'name',
-            options: state_orders,
+            options: remainingState,
             'custom-label': (state_order) => state_order.name,
           }"
           :modelo.sync="history.state_order"
@@ -65,10 +65,32 @@
         ></input-form>
       </div>
     </div>
-  </dir>
+    <div class="input-group col-md-6 mb-3 p-0">
+      <select
+        class="form-control"
+        v-model="newStatus"
+        name="new_status"
+        id="new_status"
+      >
+        <option :value="null">Seleccione un estado</option>
+        <option :key="state.id" :value="state" v-for="state in remainingState">
+          {{ state.name }}
+        </option>
+      </select>
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        id="button-addon2"
+        @click="addNewStatus"
+      >
+        Añadir Estado
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
+import feather from 'feather-icons'
 export default {
   name: "StatusPurchaseOrder",
   props: {
@@ -87,14 +109,37 @@ export default {
       require: require,
     },
   },
+  data() {
+    return {
+      newStatus: null,
+    };
+  },
   computed: {
     closeIcon() {
       return feather.toSvg("x");
+    },
+    remainingState() {
+      return this.state_orders.filter((state) => {
+        return !this.state_histories.find((history) => {
+          return history.state_order.id == state.id;
+        });
+      });
     },
   },
   methods: {
     removeHistory(index) {
       this.state_histories.splice(index, 1);
+    },
+    addNewStatus() {
+      if (!this.newStatus) {
+        return;
+      }
+      this.state_histories.push({
+        description: "",
+        estimated_date: "",
+        state_order: this.newStatus,
+      });
+      this.newStatus = null;
     },
   },
 };

@@ -38,6 +38,15 @@
       />
     </tab-content>
 
+    <tab-content title="Detalle" :beforeChange="validarTab">
+      <order-details
+        :currency="purchase_order.currency"
+        :order_details.sync="order_details"
+        :type_currencies="type_currencies"
+        :type_products="type_products"
+      />
+    </tab-content>
+
     <template slot="footer" slot-scope="props">
       <div class="wizard-footer-left">
         <wizard-button
@@ -74,13 +83,14 @@
 <script>
 import ConveyorOrder from "./components/ConveyorOrder.vue";
 import HeaderPurchaseOrder from "./components/HeaderPurchaseOrder.vue";
-import StatusPurchaseOrder from "./components/StatusPurchaseOrder.vue";
+import OrderDetails from "./components/OrderDetails.vue";
+
 export default {
   name: "CreatePurchaseOrder",
   components: {
-    HeaderPurchaseOrder,
     ConveyorOrder,
-    StatusPurchaseOrder,
+    HeaderPurchaseOrder,
+    OrderDetails,
   },
   data() {
     return {
@@ -98,8 +108,8 @@ export default {
         house: "",
         description: "",
         has_blueprint: false,
-        type_coin_id: "",
-        type_currency: null,
+        currency_id: "",
+        currency: null,
         total_value: "",
         internal_quote_number: "",
         manufacturer_house_quotation_number: "",
@@ -129,6 +139,8 @@ export default {
       conveyors: [],
       state_histories: [],
       state_orders: [],
+      order_details: [],
+      type_products: []
     };
   },
   created() {
@@ -146,9 +158,10 @@ export default {
       this.conveyors = (await axios.get("/api/all-conveyor-list")).data;
       this.payments = (await axios.get("/api/get-payment-type")).data.data;
       this.state_orders = (await axios.get("/api/all-state-ordes")).data;
-      this.state_histories = (
+      this.order_details = (
         await axios.get("/api/purchase-order-state-history")
       ).data;
+      this.type_products = (await axios.get("/api/all-product-types-list")).data
     },
     validarTab() {
       eventBus.$emit("validarFormulario");

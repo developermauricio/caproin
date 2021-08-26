@@ -12,7 +12,7 @@ $factory->define(OrderDetail::class, function (Faker $faker) {
     return [
         'purchase_order_id' => PurchaseOrder::inRandomOrder()->first()->id,
         'product_id' => Product::inRandomOrder()->first()->id,
-        'type_coin_id' => Currency::inRandomOrder()->first()->id,
+        'currency_id' => Currency::inRandomOrder()->first()->id,
         'customer_order_number' => $faker->numberBetween(10000),
         'internal_order_number' => $faker->numberBetween(10000),
         'manufacturer' => $faker->company(),

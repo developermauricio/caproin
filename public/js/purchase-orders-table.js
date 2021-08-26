@@ -1,3 +1,12 @@
+const getRow = function (json, attribute) {
+  const data = json[attribute];
+  if (!data) {
+    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+  } else {
+    return `<span class="label text-center font-weight-bold">${data}</span>`;
+  }
+}
+
 const initTable = function (urlListPurchaseOrders, urlCreate) {
   const table = $('.datatables-all-purchase-ordes').DataTable({
     "ordering": true,
@@ -25,75 +34,46 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
         "data": "id"
       },
       {
+        "data": "customer_order_number",
         render: function (data, type, JsonResultRow, meta) {
-          if (JsonResultRow.code === null) {
-            return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
-          } else {
-            return `<span class="label text-center font-weight-bold">${JsonResultRow.code}</span>`;
-          }
+          return getRow(JsonResultRow, 'customer_order_number');
         },
       },
       {
-        data: "type_providers.name",
+        data: "customer_id",
         render: function (data, type, JsonResultRow, meta) {
-          if (JsonResultRow.type_providers.name === null) {
-            return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
-          } else {
-            return `<span class="label text-center font-weight-bold">${JsonResultRow.type_providers.name}</span>`;
-          }
+          return getRow(JsonResultRow, 'customer_id');
         },
       },
       {
-        data: "users.identification_type.name",
+        data: "delivery_date_required_customer",
         render: function (data, type, JsonResultRow, meta) {
-          if (JsonResultRow.users.identification_type === null) {
-            return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
-          } else {
-            return `<span class="label text-center font-weight-bold">${JsonResultRow.users.identification_type.name}</span>`;
-          }
+          return getRow(JsonResultRow, 'delivery_date_required_customer');
         },
       },
       {
+        render: (data, type, JsonResultRow, meta) => {
+          return 'estado';
+        }
+      },
+      {
+        data: "description",
         render: function (data, type, JsonResultRow, meta) {
-          if (JsonResultRow.users.identification === null) {
-            return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
-          } else {
-            return `<span class="label text-center font-weight-bold">${JsonResultRow.users.identification}</span>`;
-          }
+          return getRow(JsonResultRow, 'description');
         },
       },
       {
+        data: "total_value",
         render: function (data, type, JsonResultRow, meta) {
-          if (JsonResultRow.business_name === null) {
-            return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
-          } else {
-            return `<span class="label text-center font-weight-bold">${JsonResultRow.business_name}</span>`;
-          }
-        },
-      },
-      {
-        data: "state",
-        render: function (data, type, JsonResultRow, meta) {
-          if (JsonResultRow.state === "1") {
-            return '<div class="badge badge-pill badge-light-success mr-1">Activo</div>'
-          } else {
-            return `<div class="badge badge-pill badge-light-danger mr-1">Inactivo</div>`;
-          }
-        },
+          const value = JsonResultRow.total_value || 0;
+          return value.toLocaleString();
+        }
       },
       {
         render: function (data, type, JsonResultRow, meta) {
-          return `
-            <div
-              data-id="${JsonResultRow.id}"
-              class="demo-inline-spacing text-center">
-                <button data-id="${JsonResultRow.id}" data-target="#modal-show-purchase-order" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-purchase-order btn-icon btn-primary">
-                <i data-id="${JsonResultRow.id}" data-feather="edit-2"></i>
-                </button>
-            </div>`
-
+          return `opciones`;
         },
-      },
+      }
     ],
     "language": languageDataTable,
     "dom": `<"card-header border-bottom p-1"<"head-label"><"dt-action-buttons text-right"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>`,

@@ -96,13 +96,15 @@ Route::group(['namespace' => 'Administrator'], function () {
       API PARA LAS ORDENES DE COMPRA
     =============================================*/
     Route::get('/all-purchases-ordes', 'PurchaseOrderController@getApiPurchaseOrdes')->name('api.all.purchase-orders');
-    Route::get('/all-customer-list', 'PurchaseOrderController@getAllCustomers')->name('api.all.customers');
+    Route::get('/all-customer-list', 'PurchaseOrderController@getAllCustomers')->name('api.all.purchase-orders.customers');
     Route::get('/all-order-type-list', 'PurchaseOrderController@getAllOrderTypes');
     Route::get('/all-zone-list', 'PurchaseOrderController@getAllZone');
     Route::get('/all-seller-list', 'PurchaseOrderController@getAllSeller');
     Route::get('/all-coin-type-list', 'PurchaseOrderController@getAllTypeCoin');
     Route::get('/all-state-ordes', 'PurchaseOrderController@getAllStateOrders');
     Route::get('/all-conveyor-list', 'PurchaseOrderController@getAllConveyor');
+    Route::get('/all-product-types-list', 'PurchaseOrderController@getAllProductTypes');
+    Route::get('/all-products-by-type', 'PurchaseOrderController@getAllProductByType');
     Route::get('/purchase-order-state-history', 'PurchaseOrderStateHistoryController@index');
 
     // Route::get('/get-state-invoice', 'InvoiceController@getApiGetStateInvoices')->name('api.all.state.invoices');
