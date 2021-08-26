@@ -547,7 +547,7 @@
             //         cell.innerHTML = i + 1;
             //     });
             // }).draw();
-        }, 5);
+        }, 10);
 
 
         $('.datatables-all-clients').on('click', '.btn-show-customer', function(e) {
