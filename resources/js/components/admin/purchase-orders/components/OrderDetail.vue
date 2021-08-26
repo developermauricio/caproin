@@ -119,6 +119,66 @@
         :required="true"
       ></input-form>
     </div>
+
+    <div class="col-12 col-md-4 col-lg-4" v-if="hasProduct">
+      <div class="form-group">
+        <label for="txt_product_description_interno" class="form-control-label">
+          <span>Descripción del producto interno</span>
+        </label>
+        <textarea
+          id="txt_product_description_interno"
+          placeholder="Descripción del producto interno"
+          class="form-control"
+          :value="order_detail.product.description"
+          readonly="true"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        name="customer_product_description"
+        id="txt_customer_product_description"
+        label="Descripción del producto del cliente"
+        pattern="all"
+        errorMsg="Ingrese una descripción valida"
+        requiredMsg="La descripción es obligatoria"
+        :modelo.sync="order_detail.customer_product_description"
+        :msgServer.sync="errors.customer_product_description"
+        :required="true"
+        type="textarea"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        name="application"
+        id="txt_application"
+        label="Aplicación"
+        pattern="all"
+        errorMsg="Ingrese una aplicación valida"
+        requiredMsg="La aplicación es obligatoria"
+        :modelo.sync="order_detail.application"
+        :msgServer.sync="errors.application"
+        :required="true"
+        type="textarea"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        name="blueprint_number"
+        id="txt_blueprint_number"
+        label="Número de plano"
+        pattern="all"
+        errorMsg="Ingrese un número de plano válido"
+        requiredMsg="El número de plano es obligatorio"
+        :modelo.sync="order_detail.blueprint_number"
+        :msgServer.sync="errors.blueprint_number"
+        :required="true"
+      ></input-form>
+    </div>
+
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
         id="txt_currency"
@@ -143,6 +203,35 @@
         :required="true"
       ></input-form>
     </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        type="money"
+        label="Valor"
+        id="txt_value"
+        pattern="all"
+        errorMsg="Ingrese un valor válido"
+        requiredMsg="El valor es obligatorio"
+        :required="true"
+        :modelo.sync="order_detail.value"
+        :msgServer.sync="errors.value"
+        :money="moneyConfig"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        name="house_listing_number"
+        id="txt_house_listing_number"
+        label="Número cotización de casa"
+        pattern="all"
+        errorMsg="Ingrese un número cotización de casa válido"
+        requiredMsg="El número cotización de casa es obligatorio"
+        :modelo.sync="order_detail.house_listing_number"
+        :msgServer.sync="errors.house_listing_number"
+        :required="true"
+      ></input-form>
+    </div>
   </div>
 </template>
 
@@ -153,7 +242,7 @@ export default {
     return {
       product_type: null,
       products: [],
-    }
+    };
   },
   props: {
     errors: {
@@ -183,6 +272,45 @@ export default {
       },
     },
   },
+  computed: {
+    hasProduct() {
+      return this.order_detail.product && this.order_detail.product.id;
+    },
+    moneyConfig() {
+      const id =
+        this.order_detail && this.order_detail.currency
+          ? this.order_detail.currency.id
+          : this.currency
+          ? this.currency.id
+          : 1;
+      switch (id) {
+        case 1:
+          return {
+            decimal: ".",
+            thousands: ",",
+            prefix: "$ ",
+            suffix: "USD",
+            precision: 0,
+          };
+        case 2:
+          return {
+            decimal: ".",
+            thousands: ",",
+            prefix: "$ ",
+            suffix: "COP",
+            precision: 0,
+          };
+        case 3:
+          return {
+            decimal: ",",
+            thousands: ".",
+            prefix: "$ ",
+            suffix: "",
+            precision: 0,
+          };
+      }
+    },
+  },
   methods: {
     changeTypeProduct(product_type) {
       if (!product_type) {
@@ -190,7 +318,8 @@ export default {
       }
       this.products = [];
       this.order_detail.product = null;
-      axios.get("/api/all-products-by-type?type=" + product_type.id)
+      axios
+        .get("/api/all-products-by-type?type=" + product_type.id)
         .then((products) => {
           this.products = products.data;
         });

@@ -15,6 +15,7 @@
   >
     <tab-content title="Datos iniciales" :beforeChange="validarTab">
       <header-purchase-order
+        v-if="currentTab == 0"
         :purchase_order.sync="purchase_order"
         :customers="customers"
         :order_types="orderTypes"
@@ -26,6 +27,7 @@
     </tab-content>
     <tab-content title="Transportadora" :beforeChange="validarTab">
       <conveyor-order
+        v-if="currentTab == 1"
         :purchase_order.sync="purchase_order"
         :conveyors="conveyors"
       />
@@ -33,13 +35,14 @@
 
     <tab-content title="Estado del pedido" :beforeChange="validarTab">
       <status-purchase-order
+        v-if="currentTab == 2"
         :state_histories.sync="state_histories"
-        :state_orders="state_orders"
       />
     </tab-content>
 
     <tab-content title="Detalle" :beforeChange="validarTab">
       <order-details
+        v-if="currentTab == 3"
         :currency="purchase_order.currency"
         :order_details.sync="order_details"
         :type_currencies="type_currencies"
@@ -84,6 +87,7 @@
 import ConveyorOrder from "./components/ConveyorOrder.vue";
 import HeaderPurchaseOrder from "./components/HeaderPurchaseOrder.vue";
 import OrderDetails from "./components/OrderDetails.vue";
+import StatusPurchaseOrder from "./components/StatusPurchaseOrder.vue";
 
 export default {
   name: "CreatePurchaseOrder",
@@ -91,6 +95,7 @@ export default {
     ConveyorOrder,
     HeaderPurchaseOrder,
     OrderDetails,
+    StatusPurchaseOrder,
   },
   data() {
     return {
@@ -139,8 +144,30 @@ export default {
       conveyors: [],
       state_histories: [],
       state_orders: [],
-      order_details: [],
-      type_products: []
+      order_details: [
+        {
+          purchase_order_id: null,
+          customer_order_number: null,
+          internal_order_number: null,
+          manufacturer: null,
+          internal_product_code: null,
+          client_product_code: null,
+          product_id: null,
+          customer_product_description: null,
+          application: null,
+          blueprint_number: null,
+          blueprint_file: null,
+          currency_id: null,
+          value: null,
+          internal_quote_number: null,
+          house_listing_number: null,
+          created_at: null,
+          updated_at: null,
+          product: null,
+          currency: null,
+        },
+      ],
+      type_products: [],
     };
   },
   created() {
@@ -157,11 +184,12 @@ export default {
       this.type_currencies = (await axios.get("/api/all-coin-type-list")).data;
       this.conveyors = (await axios.get("/api/all-conveyor-list")).data;
       this.payments = (await axios.get("/api/get-payment-type")).data.data;
-      this.state_orders = (await axios.get("/api/all-state-ordes")).data;
-      this.order_details = (
-        await axios.get("/api/purchase-order-state-history")
+      this.type_products = (
+        await axios.get("/api/all-product-types-list")
       ).data;
-      this.type_products = (await axios.get("/api/all-product-types-list")).data
+      // this.order_details = (
+      //   await axios.get("/api/purchase-order-state-history")
+      // ).data;
     },
     validarTab() {
       eventBus.$emit("validarFormulario");
@@ -174,7 +202,7 @@ export default {
           this.$refs.wizard.changeTab(this.currentTab, this.currentTab + 1);
         }
       }, 200);
-      return true;
+      return false;
     },
     cambioPagina(prevIndex, nextIndex) {
       this.currentTab = nextIndex;

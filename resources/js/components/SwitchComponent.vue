@@ -1,6 +1,6 @@
 <template>
   <label class="switch" :style="styleSize" @click="toggleChecked">
-    <input id="id" type="checkbox" :checked="checked" />
+    <input :id="id" type="checkbox" :checked="checked" />
     <span class="slider round"></span>
     <span class="msg">{{ msg }}</span>
   </label>
