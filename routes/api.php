@@ -122,8 +122,14 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('data-product-service/{id}', 'ProductServiceController@getApiDataProductService')->name('api.data.product.service');
     Route::post('/register/update-product-service', 'ProductServiceController@updateApiProductService')->name('api.update.invoice');
 
-
-
+    /*=============================================
+      API PARA LOS ACUERDOS COMERCIALES.
+    =============================================*/
+    Route::get('/all-trade-agreement', 'TradeAgreementController@getApiTradeAgreement')->name('api.all.trade.agreemente');
+    Route::get('all-currency', 'TradeAgreementController@getApiCurrency')->name('api.all.currency');
+    Route::get('all-products', 'TradeAgreementController@getApiProducts')->name('api.all.products');
+    Route::post('register/store-trade-agreement', 'TradeAgreementController@storeApiTradeAgreement')->name('api.store.trade.agreement');
+    Route::get('data-trade-agreement/{id}', 'TradeAgreementController@getApiDataTradeAgreement')->name('api.data.trade.agreement');
 
 
 });
