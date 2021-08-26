@@ -14,6 +14,12 @@ MENU ADMIN
 <li class="{{request()->is('customers') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.customer.customers') }}"><i data-feather="users"></i><span
             class="menu-title text-truncate" data-i18n="Email">Clientes</span></a>
 </li>
+
+<li class="{{request()->is('purchase_orders') ? 'active' : '' }} nav-item">
+    <a class="d-flex align-items-center" href="{{ route('admin.purchase_order.purchase_orders') }}">
+        <i data-feather='box'></i>
+        <span class="menu-title text-truncate" data-i18n="Email">Ordenes de compra</span>
+    </a>
 @endrole
 @role($role2)
 <li class="{{request()->is('providers') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.provider.providers') }}"><i data-feather='box'></i><span
@@ -84,3 +90,4 @@ PARA UNA NUEVA SECCIÓN EN EL MENU
 ======================================-->
 {{--<li class="navigation-header"><span data-i18n="">Nueva Sección</span><i data-feather="more-horizontal"></i>--}}
 {{--</li>--}}
+

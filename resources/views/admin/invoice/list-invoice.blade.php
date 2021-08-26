@@ -195,6 +195,33 @@
                                                 </div>
                                             </div>
 
+
+                                            <div class="paymentTypes">
+                                                <p class="card-text text-justify">
+                                                    Para el <code>Tipo de Pago</code> debe ingresar un
+                                                    número como se muestra en el archivo excel de ejemplo. A
+                                                    continuación la tabla con el nombre del tipo de pago y el número.
+                                                </p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Número</th>
+                                                                <th>Tipo Pago</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        @foreach ($paymentTypes as $paymentType)
+                                                            <tr>
+                                                                <td>{{$paymentType->id}}</td>
+                                                                <td>{{$paymentType->name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>

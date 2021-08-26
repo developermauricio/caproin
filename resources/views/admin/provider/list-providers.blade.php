@@ -417,8 +417,8 @@
 
             $('.datatables-all-clients').on('click', '.btn-show-provider', function (e) {
                 const id = e.target.getAttribute('data-id');
-                console.log(e.target);
-                console.log(id);
+                //console.log(e.target);
+                //console.log(id);
                 //var dataTableProvider = table.row($(this).parents('tr')).data();
                 //console.log(dataTableProvider.id);
                 $('#traerDatosBoton').val(id).click();

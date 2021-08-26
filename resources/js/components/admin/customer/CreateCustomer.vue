@@ -2,7 +2,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h5 class="modal-title" id="myModalLabel160">Crear Cliente</h5>
-      <button @click="clearInputsCustomer()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <button type="button" @click="closeModal()" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -93,7 +93,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button @click="clearInputsCustomer()" type="button" data-dismiss="modal" class="btn btn-gris">Cancelar</button>
+        <button @click="closeModal()" type="button" data-dismiss="modal" class="btn btn-danger">Cancelar</button>
         <button @click="createNewCustomer()" type="button" class="btn btn-primary">Crear Cliente</button>
       </div>
     </form>
@@ -205,6 +205,10 @@ export default {
       axios.get('/api/get-identificationtype').then(resp => {
         this.optionsTypeIdentification = resp.data.data
       })
+    },
+
+    closeModal() {
+      eventBus.$emit('resetValidaciones')
     }
   },
   watch: {
