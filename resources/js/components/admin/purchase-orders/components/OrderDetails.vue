@@ -38,12 +38,6 @@ export default {
         return [];
       },
     },
-    products: {
-      type: Array,
-      default: function () {
-        return [];
-      },
-    },
     type_products: {
       type: Array,
       default: function () {

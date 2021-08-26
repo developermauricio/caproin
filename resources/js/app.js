@@ -93,7 +93,6 @@ Vue.component('show-edit-trade-agreement', require('./components/admin/tradeAgre
 COMPONENTES PARA MODULOS ORDENES DE COMPRA
 =============================================*/
 Vue.component('create-purchase-order', require('./components/admin/purchase-orders/CreatePurchaseOrder.vue').default);
-Vue.component('status-purchase-order', require('./components/admin/purchase-orders/components/StatusPurchaseOrder.vue').default);
 
 window.eventBus = new Vue();
 const app = new Vue({
