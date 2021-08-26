@@ -327,7 +327,7 @@
 
           </div>
           <!--=====================================
-              DESCRIPCIÓN
+		          DESCRIPCIÓN
             ======================================-->
           <div class="row pt-2">
             <div class="col-12">
@@ -384,10 +384,7 @@
                         :required="true"
                       ></input-form>
                     </td>
-                    <td>
-                      <button @click="removedProducts(product)" class="btn btn-primary">Quitar Producto o Servicio
-                      </button>
-                    </td>
+                    <td> <button @click="removedProducts(product)" class="btn btn-primary">Quitar Producto o Servicio</button></td>
                   </tr>
                   </tbody>
                 </table>
@@ -436,9 +433,7 @@
                       }"
                       >
                         <template slot="table-row" slot-scope="props">
-                          <button v-if="props.column.field == 'btn'"
-                                  @click="props.row.add ? removedProducts(props.row) : addProducts(props.row)"
-                                  type="button"
+                          <button v-if="props.column.field == 'btn'" @click="props.row.add ? removedProducts(props.row) : addProducts(props.row)" type="button"
                                   :class="props.row.add ? 'btn btn-primary' : 'btn btn-success'">
                             {{ props.row.add ? 'Quitar Producto' : 'Agregar Producto' }}
                           </button>
@@ -452,25 +447,25 @@
             </div>
           </div>
         </form>
-        <!--=====================================
-          BOTONES PARA EDITAR
-        ======================================-->
-        <div class="row pl-1">
-          <div class="demo-inline-spacing">
-            <!-- Boton para agregar archivos -->
-            <button v-if="showDetailTradeAgreement === true" @click="btnEditTradeAgreement"
-                    type="button"
-                    class="btn btn-primary waves-effect waves-float waves-light"
-                    style="font-size: 0.92rem">
-              Editar
-            </button>
-            <button v-if="showEditTradeAgreement === true" @click="btnCancelEditTradeAgreement"
-                    type="button"
-                    class="btn btn-gris waves-effect waves-float waves-light"
-                    style="font-size: 0.92rem">
-              Cancelar
-            </button>
-          </div>
+      </div>
+      <!--=====================================
+        BOTONES PARA EDITAR
+      ======================================-->
+      <div class="row pl-1">
+        <div class="demo-inline-spacing">
+          <!-- Boton para agregar archivos -->
+          <button v-if="showDetailTradeAgreement === true" @click="btnEditTradeAgreement"
+                  type="button"
+                  class="btn btn-primary waves-effect waves-float waves-light"
+                  style="font-size: 0.92rem">
+            Editar
+          </button>
+          <button v-if="showEditTradeAgreement === true" @click="btnCancelEditTradeAgreement"
+                  type="button"
+                  class="btn btn-gris waves-effect waves-float waves-light"
+                  style="font-size: 0.92rem">
+            Cancelar
+          </button>
         </div>
       </div>
     </div>
@@ -561,7 +556,7 @@ export default {
       productsTradeAgreement: {},
       descriptionShortDetail: null,
       dollarUSLocale: Intl.NumberFormat('es-US'),
-      errors: {},
+      errors:{},
       money: {
         decimal: ",",
         thousands: ".",
@@ -625,7 +620,7 @@ export default {
     },
 
     addProducts(product) {
-      product.pivot = {minimum_amount: 0}
+      product.pivot = {minimum_amount:0}
       this.productsTradeAgreement.push(product)
       let code = product.code
       for (let i = 0; i < this.productsTradeAgreement.length; i++) {
@@ -634,7 +629,7 @@ export default {
         }
       }
     },
-    removedProducts(product) {
+    removedProducts(product){
       let code = product.code
       for (let i = 0; i < this.productsTradeAgreement.length; i++) {
         if (this.productsTradeAgreement[i].code === code) {
@@ -661,10 +656,10 @@ export default {
       });
     }
   },
-  computed: {
-    listSinRepetidos() {
-      return this.optionsProductsTradeAgreement.filter((option) => {
-        return !this.productsTradeAgreement.find((product) => {
+  computed:{
+    listSinRepetidos(){
+      return this.optionsProductsTradeAgreement.filter((option) =>{
+        return !this.productsTradeAgreement.find((product)=>{
           return product.id == option.id
         })
       })
