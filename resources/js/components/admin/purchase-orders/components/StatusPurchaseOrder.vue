@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import feather from 'feather-icons'
+import feather from "feather-icons";
 export default {
   name: "StatusPurchaseOrder",
   props: {
@@ -104,14 +104,11 @@ export default {
       type: Array,
       require: true,
     },
-    state_orders: {
-      type: Array,
-      require: require,
-    },
   },
   data() {
     return {
       newStatus: null,
+      state_orders: [],
     };
   },
   computed: {
@@ -119,14 +116,20 @@ export default {
       return feather.toSvg("x");
     },
     remainingState() {
-      return this.state_orders.filter((state) => {
-        return !this.state_histories.find((history) => {
-          return history.state_order.id == state.id;
-        });
-      });
+      return this.state_orders.filter(
+        (state) =>
+          !this.state_histories.find(
+            (history) => history.state_order.id == state.id
+          )
+      );
     },
   },
   methods: {
+    getData() {
+      axios.get("/api/all-state-ordes").then((response) => {
+        this.state_orders = response.data;
+      });
+    },
     removeHistory(index) {
       this.state_histories.splice(index, 1);
     },
@@ -141,6 +144,9 @@ export default {
       });
       this.newStatus = null;
     },
+  },
+  created() {
+    this.getData();
   },
 };
 </script>

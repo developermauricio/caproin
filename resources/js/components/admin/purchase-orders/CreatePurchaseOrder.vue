@@ -34,7 +34,6 @@
     <tab-content title="Estado del pedido" :beforeChange="validarTab">
       <status-purchase-order
         :state_histories.sync="state_histories"
-        :state_orders="state_orders"
       />
     </tab-content>
 
@@ -157,7 +156,6 @@ export default {
       this.type_currencies = (await axios.get("/api/all-coin-type-list")).data;
       this.conveyors = (await axios.get("/api/all-conveyor-list")).data;
       this.payments = (await axios.get("/api/get-payment-type")).data.data;
-      this.state_orders = (await axios.get("/api/all-state-ordes")).data;
       this.order_details = (
         await axios.get("/api/purchase-order-state-history")
       ).data;
