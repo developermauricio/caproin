@@ -20,6 +20,10 @@ class CreateProductTradeagreementTable extends Migration
             $table->unsignedBigInteger('tradeagreement_id')->nullable();
             $table->foreign('tradeagreement_id')->references('id')->on('trade_agreements');
             $table->integer('minimum_amount')->nullable();
+            $table->string('client_product_code')->nullable();
+            $table->string('internal_product_code')->nullable();
+            $table->double('unit_value')->nullable();
+            $table->mediumText('description')->nullable();
             $table->timestamps();
         });
     }

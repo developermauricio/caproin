@@ -47,13 +47,13 @@
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
             <label class="font-weight-bold">Fecha de emisión de la factura:</label>
-            <p>{{ moment(date_issue).locale('es').format("LL") }}</p>
+            <p>{{ moment(date_issue).locale('es').format("MM-DD-YYYY") }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
             <label class="font-weight-bold">Fecha de vencimiento de la factura:</label>
-            <p>{{ moment(expiration_date).locale('es').format("LL") }}</p>
+            <p>{{ moment(expiration_date).locale('es').format("MM-DD-YYYY") }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
@@ -77,13 +77,13 @@
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
             <label class="font-weight-bold">Fecha de recibo por parte del cliente:</label>
-            <p>{{ moment(date_received_client).locale('es').format("LL") }}</p>
+            <p>{{ moment(date_received_client).locale('es').format("MM-DD-YYYY") }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
             <label class="font-weight-bold">Fecha de pago por parte del cliente:</label>
-            <p>{{ moment(date_payment_client).locale('es').format("LL") }}</p>
+            <p>{{ moment(date_payment_client).locale('es').format("MM-DD-YYYY") }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
@@ -101,13 +101,13 @@
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
             <label class="font-weight-bold">Fecha de pago por parte del cliente:</label>
-            <p>{{ moment(commission_receipt_date).locale('es').format("LL") }}</p>
+            <p>{{ moment(commission_receipt_date).locale('es').format("MM-DD-YYYY") }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
             <label class="font-weight-bold">Fecha de pago por parte del cliente:</label>
-            <p>{{ moment(new_agreed_payment_date).locale('es').format("LL") }}</p>
+            <p>{{ moment(new_agreed_payment_date).locale('es').format("MM-DD-YYYY") }}</p>
           </div>
         </div>
       </div>
@@ -505,6 +505,7 @@
             <vue2Dropzone class="dropzone upload-logo dropzone-area dz-clickable"
                           ref="myVueDropzone"
                           @vdropzone-sending="sendingEvent"
+                          @vdropzone-canceled="cancelUpload"
                           @vdropzone-max-files-exceeded="maxFiles"
                           @vdropzone-success="addArchiveTeam"
                           @vdropzone-removed-file="removedArchiveDropzoneTeam"
@@ -623,14 +624,14 @@ export default {
       dropzoneOptionsTeamArchive: {
         url: '/api/upload-archive-invoice',
         // thumbnailWidth: 200,
-        maxFilesize: 5,
-        maxFiles: 10,
+        maxFilesize: 5,  //Tamaño en MB
+        maxFiles: 1, // Catidad maxima que se puede subir
         paramName: 'archive',
         acceptedFiles: "application/pdf,.doc,.docx,.xls,.xlsx,.csv,.tsv,.ppt,.pptx,.pages,.odt,.rtf",
         addRemoveLinks: true,
         dictDefaultMessage: 'Clic aquí o arrastra tus documentos',
         dictMaxFilesExceeded: 'No es posible agregar más archivos. Limite maximo 2',
-        dictFileTooBig: 'El archivo es demasiado grande, su peso es' + " ({{filesize}}MiB). " + 'Tamaño máximo del archivo:' + " {{maxFilesize}}MiB.",
+        dictFileTooBig: 'El archivo es demasiado grande, su peso es' + " ({{filesize}}MB). " + 'Tamaño máximo del archivo:' + " {{maxFilesize}}MB.",
         dictRemoveFile: 'Remover Archivo',
         dictInvalidFileType: 'No puede cargar archivos de este tipo.',
         headers: {
@@ -645,7 +646,7 @@ export default {
       this.$refs.myVueDropzone.removeFile(file);
       this.$toast.error({
         title: 'Atención',
-        message: 'No es posible agregar más archivos. Limite maximo 2',
+        message: 'No es posible agregar más archivos. Limite maximo 1',
         showDuration: 1000,
         hideDuration: 8000,
         position: 'top right',
@@ -658,24 +659,40 @@ export default {
       formData.append('nameId', file.upload.uuid);
     },
 
+    cancelUpload(file){
+      this.$refs.myVueDropzone.removeFile(file);
+    },
+
     addArchiveTeam(file, response) {
 
-      this.urlsArchiveInvoiceUpdate.push({
-        nameArchive: file.name,
-        urlArchive: response.data,
-        uuid: response.uuid,
-        extension: response.extension
-      })
-      console.log(this.urlsArchiveInvoiceUpdate);
-      setTimeout(() => {
-        this.$toast.success({
-          title: '¡Muy bien!',
-          message: 'Archivo subido correctamente',
+      if (this.urlsArchiveInvoice){
+        this.$toast.error({
+          title: '¡Atención!',
+          message: 'Para agregar archivos, debes eliminar el existente',
           showDuration: 1000,
           hideDuration: 5000,
           position: 'top right',
         })
-      }, 1000);
+        this.cancelUpload(file)
+      }else{
+        this.urlsArchiveInvoiceUpdate.push({
+          nameArchive: file.name,
+          urlArchive: response.data,
+          uuid: response.uuid,
+          extension: response.extension
+        })
+        console.log(this.urlsArchiveInvoiceUpdate);
+        setTimeout(() => {
+          this.$toast.success({
+            title: '¡Muy bien!',
+            message: 'Archivo subido correctamente',
+            showDuration: 1000,
+            hideDuration: 5000,
+            position: 'top right',
+          })
+        }, 1000);
+      }
+
     },
 
     removedArchiveDropzoneTeam(file, error, xhr) {
@@ -718,7 +735,7 @@ export default {
 
       Swal.fire({
         title: 'Confirmar',
-        text: '¿Estás seguro de eliminar el archivo?',
+        text: '¿Estás seguro de eliminar el archivo?. Se eliminará inmediatamente del servidor.',
         confirmButtonColor: "#D9393D",
         cancelButtonColor: "#7D7E7E",
         confirmButtonText: 'Aceptar',
@@ -943,17 +960,13 @@ export default {
   }
 }
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
 .multiselect__tag {
-  background: #0082FB !important;
+  background: #D9393D !important;
 }
 
 .multiselect__tag-icon:focus, .multiselect__tag-icon:hover {
-  background: #283046 !important;
-}
-
-.multiselect__option--highlight {
-  background: #0082FB !important;
+  background: #7D7E7E !important;
 }
 </style>

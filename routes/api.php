@@ -131,6 +131,7 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::post('register/store-trade-agreement', 'TradeAgreementController@storeApiTradeAgreement')->name('api.store.trade.agreement');
     Route::post('register/update-trade-agreement', 'TradeAgreementController@updateApiTradeAgreement')->name('api.store.trade.agreement');
     Route::get('data-trade-agreement/{id}', 'TradeAgreementController@getApiDataTradeAgreement')->name('api.data.trade.agreement');
+    Route::get('/verify-consecutivo-oferta/{cosecutivo}', 'TradeAgreementController@validateConsecutivoOfert')->name('api.validate.identification');
 
 
 });

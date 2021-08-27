@@ -397,8 +397,8 @@ export default {
       dropzoneOptionsTeamArchive: {
         url: '/api/upload-archive-invoice',
         // thumbnailWidth: 200,
-        maxFilesize: 5,
-        maxFiles: 10,
+        maxFilesize: 5,  //Tamaño en MB
+        maxFiles: 1, // Catidad maxima que se puede subir
         paramName: 'archive',
         acceptedFiles: "application/pdf,.doc,.docx,.xls,.xlsx,.csv,.tsv,.ppt,.pptx,.pages,.odt,.rtf",
         addRemoveLinks: true,
@@ -430,7 +430,7 @@ export default {
       this.$refs.myVueDropzone.removeFile(file);
       this.$toast.error({
         title: 'Atención',
-        message: 'No es posible agregar más archivos. Limite maximo 2',
+        message: 'No es posible agregar más archivos. Limite maximo 1',
         showDuration: 1000,
         hideDuration: 8000,
         position: 'top right',

@@ -469,7 +469,7 @@
                                 if (JsonResultRow.date_issue === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
                                 } else {
-                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_issue).locale('es').format("LL")}</span>`;
+                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_issue).locale('es').format("MM-DD-YYYY")}</span>`;
                                 }
                             }
                             ,
@@ -522,7 +522,7 @@
                                 if (JsonResultRow.date_payment_client === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
                                 } else {
-                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_payment_client).locale('es').format("LL")}</span>`;
+                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_payment_client).locale('es').format("MM-DD-YYYY")}</span>`;
                                 }
                             }
                             ,

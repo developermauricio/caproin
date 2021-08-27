@@ -73,7 +73,7 @@
             </div>
         </div>
         <!--=====================================
-		    MODAL PARA CREAR UN NUEVO USUARIOS
+		    MODAL PARA CREAR UN NUEVO ACUERDO COMERCIAL
         ======================================-->
         <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-new-tradeagreement" data-backdrop="static" tabindex="-1"
              role="dialog"
@@ -84,7 +84,7 @@
         </div>
 
         <!--=====================================
-		    MODAL PARA VER EL DETALLE DEL CLIENTE
+		    MODAL PARA VER EL DETALLE DEL ACUERDO COMERCIAL
         ======================================-->
         <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-show-trade-agreement" data-backdrop="static" tabindex="-1"
              role="dialog"
@@ -334,7 +334,7 @@
                                 if (JsonResultRow.creation_date === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
                                 } else {
-                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.creation_date).locale('es').format("LL")}</span>`;
+                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.creation_date).locale('es').format("MM-DD-YYYY")}</span>`;
                                 }
                             }
                             ,
@@ -344,7 +344,7 @@
                                 if (JsonResultRow.final_date === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
                                 } else {
-                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.final_date).locale('es').format("LL")}</span>`;
+                                    return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.final_date).locale('es').format("MM-DD-YYYY")}</span>`;
                                 }
                             }
                             ,
@@ -395,6 +395,7 @@
                                     "text": feather.icons['printer'].toSvg({class: 'font-small-4 mr-50'}) + 'Imprimir',
                                     "className": 'dropdown-item',
                                     "exportOptions": {columns: [0, 1, 2, 3, 4, 5, 6, 7]},
+                                    "orientation": 'landscape',
                                     "customize": function (win) {
                                         $(win.document.body)
                                             .css('font-size', '10pt')
@@ -417,7 +418,8 @@
                                     "extend": 'excel',
                                     "text": feather.icons['file'].toSvg({class: 'font-small-4 mr-50'}) + 'Excel',
                                     "className": 'dropdown-item',
-                                    "exportOptions": {columns: [0, 1, 2, 3, 4, 5, 6, 7]}
+                                    "exportOptions": {columns: [0, 1, 2, 3, 4, 5, 6, 7]},
+
                                 },
                                 {
                                     "extend": 'pdf',

@@ -17,37 +17,37 @@ MENU ADMIN
 
 <li class="{{request()->is('purchase_orders') ? 'active' : '' }} nav-item">
     <a class="d-flex align-items-center" href="{{ route('admin.purchase_order.purchase_orders') }}">
-        <i data-feather='box'></i>
+        <i data-feather='shopping-cart'></i>
         <span class="menu-title text-truncate" data-i18n="Email">Ordenes de compra</span>
     </a>
 @endrole
 @role($role2)
-<li class="{{request()->is('providers') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.provider.providers') }}"><i data-feather='box'></i><span
+<li class="{{request()->is('providers') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.provider.providers') }}"><i data-feather='thumbs-up'></i><span
             class="menu-title text-truncate" data-i18n="Email">Proveedores</span></a>
 </li>
 @endrole
 @role($role2)
-<li class="{{request()->is('sucursales') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.branch_offices') }}"><i data-feather='box'></i><span
+<li class="{{request()->is('sucursales') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.branch_offices') }}"><i data-feather='map'></i><span
             class="menu-title text-truncate" data-i18n="Email">Sucursales</span></a>
 </li>
 @endrole
 @role($role2)
-<li class="{{request()->is('usuarios') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.user.users') }}"><i data-feather='box'></i><span
+<li class="{{request()->is('usuarios') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.user.users') }}"><i data-feather='users'></i><span
             class="menu-title text-truncate" data-i18n="Email">Usuarios</span></a>
 </li>
 @endrole
 @role($role2)
-<li class="{{request()->is('zonas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.zones') }}"><i data-feather='box'></i><span
+<li class="{{request()->is('zonas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.zones') }}"><i data-feather='map-pin'></i><span
             class="menu-title text-truncate" data-i18n="Email">Zonas</span></a>
 </li>
 @endrole
 @role($role1)
-<li class="{{request()->is('facturas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.invoice') }}"><i data-feather='box'></i><span
+<li class="{{request()->is('facturas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.invoice') }}"><i data-feather='clipboard'></i><span
             class="menu-title text-truncate" data-i18n="Email">Facturas</span></a>
 </li>
 @endrole
 @role($role1)
-<li class="{{request()->is('acuerdos-comerciales') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.trade.agreement') }}"><i data-feather='box'></i><span
+<li class="{{request()->is('acuerdos-comerciales') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.trade.agreement') }}"><i data-feather='thumbs-up'></i><span
             class="menu-title text-truncate" data-i18n="Email">Acuerdos Comerciales</span></a>
 </li>
 @endrole
