@@ -72,7 +72,7 @@
         name="new_status"
         id="new_status"
       >
-        <option :value="null">Seleccione un estado</option>
+        <option :value="null">Seleccione un nuevo estado</option>
         <option :key="state.id" :value="state" v-for="state in remainingState">
           {{ state.name }}
         </option>
@@ -83,14 +83,13 @@
         id="button-addon2"
         @click="addNewStatus"
       >
-        Añadir Estado
+        Añadir Nuevo Estado
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import feather from "feather-icons";
 export default {
   name: "StatusPurchaseOrder",
   props: {

@@ -86,4 +86,24 @@ class PurchaseOrderController extends Controller
         $products = Product::where('type_products_id', $request->input('type'))->get();
         return $products;
     }
+
+    public function getPurchaseOrderById($id)
+    {
+        $purchaseOrder = PurchaseOrder::with([
+            'customer',
+            'zone',
+            'seller',
+            'currency',
+            'conveyor',
+            'payment',
+            'invoice',
+            'provider',
+            'order_details' => function ($q) {
+                return $q->with('product', 'currency');
+            },
+            'purchase_order_state_histories.state_order'
+        ])->find($id);
+
+        return response()->json($purchaseOrder);
+    }
 }

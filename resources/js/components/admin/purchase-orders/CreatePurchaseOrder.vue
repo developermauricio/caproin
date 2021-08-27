@@ -36,17 +36,23 @@
     <tab-content title="Estado del pedido" :beforeChange="validarTab">
       <status-purchase-order
         v-if="currentTab == 2"
-        :state_histories.sync="state_histories"
+        :state_histories.sync="purchase_order.purchase_order_state_histories"
+      />
+    </tab-content>
+
+    <tab-content title="Productos" :beforeChange="validarTab">
+      <order-details
+        v-if="currentTab == 3"
+        :currency="purchase_order.currency"
+        :order_details.sync="purchase_order.order_details"
+        :type_currencies="type_currencies"
+        :type_products="type_products"
       />
     </tab-content>
 
     <tab-content title="Detalle" :beforeChange="validarTab">
-      <order-details
-        v-if="currentTab == 3"
-        :currency="purchase_order.currency"
-        :order_details.sync="order_details"
-        :type_currencies="type_currencies"
-        :type_products="type_products"
+      <order-preview
+        :purchase_order="purchase_order"
       />
     </tab-content>
 
@@ -84,6 +90,15 @@
 </template>
 
 <script>
+const timeout = (ms) => {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+};
+async function checkForm(timeoutMilliseconds) {
+  eventBus.$emit("validarFormulario");
+  await timeout(timeoutMilliseconds);
+  return document.querySelectorAll("#wizard__order .is-invalid").length < 1;
+}
+
 import ConveyorOrder from "./components/ConveyorOrder.vue";
 import HeaderPurchaseOrder from "./components/HeaderPurchaseOrder.vue";
 import OrderDetails from "./components/OrderDetails.vue";
@@ -177,6 +192,7 @@ export default {
   },
   methods: {
     async getData() {
+      this.purchase_order = (await axios.get("/api/get-purchase-order/1")).data;
       this.customers = (await axios.get("/api/all-customer-list")).data;
       this.orderTypes = (await axios.get("/api/all-order-type-list")).data;
       this.zones = (await axios.get("/api/all-zone-list")).data;
@@ -187,22 +203,13 @@ export default {
       this.type_products = (
         await axios.get("/api/all-product-types-list")
       ).data;
-      // this.order_details = (
-      //   await axios.get("/api/purchase-order-state-history")
-      // ).data;
+      this.order_details = (
+        await axios.get("/api/purchase-order-state-history")
+      ).data;
     },
-    validarTab() {
-      eventBus.$emit("validarFormulario");
-      setTimeout(() => {
-        const validated =
-          document.querySelectorAll("#wizard__order .is-invalid").length < 1;
-        if (validated) {
-          console.log(this.currentTab);
-          this.$refs.wizard.tabs[this.currentTab].validationError = null;
-          this.$refs.wizard.changeTab(this.currentTab, this.currentTab + 1);
-        }
-      }, 200);
-      return false;
+    async validarTab() {
+      const validated = await checkForm(150);
+      return validated || true;
     },
     cambioPagina(prevIndex, nextIndex) {
       this.currentTab = nextIndex;

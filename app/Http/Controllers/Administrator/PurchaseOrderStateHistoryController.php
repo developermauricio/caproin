@@ -16,7 +16,7 @@ class PurchaseOrderStateHistoryController extends Controller
      */
     public function index()
     {
-        $histories = OrderDetail::with('product', 'currency')->where('purchase_order_id', 1)->get();
+        $histories = OrderDetail::with('product', 'currency')->get();
         return response()->json($histories);
     }
 

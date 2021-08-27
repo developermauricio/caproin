@@ -14,6 +14,8 @@ import money from 'v-money';
 import Vue from 'vue';
 import VueFormWizard from 'vue-form-wizard';
 import 'vue-form-wizard/dist/vue-form-wizard.min.css';
+import VueGoodTablePlugin from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css';
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
 
@@ -22,8 +24,6 @@ Vue.use(CxltToastr)
 Vue.use(Vuesax);
 Vue.use(money, {precision: 3})
 
-import VueGoodTablePlugin from 'vue-good-table';
-import 'vue-good-table/dist/vue-good-table.css'
 Vue.use(VueGoodTablePlugin);
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
@@ -31,6 +31,7 @@ Vue.use(VueGoodTablePlugin);
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 /*COMPONENTES EXTERNOS*/
 Vue.component('input-form', require('./components/InputFormComponent.vue').default);
+Vue.component('accordion-component', require('./components/AccordionComponent.vue').default);
 
 /*=============================================
 COMPONENTES PARA LOS MODULOS CLIENTES

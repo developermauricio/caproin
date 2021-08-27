@@ -19,8 +19,6 @@ class CreateOrderDetailsTable extends Migration
             $table->unsignedBigInteger('purchase_order_id')->nullable();
             $table->foreign('purchase_order_id')->references('id')->on('purchase_orders');
 
-            $table->string('customer_order_number');
-            $table->string('internal_order_number');
             $table->string('manufacturer');
             $table->string('internal_product_code');
             $table->string('client_product_code');

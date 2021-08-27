@@ -18,8 +18,7 @@ export default {
       default: 100,
     },
     value: {
-      type: Boolean,
-      default: false,
+      require: true,
     },
     msgTrue: {
       type: String,
@@ -30,12 +29,10 @@ export default {
       default: "No",
     },
   },
-  data() {
-    return {
-      checked: this.value,
-    };
-  },
   computed: {
+    checked() {
+      return this.getBoolean(this.value);
+    },
     msg() {
       return this.checked ? this.msgTrue : this.msgFalse;
     },
@@ -46,8 +43,10 @@ export default {
   methods: {
     toggleChecked(e) {
       e.preventDefault();
-      this.checked = !this.checked;
-      this.$emit("input", this.checked);
+      this.$emit("input", !this.checked);
+    },
+    getBoolean(value) {
+      return Boolean(value);
     },
   },
 };
