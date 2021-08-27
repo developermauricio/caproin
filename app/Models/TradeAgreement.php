@@ -18,6 +18,6 @@ class TradeAgreement extends Model
     }
 
     public function products(){
-        return $this->belongsToMany(Product::class, 'product_tradeeagreement',  'tradeagreement_id', 'product_id')->withPivot('minimum_amount');
+        return $this->belongsToMany(Product::class, 'product_tradeeagreement',  'tradeagreement_id', 'product_id')->withPivot('minimum_amount', 'client_product_code', 'internal_product_code', 'unit_value', 'description');
     }
 }

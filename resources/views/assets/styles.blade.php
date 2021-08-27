@@ -21,4 +21,5 @@
 <!-- BEGIN: Custom CSS-->
 <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
 <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+<link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 

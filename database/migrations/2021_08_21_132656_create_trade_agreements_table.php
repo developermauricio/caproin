@@ -20,9 +20,6 @@ class CreateTradeAgreementsTable extends Migration
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->mediumText('short_description')->nullable();
-//            $table->integer('minimum_amount')->nullable();
-            $table->string('internal_product_code')->nullable();
-            $table->string('client_product_code')->nullable();
             $table->enum('state', [
                 \App\Models\TradeAgreement::VIGENTE,
                 \App\Models\TradeAgreement::FINALIZADO,
@@ -32,7 +29,6 @@ class CreateTradeAgreementsTable extends Migration
             $table->date('creation_date')->nullable();
             $table->date('final_date')->nullable();
             $table->string('delivery_time')->nullable();
-            $table->double('unit_value')->nullable();
             $table->double('TRM')->nullable();
             $table->timestamps();
         });

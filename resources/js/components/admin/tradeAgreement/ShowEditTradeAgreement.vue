@@ -38,28 +38,10 @@
             <p>{{ currencyDetail }}</p>
           </div>
         </div>
-        <div class="col-12 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label class="font-weight-bold">Valor Unitario:</label>
-            <p>${{ dollarUSLocale.format(valueUnitDetail) }}</p>
-          </div>
-        </div>
-        <div class="col-12 col-md-4 col-lg-4">
+        <div class="col-12 col-md-4 col-lg-4" v-if="currencyDetail === 'USD'">
           <div class="form-group">
             <label class="font-weight-bold">TRM:</label>
             <p>${{ dollarUSLocale.format(TRMDetail) }}</p>
-          </div>
-        </div>
-        <div class="col-12 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label class="font-weight-bold">Código de Producto Interno:</label>
-            <p>{{ InternalProductCodeDetail }}</p>
-          </div>
-        </div>
-        <div class="col-12 col-md-4 col-lg-4">
-          <div class="form-group">
-            <label class="font-weight-bold">Código de Producto Cliente:</label>
-            <p>{{ ClientProductCodeDetail }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
@@ -71,13 +53,13 @@
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
             <label class="font-weight-bold">Fecha de Creación:</label>
-            <p>{{ moment(dateCreateDetail).locale('es').format("LL") }}</p>
+            <p>{{ moment(dateCreateDetail).locale('es').format("MM-DD-YYYY") }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
             <label class="font-weight-bold">Fecha Final:</label>
-            <p>{{ moment(dateFinalDetail).locale('es').format("LL") }}</p>
+            <p>{{ moment(dateFinalDetail).locale('es').format("MM-DD-YYYY") }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
@@ -105,11 +87,14 @@
             <table class="table table-striped table-bordered">
               <thead>
               <tr>
-                <th>Código</th>
+                <th>Código Prod. Interno</th>
                 <th>Tipo</th>
                 <th>Nombre</th>
                 <th>Descripción</th>
                 <th>Cantidad Mínima</th>
+                <th>Valor Unitario</th>
+                <th>Código Producto Cliente</th>
+                <th>Descripción</th>
               </tr>
               </thead>
               <tbody>
@@ -117,8 +102,19 @@
                 <td>{{ product.code }}</td>
                 <td>{{ product.product_type.name }}</td>
                 <td>{{ product.name }}</td>
-                <td>{{ product.description }}</td>
+                <td>
+                  <div class="centerx">
+                    <vs-tooltip
+                      title="Descripción"
+                      :text="product.description ">
+                      <vs-button color="warning" type="flat">Ver descripción</vs-button>
+                    </vs-tooltip>
+                  </div>
+                </td>
                 <td>{{ product.pivot.minimum_amount }}</td>
+                <td>${{ dollarUSLocale.format(product.pivot.unit_value) }}</td>
+                <td>{{ product.pivot.client_product_code }}</td>
+                <td>{{ product.pivot.description }}</td>
               </tr>
               </tbody>
             </table>
@@ -142,6 +138,8 @@
                 :required="true"
                 :msgServer.sync="errors.consecutiveOfferDetail"
               ></input-form>
+              <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                 id="text-verify-consecutivo-oferta-edit" class="text-danger">El consecutivo de oferta ya ha sido registrado</p>
             </div>
             <div class="col-12 col-md-4 col-lg-4">
               <input-form
@@ -201,21 +199,7 @@
                                         }"
               ></input-form>
             </div>
-            <div class="col-12 col-md-4 col-lg-4">
-              <input-form
-                type="money"
-                label="Valor Unitario"
-                id="txtUnitValueEdit"
-                pattern="num"
-                errorMsg="Ingrese un valor válido"
-                requiredMsg="El valor es obligatorio"
-                :required="true"
-                :modelo.sync="valueUnitDetail"
-                :msgServer.sync="errors.valueUnitDetail"
-                :money="money"
-              ></input-form>
-            </div>
-            <div class="col-12 col-md-4 col-lg-4">
+            <div class="col-12 col-md-4 col-lg-4" v-if="currency.id === 1">
               <input-form
                 type="money"
                 label="TRM"
@@ -227,30 +211,6 @@
                 :modelo.sync="TRMDetail"
                 :msgServer.sync="errors.TRMDetail"
                 :money="money"
-              ></input-form>
-            </div>
-            <div class="col-12 col-md-4 col-lg-4">
-              <input-form
-                id="txtInternalProductCodeTradeAgreementEdit"
-                label="Código de Producto Interno"
-                pattern="all"
-                errorMsg="Ingrese código de producto interno válido"
-                requiredMsg="El código de producto interno es obligatorio"
-                :modelo.sync="InternalProductCodeDetail"
-                :required="true"
-                :msgServer.sync="errors.InternalProductCodeDetail"
-              ></input-form>
-            </div>
-            <div class="col-12 col-md-4 col-lg-4">
-              <input-form
-                id="txtClientProductCodeTradeAgreementEdit"
-                label="Código de Producto Cliente"
-                pattern="all"
-                errorMsg="Ingrese código de producto cliente válido"
-                requiredMsg="El código de producto cliente es obligatorio"
-                :modelo.sync="ClientProductCodeDetail"
-                :required="true"
-                :msgServer.sync="errors.ClientProductCodeDetail"
               ></input-form>
             </div>
             <div class="col-12 col-md-4 col-lg-4">
@@ -358,11 +318,14 @@
                 <table class="table table-striped table-bordered">
                   <thead>
                   <tr>
-                    <th>Código</th>
+                    <th>Código Prod. Interno</th>
                     <th>Tipo</th>
                     <th>Nombre</th>
                     <th>Descripción</th>
                     <th>Cantidad Mínima</th>
+                    <th>Valor Unitario</th>
+                    <th>Código Producto Cliente</th>
+                    <th>Descripción</th>
                     <th>Acciones</th>
                   </tr>
                   </thead>
@@ -371,7 +334,15 @@
                     <td>{{ product.code }}</td>
                     <td>{{ product.product_type.name }}</td>
                     <td>{{ product.name }}</td>
-                    <td>{{ product.description }}</td>
+                    <td>
+                      <div class="centerx">
+                        <vs-tooltip
+                          title="Descripción"
+                          :text="product.description ">
+                          <vs-button color="warning" type="flat">Ver descripción</vs-button>
+                        </vs-tooltip>
+                      </div>
+                    </td>
                     <td>
                       <input-form
                         id="txtMiniumAmount"
@@ -383,6 +354,51 @@
                         :msgServer.sync="errors.product"
                         :required="true"
                       ></input-form>
+                    </td>
+                    <td>
+                      <input-form
+                        style="width: 15vh;"
+                        type="money"
+                        label=""
+                        id="txtValueUnitEdit"
+                        pattern="num"
+                        errorMsg="Ingrese un valor unitario válido"
+                        requiredMsg="El valor unitario es obligatorio"
+                        :required="true"
+                        :modelo.sync="product.pivot.unit_value"
+                        :msgServer.sync="errors.product"
+                        :money="money"
+                      ></input-form>
+                    </td>
+                    <td>
+                      <input-form
+                        id="txtCodeInterClientEdit"
+                        label=""
+                        pattern="num"
+                        errorMsg="Ingrese un código interno del cliente válido"
+                        requiredMsg="La código interno del cliente es obligatorio"
+                        :modelo.sync="product.pivot.client_product_code"
+                        :msgServer.sync="errors.product"
+                        :required="true"
+                      ></input-form>
+                    </td>
+                    <td>
+                      <input-form
+                        style="width: 44vh;"
+                        type="textarea"
+                        label=""
+                        id="txtDescriptionProducEdit"
+                        pattern="all"
+                        errorMsg="Ingrese una descripción válida"
+                        requiredMsg="La descripción es requerida"
+                        :required="true"
+                        :modelo.sync="product.pivot.description"
+                        :msgServer.sync="errors.product"
+                        :options="{
+                                                rows: 5
+                                                }"
+                      >
+                      </input-form>
                     </td>
                     <td> <button @click="removedProducts(product)" class="btn btn-primary">Quitar Producto o Servicio</button></td>
                   </tr>
@@ -507,18 +523,16 @@ export default {
       showEditTradeAgreement: false,
 
       consecutiveOfferDetail: null,
+      consecutiveOfferPropio: null,
       versionDetail: null,
       customerDetail: null,
       customer: null,
       currencyDetail: null,
-      currency: null,
+      currency: {id:null},
       dateFinalDetail: null,
-      valueUnitDetail: null,
       dateCreateDetail: null,
       deliveryTimeDetail: null,
       TRMDetail: null,
-      InternalProductCodeDetail: null,
-      ClientProductCodeDetail: null,
       stateTradeAgreementDetail: null,
       stateFormTrade: {
         id: null,
@@ -605,18 +619,16 @@ export default {
         axios.get('/api/data-trade-agreement/' + this.idTradeAgreement).then(resp => {
           console.log('DATOS', resp.data.data)
           this.consecutiveOfferDetail = resp.data.data.consecutive_Offer
+          this.consecutiveOfferPropio = resp.data.data.consecutive_Offer
           this.versionDetail = resp.data.data.version
           this.customerDetail = resp.data.data.customer.business_name
           this.customer = resp.data.data.customer
           this.currencyDetail = resp.data.data.currency.code
           this.currency = resp.data.data.currency
           this.dateFinalDetail = resp.data.data.final_date
-          this.valueUnitDetail = resp.data.data.unit_value
           this.dateCreateDetail = resp.data.data.creation_date
           this.deliveryTimeDetail = resp.data.data.delivery_time
           this.TRMDetail = resp.data.data.TRM
-          this.InternalProductCodeDetail = resp.data.data.internal_product_code
-          this.ClientProductCodeDetail = resp.data.data.client_product_code
           this.stateTradeAgreementDetail = resp.data.data.state
           this.descriptionShortDetail = resp.data.data.short_description
           this.productsTradeAgreement = resp.data.data.products
@@ -651,17 +663,14 @@ export default {
         data.append('version', this.versionDetail);
         data.append('idTradeAgreement', this.idTradeAgreement);
         data.append('customer', JSON.stringify(this.customer));
-        data.append('state', JSON.stringify(this.stateTradeAgreementDetail));
+        data.append('state', JSON.stringify(this.stateFormTrade));
         data.append('short_description', this.descriptionShortDetail);
-        data.append('internal_product_code', this.InternalProductCodeDetail);
-        data.append('client_product_code', this.ClientProductCodeDetail);
         data.append('currency', JSON.stringify(this.currency));
         data.append('creation_date', moment(this.dateCreateDetail).format("YYYY-MM-DD HH:mm:ss"));
         data.append('final_date', moment(this.dateFinalDetail).format("YYYY-MM-DD HH:mm:ss"));
         data.append('delivery_time', this.deliveryTimeDetail);
-        data.append('unit_value', this.valueUnitDetail);
         data.append('TRM', this.TRMDetail);
-        data.append('products', JSON.stringify(this.productsTradeAgreement.id));
+        data.append('products', JSON.stringify(this.productsTradeAgreement));
 
           Swal.fire({
             title: 'Confirmar',
@@ -712,8 +721,14 @@ export default {
     },
 
     addProducts(product) {
-      product.pivot = {minimum_amount:0}
-      this.productsTradeAgreement.push(product)
+      product.pivot = {
+        minimum_amount:'',
+        client_product_code:'',
+        unit_value: '',
+        description: '',
+      }
+
+      this.productsTradeAgreement.push(Object.assign({},product))
       let code = product.code
       for (let i = 0; i < this.productsTradeAgreement.length; i++) {
         if (this.productsTradeAgreement[i].code === code) {
@@ -756,15 +771,51 @@ export default {
         })
       })
     },
-
-    // remainingState() {
-    //   return this.state_orders.filter((state) => {
-    //     return !this.state_histories.find((history) => {
-    //       return history.state_order.id == state.id;
-    //     });
-    //   });
-    // },
   },
+
+  watch: {
+    consecutiveOfferDetail: function (val) {
+      let data = this
+      if (val) {
+        console.log('codigo propio', this.consecutiveOfferPropio)
+        console.log('value', val)
+        if (this.consecutiveOfferPropio !== val) {
+          setTimeout(() => {
+            this.$vs.loading({
+              color: '#3f4f6e',
+              text: 'Válidando Consecutivo...'
+            })
+            axios.get('/api/verify-consecutivo-oferta/' + val)
+              .then(resp => {
+                if (resp.data) {
+                  if (this.idValidateCode === 1) {
+                    $("#txtConsecutiveOfferEdit").addClass("is-invalid");
+                    $("#text-verify-consecutivo-oferta-edit").css("display", "block");
+                  } else {
+                    $("#txtConsecutiveOfferEdit").addClass("is-invalid");
+                    $("#text-verify-consecutivo-oferta-edit").css("display", "block");
+                  }
+                } else {
+                  data.emailverify = ''
+                  $("#txtConsecutiveOfferEdit").removeClass("is-invalid");
+                  $("#text-verify-consecutivo-oferta-edit").css("display", "none");
+
+                  $("#txtConsecutiveOfferEdit").removeClass("is-invalid");
+                  $("#text-verify-consecutivo-oferta-edit").css("display", "none");
+                }
+                this.$vs.loading.close()
+              }).catch(err => {
+            });
+          }, 200)
+          this.$vs.loading.close()
+        } else {
+          $("#txtConsecutiveOfferEdit").removeClass("is-invalid");
+          $("#text-verify-consecutivo-oferta-edit").css("display", "none");
+        }
+      }
+    }
+  },
+
   mounted() {
     window.feather.replace()
     this.getApiCustomer()

@@ -35,14 +35,11 @@ class TradeAgreementController extends Controller
         $version = $request->version;
         $customer = json_decode($request->customer);
         $short_description = $request->short_description;
-        $internal_product_code = $request->internal_product_code;
-        $client_product_code = $request->client_product_code;
         $currency = json_decode($request->currency);
         $state = json_decode($request->state);
         $creation_date = $request->creation_date;
         $final_date = $request->final_date;
         $delivery_time = $request->delivery_time;
-        $unit_value = $request->unit_value;
         $TRM = $request->TRM;
         $products = json_decode($request->products);
 
@@ -52,13 +49,10 @@ class TradeAgreementController extends Controller
         $tradeAgreement->state = $state->id;
         $tradeAgreement->customer_id = $customer->id;
         $tradeAgreement->short_description = $short_description;
-        $tradeAgreement->internal_product_code = $internal_product_code;
-        $tradeAgreement->client_product_code = $client_product_code;
         $tradeAgreement->currency_id = $currency->id;
         $tradeAgreement->creation_date = $creation_date;
         $tradeAgreement->final_date = $final_date;
         $tradeAgreement->delivery_time = $delivery_time;
-        $tradeAgreement->unit_value = $unit_value;
         $tradeAgreement->TRM = $TRM;
         $tradeAgreement->save();
 
@@ -68,6 +62,10 @@ class TradeAgreementController extends Controller
                 'product_id' => $value->id,
                 'minimum_amount' => $value->minimum,
                 'tradeagreement_id' => $tradeAgreement->id,
+                'client_product_code' => $value->codeInterClient,
+                'internal_product_code' => $value->code,
+                'unit_value' => $value->valueUnit,
+                'description' => $value->descriptionProduct,
             ]);
         }
 
@@ -80,52 +78,52 @@ class TradeAgreementController extends Controller
         $version = $request->version;
         $customer = json_decode($request->customer);
         $short_description = $request->short_description;
-        $internal_product_code = $request->internal_product_code;
-        $client_product_code = $request->client_product_code;
         $currency = json_decode($request->currency);
         $state = json_decode($request->state);
         $creation_date = $request->creation_date;
         $final_date = $request->final_date;
         $delivery_time = $request->delivery_time;
-        $unit_value = $request->unit_value;
         $TRM = $request->TRM;
         $products = json_decode($request->products);
         $idTradeAgreement = $request->idTradeAgreement;
 
-
         $tradeAgreement = TradeAgreement::findOrFail($idTradeAgreement);
         $tradeAgreement->consecutive_Offer = $consecutive_Offer;
         $tradeAgreement->version = $version;
-        $tradeAgreement->state = $state;
+        $tradeAgreement->state = $state->id;
         $tradeAgreement->customer_id = $customer->id;
         $tradeAgreement->short_description = $short_description;
-        $tradeAgreement->internal_product_code = $internal_product_code;
-        $tradeAgreement->client_product_code = $client_product_code;
         $tradeAgreement->currency_id = $currency->id;
         $tradeAgreement->creation_date = $creation_date;
         $tradeAgreement->final_date = $final_date;
         $tradeAgreement->delivery_time = $delivery_time;
-        $tradeAgreement->unit_value = $unit_value;
         $tradeAgreement->TRM = $TRM;
         $tradeAgreement->update();
-        dd($products);
+
+//        dd($products->pivot->minimum_amount);
         $arrayProducts = [];
         foreach ($products as $product) {
-            array_push($arrayProducts, (object)[
-                 $product->id
+            array_push($arrayProducts,[
+                'product_id' => $product->id,
+                'minimum_amount' => $product->pivot->minimum_amount,
+                'client_product_code' => $product->pivot->client_product_code,
+                'internal_product_code' => $product->code,
+                'unit_value' => $product->pivot->unit_value,
+                'description' => $product->pivot->description,
             ]);
         }
 
+        $tradeAgreement->products()->sync($arrayProducts);
+        foreach ($products as $value) {
 
-        $tradeAgreement->products()->sync([$arrayProducts]);
-//        foreach ($products as $value) {
-//
-//            DB::table('product_tradeeagreement')->where('id', $idTradeAgreement)->update([
-//                'product_id' => $value->id,
-//                'minimum_amount' => $value->minimum,
-//                'tradeagreement_id' => $tradeAgreement->id,
-//            ]);
-//        }
+            DB::table('product_tradeeagreement')->where('id', $value->id)->update([
+                'minimum_amount' => $value->pivot->minimum_amount,
+                'client_product_code' => $value->pivot->client_product_code,
+                'internal_product_code' => $value->code,
+                'unit_value' => $value->pivot->unit_value,
+                'description' => $value->pivot->description,
+            ]);
+        }
 
         return response()->json('Acuerdo Comercial Actualizado Correctamente');
     }
@@ -134,5 +132,12 @@ class TradeAgreementController extends Controller
     {
         $tradeAgreement = TradeAgreement::where('id', $id)->with('customer', 'currency', 'products.productType')->first();
         return response()->json(['data' => $tradeAgreement]);
+    }
+
+    public function validateConsecutivoOfert($consecutivo){
+        $check = TradeAgreement::where('consecutive_Offer', $consecutivo)->first();
+        if ($check) {
+            return response()->json('El consecutivo de oferta ya ha sido registrado, por favor ingrese otro', 200);
+        }
     }
 }

@@ -20,6 +20,8 @@
               :required="true"
               :msgServer.sync="errors.consecutiveOffer"
             ></input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-consecutivo-oferta" class="text-danger">El consecutivo de oferta ya ha sido registrado</p>
           </div>
           <div class="col-12 col-md-4 col-lg-4">
             <input-form
@@ -79,21 +81,7 @@
                                         }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
-            <input-form
-              type="money"
-              label="Valor Unitario"
-              id="txtUnitValue"
-              pattern="num"
-              errorMsg="Ingrese un valor válido"
-              requiredMsg="El valor es obligatorio"
-              :required="true"
-              :modelo.sync="valueUnit"
-              :msgServer.sync="errors.valueUnit"
-              :money="money"
-            ></input-form>
-          </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="currency.id === 1">
             <input-form
               type="money"
               label="TRM"
@@ -105,30 +93,6 @@
               :modelo.sync="TRM"
               :msgServer.sync="errors.TRM"
               :money="money"
-            ></input-form>
-          </div>
-          <div class="col-12 col-md-4 col-lg-4">
-            <input-form
-              id="txtInternalProductCodeTradeAgreement"
-              label="Código de Producto Interno"
-              pattern="all"
-              errorMsg="Ingrese código de producto interno válido"
-              requiredMsg="El código de producto interno es obligatorio"
-              :modelo.sync="InternalProductCode"
-              :required="true"
-              :msgServer.sync="errors.InternalProductCode"
-            ></input-form>
-          </div>
-          <div class="col-12 col-md-4 col-lg-4">
-            <input-form
-              id="txtClientProductCodeTradeAgreement"
-              label="Código de Producto Cliente"
-              pattern="all"
-              errorMsg="Ingrese código de producto cliente válido"
-              requiredMsg="El código de producto cliente es obligatorio"
-              :modelo.sync="ClientProductCode"
-              :required="true"
-              :msgServer.sync="errors.ClientProductCode"
             ></input-form>
           </div>
           <div class="col-12 col-md-4 col-lg-4">
@@ -210,14 +174,17 @@
           <div class="col-12">
             <label>Productos Asignados</label>
             <div class="table-responsive">
-              <table class="table table-striped table-bordered">
+              <table class="table add-products-trade-agremeent table-striped table-bordered">
                 <thead>
                 <tr>
-                  <th>Código</th>
+                  <th>Código Prod. Interno</th>
                   <th>Tipo</th>
                   <th>Nombre</th>
                   <th>Descripción</th>
                   <th>Cantidad Mínima</th>
+                  <th>Valor Unitario</th>
+                  <th>Código Producto Cliente</th>
+                  <th>Descripción</th>
                   <th>Acciones</th>
                 </tr>
                 </thead>
@@ -226,7 +193,15 @@
                   <td>{{ product.code }}</td>
                   <td>{{ product.product_type.name }}</td>
                   <td>{{ product.name }}</td>
-                  <td>{{ product.description }}</td>
+                  <td>
+                    <div class="centerx">
+                      <vs-tooltip
+                        title="Descripción"
+                        :text="product.description ">
+                        <vs-button color="warning" type="flat">Ver descripción</vs-button>
+                      </vs-tooltip>
+                    </div>
+                  </td>
                   <td>
                     <input-form
                       id="txtMiniumAmount"
@@ -238,6 +213,51 @@
                       :msgServer.sync="errors.product"
                       :required="true"
                     ></input-form>
+                  </td>
+                  <td>
+                    <input-form
+                      style="width: 15vh;"
+                      type="money"
+                      label=""
+                      id="txtValueUnit"
+                      pattern="num"
+                      errorMsg="Ingrese un valor unitario válido"
+                      requiredMsg="El valor unitario es obligatorio"
+                      :required="true"
+                      :modelo.sync="product.valueUnit"
+                      :msgServer.sync="errors.product"
+                      :money="money"
+                    ></input-form>
+                  </td>
+                  <td>
+                    <input-form
+                      id="txtCodeInterClient"
+                      label=""
+                      pattern="num"
+                      errorMsg="Ingrese un código interno del cliente válido"
+                      requiredMsg="La código interno del cliente es obligatorio"
+                      :modelo.sync="product.codeInterClient"
+                      :msgServer.sync="errors.product"
+                      :required="true"
+                    ></input-form>
+                  </td>
+                  <td>
+                    <input-form
+                      style="width: 44vh;"
+                      type="textarea"
+                      label=""
+                      id="txtDescriptionProduc"
+                      pattern="all"
+                      errorMsg="Ingrese una descripción válida"
+                      requiredMsg="La descripción es requerida"
+                      :required="true"
+                      :modelo.sync="product.descriptionProduct"
+                      :msgServer.sync="errors.product"
+                      :options="{
+                                                rows: 5
+                                                }"
+                    >
+                    </input-form>
                   </td>
                   <td> <button @click="removedProducts(product)" class="btn btn-primary">Quitar Producto o Servicio</button></td>
                 </tr>
@@ -350,16 +370,14 @@ export default {
   data() {
     return {
       consecutiveOffer: null,
+      consecutiveOfferVerify: '',
       version: null,
       customer: null,
-      currency: null,
+      currency: {id:null},
       dateFinal: null,
-      valueUnit: null,
       dateCreate: null,
       deliveryTime: null,
       TRM: null,
-      InternalProductCode: null,
-      ClientProductCode: null,
       stateTradeAgreement: null,
       descriptionShort: null,
 
@@ -380,7 +398,7 @@ export default {
 
       columns: [
         {
-          label: 'Código',
+          label: 'Código Interno',
           field: 'code',
         },
         {
@@ -436,13 +454,10 @@ export default {
         data.append('customer', JSON.stringify(this.customer));
         data.append('state', JSON.stringify(this.stateTradeAgreement));
         data.append('short_description', this.descriptionShort);
-        data.append('internal_product_code', this.InternalProductCode);
-        data.append('client_product_code', this.ClientProductCode);
         data.append('currency', JSON.stringify(this.currency));
         data.append('creation_date', moment(this.dateCreate).format("YYYY-MM-DD HH:mm:ss"));
         data.append('final_date', moment(this.dateFinal).format("YYYY-MM-DD HH:mm:ss"));
         data.append('delivery_time', this.deliveryTime);
-        data.append('unit_value', this.valueUnit);
         data.append('TRM', this.TRM);
         data.append('products', JSON.stringify(this.productsTradeAgreement));
 
@@ -525,6 +540,38 @@ export default {
     }
   },
 
+  watch: {
+    consecutiveOffer: function (val) {
+      console.log(val)
+      let data = this
+      if (val) {
+        if (val === '') {
+          data.consecutiveOfferVerify = ''
+          $("#txtConsecutiveOffer").removeClass("is-invalid");
+          $("#text-verify-consecutivo-oferta").css("display", "none");
+        }
+        axios.get('/api/verify-consecutivo-oferta/' + val)
+          .then(resp => {
+            if (resp.data) {
+              $("#txtConsecutiveOffer").addClass("is-invalid");
+              $("#text-verify-consecutivo-oferta").css("display", "block");
+              this.$toast.error({
+                title: '¡Atención!',
+                message: 'El consecutivo de oferta ya ha sido registrado, por favor ingrese otro',
+                showDuration: 1000,
+                hideDuration: 8000,
+              })
+            } else {
+              data.identificationVerify = ''
+              $("#txtConsecutiveOffer").removeClass("is-invalid");
+              $("#text-verify-consecutivo-oferta").css("display", "none");
+            }
+          }).catch(err => {
+        });
+      }
+    },
+  },
+
   mounted() {
     window.feather.replace()
     this.getApiCustomer();
@@ -536,6 +583,11 @@ export default {
 </script>
 
 <style>
+.add-products-trade-agremeent thead th {
+  vertical-align: bottom !important;
+  border-bottom: 2px solid #ebe9f1 !important;
+}
+
 .multiselect__tag {
   background: #D9393D !important;
 }

@@ -219,6 +219,7 @@ class DatabaseSeeder extends Seeder
         =============================================*/
         factory(\App\Models\TypeInvoice::class)->create(['name' => 'Normal']);
         factory(\App\Models\TypeInvoice::class)->create(['name' => 'Comisión']);
+        factory(\App\Models\TypeInvoice::class)->create(['name' => 'Fabricante']);
 
         /*=============================================
            CREANDO TIPOS DE PAGOS
