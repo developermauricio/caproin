@@ -127,10 +127,24 @@ export default {
     getData() {
       axios.get("/api/all-state-ordes").then((response) => {
         this.state_orders = response.data;
+        if (this.state_histories.length < 1) {
+          this.state_histories.push({
+            description: "",
+            estimated_date: "",
+            state_order: this.state_orders[0],
+          });
+        }
       });
     },
     removeHistory(index) {
       this.state_histories.splice(index, 1);
+      if (this.state_histories.length < 1) {
+        this.state_histories.push({
+          description: "",
+          estimated_date: "",
+          state_order: this.state_orders[0],
+        });
+      }
     },
     addNewStatus() {
       if (!this.newStatus) {

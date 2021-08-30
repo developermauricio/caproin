@@ -1,0 +1,47 @@
+<template>
+  <div>
+    <div
+      v-for="history in purchase_order_state_histories"
+      :key="JSON.stringify(history)"
+    >
+      <h2>{{ state_order(history) }}</h2>
+      <p><strong>Estimado:</strong> {{ estimated_date(history) }}</p>
+      <p>{{ history.description }}</p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "OrderPreviewStatus",
+  props: {
+    purchase_order_state_histories: {
+      type: Array,
+      require: true,
+    },
+  },
+  methods: {
+    state_order(history) {
+      if (!history.state_order) {
+        return "Sin estado";
+      }
+      return history.state_order.name;
+    },
+    getMonth(date) {
+      return ("0" + (date.getMonth() + 1)).slice(-2);
+    },
+    getDay(date) {
+      return ("0" + date.getDate()).slice(-2);
+    },
+    estimated_date(history) {
+      if (!history.estimated_date || !history.estimated_date.getFullYear) {
+        return history.estimated_date.slice(0, 10);
+      }
+      const date = history.estimated_date;
+      return `${date.getFullYear()}-${this.getMonth(date)}-${this.getDay(
+        date
+      )}`;
+    },
+  },
+};
+</script>
