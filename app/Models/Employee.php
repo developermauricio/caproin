@@ -15,4 +15,8 @@ class Employee extends Model
     public function typeEmploye(){
         return $this->belongsTo(TypeEmployee::class, 'type_employee_id');
     }
+
+    public function purchaseOrder(){
+        return $this->hasMany(PurchaseOrder::class, 'seller_id');
+    }
 }

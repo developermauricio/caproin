@@ -88,6 +88,12 @@
         </div>
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
+            <label class="font-weight-bold">Fecha Factura Casa Representante:</label>
+            <p>{{ moment(invoice_date_house_manufacturer).locale('es').format("MM-DD-YYYY") }}</p>
+          </div>
+        </div>
+        <div class="col-12 col-md-4 col-lg-4">
+          <div class="form-group">
             <label class="font-weight-bold">Número de factura casa representante:</label>
             <p>{{ invoice_number_house_representative }}</p>
           </div>
@@ -106,7 +112,7 @@
         </div>
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
-            <label class="font-weight-bold">Fecha de pago por parte del cliente:</label>
+            <label class="font-weight-bold">Fecha Recibo Comisión:</label>
             <p>{{ moment(new_agreed_payment_date).locale('es').format("MM-DD-YYYY") }}</p>
           </div>
         </div>
@@ -522,7 +528,7 @@
       <div class="row pl-1">
         <div class="demo-inline-spacing">
           <!-- Boton para agregar archivos -->
-          <button v-if="showDetailInvoice === true" @click="btnEditInvoice"
+          <button v-if="showDetailInvoice === true && $gate.allow('createInvoice', 'invoice')" @click="btnEditInvoice"
                   type="button"
                   class="btn btn-primary waves-effect waves-float waves-light"
                   style="font-size: 0.92rem">

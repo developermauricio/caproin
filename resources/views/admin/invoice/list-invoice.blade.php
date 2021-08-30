@@ -255,8 +255,12 @@
 @endpush
 @push('js')
     <script>
-        $(function () {
 
+
+        $(function () {
+            var role = '{{ auth()->user()->roles->first()->name }}'
+
+            console.log('ROL DEL USUARIO', role)
             var minDate, maxDate;
 
 // Custom filtering function which will search data in column four between two values
@@ -671,7 +675,7 @@
                         //     }, 50);
                         // }
                     },
-                        {
+                            @if(auth()->user()->roles->first()->name === 'Administrador'){
                              text: feather.icons['file-text'].toSvg({
                                  class: 'mr-50 font-small-4'
                              }) + 'Importar'
@@ -684,8 +688,8 @@
                              , init: function (api, node, config) {
                                  $(node).removeClass('btn-secondary');
                              }
-                         }
-                        , {
+                         }@endif
+                         , @if(auth()->user()->roles->first()->name === 'Administrador'){
                             text: feather.icons['plus'].toSvg({
                                 class: 'mr-50 font-small-4'
                             }) + 'Nueva Factura '
@@ -699,6 +703,7 @@
                                 $(node).removeClass('btn-secondary');
                             }
                         }
+                        @endif
                     ],
 
                 })

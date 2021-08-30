@@ -53,4 +53,8 @@ class Invoice extends Model
     public function archive(){
         return $this->morphMany(Archives::class, 'archivable');
     }
+
+    public function purchaseOrder(){
+        return $this->hasOne(PurchaseOrder::class, 'invoice_id');
+    }
 }

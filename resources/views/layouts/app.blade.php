@@ -28,7 +28,11 @@
 ======================================-->
 @stack('css')
 <!-- END: Custom CSS-->
-
+    @auth
+        <script>
+            window.user = @json(auth()->user())
+        </script>
+    @endauth
 </head>
 <!-- END: Head-->
 

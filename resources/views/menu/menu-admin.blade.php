@@ -14,7 +14,8 @@ MENU ADMIN
 <li class="{{request()->is('customers') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.customer.customers') }}"><i data-feather="users"></i><span
             class="menu-title text-truncate" data-i18n="Email">Clientes</span></a>
 </li>
-
+@endrole
+@role($role1)
 <li class="{{request()->is('purchase_orders') ? 'active' : '' }} nav-item">
     <a class="d-flex align-items-center" href="{{ route('admin.purchase_order.purchase_orders') }}">
         <i data-feather='shopping-cart'></i>

@@ -9,7 +9,8 @@
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/file-uploaders/dropzone.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/css/plugins/forms/form-file-uploader.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.1.0/css/dataTables.dateTime.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/datetime/1.1.0/css/dataTables.dateTime.min.css">
 @endpush
 @section('title', 'Lista de Acuerdos Comerciales')
 @section('header_page')
@@ -75,7 +76,8 @@
         <!--=====================================
 		    MODAL PARA CREAR UN NUEVO ACUERDO COMERCIAL
         ======================================-->
-        <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-new-tradeagreement" data-backdrop="static" tabindex="-1"
+        <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-new-tradeagreement"
+             data-backdrop="static" tabindex="-1"
              role="dialog"
              aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg " role="document">
@@ -86,11 +88,13 @@
         <!--=====================================
 		    MODAL PARA VER EL DETALLE DEL ACUERDO COMERCIAL
         ======================================-->
-        <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-show-trade-agreement" data-backdrop="static" tabindex="-1"
+        <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-show-trade-agreement"
+             data-backdrop="static" tabindex="-1"
              role="dialog"
              aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
-                <show-edit-trade-agreement id="componet-show-trade-agreement" id-trade-agreement></show-edit-trade-agreement>
+                <show-edit-trade-agreement id="componet-show-trade-agreement"
+                                           id-trade-agreement></show-edit-trade-agreement>
             </div>
         </div>
 
@@ -266,7 +270,7 @@
                     "columns": [
                         {
                             render: function (data, type, JsonResultRow, meta) {
-                                if (JsonResultRow.consecutive_Offer === null ) {
+                                if (JsonResultRow.consecutive_Offer === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.consecutive_Offer}</span>`;
@@ -450,17 +454,20 @@
                             //     }, 50);
                             // }
                         },
-                        {
-                            text: feather.icons['file-text'].toSvg({class: 'mr-50 font-small-4'}) + 'Importar',
-                            className: 'create-new btn btn-primary',
-                            attr: {
-                                'data-target': '#modal-import-customer',
-                                'data-toggle': 'modal',
-                            },
-                            init: function (api, node, config) {
-                                $(node).removeClass('btn-secondary');
-                            }
-                        },
+                            @if(auth()->user()->roles->first()->name === 'Administrador')
+                        // {
+                        //     text: feather.icons['file-text'].toSvg({class: 'mr-50 font-small-4'}) + 'Importar',
+                        //     className: 'create-new btn btn-primary',
+                        //     attr: {
+                        //         'data-target': '#modal-import-customer',
+                        //         'data-toggle': 'modal',
+                        //     },
+                        //     init: function (api, node, config) {
+                        //         $(node).removeClass('btn-secondary');
+                        //     }
+                        // },
+                            @endif
+                            @if(auth()->user()->roles->first()->name === 'Administrador')
                         {
                             text: feather.icons['plus'].toSvg({class: 'mr-50 font-small-4'}) + 'Nuevo Acuerdo Comercial',
                             className: 'create-new btn btn-primary',
@@ -472,6 +479,7 @@
                                 $(node).removeClass('btn-secondary');
                             }
                         }
+                        @endif
                     ],
 
                 })

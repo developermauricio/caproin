@@ -470,7 +470,7 @@
       <div class="row pl-1">
         <div class="demo-inline-spacing">
           <!-- Boton para agregar archivos -->
-          <button v-if="showDetailTradeAgreement === true" @click="btnEditTradeAgreement"
+          <button v-if="showDetailTradeAgreement === true && $gate.allow('editTradeAgreement', 'tradeAgreement')" @click="btnEditTradeAgreement"
                   type="button"
                   class="btn btn-primary waves-effect waves-float waves-light"
                   style="font-size: 0.92rem">

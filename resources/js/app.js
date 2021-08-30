@@ -19,6 +19,9 @@ import 'vue-good-table/dist/vue-good-table.css';
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
 
+import Gate from './permissions/Gate';
+Vue.prototype.$gate = new Gate(window.user);
+
 Vue.use(VueFormWizard)
 Vue.use(CxltToastr)
 Vue.use(Vuesax);

@@ -29,16 +29,16 @@ class InvoiceController extends Controller
 
     public function getApiInvoices()
     {
+        $rol = auth()->user()->roles->first()->name; // Rol del Usuario
+        $user = auth()->user()->id; // id del Usuario
 
-
-        //        $invoice = null;
-        //        if (User::roleUserVendedor()){
-        //            $user = User::where('id', User::user()->id)->with('employes.branchOffices')->first();
-        //            $user->employes->branchOffices->id;
-        //            $invoice = Invoice::with('customers', 'typeInvoice', 'state')->get();
-        //        }
-
-        $invoice = Invoice::with('customers', 'typeInvoice', 'state', 'paymentType', 'archive')->get();
+        if ($rol === "Vendedor") {
+            $invoice = Invoice::whereHas('purchaseOrder.seller', function ($q) use ($user) {
+                return $q->where('user_id', $user);
+            })->with('customers', 'typeInvoice', 'state', 'paymentType', 'archive')->get();
+        } else {
+            $invoice = Invoice::with('customers', 'typeInvoice', 'state', 'paymentType', 'archive')->get();
+        }
         return datatables()->of($invoice)->toJson();
     }
 

@@ -457,7 +457,9 @@
                         //         $(node).removeClass('btn-secondary');
                         //     }
                         // }
+                        @if(auth()->user()->roles->first()->name === 'Administrador')
                         , {
+
                             text: feather.icons['plus'].toSvg({
                                 class: 'mr-50 font-small-4'
                             }) + 'Nuevo Producto o Servicio '
@@ -470,7 +472,9 @@
                             , init: function (api, node, config) {
                                 $(node).removeClass('btn-secondary');
                             }
+
                         }
+                        @endif
                     ],
 
                 })

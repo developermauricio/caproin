@@ -14,9 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/ruta-prueba', function (){
-   $branch = \App\Models\BranchOffice::where('id', 6)->with('employee')->first();
-   dd($branch->employee);
-   return $branch;
+//   $seller = \App\Models\PurchaseOrder::where('seller_id', 32)->whereHas('invoice')->get();
+//   $data = \App\Models\PurchaseOrder::where('seller_id', 32)->whereHas('invoice')->with('invoice')->get();
+
+    $user = Auth::user()->id;
+
+   $invoice = \App\Models\Invoice::whereHas('purchaseOrder.seller', function ($q) use ($user){
+       return $q->where('user_id', $user);
+   })->with('customers', 'typeInvoice', 'state', 'paymentType', 'archive' )->get();
+   return datatables()->of($invoice)->toJson();
 });
 
 Route::get('password/activate/{token}', 'Auth\ResetPasswordController@showActivateForm');
@@ -41,29 +47,29 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
     /*=============================================
           RUTAS PARA LOS MODULOS CLIENTE
         =============================================*/
-    Route::get('/customers', 'CustomerController@index')->name('admin.customer.customers');
+    Route::get('/customers', 'CustomerController@index')->name('admin.customer.customers')->middleware('ModeleCustomer');
     Route::get('/create-customer', 'CustomerController@indexCreateCustomer')->name('admin.customer.create.customer');
     Route::post('/import-data-customer', 'CustomerController@importDataCustomer')->name('import.data.customers');
 
     /*=============================================
           RUTAS PARA LOS MODULOS PROVEEDOR
         =============================================*/
-    Route::get('/providers', 'ProviderController@index')->name('admin.provider.providers');
+    Route::get('/providers', 'ProviderController@index')->name('admin.provider.providers')->middleware('ModeleProvider');;
 
     /*=============================================
           RUTAS PARA LOS MODULOS SUSCURSALES
         =============================================*/
-    Route::get('/sucursales', 'BranchOfficesController@index')->name('admin.branch_offices');
+    Route::get('/sucursales', 'BranchOfficesController@index')->name('admin.branch_offices')->middleware('ModeleBranchOffices');
 
     /*=============================================
           RUTAS PARA LOS MODULOS ZONAS
         =============================================*/
-    Route::get('/zonas', 'ZonesController@index')->name('admin.zones');
+    Route::get('/zonas', 'ZonesController@index')->name('admin.zones')->middleware('ModeleZones');
 
     /*=============================================
           RUTAS PARA LOS MODULOS USUARIOS
         =============================================*/
-    Route::get('/usuarios', 'UserController@index')->name('admin.user.users');
+    Route::get('/usuarios', 'UserController@index')->name('admin.user.users')->middleware('ModeleUser');
 
     /*=============================================
           RUTAS PARA LOS MODULOS FACTURAS
