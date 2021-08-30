@@ -49,8 +49,11 @@
           }"
         >
           <template slot="table-row" slot-scope="props">
+            <p v-if="props.column.field == 'description'">
+              {{ shortText(props.row.description) }}
+            </p>
             <button
-              v-if="props.column.field == 'btn'"
+              v-else-if="props.column.field == 'btn'"
               @click="addProducts(props.row)"
               type="button"
               class="btn btn-success"
@@ -137,8 +140,9 @@ export default {
       return feather.toSvg("x");
     },
     remainingProducts() {
-      return this.products.filter((product) =>
-        !this.order_details.find((order) => order.product_id == product.id)
+      return this.products.filter(
+        (product) =>
+          !this.order_details.find((order) => order.product_id == product.id)
       );
     },
   },
@@ -169,6 +173,12 @@ export default {
       axios.get("/api/all-products").then((resp) => {
         this.products = resp.data.data;
       });
+    },
+    shortText(text) {
+      if (text.length > 60) {
+        return text.slice(0, 60)+"...";
+      }
+      return text;
     },
   },
 };

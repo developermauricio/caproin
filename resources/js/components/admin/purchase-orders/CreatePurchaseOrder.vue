@@ -51,9 +51,7 @@
     </tab-content>
 
     <tab-content title="Detalle" :beforeChange="validarTab">
-      <order-preview
-        :purchase_order="purchase_order"
-      />
+      <order-preview v-if="currentTab == 4" :purchase_order="purchase_order" />
     </tab-content>
 
     <template slot="footer" slot-scope="props">
@@ -102,6 +100,7 @@ async function checkForm(timeoutMilliseconds) {
 import ConveyorOrder from "./components/ConveyorOrder.vue";
 import HeaderPurchaseOrder from "./components/HeaderPurchaseOrder.vue";
 import OrderDetails from "./components/OrderDetails.vue";
+import OrderPreview from "./components/OrderPreview.vue";
 import StatusPurchaseOrder from "./components/StatusPurchaseOrder.vue";
 
 export default {
@@ -111,6 +110,7 @@ export default {
     HeaderPurchaseOrder,
     OrderDetails,
     StatusPurchaseOrder,
+    OrderPreview,
   },
   data() {
     return {
@@ -159,29 +159,6 @@ export default {
       conveyors: [],
       state_histories: [],
       state_orders: [],
-      order_details: [
-        {
-          purchase_order_id: null,
-          customer_order_number: null,
-          internal_order_number: null,
-          manufacturer: null,
-          internal_product_code: null,
-          client_product_code: null,
-          product_id: null,
-          customer_product_description: null,
-          application: null,
-          blueprint_number: null,
-          blueprint_file: null,
-          currency_id: null,
-          value: null,
-          internal_quote_number: null,
-          house_listing_number: null,
-          created_at: null,
-          updated_at: null,
-          product: null,
-          currency: null,
-        },
-      ],
       type_products: [],
     };
   },
@@ -202,9 +179,6 @@ export default {
       this.payments = (await axios.get("/api/get-payment-type")).data.data;
       this.type_products = (
         await axios.get("/api/all-product-types-list")
-      ).data;
-      this.order_details = (
-        await axios.get("/api/purchase-order-state-history")
       ).data;
     },
     async validarTab() {

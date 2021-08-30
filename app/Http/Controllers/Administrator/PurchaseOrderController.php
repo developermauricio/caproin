@@ -90,13 +90,14 @@ class PurchaseOrderController extends Controller
     public function getPurchaseOrderById($id)
     {
         $purchaseOrder = PurchaseOrder::with([
+            'order_type',
             'customer',
             'zone',
-            'seller',
+            'seller.user',
             'currency',
             'conveyor',
             'payment',
-            'invoice',
+            'invoice.state',
             'provider',
             'order_details' => function ($q) {
                 return $q->with('product', 'currency');

@@ -52,6 +52,10 @@ class PurchaseOrder extends Model
         return $this->hasMany(OrderDetail::class, 'purchase_order_id');
     }
 
+    public function order_type() {
+        return $this->belongsTo(OrderType::class, 'order_type_id');
+    }
+
     public function purchase_order_state_histories()
     {
         return $this->hasMany(PurchaseOrderStateHistory::class, 'purchase_order_id');
