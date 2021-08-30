@@ -41,10 +41,10 @@ export default {
   data() {
     return {
       accordion_list: [
-        { id: "header", title: "header" },
-        { id: "status", title: "status" },
-        { id: "products", title: "products" },
-        { id: "seguimiento", title: "seguimiento" },
+        { id: "header", title: "Orden de compra" },
+        { id: "status", title: "Estado" },
+        { id: "products", title: "Productos" },
+        { id: "seguimiento", title: "Seguimiento" },
       ],
     };
   },
