@@ -42,7 +42,11 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
       {
         data: "customer_id",
         render: function (data, type, JsonResultRow, meta) {
-          return getRow(JsonResultRow, 'customer_id');
+          let value = "Sin valor";
+          if (JsonResultRow.customer) {
+            value = JsonResultRow.customer.business_name
+          }
+          return value;
         },
       },
       {
@@ -53,7 +57,12 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
       },
       {
         render: (data, type, JsonResultRow, meta) => {
-          return 'estado';
+          const statuses = JsonResultRow.purchase_order_state_histories;
+          const status = statuses[statuses.length - 1];
+          if (status) {
+            return status.state_order.name;
+          }
+          return 'Sin valor'
         }
       },
       {
@@ -71,7 +80,11 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
       },
       {
         render: function (data, type, JsonResultRow, meta) {
-          return `opciones`;
+          return `<div class="demo-inline-spacing text-center" data-id="${JsonResultRow.id}">
+          <button data-id="${JsonResultRow.id}" data-target="#modal-show-purchase-order" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-purchase btn-icon btn-primary">
+          <i data-feather="eye" data-id="${JsonResultRow.id}"></i>
+          </button>
+          </div>`
         },
       }
     ],
@@ -172,9 +185,9 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
   }).draw();
 
 
-  $('.datatables-all-purchase-ordes').on('click', '.btn-show-purchase-order', function (e) {
+  $('.datatables-all-purchase-ordes').on('click', '.btn-show-purchase', function (e) {
     const id = e.target.getAttribute('data-id');
-    $('#traerDatosBoton').val(id).click();
+    $('#idPurchaseOrder').val(id).click();
   });
 }
 

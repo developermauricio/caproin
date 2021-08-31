@@ -34,7 +34,10 @@ class PurchaseOrderController extends Controller
 
     public function getApiPurchaseOrdes()
     {
-        $purchase_ordes = PurchaseOrder::get();
+        $purchase_ordes = PurchaseOrder::with([
+            'customer',
+            'purchase_order_state_histories.state_order'
+        ])->get();
         return datatables()->of($purchase_ordes)->toJson();
     }
 

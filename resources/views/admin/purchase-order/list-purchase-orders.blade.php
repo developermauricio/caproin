@@ -62,7 +62,7 @@
         ======================================-->
     <div class="modal fade text-left modal-primary" id="modal-show-purchase-order" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            {{-- <show-purchase-order id="componet-show-purchase-order"></show-purchase-order> --}}
+            <show-purchase-order ></show-purchase-order>
         </div>
     </div>
 

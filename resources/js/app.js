@@ -98,6 +98,7 @@ Vue.component('show-edit-trade-agreement', require('./components/admin/tradeAgre
 COMPONENTES PARA MODULOS ORDENES DE COMPRA
 =============================================*/
 Vue.component('create-purchase-order', require('./components/admin/purchase-orders/CreatePurchaseOrder.vue').default);
+Vue.component('show-purchase-order', require('./components/admin/purchase-orders/ShowPurchaseOrder.vue').default);
 
 
 Vue.prototype.$checkForm = checkForm;
