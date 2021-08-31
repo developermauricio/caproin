@@ -14,6 +14,9 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use Notifiable, HasRoles;
+
+    const ROL_VENDEDOR = 'Vendedor';
+
     const ACTIVE = 1;
     const INACTIVE = 2;
 
@@ -80,6 +83,7 @@ class User extends Authenticatable
     static public function roleUserVendedor(){
         return auth()->user()->hasRole('Vendedor');
     }
+
     static public function user(){
         return auth()->user();
     }

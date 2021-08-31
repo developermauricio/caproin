@@ -2,12 +2,26 @@
   <div class="row">
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
-        id="txtCustomerOrderNumber"
-        name="customer_order_number"
+        name="internal_order_number"
+        id="txt_internal_order_number"
         label="Número de pedido interno"
         pattern="all"
         errorMsg="Ingrese un número de pedido interno válido"
         requiredMsg="El número pedido interno es obligatorio"
+        :modelo.sync="purchase_order.internal_order_number"
+        :msgServer.sync="errors.internal_order_number"
+        :required="true"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        id="txtCustomerOrderNumber"
+        name="customer_order_number"
+        label="Número de pedido cliente"
+        pattern="all"
+        errorMsg="Ingrese un número de pedido cliente válido"
+        requiredMsg="El número pedido cliente es obligatorio"
         :modelo.sync="purchase_order.customer_order_number"
         :msgServer.sync="errors.customer_order_number"
         :required="true"
@@ -41,6 +55,31 @@
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
+        id="txt_invoice"
+        type="multiselect"
+        :multiselect="{
+          selectLabel: 'Seleccionar',
+          selectedLabel: 'Seleccionado',
+          deselectLabel: 'Desmarcar',
+          placeholder: 'Seleccionar factura',
+          taggable: false,
+          label: 'name',
+          options: invoices,
+          'custom-label': (invoice) => invoice.invoice_number,
+        }"
+        :modelo.sync="purchase_order.invoice"
+        :msgServer.sync="errors.invoice"
+        name="factura"
+        label="Factura"
+        pattern="all"
+        errorMsg="Factura no seleccionada"
+        requiredMsg="La factura es obligatoria"
+        :required="true"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
         id="txtFinalUser"
         name="final_user"
         label="Usuario final"
@@ -55,7 +94,7 @@
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
-        id="txtorderType"
+        id="txt_order_type"
         type="multiselect"
         :multiselect="{
           selectLabel: 'Seleccionar',
@@ -64,11 +103,12 @@
           placeholder: 'Seleccionar tipo',
           taggable: false,
           label: 'name',
+          'track-by': 'id',
           options: order_types,
-          'custom-label': (orderType) => orderType.name,
+          'custom-label': (order_type) => order_type.name,
         }"
-        :modelo.sync="purchase_order.orderType"
-        :msgServer.sync="errors.orderType"
+        :modelo.sync="purchase_order.order_type"
+        :msgServer.sync="errors.order_type"
         name="order_type"
         label="Tipo"
         pattern="all"
@@ -115,7 +155,8 @@
           taggable: false,
           label: 'name',
           options: sellers,
-          'custom-label': (seller) => seller.name,
+          'track-by': 'id',
+          'custom-label': (seller) => seller.user.name,
         }"
         :modelo.sync="purchase_order.seller"
         :msgServer.sync="errors.seller"
@@ -218,7 +259,7 @@
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
-        id="txt_seller"
+        id="txt_currency"
         type="multiselect"
         :multiselect="{
           selectLabel: 'Seleccionar',
@@ -344,39 +385,44 @@ export default {
     customers: {
       type: Array,
       default: function () {
-        return []
-      }
+        return [];
+      },
     },
     order_types: {
       type: Array,
       default: function () {
-        return []
-      }
+        return [];
+      },
     },
     zones: {
       type: Array,
       default: function () {
-        return []
-      }
+        return [];
+      },
     },
     sellers: {
       type: Array,
       default: function () {
-        return []
-      }
+        return [];
+      },
     },
     type_currencies: {
       type: Array,
       default: function () {
-        return []
-      }
+        return [];
+      },
     },
     payments: {
       type: Array,
       default: function () {
-        return []
-      }
+        return [];
+      },
     },
+  },
+  data() {
+    return {
+      invoices: [],
+    };
   },
   computed: {
     moneyConfig() {
@@ -411,5 +457,10 @@ export default {
       }
     },
   },
+  created(){
+    axios.get('/api/all-invoices-list').then(response => {
+      this.invoices = response.data
+    });
+  }
 };
 </script>

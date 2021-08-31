@@ -13,7 +13,6 @@
       <div class="col-12 col-md-4 col-lg-4">
         <input-form
           type="date"
-          id="txt_estimated_date"
           name="estimated_date"
           label="Fecha estimada"
           pattern="all"
@@ -27,7 +26,6 @@
 
       <div class="col-12 col-md-4 col-lg-4">
         <input-form
-          id="txt_state_order"
           type="multiselect"
           :multiselect="{
             selectLabel: 'Seleccionar',
@@ -53,7 +51,6 @@
       <div class="col-12 col-md-4 col-lg-4">
         <input-form
           type="textarea"
-          id="txt_description"
           name="description"
           label="Descripción"
           pattern="all"
@@ -70,7 +67,6 @@
         class="form-control"
         v-model="newStatus"
         name="new_status"
-        id="new_status"
       >
         <option :value="null">Seleccione un nuevo estado</option>
         <option :key="state.id" :value="state" v-for="state in remainingState">
@@ -80,7 +76,6 @@
       <button
         class="btn btn-outline-secondary"
         type="button"
-        id="button-addon2"
         @click="addNewStatus"
       >
         Añadir Nuevo Estado
@@ -112,7 +107,7 @@ export default {
   },
   computed: {
     closeIcon() {
-      return feather.toSvg("x");
+      return feather.icons["x"].toSvg();
     },
     remainingState() {
       return this.state_orders.filter(

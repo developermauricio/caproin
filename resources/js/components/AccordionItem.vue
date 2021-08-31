@@ -73,6 +73,9 @@ export default {
       this.$emit("change-current", this.index);
     },
     checkHeight() {
+      if (!this.$refs.body_item) {
+        return 0;
+      }
       this.height = this.$refs.body_item.clientHeight;
     },
   },

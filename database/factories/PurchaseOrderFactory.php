@@ -44,6 +44,6 @@ $factory->define(PurchaseOrder::class, function (Faker $faker) {
         'invoice_state' => $faker->randomElement(['No subida', 'No Entregada']),
         'invoice_number' => $faker->numberBetween(5000),
         'contact_number' => $faker->numberBetween(5000),
-        'provider_id' => Provider::inRandomOrder()->first()->id
+        // 'provider_id' => Provider::inRandomOrder()->first()->id
     ];
 });

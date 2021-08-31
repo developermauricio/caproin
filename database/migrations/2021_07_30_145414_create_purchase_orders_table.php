@@ -61,18 +61,18 @@ class CreatePurchaseOrdersTable extends Migration
             $table->unsignedBigInteger('payment_id');
             $table->foreign('payment_id')->references('id')->on('payment_types');
 
-            $table->unsignedBigInteger('invoice_id');
+            $table->unsignedBigInteger('invoice_id')->nullable();
             $table->foreign('invoice_id')->references('id')->on('invoices');
 
             //o Archivo de factura (Enlace que redirija a la factura o factura Adjunta PDF)
 
             $table->enum('invoice_state', ['No subida', 'No Entregada']);
 
-            $table->string('invoice_number');
+            $table->string('invoice_number')->nullable();
             $table->string('contact_number');
 
-            $table->unsignedBigInteger('provider_id');
-            $table->foreign('provider_id')->references('id')->on('providers');
+            // $table->unsignedBigInteger('provider_id');
+            // $table->foreign('provider_id')->references('id')->on('providers');
 
             $table->timestamps();
         });

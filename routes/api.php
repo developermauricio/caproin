@@ -93,10 +93,12 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::post('/removed-archive-invoice-db','InvoiceController@removedArchiveInvoiceDb')->name('api.removed.archive.invoice');
 
     /*=============================================
-      API PARA LAS ORDENES DE COMPRA
+    API PARA LAS ORDENES DE COMPRA
     =============================================*/
+    Route::post('/save-purchase-order', 'PurchaseOrderController@savePurchaseOrder');
     Route::get('/all-purchases-ordes', 'PurchaseOrderController@getApiPurchaseOrdes')->name('api.all.purchase-orders');
     Route::get('/all-customer-list', 'PurchaseOrderController@getAllCustomers')->name('api.all.purchase-orders.customers');
+    Route::get('/all-invoices-list', 'PurchaseOrderController@getAllInvoices');
     Route::get('/all-order-type-list', 'PurchaseOrderController@getAllOrderTypes');
     Route::get('/all-zone-list', 'PurchaseOrderController@getAllZone');
     Route::get('/all-seller-list', 'PurchaseOrderController@getAllSeller');

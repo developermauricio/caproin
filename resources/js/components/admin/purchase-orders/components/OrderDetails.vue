@@ -137,7 +137,7 @@ export default {
   },
   computed: {
     closeIcon() {
-      return feather.toSvg("x");
+      return feather.icons["x"].toSvg();
     },
     remainingProducts() {
       return this.products.filter(
