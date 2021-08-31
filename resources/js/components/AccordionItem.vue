@@ -70,7 +70,7 @@ export default {
   methods: {
     changeCurrent() {
       this.checkHeight();
-      this.$emit("change-current", this.item);
+      this.$emit("change-current", this.index);
     },
     checkHeight() {
       this.height = this.$refs.body_item.clientHeight;
