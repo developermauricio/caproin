@@ -23,7 +23,7 @@
                  role="tab"
                  aria-selected="true" v-else>Información Cliente</a>
             </li>
-            <li class="nav-item" v-if="invoices.length > 0">
+            <li class="nav-item" v-if="invoices.length > 0 || invoices">
               <a class="nav-link" id="profile-tab" data-toggle="tab" href="#facturas" aria-controls="profile" role="tab"
                  aria-selected="false">Facturas</a>
             </li>
