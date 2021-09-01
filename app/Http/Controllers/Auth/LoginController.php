@@ -7,6 +7,8 @@ use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -42,10 +44,16 @@ class LoginController extends Controller
 
     public function redirectTo()
     {   $userAuth = User::where('id', auth()->user()->id)->first();
+        $token = Str::random(10);
+
         if ($userAuth->remember_token == null){
+            DB::table('users')->where('id', $userAuth->id)->update([
+                'remember_token' => $token
+            ]);
             session()->flash('message_login_first');
             return '/';
         }else{
+
             return '/';
         }
 

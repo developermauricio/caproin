@@ -14,6 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     use Notifiable, HasRoles;
+
     const ACTIVE = 1;
     const INACTIVE = 2;
 
@@ -53,6 +54,11 @@ class User extends Authenticatable
         $this->notify(new CustomResetPasswordNotification($token));
     }
 
+    public static function navigation()
+    {
+        return auth()->check() ? auth()->user()->roles[0]->name : 'Administrador';
+    }
+
     public function identificationType()
     {
         return $this->belongsTo(IdentificationType::class, 'identification_type_id');
@@ -68,19 +74,24 @@ class User extends Authenticatable
         return $this->belongsTo(Country::class, 'country_id');
     }
 
-    public function employes(){
+    public function employes()
+    {
         return $this->hasOne(Employee::class);
     }
 
-    static public function roleAuth(){
+    static public function roleAuth()
+    {
         $user = User::where('id', auth()->user()->id)->with('roles')->first();
         return $user;
     }
 
-    static public function roleUserVendedor(){
+    static public function roleUserVendedor()
+    {
         return auth()->user()->hasRole('Vendedor');
     }
-    static public function user(){
+
+    static public function user()
+    {
         return auth()->user();
     }
 }

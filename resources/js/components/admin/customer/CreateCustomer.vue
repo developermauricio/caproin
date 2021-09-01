@@ -90,6 +90,30 @@
                                 example: 'Ejemplo'
                             }"/>
           </div>
+          <div class="col-12 col-md-6 col-lg-6">
+            <input-form
+              id="txtSendPaymentEmailCustomer"
+              label="Número de días para enviar cobro por correo electrónico, después de generar la factura"
+              pattern="all"
+              errorMsg="Ingrese un número de días válido"
+              requiredMsg="El número de días es obligatorio"
+              :modelo.sync="numberDaysAfterInvoice"
+              :required="true"
+              :msgServer.sync="errors.numberDaysAfterInvoice"
+            ></input-form>
+          </div>
+          <div class="col-12 col-md-6 col-lg-6">
+            <input-form
+              id="txtSendOverdueEmailCustomer"
+              label="Número de días para enviar correo de cobro después de vencida la factura"
+              pattern="all"
+              errorMsg="Ingrese un número de días válido"
+              requiredMsg="El número de días es obligatorio"
+              :modelo.sync="numberDaysOverdueInvoice"
+              :required="true"
+              :msgServer.sync="errors.numberDaysOverdueInvoice"
+            ></input-form>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -115,6 +139,8 @@ export default {
   },
   data() {
     return {
+      numberDaysAfterInvoice: null,
+      numberDaysOverdueInvoice: null,
       identification: '',
       email: '',
       identificationVerify: '',
@@ -156,6 +182,8 @@ export default {
         data.append('identification', this.identification);
         data.append('email', this.email);
         data.append('phone', this.user.phoneI);
+        data.append('numberDaysAfterInvoice', this.numberDaysAfterInvoice);
+        data.append('numberDaysOverdueInvoice', this.numberDaysOverdueInvoice);
 
         Swal.fire({
           title: 'Confirmar',

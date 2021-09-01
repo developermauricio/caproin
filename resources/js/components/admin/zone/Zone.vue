@@ -11,7 +11,7 @@
                    placeholder="Buscar por nombre o código"/>
           </div>
         </div>
-        <button data-target="#modal-new-branch-office" data-toggle="modal" class="btn btn-primary float-right"><i
+        <button v-if="$gate.allow('createZone', 'zone')" data-target="#modal-new-branch-office" data-toggle="modal" class="btn btn-primary float-right"><i
           data-feather="plus" class="mr-50"></i>Nueva Zona
         </button>
       </div>
@@ -31,7 +31,7 @@
                   <i data-feather="edit-2" class="mr-50"></i>
                   <span>Editar</span>
                 </a>
-                <a class="dropdown-item" @click="deleteZone(zones.id)">
+                <a v-if="$gate.allow('deleteZone', 'zone')" class="dropdown-item" @click="deleteZone(zones.id)">
                   <i data-feather="trash" class="mr-50"></i>
                   <span>Eliminar</span>
                 </a>

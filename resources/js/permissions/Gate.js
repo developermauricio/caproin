@@ -1,5 +1,8 @@
 import InvoicePolicy from "./InvoicePolicy";
 import TradeAgreement from "./TradeAgreement";
+import ZonePolicy from "./ZonePolicy";
+import BranchOfficesPolicy from "./BranchOfficesPolicy";
+import CustomerPolicy from "./CustomerPolicy";
 
 export default class Gate
 {
@@ -10,6 +13,9 @@ export default class Gate
     this.policies = {
       invoice: InvoicePolicy,
       tradeAgreement: TradeAgreement,
+      zone: ZonePolicy,
+      branch: BranchOfficesPolicy,
+      customer: CustomerPolicy,
     };
   }
 

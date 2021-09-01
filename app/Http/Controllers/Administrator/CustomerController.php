@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Mail\Customer\NewCustomer;
 use App\Models\Customer;
 use App\Models\CustomerType;
+use App\Models\HistorySendPaymetClient;
 use App\Traits\MessagesException;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -43,8 +45,25 @@ class CustomerController extends Controller
 
     public function getApiDataCustomer($id)
     {
-        $customer = Customer::where('id', $id)->with('user.identificationType')->first();
-        return response()->json(['data' => $customer]);
+        $customer = Customer::where('id', $id)->with('user.identificationType', 'invoices.paymentType', 'invoices.typeInvoice', 'invoices.state')->first();
+        $dataHistory = collect();
+        if (count($customer->invoices) > 0) {
+            foreach ($customer->invoices as $invoices) {
+                $histories = HistorySendPaymetClient::where('invoice_id', $invoices->id)->get();
+
+                foreach ($histories as $history) {
+                    $dataHistory->push([
+                        "invoice_id" => $invoices->id,
+                        "invoice_number" => $invoices->invoice_number,
+                        "type_send" => $history->type_send,
+                        "detail" => $history->detail,
+                        "date_register" => Carbon::parse($history->created_at)->format('Y-m-d H:i'),
+                    ]);
+                }
+            }
+        }
+
+        return response()->json(['data' => $customer, 'historySendPaymentClient' => $dataHistory]);
     }
 
     public function storeApiCustomer(Request $request)
@@ -56,6 +75,8 @@ class CustomerController extends Controller
         $businessName = $request->businessName;
         $email = $request->email;
         $phone = $request->phone;
+        $numberDaysAfterInvoice = $request->numberDaysAfterInvoice;
+        $numberDaysOverdueInvoice = $request->numberDaysOverdueInvoice;
         $typeIdentification = json_decode($request->typeIdentification);
         $identification = $request->identification;
 
@@ -76,6 +97,8 @@ class CustomerController extends Controller
         $customer = Customer::create([
             "business_name" => $businessName,
             "user_id" => $user->id,
+            "number_of_days_after_generating_invoice" => $numberDaysAfterInvoice,
+            "number_of_days_after_invoice_overdue" => $numberDaysOverdueInvoice,
         ]);
         Mail::to($user->email)->send(new NewCustomer($user->name, $password, $user->email));
         return response()->json('Registro Exitoso!');
@@ -88,6 +111,8 @@ class CustomerController extends Controller
         $businessName = $request->businessName;
         $typeIdentification = json_decode($request->typeIdentification);
         $identification = $request->identification;
+        $numberDaysAfterInvoice = $request->numberDaysAfterInvoice;
+        $numberDaysOverdueInvoice = $request->numberDaysOverdueInvoice;
         $email = $request->email;
         $phone = $request->phone;
         $stateCustomer = json_decode($request->state);
@@ -107,6 +132,8 @@ class CustomerController extends Controller
 
         $customer = Customer::where('id', $idCustomer)->update([
             "business_name" => $businessName,
+            "number_of_days_after_generating_invoice" => $numberDaysAfterInvoice,
+            "number_of_days_after_invoice_overdue" => $numberDaysOverdueInvoice,
         ]);
     }
 

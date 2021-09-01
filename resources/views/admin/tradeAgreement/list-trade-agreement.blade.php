@@ -454,7 +454,7 @@
                             //     }, 50);
                             // }
                         },
-                            @if(auth()->user()->roles->first()->name === 'Administrador')
+                            @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Gerencia')
                         // {
                         //     text: feather.icons['file-text'].toSvg({class: 'mr-50 font-small-4'}) + 'Importar',
                         //     className: 'create-new btn btn-primary',
@@ -467,7 +467,7 @@
                         //     }
                         // },
                             @endif
-                            @if(auth()->user()->roles->first()->name === 'Administrador')
+                            @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Gerencia')
                         {
                             text: feather.icons['plus'].toSvg({class: 'mr-50 font-small-4'}) + 'Nuevo Acuerdo Comercial',
                             className: 'create-new btn btn-primary',

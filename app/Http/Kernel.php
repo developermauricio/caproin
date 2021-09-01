@@ -69,5 +69,6 @@ class Kernel extends HttpKernel
         'ModeleProvider' => \App\Http\Middleware\ModuleProviders::class,
         'ModeleBranchOffices' => \App\Http\Middleware\ModuleBranchOffices::class,
         'ModeleZones' => \App\Http\Middleware\ModuleZones::class,
+        'ModeleInvoices' => \App\Http\Middleware\ModuleInvoices::class,
     ];
 }

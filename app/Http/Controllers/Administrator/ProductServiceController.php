@@ -40,6 +40,7 @@ class ProductServiceController extends Controller
            'name' => $request->name,
            'code' => $request->code,
            'state' => $state->id,
+           'user_id' => auth()->user()->id,
            'short_description' => $request->descriptionShort,
            'description' => $request->description,
            'type_products_id' => $typeProduct->id,

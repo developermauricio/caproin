@@ -57,4 +57,8 @@ class Invoice extends Model
     public function purchaseOrder(){
         return $this->hasOne(PurchaseOrder::class, 'invoice_id');
     }
+
+    public function historySendPaymentCustomer(){
+        return $this->belongsToMany(HistorySendPaymetClient::class, 'history_send_paymet_clients');
+    }
 }

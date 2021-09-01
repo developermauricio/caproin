@@ -48,7 +48,9 @@
                             <th>Identificación</th>
                             <th>Nombre o razon social</th>
                             <th>Estado</th>
-                            <th>Acciones</th>
+                            @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Gerencia')
+                                <th>Acciones</th>
+                            @endif
                         </tr>
                         <tr class="tr-filter-dekstop-provider">
                             <th></th>
@@ -58,7 +60,9 @@
                             <th></th>
                             <th></th>
                             <th class="filter-6"></th>
-                            <th></th>
+                            @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Gerencia')
+                                <th></th>
+                            @endif
                         </tr>
                         </thead>
                     </table>
@@ -68,7 +72,8 @@
         <!--=====================================
 		    MODAL PARA CREAR UN NUEVO PROVEEDOR
         ======================================-->
-        <div class="modal fade text-left modal-primary" id="modal-new-provider" data-backdrop="static" tabindex="-1" role="dialog"
+        <div class="modal fade text-left modal-primary" id="modal-new-provider" data-backdrop="static" tabindex="-1"
+             role="dialog"
              aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <create-provider></create-provider>
@@ -117,7 +122,7 @@
                             var column = this;
                             console.log('columna', column[0][0])
                             var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
-                                .appendTo('.datatables-all-clients .filter-'+column[0][0])
+                                .appendTo('.datatables-all-clients .filter-' + column[0][0])
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val(),
@@ -138,7 +143,7 @@
                             var column = this;
                             console.log(column)
                             var select = $('<select class="form-control"><option hidden selected>Filtrar</option><option value="">Mostrar todos los registros</option></select>')
-                                .appendTo('.datatables-all-clients .filter-'+column[0][0])
+                                .appendTo('.datatables-all-clients .filter-' + column[0][0])
                                 .on('change', function () {
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val(),
@@ -289,6 +294,8 @@
                                 }
                             },
                         },
+                            @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Gerencia')
+
                         {
                             render: function (data, type, JsonResultRow, meta) {
                                 return `<div data-id="${JsonResultRow.id}" class="demo-inline-spacing text-center">
@@ -299,6 +306,7 @@
 
                             },
                         },
+                        @endif
                     ],
                     "language": {
                         "processing": '<div class="spinner"></div>',
@@ -380,7 +388,7 @@
                                     "extend": 'copy',
                                     "text": feather.icons['copy'].toSvg({class: 'font-small-4 mr-50'}) + 'Copiar',
                                     "className": 'dropdown-item',
-                                    "exportOptions": {columns: [ 1, 2, 3, 4, 5, 6]}
+                                    "exportOptions": {columns: [1, 2, 3, 4, 5, 6]}
                                 }
                             ],
                             // init: function (api, node, config) {
@@ -391,6 +399,8 @@
                             //     }, 50);
                             // }
                         },
+                            @if(auth()->user()->roles->first()->name === 'Administrador')
+
                         {
                             text: feather.icons['plus'].toSvg({class: 'mr-50 font-small-4'}) + 'Nuevo Proveedor',
                             className: 'create-new btn btn-primary',
@@ -402,6 +412,7 @@
                                 $(node).removeClass('btn-secondary');
                             }
                         }
+                        @endif
                     ],
 
                 })

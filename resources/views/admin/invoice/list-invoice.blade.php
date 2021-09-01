@@ -333,7 +333,7 @@
                                     var val = $.fn.dataTable.util.escapeRegex(
                                         $(this).val()
                                         ,);
-                                    console.log('que fue', val)
+
                                     column
                                         .search(val ? '^' + val + '$' : '', true, false)
                                         .draw();
@@ -675,7 +675,7 @@
                         //     }, 50);
                         // }
                     },
-                            @if(auth()->user()->roles->first()->name === 'Administrador'){
+                            @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal' || auth()->user()->roles->first()->name === 'Gerencia' || auth()->user()->roles->first()->name === 'Finanzas'){
                              text: feather.icons['file-text'].toSvg({
                                  class: 'mr-50 font-small-4'
                              }) + 'Importar'
@@ -689,7 +689,7 @@
                                  $(node).removeClass('btn-secondary');
                              }
                          }@endif
-                         , @if(auth()->user()->roles->first()->name === 'Administrador'){
+                         , @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal' || auth()->user()->roles->first()->name === 'Gerencia' || auth()->user()->roles->first()->name === 'Finanzas'){
                             text: feather.icons['plus'].toSvg({
                                 class: 'mr-50 font-small-4'
                             }) + 'Nueva Factura '

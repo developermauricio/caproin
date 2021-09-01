@@ -9,5 +9,7 @@ $factory->define(Customer::class, function (Faker $faker) {
     $name = $faker->company;
     return [
         'business_name' => $name,
+        'number_of_days_after_generating_invoice'=> 3,
+        'number_of_days_after_invoice_overdue'=> 5,
     ];
 });

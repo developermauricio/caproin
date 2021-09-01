@@ -2,7 +2,7 @@
   <div class="modal-content">
     <input type="hidden" @click="traerDatosInvoice" id="traerDatosBotonProductService"/>
     <div class="modal-header">
-      <h5 class="modal-title" id="myModalLabel160">Crear Producto/Servicio</h5>
+      <h5 class="modal-title" id="myModalLabel160">Actualizar Producto/Servicio</h5>
       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>

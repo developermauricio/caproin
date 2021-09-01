@@ -8,7 +8,7 @@ const find = function (array, name) {
 export default class TradeAgreement
 {
   static editTradeAgreement($user, tradeAgreement){
-    return find(user.roles,'Administrador');
+    return find(user.roles,'Administrador') || find(user.roles, 'Gerencia');
   }
 
 }
