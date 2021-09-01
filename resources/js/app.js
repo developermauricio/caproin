@@ -18,14 +18,15 @@ import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
-
+import { checkForm } from './bootstrap';
 import Gate from './permissions/Gate';
+
 Vue.prototype.$gate = new Gate(window.user);
 
 Vue.use(VueFormWizard)
 Vue.use(CxltToastr)
 Vue.use(Vuesax);
-Vue.use(money, {precision: 3})
+Vue.use(money, { precision: 3 })
 
 Vue.use(VueGoodTablePlugin);
 // const files = require.context('./', true, /\.vue$/i)
@@ -97,6 +98,10 @@ Vue.component('show-edit-trade-agreement', require('./components/admin/tradeAgre
 COMPONENTES PARA MODULOS ORDENES DE COMPRA
 =============================================*/
 Vue.component('create-purchase-order', require('./components/admin/purchase-orders/CreatePurchaseOrder.vue').default);
+Vue.component('show-purchase-order', require('./components/admin/purchase-orders/ShowPurchaseOrder.vue').default);
+
+
+Vue.prototype.$checkForm = checkForm;
 
 window.eventBus = new Vue();
 const app = new Vue({

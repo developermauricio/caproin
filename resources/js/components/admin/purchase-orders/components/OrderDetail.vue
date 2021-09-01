@@ -6,7 +6,6 @@
           <span>Código producto interno</span>
         </label>
         <input
-          id="txt_internal_product_code"
           :placeholder="order_detail.internal_product_code"
           class="form-control"
           :value="order_detail.internal_product_code"
@@ -21,7 +20,6 @@
           <span>Descripción del producto interno</span>
         </label>
         <textarea
-          id="txt_product_description_interno"
           placeholder="Descripción del producto interno"
           class="form-control"
           :value="order_detail.product.description"
@@ -33,7 +31,6 @@
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
         name="client_product_code"
-        id="txt_client_product_code"
         label="Código de producto del cliente"
         errorMsg="Ingrese código de producto del cliente valido"
         requiredMsg="El código de producto del cliente es obligatorio"
@@ -47,7 +44,6 @@
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
         name="customer_product_description"
-        id="txt_customer_product_description"
         label="Descripción del producto del cliente"
         pattern="all"
         errorMsg="Ingrese una descripción valida"
@@ -62,7 +58,6 @@
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
         name="manufacturer"
-        id="txt_manufacturer"
         label="Casa"
         pattern="all"
         errorMsg="Ingrese una casa válido"
@@ -76,7 +71,6 @@
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
         name="house_listing_number"
-        id="txt_house_listing_number"
         label="Número cotización de casa"
         pattern="all"
         errorMsg="Ingrese un número cotización de casa válido"
@@ -90,7 +84,6 @@
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
         name="application"
-        id="txt_application"
         label="Aplicación"
         pattern="all"
         errorMsg="Ingrese una aplicación valida"
@@ -105,7 +98,6 @@
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
         name="blueprint_number"
-        id="txt_blueprint_number"
         label="Número de plano"
         pattern="all"
         errorMsg="Ingrese un número de plano válido"
@@ -118,7 +110,6 @@
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
-        id="txt_currency"
         type="multiselect"
         :multiselect="{
           selectLabel: 'Seleccionar',
@@ -145,7 +136,6 @@
       <input-form
         type="money"
         label="Valor"
-        id="txt_value"
         pattern="all"
         errorMsg="Ingrese un valor válido"
         requiredMsg="El valor es obligatorio"

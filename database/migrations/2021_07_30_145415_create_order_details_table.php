@@ -30,15 +30,15 @@ class CreateOrderDetailsTable extends Migration
 
             $table->string('application');
             $table->string('blueprint_number');
-            $table->string('blueprint_file');
+            $table->string('blueprint_file')->nullable();
 
             $table->unsignedBigInteger('currency_id')->nullable();
             $table->foreign('currency_id')->references('id')->on('currencies');
 
             $table->string('value');
 
-            $table->string('internal_quote_number');
-            $table->string('house_listing_number');
+            $table->string('internal_quote_number')->nullable();
+            $table->string('house_listing_number')->nullable();
 
             $table->timestamps();
         });

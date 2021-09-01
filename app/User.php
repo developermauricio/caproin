@@ -15,6 +15,8 @@ class User extends Authenticatable
 {
     use Notifiable, HasRoles;
 
+    const ROL_VENDEDOR = 'Vendedor';
+
     const ACTIVE = 1;
     const INACTIVE = 2;
 
@@ -90,8 +92,7 @@ class User extends Authenticatable
         return auth()->user()->hasRole('Vendedor');
     }
 
-    static public function user()
-    {
+    static public function user(){
         return auth()->user();
     }
 }

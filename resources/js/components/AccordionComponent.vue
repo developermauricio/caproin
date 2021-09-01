@@ -2,10 +2,10 @@
   <div class="collapse-margin collapse-icon">
     <accordion-item
       v-for="(item, index) in items"
-      :key="item.id"
+      :key="index"
       :item="item"
       :index="index"
-      :isOpen="isCurrent(item)"
+      :isOpen="isCurrent(index)"
       @change-current="changeCurrent"
     >
       <template v-slot:title>
@@ -26,7 +26,7 @@ export default {
   name: "AccordionComponent",
   data() {
     return {
-      current: {
+      currentIndex: {
         id: null,
       },
     };
@@ -38,17 +38,15 @@ export default {
     },
   },
   methods: {
-    changeCurrent(item) {
-      if (this.current.id === item.id) {
-        this.current = Object.assign({}, this.current, {
-          id: null,
-        });
+    changeCurrent(index) {
+      if (this.currentIndex === index) {
+        this.currentIndex = -1;
       } else {
-        this.current = item;
+        this.currentIndex = index;
       }
     },
-    isCurrent(item) {
-      return this.current && item.id === this.current.id;
+    isCurrent(index) {
+      return this.currentIndex === index;
     },
   },
 };

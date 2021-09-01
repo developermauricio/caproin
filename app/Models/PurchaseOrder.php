@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PurchaseOrder extends Model
 {
+    const NO_SUBIDA =  'No subida';
+    const NO_ENTREGADA = 'No Entregada';
 
     public function customer()
     {
@@ -40,11 +42,6 @@ class PurchaseOrder extends Model
     public function invoice()
     {
         return $this->belongsTo(Invoice::class, 'invoice_id');
-    }
-
-    public function provider()
-    {
-        return $this->belongsTo(Provider::class, 'provider_id');
     }
 
     public function order_details()

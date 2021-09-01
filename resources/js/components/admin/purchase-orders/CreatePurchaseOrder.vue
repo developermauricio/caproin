@@ -18,7 +18,7 @@
         v-if="currentTab == 0"
         :purchase_order.sync="purchase_order"
         :customers="customers"
-        :order_types="orderTypes"
+        :order_types="order_types"
         :zones="zones"
         :sellers="sellers"
         :type_currencies="type_currencies"
@@ -88,15 +88,6 @@
 </template>
 
 <script>
-const timeout = (ms) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-async function checkForm(timeoutMilliseconds) {
-  eventBus.$emit("validarFormulario");
-  await timeout(timeoutMilliseconds);
-  return document.querySelectorAll("#wizard__order .is-invalid").length < 1;
-}
-
 import ConveyorOrder from "./components/ConveyorOrder.vue";
 import HeaderPurchaseOrder from "./components/HeaderPurchaseOrder.vue";
 import OrderDetails from "./components/OrderDetails.vue";
@@ -149,9 +140,11 @@ export default {
         invoice_number: "",
         contact_number: "",
         provider_id: "",
+        purchase_order_state_histories: [],
+        order_details: [],
       },
       customers: [],
-      orderTypes: [],
+      order_types: [],
       zones: [],
       sellers: [],
       type_currencies: [],
@@ -169,9 +162,9 @@ export default {
   },
   methods: {
     async getData() {
-      this.purchase_order = (await axios.get("/api/get-purchase-order/1")).data;
+      // this.purchase_order = (await axios.get("/api/get-purchase-order/1")).data;
       this.customers = (await axios.get("/api/all-customer-list")).data;
-      this.orderTypes = (await axios.get("/api/all-order-type-list")).data;
+      this.order_types = (await axios.get("/api/all-order-type-list")).data;
       this.zones = (await axios.get("/api/all-zone-list")).data;
       this.sellers = (await axios.get("/api/all-seller-list")).data;
       this.type_currencies = (await axios.get("/api/all-coin-type-list")).data;
@@ -182,14 +175,40 @@ export default {
       ).data;
     },
     async validarTab() {
-      const validated = await checkForm(150);
-      return validated || true;
+      return await this.$checkForm("#wizard__order");
     },
     cambioPagina(prevIndex, nextIndex) {
       this.currentTab = nextIndex;
     },
     createPurchaseOrder() {
-      alert("create");
+      this.$vs.loading({
+        color: "#3f4f6e",
+        text: "Registrando order de compra...",
+      });
+      axios
+        .post("/api/save-purchase-order", this.purchase_order)
+        .then((response) => {
+          this.$toast.success({
+            title: "¡Muy bien!",
+            message: "Se ha creado la order de compra",
+            showDuration: 1000,
+            hideDuration: 7000,
+            position: "top right",
+          });
+          window.location = "/ordenes-compra";
+        })
+        .catch((err) => {
+          console.log("mostrando el error", err);
+          this.$toast.error({
+            title: "Algo salio mal",
+            message: "Comunícate con el administrador",
+            showDuration: 1000,
+            hideDuration: 8000,
+          });
+        })
+        .finally(() => {
+          this.$vs.loading.close();
+        });
     },
   },
 };
