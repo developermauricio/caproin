@@ -368,7 +368,11 @@
               :modelo.sync="date_payment_client"
               :msgServer.sync="errors.date_payment_client"
               type="date"
-              :datepicker="configDatePicker"
+              :datepicker="{
+                                                   'clear-button': false,
+                                                  'bootstrap-styling':true,
+
+                                                }"
             ></input-form>
           </div>
           <div class="col-12 col-md-4 col-lg-4">
