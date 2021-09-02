@@ -106,13 +106,13 @@
         </div>
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
-            <label class="font-weight-bold">Fecha de pago por parte del cliente:</label>
+            <label class="font-weight-bold">Fecha Recibo Comisión:</label>
             <p>{{ moment(commission_receipt_date).locale('es').format("MM-DD-YYYY") }}</p>
           </div>
         </div>
         <div class="col-12 col-md-4 col-lg-4">
           <div class="form-group">
-            <label class="font-weight-bold">Fecha Recibo Comisión:</label>
+            <label class="font-weight-bold">Nueva fecha concertada de pago:</label>
             <p>{{ moment(new_agreed_payment_date).locale('es').format("MM-DD-YYYY") }}</p>
           </div>
         </div>
