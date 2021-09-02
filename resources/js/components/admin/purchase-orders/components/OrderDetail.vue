@@ -70,13 +70,26 @@
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
-        name="house_listing_number"
+        name="internal_quote_number"
+        label="Número cotización interna"
+        pattern="all"
+        errorMsg="Ingrese un número cotización interna válido"
+        requiredMsg="El número cotización interna es obligatorio"
+        :modelo.sync="order_detail.internal_quote_number"
+        :msgServer.sync="errors.internal_quote_number"
+        :required="true"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        name="house_quote_number"
         label="Número cotización de casa"
         pattern="all"
         errorMsg="Ingrese un número cotización de casa válido"
         requiredMsg="El número cotización de casa es obligatorio"
-        :modelo.sync="order_detail.house_listing_number"
-        :msgServer.sync="errors.house_listing_number"
+        :modelo.sync="order_detail.house_quote_number"
+        :msgServer.sync="errors.house_quote_number"
         :required="true"
       ></input-form>
     </div>

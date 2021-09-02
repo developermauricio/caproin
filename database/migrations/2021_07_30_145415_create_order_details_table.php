@@ -37,8 +37,8 @@ class CreateOrderDetailsTable extends Migration
 
             $table->string('value');
 
-            $table->string('internal_quote_number')->nullable();
-            $table->string('house_listing_number')->nullable();
+            $table->string('internal_quote_number');
+            $table->string('house_quote_number');
 
             $table->timestamps();
         });

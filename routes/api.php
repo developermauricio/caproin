@@ -96,6 +96,7 @@ Route::group(['namespace' => 'Administrator'], function () {
     API PARA LAS ORDENES DE COMPRA
     =============================================*/
     Route::post('/save-purchase-order', 'PurchaseOrderController@savePurchaseOrder');
+    Route::put('/update-purchase-order/{id}', 'PurchaseOrderController@updatePurchaseOrder');
     Route::get('/all-purchases-ordes', 'PurchaseOrderController@getApiPurchaseOrdes')->name('api.all.purchase-orders');
     Route::get('/all-customer-list', 'PurchaseOrderController@getAllCustomers')->name('api.all.purchase-orders.customers');
     Route::get('/all-invoices-list', 'PurchaseOrderController@getAllInvoices');

@@ -44,7 +44,7 @@
       </p>
       <p class="col col-md-6">
         <strong>Numero cotización Casa:</strong>
-        {{ order_detail.house_listing_number }}
+        {{ order_detail.house_quote_number }}
       </p>
     </div>
   </div>

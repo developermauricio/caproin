@@ -32,6 +32,11 @@ class PurchaseOrderController extends Controller
         return view('admin.purchase-order.create-purchase-order');
     }
 
+    public function update($id)
+    {
+        return view('admin.purchase-order.update-purchase-order', compact('id'));
+    }
+
     public function getApiPurchaseOrdes()
     {
         $purchase_ordes = PurchaseOrder::with([
@@ -129,7 +134,44 @@ class PurchaseOrderController extends Controller
         try {
             DB::beginTransaction();
             $purchaseOrder = new PurchaseOrder();
+            $this->storePurchaseOrder($purchaseOrder, $request);
+            $this->updateStateHistory($purchaseOrder, $request);
+            $this->updateOrderDetails($purchaseOrder, $request);
+            DB::commit();
+            return response()->json([], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'msg' => $th->getMessage(),
+                'error' => $th->getTrace()
+            ], 500);
+        }
+    }
 
+    public function updatePurchaseOrder($id, Request $request)
+    {
+
+        try {
+            DB::beginTransaction();
+            $purchaseOrder = PurchaseOrder::findOrFail($id);
+            $this->storePurchaseOrder($purchaseOrder, $request);
+            $this->updateStateHistory($purchaseOrder, $request);
+            $this->updateOrderDetails($purchaseOrder, $request);
+            DB::commit();
+            return response()->json([], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'msg' => $th->getMessage(),
+                'error' => $th->getTrace()
+            ], 500);
+        }
+    }
+
+
+    private function storePurchaseOrder(&$purchaseOrder, $request)
+    {
+        try {
             $purchaseOrder->customer_order_number = $request->input('customer_order_number');
             $purchaseOrder->internal_order_number = $request->input('internal_order_number');
             $purchaseOrder->final_user = $request->input('final_user');
@@ -171,21 +213,45 @@ class PurchaseOrderController extends Controller
             $purchaseOrder->contact_number = $request->input('contact_number');
 
             $purchaseOrder->save();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 
-
+    private function updateStateHistory($purchaseOrder, $request)
+    {
+        $idsHistory = collect();
+        try {
             $history = collect($request->input('purchase_order_state_histories'));
-            $history->each(function ($history) use ($purchaseOrder) {
+            $history->each(function ($history) use ($purchaseOrder, &$idsHistory) {
                 $purchase_order = new PurchaseOrderStateHistory();
+                if (isset($history['id']) && is_numeric($history['id'])) {
+                    $purchase_order = PurchaseOrderStateHistory::findOrFail($history['id']);
+                }
                 $purchase_order->purchase_order_id = $purchaseOrder->id;
                 $purchase_order->state_order_id = $history['state_order']['id'];
                 $purchase_order->description = $history['description'];
                 $purchase_order->estimated_date = \Carbon\Carbon::parse($history['estimated_date']);
                 $purchase_order->save();
+                $idsHistory->add($purchase_order->id);
             });
+            PurchaseOrderStateHistory::where('purchase_order_id', $purchaseOrder->id)->whereNotIn('id', $idsHistory->toArray())->delete();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 
+    private function updateOrderDetails($purchaseOrder, $request)
+    {
+        $idsDetails = collect();
+        try {
             $details = collect($request->input('order_details'));
-            $details->each(function ($detail) use ($purchaseOrder) {
+            $details->each(function ($detail) use ($purchaseOrder, &$idsDetails) {
                 $newDetail = new OrderDetail();
+
+                if (isset($detail['id']) && is_numeric($detail['id'])) {
+                    $newDetail = OrderDetail::find($detail['id']);
+                }
 
                 $newDetail->purchase_order_id = $purchaseOrder->id;
                 $newDetail->manufacturer = $detail['manufacturer'];
@@ -199,20 +265,18 @@ class PurchaseOrderController extends Controller
                 $newDetail->application = $detail['application'];
 
                 $newDetail->blueprint_number = $detail['blueprint_number'];
+                $newDetail->internal_quote_number = $detail['internal_quote_number'];
+                $newDetail->house_quote_number = $detail['house_quote_number'];
 
                 $newDetail->currency_id = $detail['currency']['id'];
                 $newDetail->value = $detail['value'];
 
                 $newDetail->save();
+                $idsDetails->add($newDetail->id);
             });
-            DB::commit();
-            return response()->json([], 200);
+            OrderDetail::where('purchase_order_id', $purchaseOrder->id)->whereNotIn('id', $idsDetails->toArray())->delete();
         } catch (\Throwable $th) {
-            DB::rollBack();
-            return response()->json([
-                'msg' => $th->getMessage(),
-                'error' => $th->getTrace()
-            ], 500);
+            throw $th;
         }
     }
 }
