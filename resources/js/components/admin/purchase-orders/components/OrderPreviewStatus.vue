@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="status__container">
     <div
-      v-for="history in purchase_order_state_histories"
+      class="status--item"
+      v-for="(history, index) in purchase_order_state_histories"
       :key="JSON.stringify(history)"
     >
-      <h2>{{ state_order(history) }}</h2>
+      <h2>{{index+1}}. {{ state_order(history) }}</h2>
       <p><strong>Estimado:</strong> {{ estimated_date(history) }}</p>
       <p>{{ history.description }}</p>
     </div>
@@ -45,3 +46,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.status--item:not(:last-child){
+  border-bottom: 1px solid;
+  margin-bottom: 1rem;
+}
+</style>

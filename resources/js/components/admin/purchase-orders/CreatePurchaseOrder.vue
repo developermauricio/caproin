@@ -1,13 +1,13 @@
 <template>
   <form-wizard
-    color="#F05E7D"
+    color="#D9393D"
+    error-color="#D9393D"
     subtitle
     title
     finishButtonText="Crear Entidad"
     nextButtonText="Siguiente"
     backButtonText="Atrás"
     shape="tab"
-    error-color="#ff4949"
     @on-change="cambioPagina"
     @on-complete="onComplete"
     ref="wizard"

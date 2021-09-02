@@ -17,7 +17,7 @@
         :modelo.sync="purchase_order.conveyor"
         :msgServer.sync="errors.conveyor"
         name="conveyor"
-        label="transportadora"
+        label="Transportadora"
         pattern="all"
         errorMsg="Transportadora no seleccionada"
         requiredMsg="La transportadora es obligatoria"
@@ -88,7 +88,7 @@
       <input-form
         id="txt_contact_number"
         name="contact_number"
-        label="Número de contacto"
+        label="Número de Contacto"
         pattern="all"
         errorMsg="Ingrese un número de contacto válido"
         requiredMsg="El número de contacto es obligatorio"

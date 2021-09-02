@@ -14,7 +14,7 @@
         <input-form
           type="date"
           name="estimated_date"
-          label="Fecha estimada"
+          label="Fecha Estimada"
           pattern="all"
           errorMsg="Ingrese una fecha válida"
           requiredMsg="La fecha estimada es obligatoria"
