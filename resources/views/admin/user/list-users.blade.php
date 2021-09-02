@@ -291,8 +291,9 @@
                             select.append('<option value="Administrador">Administrador</option>')
                             select.append('<option value="Asistente Sucursal">Asistente Sucursal</option>')
                             select.append('<option value="Gerencia">Gerencia</option>')
-                            select.append('<option value="Logistica">Logistica</option>')
                             select.append('<option value="Vendedor">Vendedor</option>')
+                            select.append('<option value="Logistica">Logistica</option>')
+                            select.append('<option value="Finanzas">Finanzas</option>')
 
                             // column.data().unique().sort().each(function (d, j) {
                             //     console.log('DATOS', j)

@@ -372,7 +372,7 @@
                             }) + 'Imprimir'
                             , "className": 'dropdown-item'
                             , "exportOptions": {
-                                columns: [0, 1, 2, 3]
+                                columns: [0, 1, 2, 3, 4]
                             }
                             , "customize": function (win) {
                                 $(win.document.body)
@@ -393,7 +393,7 @@
                                 }) + 'Csv'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3]
+                                    columns: [0, 1, 2, 3, 4]
                                 }
                             }
                             , {
@@ -403,7 +403,7 @@
                                 }) + 'Excel'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3]
+                                    columns: [0, 1, 2, 3, 4]
                                 }
                             }
                             , {
@@ -413,7 +413,7 @@
                                 }) + 'Pdf'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3]
+                                    columns: [0, 1, 2, 3, 4]
                                 }
                                 , "orientation": 'landscape',
                                 // "customize": function (doc) {
@@ -431,7 +431,7 @@
                                 }) + 'Copiar'
                                 , "className": 'dropdown-item'
                                 , "exportOptions": {
-                                    columns: [0, 1, 2, 3]
+                                    columns: [0, 1, 2, 3, 4]
                                 }
                             }
                         ],
@@ -457,7 +457,7 @@
                         //         $(node).removeClass('btn-secondary');
                         //     }
                         // }
-                        @if(auth()->user()->roles->first()->name === 'Administrador')
+                        @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal')
                         , {
 
                             text: feather.icons['plus'].toSvg({

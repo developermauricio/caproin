@@ -16,7 +16,19 @@ class TradeAgreementController extends Controller
     }
 
     public function getApiTradeAgreement(){
-        $tradeAgreement = TradeAgreement::with('customer', 'currency')->get();
+
+        $rol = auth()->user()->roles->first()->name; // Rol del Usuario
+        $user = auth()->user()->id; // id del Usuario
+
+        if ($rol === "Cliente") {
+            $tradeAgreement = TradeAgreement::whereHas('customer', function ($q) use ($user){
+                return $q->where('user_id', $user);
+            })->with('customer', 'currency')->get();
+        }else{
+            $tradeAgreement = TradeAgreement::with('customer', 'currency')->get();
+        }
+
+
         return datatables()->of($tradeAgreement)->toJson();
     }
 

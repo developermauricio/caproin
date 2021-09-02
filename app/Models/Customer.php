@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-    protected $fillable = ['business_name', 'user_id'];
+    protected $fillable = ['business_name', 'user_id', 'number_of_days_after_generating_invoice', 'number_of_days_after_invoice_overdue'];
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -24,5 +24,8 @@ class Customer extends Model
         return $this->belongsTo(CustomerType::class, 'customer_type_id');
     }
 
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
+    }
 
 }

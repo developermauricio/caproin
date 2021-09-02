@@ -29,6 +29,8 @@ class CreateInvoicesTable extends Migration
             $table->double('value_payment')->nullable();
             $table->date('date_payment_client')->nullable();
             $table->string('electronic_invoice_number')->nullable();
+            $table->integer('send_payment_cuertomer_state')->default(0)->nullable();
+            $table->integer('send_overdue_cuertomer_state')->default(0)->nullable();
             $table->date('expiration_date')->nullable();
             $table->date('date_received_client')->nullable();
             $table->date('invoice_date_house_manufacturer')->nullable();

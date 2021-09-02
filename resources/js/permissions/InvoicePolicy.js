@@ -8,7 +8,7 @@ const find = function (array, name) {
 export default class InvoicePolicy
 {
   static createInvoice($user, invoice){
-    return find(user.roles,'Administrador');
+    return find(user.roles,'Administrador') || find(user.roles,'Finanzas');
   }
 
 }

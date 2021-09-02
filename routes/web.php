@@ -1,6 +1,10 @@
 <?php
 
+use App\Mail\Customer\SendOverdueInvoice;
+use App\Models\HistorySendPaymetClient;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,15 +18,70 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/ruta-prueba', function (){
-//   $seller = \App\Models\PurchaseOrder::where('seller_id', 32)->whereHas('invoice')->get();
-//   $data = \App\Models\PurchaseOrder::where('seller_id', 32)->whereHas('invoice')->with('invoice')->get();
+    $success = false;
+//    $rowsCustomers = \App\Models\Customer::query()->with('invoices.state', 'user')->get();
+//
+//    foreach ($rowsCustomers as $row){
+//        if (count($row->invoices) > 0)
+//        foreach ($row->invoices as $invoice){
+//
+//            $dateNow = Carbon\Carbon::now(); //Fecha actual
+//            $datePayment = Carbon\Carbon::parse($invoice->expiration_date); // Fecha de vencimiento de la factura
+//            $diff = $datePayment->diffInDays($dateNow); // Diferencia entre la fecha de hoy y la fecha de pago por parte del cliente
+//
+//
+//            if ($row->number_of_days_after_invoice_overdue === $diff && $invoice->send_overdue_cuertomer_state === 0 && $dateNow->greaterThan($datePayment) && $invoice->state->id === 1){
+//                Mail::to($row->user->email)->send(new \App\Mail\Customer\SendPaymenInvoice('121312', 'Mauricio Gutierrez', '2021-06-21'));
+//                $invoice->send_payment_cuertomer_state = 1;
+//                $invoice->save();
+//
+//                \App\Models\HistorySendPaymetClient::create([
+//                   'invoice_id' =>  $invoice->id,
+//                   'type_send' =>  1, //Enviado automaticamente
+//                ]);
+//            }
+//        }
+//    }
 
-    $user = Auth::user()->id;
+    /*=============================================
+            ENVIAR CORREO ELECTRÓNICO LUEGO DE VENCERSE LA FACTURA
+        =============================================*/
+    $rowsCustomers = \App\Models\Customer::query()->with('invoices.state', 'user')->get();
 
-   $invoice = \App\Models\Invoice::whereHas('purchaseOrder.seller', function ($q) use ($user){
-       return $q->where('user_id', $user);
-   })->with('customers', 'typeInvoice', 'state', 'paymentType', 'archive' )->get();
-   return datatables()->of($invoice)->toJson();
+    foreach ($rowsCustomers as $row) {
+        if (count($row->invoices) > 0) {
+            foreach ($row->invoices as $invoice) {
+                $dateNow = Carbon::now(); //Fecha actual
+                $datePayment = Carbon::parse($invoice->expiration_date); // Fecha de vencimiento de la factura
+                $diff = $datePayment->diffInDays($dateNow); // Diferencia entre la fecha de hoy y la fecha de vencimiento de la factura
+
+                if ($row->number_of_days_after_invoice_overdue === $diff && $invoice->send_overdue_cuertomer_state === 0 && $dateNow->greaterThan($datePayment) && $invoice->state->id === 1) {
+
+                    Mail::to($row->user->email)->send(new SendOverdueInvoice(
+                        $invoice->invoice_number,
+                        $row->user->name,
+                        $invoice->expiration_date
+                    ));// Envio de correo electrónico
+                    dd($invoice->id);
+                    $invoice->send_overdue_cuertomer_state = 1;
+                    $invoice->save(); //Guardamos que hemos enviado el correo electrónico
+
+                    HistorySendPaymetClient::create([
+                        'invoice_id' =>  $invoice->id,
+                        'type_send' =>  1, //Enviado automaticamente
+                        'detail' =>  2, // El detalle es para saber si es recordatorio o vencimiento factura
+                    ]);
+                }
+            }
+        }
+    }
+
+    return $rowsCustomers;
+
+});
+
+Route::get('/email-prueba', function (){
+   return new \App\Mail\Customer\SendPaymenInvoice('121312', 'Mauricio Gutierrez', '2021-06-21');
 });
 
 Route::get('password/activate/{token}', 'Auth\ResetPasswordController@showActivateForm');
@@ -32,7 +91,7 @@ Route::get('/usuarios', function () {
     $user = \App\User::role(['Logistica', 'Asistente Sucursal', 'Gerencia', 'Vendedor', 'Finanzas'])->with('roles')->get();
     return $user;
 });
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function () {
 
@@ -42,7 +101,7 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
 
     Route::get('/', function () {
         return view('layouts.app');
-    });
+    })->name('home');
 
     /*=============================================
           RUTAS PARA LOS MODULOS CLIENTE
@@ -74,7 +133,7 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
     /*=============================================
           RUTAS PARA LOS MODULOS FACTURAS
         =============================================*/
-    Route::get('/facturas', 'InvoiceController@index')->name('admin.invoice');
+    Route::get('/facturas', 'InvoiceController@index')->name('admin.invoice')->middleware('ModeleInvoices');;
 
     /*=============================================
           ORDENES DE COMPRA

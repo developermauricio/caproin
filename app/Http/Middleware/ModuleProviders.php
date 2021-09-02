@@ -17,7 +17,7 @@ class ModuleProviders
     public function handle($request, Closure $next)
     {
         if (Auth::user()) {
-            if (Auth::user()->hasRole('Administrador')) {
+            if (Auth::user()->hasRole('Administrador') ||Auth::user()->hasRole('Asistente Sucursal') || Auth::user()->hasRole('Gerencia') ) {
                 return $next($request);
             } else {
                 return back()->with('error', 'No tiene permisos para acceder a esta parte del sistema, consulte con el administrador');

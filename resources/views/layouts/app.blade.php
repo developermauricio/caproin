@@ -92,7 +92,11 @@
                 <!--=====================================
                     MENU ADMINISTRADOR
                 ======================================-->
-                @include('menu.menu-admin')
+                <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Navegación</span><i
+                        data-feather="more-horizontal"></i>
+                </li>
+{{--                @dd(\App\User::navigation())--}}
+                @include('menu.navigationRoles.'.\App\User::navigation())
             </ul>
         </div>
     </div>

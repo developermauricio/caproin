@@ -3,23 +3,25 @@ MENU ADMIN
 ======================================-->
 @php
     $role1 = array("Vendedor", "Administrador");
-    $role2 = array("Administrador");
+    $role2 = array("Administrador", "Gerencia", "Asistente Sucursal");
+    $role3 = array("Administrador", "Asistente Sucursal", "Vendedor", "Gerencia");
+    $role4 = array("Asistente Sucursal", "Administrador");
 @endphp
 
 <li class=" navigation-header"><span data-i18n="Apps &amp; Pages">Navegación</span><i
         data-feather="more-horizontal"></i>
 </li>
 
-@role($role2)
+@role($role4)
 <li class="{{request()->is('customers') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.customer.customers') }}"><i data-feather="users"></i><span
             class="menu-title text-truncate" data-i18n="Email">Clientes</span></a>
 </li>
 @endrole
-@role($role1)
+@role($role3)
 <li class="{{request()->is('purchase_orders') ? 'active' : '' }} nav-item">
     <a class="d-flex align-items-center" href="{{ route('admin.purchase_order.purchase_orders') }}">
         <i data-feather='shopping-cart'></i>
-        <span class="menu-title text-truncate" data-i18n="Email">Ordenes de compra</span>
+        <span class="menu-title text-truncate" data-i18n="Email">Ordenes de Pedido</span>
     </a>
 @endrole
 @role($role2)
@@ -42,17 +44,17 @@ MENU ADMIN
             class="menu-title text-truncate" data-i18n="Email">Zonas</span></a>
 </li>
 @endrole
-@role($role1)
+@role($role3)
 <li class="{{request()->is('facturas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.invoice') }}"><i data-feather='clipboard'></i><span
             class="menu-title text-truncate" data-i18n="Email">Facturas</span></a>
 </li>
 @endrole
-@role($role1)
+@role($role3)
 <li class="{{request()->is('acuerdos-comerciales') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.trade.agreement') }}"><i data-feather='thumbs-up'></i><span
             class="menu-title text-truncate" data-i18n="Email">Acuerdos Comerciales</span></a>
 </li>
 @endrole
-@role($role1)
+@role($role3)
 <li class="{{request()->is('productos-servicios') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.products,services') }}"><i data-feather='box'></i><span
             class="menu-title text-truncate" data-i18n="Email">Productos y Servicios</span></a>
 </li>
