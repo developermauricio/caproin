@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="row"
+      class="row product--item"
       v-for="order_detail in order_details"
       :key="order_detail.id"
     >
@@ -44,7 +44,7 @@
       </p>
       <p class="col col-md-6">
         <strong>Numero cotización Casa:</strong>
-        {{ order_detail.house_listing_number }}
+        {{ order_detail.house_quote_number }}
       </p>
     </div>
   </div>
@@ -61,3 +61,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.product--item:not(:last-child){
+  border-bottom: 1px solid;
+  margin-bottom: 1rem;
+}
+</style>

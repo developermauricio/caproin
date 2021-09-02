@@ -1,15 +1,15 @@
 <template>
   <form-wizard
-    color="#F05E7D"
+    color="#D9393D"
+    error-color="#D9393D"
     subtitle
     title
     finishButtonText="Crear Entidad"
     nextButtonText="Siguiente"
     backButtonText="Atrás"
     shape="tab"
-    error-color="#ff4949"
     @on-change="cambioPagina"
-    @on-complete="createPurchaseOrder"
+    @on-complete="onComplete"
     ref="wizard"
     id="wizard__order"
   >
@@ -76,11 +76,11 @@
 
         <wizard-button
           v-else
-          @click.native="createPurchaseOrder"
+          @click.native="props.nextTab()"
           class="wizard-footer-right finish-button"
           :style="props.fillButtonStyle"
         >
-          {{ props.isLastStep ? "Crear orden de compra" : "Siguiente" }}
+          {{ props.isLastStep ? actionLastButton : "Siguiente" }}
         </wizard-button>
       </div>
     </template>
@@ -102,6 +102,12 @@ export default {
     OrderDetails,
     StatusPurchaseOrder,
     OrderPreview,
+  },
+  props: {
+    id: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
@@ -160,9 +166,20 @@ export default {
       console.log(err);
     });
   },
+  computed: {
+    actionLastButton() {
+      return this.id > 0
+        ? "Actualizar orden de compra"
+        : "Crear orden de compra";
+    },
+  },
   methods: {
     async getData() {
-      // this.purchase_order = (await axios.get("/api/get-purchase-order/1")).data;
+      if (this.id > 0) {
+        this.purchase_order = (
+          await axios.get("/api/get-purchase-order/" + this.id)
+        ).data;
+      }
       this.customers = (await axios.get("/api/all-customer-list")).data;
       this.order_types = (await axios.get("/api/all-order-type-list")).data;
       this.zones = (await axios.get("/api/all-zone-list")).data;
@@ -180,10 +197,40 @@ export default {
     cambioPagina(prevIndex, nextIndex) {
       this.currentTab = nextIndex;
     },
+    updatePurchaseOrder() {
+      this.$vs.loading({
+        color: "#3f4f6e",
+        text: "Actualizando orden de compra...",
+      });
+      axios
+        .put("/api/update-purchase-order/" + this.purchase_order.id, this.purchase_order)
+        .then(() => {
+          this.$toast.success({
+            title: "¡Muy bien!",
+            message: "Se ha actualizado la orden de compra",
+            showDuration: 1000,
+            hideDuration: 7000,
+            position: "top right",
+          });
+          window.location = "/ordenes-compra";
+        })
+        .catch((err) => {
+          console.error("mostrando el error", err, err.response.data.msg);
+          this.$toast.error({
+            title: "Algo salio mal",
+            message: "Comunícate con el administrador",
+            showDuration: 1000,
+            hideDuration: 8000,
+          });
+        })
+        .finally(() => {
+          this.$vs.loading.close();
+        });
+    },
     createPurchaseOrder() {
       this.$vs.loading({
         color: "#3f4f6e",
-        text: "Registrando order de compra...",
+        text: "Registrando orden de compra...",
       });
       axios
         .post("/api/save-purchase-order", this.purchase_order)
@@ -198,7 +245,7 @@ export default {
           window.location = "/ordenes-compra";
         })
         .catch((err) => {
-          console.log("mostrando el error", err);
+          console.error("mostrando el error", err, err.response.data.msg);
           this.$toast.error({
             title: "Algo salio mal",
             message: "Comunícate con el administrador",
@@ -209,6 +256,13 @@ export default {
         .finally(() => {
           this.$vs.loading.close();
         });
+    },
+    onComplete() {
+      if (this.id > 0) {
+        this.updatePurchaseOrder();
+      } else {
+        this.createPurchaseOrder();
+      }
     },
   },
 };

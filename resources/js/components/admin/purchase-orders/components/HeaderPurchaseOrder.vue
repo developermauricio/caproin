@@ -4,7 +4,7 @@
       <input-form
         name="internal_order_number"
         id="txt_internal_order_number"
-        label="Número de pedido interno"
+        label="Número de Pedido Interno"
         pattern="all"
         errorMsg="Ingrese un número de pedido interno válido"
         requiredMsg="El número pedido interno es obligatorio"
@@ -18,7 +18,7 @@
       <input-form
         id="txtCustomerOrderNumber"
         name="customer_order_number"
-        label="Número de pedido cliente"
+        label="Número de Pedido Cliente"
         pattern="all"
         errorMsg="Ingrese un número de pedido cliente válido"
         requiredMsg="El número pedido cliente es obligatorio"
@@ -82,7 +82,7 @@
       <input-form
         id="txtFinalUser"
         name="final_user"
-        label="Usuario final"
+        label="Usuario Final"
         pattern="all"
         errorMsg="Ingrese un usuario final válido"
         requiredMsg="El usuario final es obligatorio"
@@ -151,7 +151,7 @@
           selectLabel: 'Seleccionar',
           selectedLabel: 'Seleccionado',
           deselectLabel: 'Desmarcar',
-          placeholder: 'Seleccionar zona',
+          placeholder: 'Seleccionar vendedor',
           taggable: false,
           label: 'name',
           options: sellers,
@@ -274,7 +274,7 @@
         :modelo.sync="purchase_order.currency"
         :msgServer.sync="errors.currency"
         name="currency"
-        label="Tipo de moneda"
+        label="Tipo de Moneda"
         pattern="all"
         errorMsg="Tipo de moneda no seleccionado"
         requiredMsg="El tipo de moneda es obligatorio"
@@ -342,7 +342,7 @@
         :modelo.sync="purchase_order.payment"
         :msgServer.sync="errors.payment"
         name="payment"
-        label="Forma de pago"
+        label="Forma de Pago"
         pattern="all"
         errorMsg="Forma de pago no seleccionado"
         requiredMsg="La forma de pago es obligatoria"
@@ -354,7 +354,7 @@
       <input-form
         id="txt_contact_number"
         name="contact_number"
-        label="Número de contacto"
+        label="Número de Contacto"
         pattern="all"
         errorMsg="Ingrese un número de contacto válido"
         requiredMsg="El número de contacto es obligatorio"

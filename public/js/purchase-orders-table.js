@@ -80,10 +80,11 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
       },
       {
         render: function (data, type, JsonResultRow, meta) {
-          return `<div class="demo-inline-spacing text-center" data-id="${JsonResultRow.id}">
-          <button data-id="${JsonResultRow.id}" data-target="#modal-show-purchase-order" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-purchase btn-icon btn-primary">
-          <i data-feather="eye" data-id="${JsonResultRow.id}"></i>
-          </button>
+          return `
+          <div class="demo-inline-spacing text-center" data-id="${JsonResultRow.id}">
+            <button data-id="${JsonResultRow.id}" data-target="#modal-show-purchase-order" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-purchase btn-icon btn-primary">
+              <i data-feather="eye"></i>
+            </button>
           </div>`
         },
       }
@@ -172,9 +173,11 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
       }
     }
     ],
-  })
+  });
+
   let text = 'Todos los proveedores registrados'
   $('div.head-label').html(`<h6 class="mb-0">${text}</h6>`);
+
   table.on('order.dt search.dt', function () {
     table.column(0, {
       search: 'applied',
@@ -184,9 +187,16 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
     });
   }).draw();
 
+  const getAttribute = (element, nameAttribute) => {
+    const id = element.attr(nameAttribute);
+    if (id) {
+      return id;
+    }
+    return getAttribute(element.parent(), nameAttribute);
+  }
 
   $('.datatables-all-purchase-ordes').on('click', '.btn-show-purchase', function (e) {
-    const id = e.target.getAttribute('data-id');
+    const id = getAttribute($(this), 'data-id');
     $('#idPurchaseOrder').val(id).click();
   });
 }

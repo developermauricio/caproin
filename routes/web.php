@@ -140,6 +140,7 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
         =============================================*/
     Route::get('/ordenes-compra', 'PurchaseOrderController@index')->name('admin.purchase_order.purchase_orders');
     Route::get('/ordenes-compra/crear', 'PurchaseOrderController@create')->name('admin.purchase_order.create');
+    Route::get('/ordenes-compra/actualizar/{id}', 'PurchaseOrderController@update')->name('admin.purchase_order.update');
     Route::post('/import-data-invoice', 'InvoiceController@importDataInvoice')->name('import.data.invoices');
 
     /*=============================================

@@ -164,7 +164,7 @@ export default {
         currency_id: "",
         value: "",
         internal_quote_number: "",
-        house_listing_number: "",
+        house_quote_number: "",
         product: product,
         currency: "",
       });

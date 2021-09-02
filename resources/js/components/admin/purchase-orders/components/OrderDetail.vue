@@ -70,13 +70,26 @@
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
-        name="house_listing_number"
-        label="Número cotización de casa"
+        name="internal_quote_number"
+        label="Número Cotización Interna"
+        pattern="all"
+        errorMsg="Ingrese un número cotización interna válido"
+        requiredMsg="El número cotización interna es obligatorio"
+        :modelo.sync="order_detail.internal_quote_number"
+        :msgServer.sync="errors.internal_quote_number"
+        :required="true"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        name="house_quote_number"
+        label="Número Cotización de Casa"
         pattern="all"
         errorMsg="Ingrese un número cotización de casa válido"
         requiredMsg="El número cotización de casa es obligatorio"
-        :modelo.sync="order_detail.house_listing_number"
-        :msgServer.sync="errors.house_listing_number"
+        :modelo.sync="order_detail.house_quote_number"
+        :msgServer.sync="errors.house_quote_number"
         :required="true"
       ></input-form>
     </div>
@@ -98,7 +111,7 @@
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
         name="blueprint_number"
-        label="Número de plano"
+        label="Número de Plano"
         pattern="all"
         errorMsg="Ingrese un número de plano válido"
         requiredMsg="El número de plano es obligatorio"
@@ -124,7 +137,7 @@
         :modelo.sync="order_detail.currency"
         :msgServer.sync="errors.currency"
         name="currency"
-        label="Tipo de moneda"
+        label="Tipo de Moneda"
         pattern="all"
         errorMsg="Tipo de moneda no seleccionada"
         requiredMsg="El tipo de moneda es obligatoria"

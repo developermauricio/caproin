@@ -44,11 +44,11 @@ class PurchaseOrderSeeder extends Seeder
         $purchaseOrders = factory(PurchaseOrder::class, 10)->create();
 
         foreach ($purchaseOrders as $purchaseOrder) {
-            factory(OrderDetail::class)->create([
+            factory(OrderDetail::class, random_int(1, 4))->create([
                 'purchase_order_id' => $purchaseOrder->id
             ]);
 
-            factory(PurchaseOrderStateHistory::class, 3)->create([
+            factory(PurchaseOrderStateHistory::class, random_int(3, 6))->create([
                 'purchase_order_id' => $purchaseOrder->id
             ]);
         }

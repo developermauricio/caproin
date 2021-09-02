@@ -6,13 +6,13 @@
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
 @endpush
-@section('title', 'Crear orden de compra')
+@section('title', 'Actualizar orden de compra')
 @section('header_page')
 <div class="content-header row">
     <div class="content-header-left col-md-9 col-12 mb-2">
         <div class="row breadcrumbs-top">
             <div class="col-12">
-                <h2 class="content-header-title float-left mb-0">Crear orden de compra</h2>
+                <h2 class="content-header-title float-left mb-0">Actualizar orden de compra</h2>
                 <div class="breadcrumb-wrapper">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item active">
@@ -30,7 +30,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card p-2">
-                <create-purchase-order></create-purchase-order>
+                <create-purchase-order :id="{{$id}}" ></create-purchase-order>
             </div>
         </div>
     </div>

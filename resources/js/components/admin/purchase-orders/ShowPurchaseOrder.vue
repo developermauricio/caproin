@@ -107,7 +107,7 @@ export default {
       this.purchase_order.id = null;
     },
     edit() {
-      window.location = "/ordenes-compra/" + this.purchase_order.id;
+      window.location = "/ordenes-compra/actualizar/" + this.purchase_order.id;
     },
   },
 };
