@@ -145,28 +145,31 @@ export default {
           allowOutsideClick: false,
         }).then((result) => {
           if (result.value) {
-            this.$vs.loading({
+            resp.$vs.loading({
               color: '#3f4f6e',
               text: 'Actualizando Contraseña...'
             })
             axios.post('/api/register/update-password', data).then(res => {
-              this.$toast.success({
+              resp.$toast.success({
                 title: '¡Muy bien!',
                 message: 'Contraseña actualizada correctamente',
                 showDuration: 1000,
                 hideDuration: 7000,
                 position: 'top right',
               })
-              this.errorsPassword = [];
+              resp.errorsPassword = [];
+              resp.password = '';
+              resp.password_confirmation = '';
+
             }).catch(err => {
-              console.log('mostrando el error', err)
+              console.log('mostrando el error', err.response.data.errors.password)
               if (err.response.status === 422) {
-                this.errorsPassword = [];
-                this.password = ''
-                this.password_confirmation = ''
+                resp.errorsPassword = [];
+                resp.password = ''
+                resp.password_confirmation = ''
                 err.response.data.errors.password.map(function (value, key) {
-                  this.errorsPassword.push(value);
-                  return this.$toast.error({
+                  resp.errorsPassword.push(value);
+                  return resp.$toast.error({
                     title: 'Atención',
                     message: value,
                     showDuration: 1000,
@@ -177,7 +180,7 @@ export default {
               }
             });
             setTimeout(() => {
-              this.$vs.loading.close()
+              resp.$vs.loading.close()
             }, 2000)
           }
         })

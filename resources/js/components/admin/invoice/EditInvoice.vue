@@ -361,18 +361,14 @@
             <input-form
               label="Fecha de pago por parte del cliente"
               id="txtDatePaymentClient"
-              pattern="all"
+              pattern="dateymd"
               errorMsg="Ingrese una fecha de pago válida"
               requiredMsg="La fecha de pago es obligatorio"
               :required="true"
               :modelo.sync="date_payment_client"
               :msgServer.sync="errors.date_payment_client"
               type="date"
-              :datepicker="{
-                                                   'clear-button': false,
-                                                  'bootstrap-styling':true,
-
-                                                }"
+              :datepicker="configDatePicker"
             ></input-form>
           </div>
           <div class="col-12 col-md-4 col-lg-4">
@@ -563,7 +559,7 @@ import moment from 'moment';
 import {en, es} from 'vuejs-datepicker/dist/locale'
 import Swal from "sweetalert2";
 import vue2Dropzone from 'vue2-dropzone'
-
+require("moment/min/locales.min");
 export default {
   name: "EditInvoice",
   components: {
@@ -574,6 +570,15 @@ export default {
   },
   data() {
     return {
+      configDatePicker: {
+        "disabled-dates": {
+          from: new Date(
+            new Date().getFullYear() - 18,
+            new Date().getMonth() + 1,
+            0
+          )
+        }
+      },
       showEditInvoice: false,
       showDetailInvoice: true,
       moment: moment,
@@ -904,7 +909,7 @@ export default {
           this.date_issue = resp.data.data.date_issue
           this.expiration_date = resp.data.data.expiration_date
           this.date_received_client = resp.data.data.date_received_client
-          this.date_payment_client = resp.data.data.date_payment_client
+          this.date_payment_client =  resp.data.data.date_payment_client
           this.invoice_date_house_manufacturer = resp.data.data.invoice_date_house_manufacturer
           this.commission_receipt_date = resp.data.data.commission_receipt_date
           this.new_agreed_payment_date = resp.data.data.new_agreed_payment_date

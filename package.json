@@ -28,6 +28,7 @@
         "feather-icons": "^4.28.0",
         "material-icons": "^1.0.0",
         "moment": "^2.29.1",
+        "moment-timezone": "^0.5.33",
         "sweetalert2": "^11.1.0",
         "v-money": "^0.8.1",
         "vue-bootstrap4-table": "^1.1.11",

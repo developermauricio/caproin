@@ -29,6 +29,9 @@ Vue.use(Vuesax);
 Vue.use(money, { precision: 3 })
 
 Vue.use(VueGoodTablePlugin);
+
+// import moment from 'moment-timezone'
+// moment.tz.setDefault('America/Bogota')
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
