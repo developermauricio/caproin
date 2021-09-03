@@ -11,19 +11,17 @@ class SendOverdueInvoice extends Mailable
 {
     use Queueable, SerializesModels;
 
-    private $code;
-    private $name;
-    private $dateExpiration;
+    private $invoices;
+    private $user;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($code, $name, $dateExpiration)
+    public function __construct($invoices, $user)
     {
-        $this->code = $code;
-        $this->name = $name;
-        $this->dateExpiration = $dateExpiration;
+        $this->invoices = $invoices;
+        $this->user = $user;
     }
 
     /**
@@ -36,8 +34,7 @@ class SendOverdueInvoice extends Mailable
         return $this
             ->subject(config('app.name').'-'.'RECORDATORIO FACTURA VENCIDA')
             ->markdown('email.customer.send-overdue-generate-invoice')
-            ->with('code',$this->code)
-            ->with('name',$this->name)
-            ->with('dateExpiration',$this->dateExpiration);
+            ->with('invoices',$this->invoices)
+            ->with('user',$this->user);
     }
 }

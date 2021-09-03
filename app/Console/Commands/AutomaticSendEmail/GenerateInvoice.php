@@ -44,32 +44,53 @@ class GenerateInvoice extends Command
         /*=============================================
             ENVIAR CORREO ELECTRÓNICO AUTOMATICOS RECORDATORIO FECHA DE PAGO
         =============================================*/
-        $rowsCustomers = \App\Models\Customer::query()->with('invoices.state', 'user')->get();
+        $rowsCustomers = \App\Models\Customer::query()->with([
+            'invoices' => function ($q) {
+                return $q->where('state_id', '=', \App\Models\StateInvoice::ID_POR_PAGAR)
+                    ->where('send_payment_cuertomer_state', '=', 0);
+            },
+            'user'
+        ])->whereHas('invoices', function ($q) {
+            return $q->where('state_id', '=', \App\Models\StateInvoice::ID_POR_PAGAR)
+                ->where('send_payment_cuertomer_state', '=', 0);
+        })->get();
 
-        foreach ($rowsCustomers as $row) {
-            if (count($row->invoices) > 0) {
-                foreach ($row->invoices as $invoice) {
-                    $dateNow = Carbon::now()->toDateString(); //Fecha actual
-                    $datePayment = Carbon::parse($invoice->date_payment_client); // Fecha de pago por parte del cliente
-                    $diff = $datePayment->diffInDays($dateNow); // Diferencia entre la fecha de hoy y la fecha de pago por parte del cliente
-
-                    if ($row->number_of_days_after_generating_invoice === $diff && $invoice->send_payment_cuertomer_state === 0 && $invoice->state->id === 1) {
-                        Mail::to($row->user->email)->send(new SendPaymenInvoice(
-                            $invoice->invoice_number,
-                            $row->user->name,
-                            $invoice->date_payment_client
-                        ));// Envio de correo electrónico
-                        $invoice->send_payment_cuertomer_state = 1;
-                        $invoice->save(); //Guardamos que hemos enviado el correo electrónico
-
-                        HistorySendPaymetClient::create([
-                            'invoice_id' =>  $invoice->id,
-                            'type_send' =>  1, //Enviado automaticamente
-                            'detail' =>  1, // El detalle es envio para recordatorio de pago
-                        ]);
-                    }
+        $finalSendData = $rowsCustomers->map(function ($customer) {
+            $invoices = $customer->invoices->filter(function ($invoice) use ($customer) {
+                $dateNow = Carbon::now()->toDateString(); //Fecha actual
+                $datePayment = Carbon::parse($invoice->date_payment_client); // Fecha de pago por parte del cliente
+                $diff = $datePayment->diffInDays($dateNow, false); // Diferencia entre la fecha de hoy y la fecha de pago por parte del cliente
+                if ($diff < 0) {
+                    return false;
                 }
+                return $customer->number_of_days_after_generating_invoice >= $diff;
+            });
+            $sendData = new \stdClass();
+            $sendData->user = $customer->user;
+            $sendData->invoices = $invoices;
+            return $sendData;
+        });
+
+
+        $finalSendData->each(function ($customer){
+            if (count($customer->invoices) > 0) {
+
+                Mail::to($customer->user->email)->send(new SendPaymenInvoice(
+                    $customer->invoices,
+                    $customer->user,
+                )); // Envio de correo electrónico
+
+                $customer->invoices->each(function ($invoice) {
+                    $invoice->send_payment_cuertomer_state = 1;
+                    $invoice->save(); //Guardamos que hemos enviado el correo electrónico
+
+                    HistorySendPaymetClient::create([
+                        'invoice_id' =>  $invoice->id,
+                        'type_send' =>  1, //Enviado automaticamente
+                        'detail' =>  1, // El detalle es envio para recordatorio de pago
+                    ]);
+                });
             }
-        }
+        });
     }
 }

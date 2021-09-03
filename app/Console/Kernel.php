@@ -24,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('send:send_payment_generate_invoice')->everyMinute()->withoutOverlapping();
-         $schedule->command('send:send_overdue_generate_invoice')->everyMinute()->withoutOverlapping();
+        $schedule->command('send:send_overdue_generate_invoice')->everyMinute()->withoutOverlapping();
+        $schedule->command('send:send_payment_generate_invoice')->everyMinute()->withoutOverlapping();
     }
 
     /**
@@ -35,7 +35,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

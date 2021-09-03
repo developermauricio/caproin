@@ -10,19 +10,17 @@ use Illuminate\Queue\SerializesModels;
 class SendPaymenInvoice extends Mailable
 {
     use Queueable, SerializesModels;
-    private $code;
-    private $name;
-    private $datePayment;
+    private $invoices;
+    private $user;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($code, $name, $datePayment)
+    public function __construct($invoices, $user)
     {
-        $this->code = $code;
-        $this->name = $name;
-        $this->datePayment = $datePayment;
+        $this->invoices = $invoices;
+        $this->user = $user;
     }
 
     /**
@@ -35,8 +33,7 @@ class SendPaymenInvoice extends Mailable
         return $this
             ->subject(config('app.name').'-'.'RECORDATORIO FECHA DE PAGO FACTURA')
             ->markdown('email.customer.send-payment-generate-invoice')
-            ->with('code',$this->code)
-            ->with('name',$this->name)
-            ->with('datePayment',$this->datePayment);
+            ->with('invoices',$this->invoices)
+            ->with('user',$this->user);
     }
 }
