@@ -77,7 +77,7 @@ class GenerateInvoice extends Command
 
                 Mail::to($customer->user->email)->send(new SendPaymenInvoice(
                     $customer->invoices,
-                    $customer->user,
+                    $customer->user
                 )); // Envio de correo electrónico
 
                 $customer->invoices->each(function ($invoice) {
