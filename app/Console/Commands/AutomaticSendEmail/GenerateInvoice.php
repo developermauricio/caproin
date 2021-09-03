@@ -57,13 +57,10 @@ class GenerateInvoice extends Command
 
         $finalSendData = $rowsCustomers->map(function ($customer) {
             $invoices = $customer->invoices->filter(function ($invoice) use ($customer) {
-                $dateNow = Carbon::now()->toDateString(); //Fecha actual
+                $dateNow = Carbon::now(); //Fecha actual
                 $datePayment = Carbon::parse($invoice->date_payment_client); // Fecha de pago por parte del cliente
-                $diff = $datePayment->diffInDays($dateNow, false); // Diferencia entre la fecha de hoy y la fecha de pago por parte del cliente
-                if ($diff < 0) {
-                    return false;
-                }
-                return $customer->number_of_days_after_generating_invoice >= $diff;
+                $diff = $datePayment->diffInDays($dateNow); // Diferencia entre la fecha de hoy y la fecha de pago por parte del cliente
+                return $customer->number_of_days_after_generating_invoice >= $diff && !$dateNow->greaterThan($datePayment);
             });
             $sendData = new \stdClass();
             $sendData->user = $customer->user;
