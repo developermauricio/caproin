@@ -203,7 +203,10 @@ export default {
         text: "Actualizando orden de compra...",
       });
       axios
-        .put("/api/update-purchase-order/" + this.purchase_order.id, this.purchase_order)
+        .put(
+          "/api/update-purchase-order/" + this.purchase_order.id,
+          this.purchase_order
+        )
         .then(() => {
           this.$toast.success({
             title: "¡Muy bien!",

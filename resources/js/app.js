@@ -18,7 +18,7 @@ import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
-import { checkForm } from './bootstrap';
+import { checkForm, formatDate } from './bootstrap';
 import Gate from './permissions/Gate';
 
 Vue.prototype.$gate = new Gate(window.user);
@@ -105,6 +105,7 @@ Vue.component('show-purchase-order', require('./components/admin/purchase-orders
 
 
 Vue.prototype.$checkForm = checkForm;
+Vue.prototype.$formatDate = formatDate;
 
 window.eventBus = new Vue();
 const app = new Vue({

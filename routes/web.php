@@ -1,7 +1,9 @@
 <?php
 
 use App\Mail\Customer\SendOverdueInvoice;
+use App\Models\Comment;
 use App\Models\HistorySendPaymetClient;
+use App\Models\Invoice;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -17,31 +19,32 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/ruta-prueba', function (){
+
+Route::get('/ruta-prueba', function () {
     $success = false;
-//    $rowsCustomers = \App\Models\Customer::query()->with('invoices.state', 'user')->get();
-//
-//    foreach ($rowsCustomers as $row){
-//        if (count($row->invoices) > 0)
-//        foreach ($row->invoices as $invoice){
-//
-//            $dateNow = Carbon\Carbon::now(); //Fecha actual
-//            $datePayment = Carbon\Carbon::parse($invoice->expiration_date); // Fecha de vencimiento de la factura
-//            $diff = $datePayment->diffInDays($dateNow); // Diferencia entre la fecha de hoy y la fecha de pago por parte del cliente
-//
-//
-//            if ($row->number_of_days_after_invoice_overdue === $diff && $invoice->send_overdue_cuertomer_state === 0 && $dateNow->greaterThan($datePayment) && $invoice->state->id === 1){
-//                Mail::to($row->user->email)->send(new \App\Mail\Customer\SendPaymenInvoice('121312', 'Mauricio Gutierrez', '2021-06-21'));
-//                $invoice->send_payment_cuertomer_state = 1;
-//                $invoice->save();
-//
-//                \App\Models\HistorySendPaymetClient::create([
-//                   'invoice_id' =>  $invoice->id,
-//                   'type_send' =>  1, //Enviado automaticamente
-//                ]);
-//            }
-//        }
-//    }
+    //    $rowsCustomers = \App\Models\Customer::query()->with('invoices.state', 'user')->get();
+    //
+    //    foreach ($rowsCustomers as $row){
+    //        if (count($row->invoices) > 0)
+    //        foreach ($row->invoices as $invoice){
+    //
+    //            $dateNow = Carbon\Carbon::now(); //Fecha actual
+    //            $datePayment = Carbon\Carbon::parse($invoice->expiration_date); // Fecha de vencimiento de la factura
+    //            $diff = $datePayment->diffInDays($dateNow); // Diferencia entre la fecha de hoy y la fecha de pago por parte del cliente
+    //
+    //
+    //            if ($row->number_of_days_after_invoice_overdue === $diff && $invoice->send_overdue_cuertomer_state === 0 && $dateNow->greaterThan($datePayment) && $invoice->state->id === 1){
+    //                Mail::to($row->user->email)->send(new \App\Mail\Customer\SendPaymenInvoice('121312', 'Mauricio Gutierrez', '2021-06-21'));
+    //                $invoice->send_payment_cuertomer_state = 1;
+    //                $invoice->save();
+    //
+    //                \App\Models\HistorySendPaymetClient::create([
+    //                   'invoice_id' =>  $invoice->id,
+    //                   'type_send' =>  1, //Enviado automaticamente
+    //                ]);
+    //            }
+    //        }
+    //    }
 
     /*=============================================
             ENVIAR CORREO ELECTRÓNICO LUEGO DE VENCERSE LA FACTURA
@@ -61,7 +64,7 @@ Route::get('/ruta-prueba', function (){
                         $invoice->invoice_number,
                         $row->user->name,
                         $invoice->expiration_date
-                    ));// Envio de correo electrónico
+                    )); // Envio de correo electrónico
                     dd($invoice->id);
                     $invoice->send_overdue_cuertomer_state = 1;
                     $invoice->save(); //Guardamos que hemos enviado el correo electrónico
@@ -77,11 +80,30 @@ Route::get('/ruta-prueba', function (){
     }
 
     return $rowsCustomers;
-
 });
 
-Route::get('/email-prueba', function (){
-   return new \App\Mail\Customer\SendPaymenInvoice('121312', 'Mauricio Gutierrez', '2021-06-21');
+Route::get('testing', function () {
+    $response = new \stdClass();
+    // $history = \App\Models\PurchaseOrderStateHistory::find(1);
+    // $history->comments()->save(new Comment([
+    //     'title' => "Titulo del comentario 2",
+    //     'body' => "La descripción del comentario 2",
+    // ]));
+
+    // $history = \App\Models\PurchaseOrderStateHistory::with('comments')->where('purchase_order_id', 1)->get();
+    // $comments = \App\Models\Comment::whereBy(\App\Models\PurchaseOrderStateHistory::class, 1)->get();
+
+    $invoice = Invoice::first();
+
+
+    $response->data = Carbon::now();
+    $response->invoice = $invoice;
+    $response->date = Carbon::parse($invoice->date_payment_client);
+    return response()->json($response);
+});
+
+Route::get('/email-prueba', function () {
+    return new \App\Mail\Customer\SendPaymenInvoice('121312', 'Mauricio Gutierrez', '2021-06-21');
 });
 
 Route::get('password/activate/{token}', 'Auth\ResetPasswordController@showActivateForm');
@@ -152,5 +174,4 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
      RUTAS PARA LOS MODULOS DE ACUERDOS COMERCIALES
     =============================================*/
     Route::get('/acuerdos-comerciales', 'TradeAgreementController@index')->name('admin.trade.agreement');
-
 });

@@ -14,7 +14,7 @@
       :class="hasError ? 'is-invalid' : ''"
       :full-month-name="true"
       format="yyyy-MM-dd"
-      :value="modelo"
+      :value="dateValue"
       :typeable="true"
       v-bind="datepicker"
       v-on="inputListeners"
@@ -166,6 +166,12 @@ export default {
     Multiselect,
   },
   computed: {
+    dateValue(){
+      if (this.type === 'date' && this.modelo) {
+        return this.$formatDate(this.modelo)
+      }
+      return this.modelo
+    },
     inputListeners: function () {
       var vm = this;
       return Object.assign({}, this.$listeners);
@@ -187,7 +193,6 @@ export default {
     if (this.type) {
       this.tipoInput = this.type;
     }
-
     eventBus.$on("validarFormulario", () => {
       this.changeFocus();
     });
@@ -284,7 +289,7 @@ export default {
       if (!date) {
         return "";
       }
-      return moment(date).format("YYYY-MM-DD HH:mm");
+      return moment.utc(date);
     },
   },
 };

@@ -52,3 +52,8 @@ export const checkForm = async (selectorParent) => {
   }
   return isValid;
 };
+
+
+export const formatDate = (date) => {
+  return moment(date).format();
+}
