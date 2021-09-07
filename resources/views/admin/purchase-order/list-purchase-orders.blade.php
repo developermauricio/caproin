@@ -66,6 +66,12 @@
         </div>
     </div>
 
+    <div class="modal fade text-left modal-primary" id="modal-trace-purchase-order" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <modal-tracer-purchase-order ></modal-tracer-purchase-order>
+        </div>
+    </div>
+
 </section>
 @endsection
 @push('js')

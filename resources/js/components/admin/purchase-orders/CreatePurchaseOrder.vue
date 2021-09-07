@@ -50,8 +50,16 @@
       />
     </tab-content>
 
+    <!-- <tab-content title="Seguimiento" :beforeChange="validarTab">
+      <tracing-purchase-order
+        v-if="currentTab == 4"
+        :state_histories.sync="purchase_order.purchase_order_state_histories"
+        :editable="true"
+      />
+    </tab-content> -->
+
     <tab-content title="Detalle" :beforeChange="validarTab">
-      <order-preview v-if="currentTab == 4" :purchase_order="purchase_order" />
+      <order-preview v-if="currentTab >= 4" :purchase_order="purchase_order" />
     </tab-content>
 
     <template slot="footer" slot-scope="props">
@@ -93,6 +101,7 @@ import HeaderPurchaseOrder from "./components/HeaderPurchaseOrder.vue";
 import OrderDetails from "./components/OrderDetails.vue";
 import OrderPreview from "./components/OrderPreview.vue";
 import StatusPurchaseOrder from "./components/StatusPurchaseOrder.vue";
+import TracingPurchaseOrder from './components/TracingPurchaseOrder.vue';
 
 export default {
   name: "CreatePurchaseOrder",
@@ -102,6 +111,7 @@ export default {
     OrderDetails,
     StatusPurchaseOrder,
     OrderPreview,
+    TracingPurchaseOrder,
   },
   props: {
     id: {

@@ -8,7 +8,7 @@
       <h2>{{index+1}}. {{ state_order(history) }}</h2>
       <p><strong>Estimado:</strong> {{ estimated_date(history) }}</p>
       <p>{{ history.description }}</p>
-    </div>
+    </div>purchase_order_state_histories
   </div>
 </template>
 

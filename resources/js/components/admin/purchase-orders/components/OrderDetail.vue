@@ -70,6 +70,44 @@
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
+        type="multiselect"
+        :multiselect="{
+          selectLabel: 'Seleccionar',
+          selectedLabel: 'Seleccionado',
+          deselectLabel: 'Desmarcar',
+          placeholder: 'Tipo de moneda',
+          taggable: false,
+          label: 'name',
+          options: type_currencies,
+          'custom-label': (currency) => currency.code,
+        }"
+        :modelo.sync="order_detail.currency"
+        :msgServer.sync="errors.currency"
+        name="currency"
+        label="Tipo de Moneda"
+        pattern="all"
+        errorMsg="Tipo de moneda no seleccionada"
+        requiredMsg="El tipo de moneda es obligatoria"
+        :required="true"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        type="money"
+        label="Valor"
+        pattern="all"
+        errorMsg="Ingrese un valor válido"
+        requiredMsg="El valor es obligatorio"
+        :required="true"
+        :modelo.sync="order_detail.value"
+        :msgServer.sync="errors.value"
+        :money="moneyConfig"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
         name="internal_quote_number"
         label="Número Cotización Interna"
         pattern="all"
@@ -118,44 +156,6 @@
         :modelo.sync="order_detail.blueprint_number"
         :msgServer.sync="errors.blueprint_number"
         :required="true"
-      ></input-form>
-    </div>
-
-    <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        type="multiselect"
-        :multiselect="{
-          selectLabel: 'Seleccionar',
-          selectedLabel: 'Seleccionado',
-          deselectLabel: 'Desmarcar',
-          placeholder: 'Tipo de moneda',
-          taggable: false,
-          label: 'name',
-          options: type_currencies,
-          'custom-label': (currency) => currency.code,
-        }"
-        :modelo.sync="order_detail.currency"
-        :msgServer.sync="errors.currency"
-        name="currency"
-        label="Tipo de Moneda"
-        pattern="all"
-        errorMsg="Tipo de moneda no seleccionada"
-        requiredMsg="El tipo de moneda es obligatoria"
-        :required="true"
-      ></input-form>
-    </div>
-
-    <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        type="money"
-        label="Valor"
-        pattern="all"
-        errorMsg="Ingrese un valor válido"
-        requiredMsg="El valor es obligatorio"
-        :required="true"
-        :modelo.sync="order_detail.value"
-        :msgServer.sync="errors.value"
-        :money="moneyConfig"
       ></input-form>
     </div>
   </div>

@@ -84,21 +84,16 @@ Route::get('/ruta-prueba', function () {
 
 Route::get('testing', function () {
     $response = new \stdClass();
-    // $history = \App\Models\PurchaseOrderStateHistory::find(1);
+    $history = \App\Models\PurchaseOrderStateHistory::find(2);
     // $history->comments()->save(new Comment([
-    //     'title' => "Titulo del comentario 2",
+    //     'title' => "Titulo del comentario 222",
     //     'body' => "La descripción del comentario 2",
     // ]));
 
     // $history = \App\Models\PurchaseOrderStateHistory::with('comments')->where('purchase_order_id', 1)->get();
-    // $comments = \App\Models\Comment::whereBy(\App\Models\PurchaseOrderStateHistory::class, 1)->get();
+    $comments = \App\Models\Comment::with('commentable.state_order')->whereByIn(\App\Models\PurchaseOrderStateHistory::class, [1, 2, 3])->get();
 
-    $invoice = Invoice::first();
-
-
-    $response->data = Carbon::now();
-    $response->invoice = $invoice;
-    $response->date = Carbon::parse($invoice->date_payment_client);
+    $response->comments = $comments;
     return response()->json($response);
 });
 

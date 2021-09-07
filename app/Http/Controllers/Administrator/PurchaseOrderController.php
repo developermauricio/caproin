@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
+use App\Models\Comment;
 use App\Models\Conveyor;
 use App\Models\Currency;
 use App\Models\Customer;
@@ -106,6 +107,26 @@ class PurchaseOrderController extends Controller
     {
         $products = Product::where('type_products_id', $request->input('type'))->get();
         return $products;
+    }
+
+    public function getAllSeguimiento(Request $request)
+    {
+        $seguimientos = Comment::with('commentable.state_order')
+        ->whereByIn(PurchaseOrderStateHistory::class, collect($request->input('ids')))
+        ->orderBy('created_at', 'DESC')
+        ->get();
+        return $seguimientos;
+    }
+
+    public function saveNewSeguimiento(Request $request) {
+        $commentable = $request->get('commentable');
+        $comment = new Comment();
+        $comment->title = $request->get('title');
+        $comment->body = $request->get('body');
+        $stateHistory = PurchaseOrderStateHistory::find($commentable['id']);
+        $stateHistory->comments()->save($comment);
+
+        return response()->json($stateHistory, 201);
     }
 
     public function getPurchaseOrderById($id)

@@ -27,6 +27,13 @@ class Comment extends Model
 
     public function scopeWhereBy($query, $commentable_type, $commentable_id)
     {
-        return $this->where('commentable_type', $commentable_type)->where('commentable_id', $commentable_id);
+        return $query->where('commentable_type', $commentable_type)->where('commentable_id', $commentable_id);
     }
+
+    public function scopeWhereByIn($query, $commentable_type, $commentable_ids)
+    {
+        return $query->where('commentable_type', $commentable_type)->whereIn('commentable_id', $commentable_ids);
+    }
+
+
 }

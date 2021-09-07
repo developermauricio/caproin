@@ -81,9 +81,13 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
       {
         render: function (data, type, JsonResultRow, meta) {
           return `
-          <div class="demo-inline-spacing text-center" data-id="${JsonResultRow.id}">
-            <button data-id="${JsonResultRow.id}" data-target="#modal-show-purchase-order" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-purchase btn-icon btn-primary">
+          <div class="d-flex" data-id="${JsonResultRow.id}">
+            <button data-target="#modal-show-purchase-order" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-purchase btn-icon btn-primary">
               <i data-feather="eye"></i>
+            </button>
+
+            <button data-target="#modal-trace-purchase-order" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="ml-1 btn btn-trace-purchase btn-icon btn-primary">
+              <i data-feather="activity"></i>
             </button>
           </div>`
         },
@@ -198,6 +202,11 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
   $('.datatables-all-purchase-ordes').on('click', '.btn-show-purchase', function (e) {
     const id = getAttribute($(this), 'data-id');
     $('#idPurchaseOrder').val(id).click();
+  });
+
+  $('.datatables-all-purchase-ordes').on('click', '.btn-trace-purchase', function (e) {
+    const id = getAttribute($(this), 'data-id');
+    $('#idPurchaseOrderTrace').val(id).click();
   });
 }
 

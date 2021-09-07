@@ -110,6 +110,8 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('/all-products-by-type', 'PurchaseOrderController@getAllProductByType');
     Route::get('/purchase-order-state-history', 'PurchaseOrderStateHistoryController@index');
     Route::get('/get-purchase-order/{id}', "PurchaseOrderController@getPurchaseOrderById");
+    Route::post('/all-purchase-order-seguimiento', "PurchaseOrderController@getAllSeguimiento");
+    Route::post('/save-purchase-order-seguimiento', "PurchaseOrderController@saveNewSeguimiento");
     // Route::get('/get-state-invoice', 'InvoiceController@getApiGetStateInvoices')->name('api.all.state.invoices');
     // Route::get('/get-type-invoice', 'InvoiceController@getApiGetTypeInvoices')->name('api.all.type.invoices');
     // Route::post('register/store-invoice', 'InvoiceController@storeApiInvoice')->name('api.store.invoice');

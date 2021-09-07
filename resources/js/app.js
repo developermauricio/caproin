@@ -102,6 +102,7 @@ COMPONENTES PARA MODULOS ORDENES DE COMPRA
 =============================================*/
 Vue.component('create-purchase-order', require('./components/admin/purchase-orders/CreatePurchaseOrder.vue').default);
 Vue.component('show-purchase-order', require('./components/admin/purchase-orders/ShowPurchaseOrder.vue').default);
+Vue.component('modal-tracer-purchase-order', require('./components/admin/purchase-orders/ModalTracerPurchaseOrder.vue').default);
 
 
 Vue.prototype.$checkForm = checkForm;
