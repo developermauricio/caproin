@@ -1,5 +1,5 @@
 <template>
-  <div class="col-lg-8 col-12 m-auto">
+  <div class="col-12 m-auto">
     <div class="card card-user-timeline">
       <div class="card-header">
         <div class="d-flex align-items-center justify-content-between w-100">

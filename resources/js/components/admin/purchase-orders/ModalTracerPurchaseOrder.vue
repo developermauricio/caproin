@@ -10,7 +10,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalTracerPurchaseOrder">
-          Detalle de la orden de compra
+          Seguimiento
         </h5>
         <button
           @click="reset"
