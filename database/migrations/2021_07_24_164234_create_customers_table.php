@@ -20,6 +20,8 @@ class CreateCustomersTable extends Migration
             $table->integer('number_of_days_after_invoice_overdue')->nullable(); //Numero de dias despues de vencidad la factura;
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
+            $table->string('principal')->default(0)->nullable();
+            $table->integer('sub_sede_of')->nullable();
             $table->timestamps();
         });
     }

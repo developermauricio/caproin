@@ -39,7 +39,9 @@ class InvoiceController extends Controller
         }
         elseif ($rol === "Cliente") {
             $invoice = Invoice::whereHas('customers', function ($q) use ($user){
-                return $q->where('user_id', $user);
+                return $q->where('user_id', $user)->orWhereHas('sede', function ($q) use ($user) {
+                    return $q->where('user_id', $user);
+                });
             })->with('customers', 'typeInvoice', 'state', 'paymentType', 'archive')->get();
         } else {
             $invoice = Invoice::with('customers', 'typeInvoice', 'state', 'paymentType', 'archive')->get();

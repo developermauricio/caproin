@@ -22,7 +22,9 @@ class TradeAgreementController extends Controller
 
         if ($rol === "Cliente") {
             $tradeAgreement = TradeAgreement::whereHas('customer', function ($q) use ($user){
-                return $q->where('user_id', $user);
+                return $q->where('user_id', $user)->orWhereHas('sede', function ($q) use ($user) {
+                    return $q->where('user_id', $user);
+                });
             })->with('customer', 'currency')->get();
         }else{
             $tradeAgreement = TradeAgreement::with('customer', 'currency')->get();

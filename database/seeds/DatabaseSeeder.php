@@ -194,6 +194,21 @@ class DatabaseSeeder extends Seeder
             });
 
         /*=============================================
+            CREAMOS 1 SEDE
+        =============================================*/
+        factory(\App\User::class, 1)->create()
+            ->each(function (\App\User $u){
+                $u->roles()->attach([7]);
+                factory(\App\Models\Customer::class, 1)->create(
+                    [
+                        'user_id' => $u->id,
+                        'principal' => '1',
+                        'sub_sede_of' => 5,
+                    ]
+                );
+            });
+
+        /*=============================================
           CREAMOS EL ADMINISTRADOR DEL SISTEMA
         =============================================*/
 

@@ -40,10 +40,28 @@
               ======================================-->
             <div class="tab-pane active" id="informacion" aria-labelledby="home-tab" role="tabpanel">
               <div class="row" v-show="showDetailCustomer">
-                <div class="col-12">
+                <div class="col-12" v-if="customer.principal === '0'">
                   <div class="form-group">
                     <label class="font-weight-bold">Nombre y Apellido o Razón Social:</label>
                     <p v-text="customer.businessName"></p>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4" v-if="customer.principal === '1'">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Nombre y Apellido o Razón Social:</label>
+                    <p v-text="customer.businessName"></p>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4" v-if="customer.principal === '1'">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Tipo:</label>
+                    <p> Sede</p>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4 col-lg-4" v-if="customer.principal === '1'">
+                  <div class="form-group">
+                    <label class="font-weight-bold">Pertenece a:</label>
+                    <p v-text="SubSedeOf"></p>
                   </div>
                 </div>
               </div>
@@ -94,7 +112,7 @@
                 </div>
               </div>
               <div class="row" v-show="showEditCustomer">
-                <div class="col-12 col-md-6 col-lg-6">
+                <div class="col-12 col-md-6 col-lg-6" v-if="customer.principal === '0'">
                   <input-form
                     label="Tipo de Identificación"
                     id="textTypeIdentificationCustomerEdit"
@@ -115,6 +133,18 @@
                                           label: 'name',
                                           'custom-label': typeIdentification=>typeIdentification.name
                                         }"
+                  ></input-form>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6" v-if="customer.principal === '1'">
+                  <input-form
+                    id="txtTypeIdentifacationCustomerDataEdit"
+                    label="Tipo de Identificación"
+                    pattern="all"
+                    errorMsg="Ingrese un número de identificación válido"
+                    requiredMsg="El número identificación es obligatorio"
+                    :modelo.sync="typeIdentiName"
+                    :required="true"
+                    :msgServer.sync="errors.typeIdentiName"
                   ></input-form>
                 </div>
                 <div class="col-12 col-md-6 col-lg-6">
@@ -341,6 +371,7 @@ export default {
       invoices: [],
       historySendEmailCustomer: [],
 
+      typeIdentiName: '',
       email: '',
       emailValidate: '',
       documentValidate: '',
@@ -350,6 +381,7 @@ export default {
       dataCustomer: null,
       identification: '',
       identificationVerify: '',
+      SubSedeOf:'',
       stateDetail: null,
       phone: '',
       dollarUSLocale: Intl.NumberFormat('es-US'),
@@ -357,6 +389,7 @@ export default {
         businessName: '',
         typeIdentification: null,
         state: null,
+        principal:null,
 
       },
       typeIdentificationDetail: null,
@@ -489,6 +522,7 @@ export default {
           this.numberDaysAfterInvoice = this.dataCustomer.number_of_days_after_generating_invoice
           this.numberDaysOverdueInvoice = this.dataCustomer.number_of_days_after_invoice_overdue
           this.customer.typeIdentification = this.dataCustomer.user.identification_type
+          this.customer.principal = this.dataCustomer.principal
           this.typeIdentificationDetail = this.dataCustomer.user.identification_type.name
           this.invoices = this.dataCustomer.invoices
           if (this.dataCustomer.user.state === '1') {
@@ -498,10 +532,27 @@ export default {
             this.customer.state = {name: "Inactivo", id: 2}
             this.stateDetail = 'Inactivo'
           }
+
+          if (this.customer.principal === '1'){
+            this.getSubSedeOf(this.dataCustomer.sub_sede_of)
+            this.typeIdentiName = this.typeIdentificationDetail
+            document.getElementById('txtIdentifacationCustomerEdit').disabled = true;
+            setTimeout(() =>{
+              document.getElementById('txtTypeIdentifacationCustomerDataEdit').disabled = true;
+            },200)
+
+          }
         })
         this.$vs.loading.close()
       }, 500)
     },
+    getSubSedeOf(id){
+
+      axios.get('/api/data-customer/' + id).then(resp => {
+          this.SubSedeOf = resp.data.data.business_name
+      })
+    },
+
     getApiTypeIdentification() {
       axios.get('/api/get-identificationtype').then(resp => {
         this.optionsTypeIdentification = resp.data.data

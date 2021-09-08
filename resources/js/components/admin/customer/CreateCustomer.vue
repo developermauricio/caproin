@@ -23,7 +23,50 @@
           </div>
         </div>
         <div class="row">
+          <div class="col-12">
+            <label>Selecciona el tipo de empresa:</label>
+          </div>
+        </div>
+        <div class="row pb-2 pt-1">
+          <div class="col-2">
+            <vs-radio color="#D9393D" v-model="principal" vs-value="0">
+              <vs-tooltip text="Es una sede principal">Principal</vs-tooltip>
+            </vs-radio>
+          </div>
+          <div class="col-2">
+            <vs-radio color="#D9393D" v-model="principal" vs-value="1">
+              <vs-tooltip text="Pertenece o esta ligada a una empresa">Sede</vs-tooltip>
+            </vs-radio>
+          </div>
+        </div>
+        <div class="row" v-if="principal === '1'">
           <div class="col-12 col-md-6 col-lg-6">
+            <input-form
+              label="Seleccionar empresa a la que pertenece"
+              id="textTypeCustomer"
+              errorMsg
+              requiredMsg="El cliente es obligatorio"
+              :required="true"
+              :modelo.sync="customerType"
+              :msgServer.sync="errors.customerType"
+              @updatedValue="getCustomer"
+              type="multiselect"
+              selectLabel="Tipo de Identificación"
+              :multiselect="{ options: optionsTypeCustomer,
+                                           selectLabel:'Seleccionar',
+                                           selectedLabel:'Seleccionado',
+                                           deselectLabel:'Desmarcar',
+                                           placeholder:'Empresa o Cliente',
+                                          taggable : false,
+                                          'track-by':'id',
+                                          label: 'name',
+                                          'custom-label': typeCustomer=>typeCustomer.business_name
+                                        }"
+            ></input-form>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-6 col-lg-6" v-if="principal === '0'">
             <input-form
               label="Tipo de Identificación"
               id="textTypeIdentificationCustomer"
@@ -45,6 +88,19 @@
                                           'custom-label': typeIdentification=>typeIdentification.name
                                         }"
             ></input-form>
+          </div>
+          <div class="col-12 col-md-6 col-lg-6" v-else>
+            <input-form
+              id="txtTypePrincipalIdentifacationCustomer"
+              label="Tipo de Identificación"
+              pattern="all"
+              errorMsg="Ingrese un número de identificación válido"
+              requiredMsg="El número identificación es obligatorio"
+              :modelo.sync="identificationTypePrincipal"
+              :required="true"
+              :msgServer.sync="errors.identificationTypePrincipal"
+            ></input-form>
+
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
@@ -131,6 +187,7 @@ import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import vue2Dropzone from "vue2-dropzone";
 import Swal from 'sweetalert2'
+
 export default {
   name: "CreateCustomer",
   components: {
@@ -143,10 +200,15 @@ export default {
       numberDaysOverdueInvoice: null,
       identification: '',
       email: '',
+      customerType: null,
       identificationVerify: '',
+      identificationTypePrincipal:null,
+      identificationTypePrincipalId:null,
       codeVerify: '',
       code: null,
-      user:{
+      principal: '0',
+
+      user: {
         phone: '',
       },
       customer: {
@@ -154,13 +216,31 @@ export default {
         typeIdentification: null,
       },
       optionsTypeIdentification: [],
+      optionsTypeCustomer: [],
       errors: {},
     }
   },
   methods: {
-    clearInputsCustomer(){
+    clearInputsCustomer() {
       eventBus.$emit("resetValidaciones");
     },
+
+    getCustomer(customer) {
+      if (customer) {
+        this.identification = customer.user.identification
+        this.identificationTypePrincipal = customer.user.identification_type.name
+        this.identificationTypePrincipalId = customer.user.identification_type.id
+
+        document.getElementById('txtIdentifacationCustomer').disabled = true;
+
+      }else{
+        document.getElementById('txtIdentifacationCustomer').disabled = false;
+        this.identification = ''
+        this.identificationTypePrincipal = null
+        this.identificationTypePrincipalId = null
+      }
+    },
+
     createNewCustomer() {
       eventBus.$emit("validarFormulario");
       setTimeout(() => {
@@ -179,9 +259,12 @@ export default {
         const data = new FormData()
         data.append('businessName', this.customer.businessName);
         data.append('typeIdentification', JSON.stringify(this.customer.typeIdentification));
+        data.append('typeCustomer', JSON.stringify(this.customerType));
         data.append('identification', this.identification);
         data.append('email', this.email);
         data.append('phone', this.user.phoneI);
+        data.append('principal', this.principal);
+        data.append('idTypeIndentification', this.identificationTypePrincipalId);
         data.append('numberDaysAfterInvoice', this.numberDaysAfterInvoice);
         data.append('numberDaysOverdueInvoice', this.numberDaysOverdueInvoice);
 
@@ -235,6 +318,12 @@ export default {
       })
     },
 
+    getApiCustomer() {
+      axios.get('/api/all-customers').then(resp => {
+        this.optionsTypeCustomer = resp.data.data
+      });
+    },
+
     closeModal() {
       eventBus.$emit('resetValidaciones')
     }
@@ -243,30 +332,32 @@ export default {
     identification: function (val) {
       console.log(val)
       let data = this
-      if (val) {
-        if (val === ''){
-          data.identificationVerify = ''
-          $("#txtIdentifacationCustomer").removeClass("is-invalid");
-          $("#text-verify-identification-customer").css("display", "none");
+      if (this.customerType === null) {
+        if (val) {
+          if (val === '') {
+            data.identificationVerify = ''
+            $("#txtIdentifacationCustomer").removeClass("is-invalid");
+            $("#text-verify-identification-customer").css("display", "none");
+          }
+          axios.get('/api/verify-identification-user/' + val)
+            .then(resp => {
+              if (resp.data) {
+                $("#txtIdentifacationCustomer").addClass("is-invalid");
+                $("#text-verify-identification-customer").css("display", "block");
+                this.$toast.error({
+                  title: '¡Atención!',
+                  message: 'El número de identificación ya ha sido registrado, por favor ingrese otro',
+                  showDuration: 1000,
+                  hideDuration: 8000,
+                })
+              } else {
+                data.identificationVerify = ''
+                $("#txtIdentifacationCustomer").removeClass("is-invalid");
+                $("#text-verify-identification-customer").css("display", "none");
+              }
+            }).catch(err => {
+          });
         }
-        axios.get('/api/verify-identification-user/' + val)
-          .then(resp => {
-            if (resp.data) {
-              $("#txtIdentifacationCustomer").addClass("is-invalid");
-              $("#text-verify-identification-customer").css("display", "block");
-              this.$toast.error({
-                title: '¡Atención!',
-                message: 'El número de identificación ya ha sido registrado, por favor ingrese otro',
-                showDuration: 1000,
-                hideDuration: 8000,
-              })
-            } else {
-              data.identificationVerify = ''
-              $("#txtIdentifacationCustomer").removeClass("is-invalid");
-              $("#text-verify-identification-customer").css("display", "none");
-            }
-          }).catch(err => {
-        });
       }
     },
     email: function (val) {
@@ -286,9 +377,29 @@ export default {
         });
       }
     },
+    principal: function (val){
+      if (val === '1'){
+        this.identification = ''
+        document.getElementById('txtIdentifacationCustomer').disabled = true;
+        setTimeout(() =>{
+          document.getElementById('txtTypePrincipalIdentifacationCustomer').disabled = true;
+        },200)
+
+        $("#txtIdentifacationCustomer").removeClass("is-invalid");
+        $("#text-verify-identification-customer").css("display", "none");
+      }else{
+        this.identification = ''
+        this.customerType = null
+        this.identificationTypePrincipalId = null
+        this.identificationTypePrincipal = null
+        document.getElementById('txtIdentifacationCustomer').disabled = false;
+        document.getElementById('txtTypePrincipalIdentifacationCustomer').disabled = false;
+      }
+    }
   },
   mounted() {
     this.getApiTypeIdentification();
+    this.getApiCustomer();
   }
 }
 </script>

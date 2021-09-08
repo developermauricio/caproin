@@ -8,6 +8,7 @@ use App\Mail\Customer\NewCustomer;
 use App\Models\Customer;
 use App\Models\CustomerType;
 use App\Models\HistorySendPaymetClient;
+use App\Models\Invoice;
 use App\Traits\MessagesException;
 use App\User;
 use Carbon\Carbon;
@@ -75,9 +76,26 @@ class CustomerController extends Controller
         $businessName = $request->businessName;
         $email = $request->email;
         $phone = $request->phone;
+        $idTypeIndentification = $request->idTypeIndentification;
+        $principal = $request->principal;
         $numberDaysAfterInvoice = $request->numberDaysAfterInvoice;
         $numberDaysOverdueInvoice = $request->numberDaysOverdueInvoice;
-        $typeIdentification = json_decode($request->typeIdentification);
+//        $typeIdentificationData = json_decode($request->typeIdentification);
+        $typeCustomerData = json_decode($request->typeCustomer);
+
+        if ($idTypeIndentification !== "null") {
+            $idTypeIndeti = $idTypeIndentification;
+        } else {
+            $typeIdentificationData = json_decode($request->typeIdentification);
+            $idTypeIndeti = $typeIdentificationData->id;
+        }
+
+        if ($request->typeCustomer != "null") {
+            $typeCustomer = $typeCustomerData->id;
+        } else {
+            $typeCustomer = null;
+        }
+
         $identification = $request->identification;
 
         $slug = Str::slug($businessName . '-' . $ramdon, '-');
@@ -89,7 +107,7 @@ class CustomerController extends Controller
             "slug" => $slug,
             "picture" => '/images/user-profile.png',
             "phone" => $phone,
-            "identification_type_id" => $typeIdentification->id,
+            "identification_type_id" => $idTypeIndeti,
             "identification" => $identification
         ]);
         $user->roles()->attach([7]);
@@ -97,6 +115,8 @@ class CustomerController extends Controller
         $customer = Customer::create([
             "business_name" => $businessName,
             "user_id" => $user->id,
+            "principal" => $principal,
+            "sub_sede_of" => $typeCustomer,
             "number_of_days_after_generating_invoice" => $numberDaysAfterInvoice,
             "number_of_days_after_invoice_overdue" => $numberDaysOverdueInvoice,
         ]);
@@ -119,6 +139,15 @@ class CustomerController extends Controller
         $idCustomer = $request->idCustomer;
         $idUser = $request->idUser;
         $slug = Str::slug($businessName . '-' . $ramdon, '-');
+
+        $sedes = Customer::where('sub_sede_of', 10)->with('user')->get();
+
+        foreach ($sedes as $sede){
+           $sede->user->update([
+               "identification_type_id" => $typeIdentification->id,
+               "identification" => $identification
+           ]);
+        }
 
         $user = User::where('id', $idUser)->update([
             "name" => $businessName,
