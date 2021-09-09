@@ -140,7 +140,7 @@ class CustomerController extends Controller
         $idUser = $request->idUser;
         $slug = Str::slug($businessName . '-' . $ramdon, '-');
 
-        $sedes = Customer::where('sub_sede_of', 10)->with('user')->get();
+        $sedes = Customer::where('sub_sede_of', $idCustomer)->with('user')->get();
 
         foreach ($sedes as $sede){
            $sede->user->update([
