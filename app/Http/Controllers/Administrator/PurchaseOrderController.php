@@ -40,10 +40,27 @@ class PurchaseOrderController extends Controller
 
     public function getApiPurchaseOrdes()
     {
+        $rol = auth()->user()->roles->first()->name; // Rol del Usuario
+        $user = auth()->user()->id; // id del Usuario
+
         $purchase_ordes = PurchaseOrder::with([
             'customer',
             'purchase_order_state_histories.state_order'
-        ])->get();
+        ]);
+
+        if ($rol === "Vendedor") {
+            $purchase_ordes->whereHas('seller', function ($q) use ($user) {
+                return $q->where('user_id', $user);
+            });
+        } elseif ($rol === "Cliente") {
+            $purchase_ordes->whereHas('customer', function ($q) use ($user) {
+                return $q->where('user_id', $user)->orWhereHas('sede', function ($q) use ($user) {
+                    return $q->where('user_id', $user);
+                });
+            });
+        }
+
+        $purchase_ordes = $purchase_ordes->get();
         return datatables()->of($purchase_ordes)->toJson();
     }
 
@@ -112,13 +129,14 @@ class PurchaseOrderController extends Controller
     public function getAllSeguimiento(Request $request)
     {
         $seguimientos = Comment::with('commentable.state_order')
-        ->whereByIn(PurchaseOrderStateHistory::class, collect($request->input('ids')))
-        ->orderBy('created_at', 'DESC')
-        ->get();
+            ->whereByIn(PurchaseOrderStateHistory::class, collect($request->input('ids')))
+            ->orderBy('created_at', 'DESC')
+            ->get();
         return $seguimientos;
     }
 
-    public function saveNewSeguimiento(Request $request) {
+    public function saveNewSeguimiento(Request $request)
+    {
         $commentable = $request->get('commentable');
         $comment = new Comment();
         $comment->title = $request->get('title');
@@ -204,7 +222,7 @@ class PurchaseOrderController extends Controller
 
             $purchaseOrder->house = $request->input('house');
             $purchaseOrder->description = $request->input('description');
-            $purchaseOrder->has_blueprint = $request->input('has_blueprint');
+            // $purchaseOrder->has_blueprint = $request->input('has_blueprint');
 
             $purchaseOrder->currency_id = $request->input('currency.id');
             $purchaseOrder->total_value = $request->input('total_value');
