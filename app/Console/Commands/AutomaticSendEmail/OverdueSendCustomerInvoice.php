@@ -46,6 +46,7 @@ class OverdueSendCustomerInvoice extends Command
         /*=============================================
             ENVIAR CORREO ELECTRÓNICO LUEGO DE VENCERSE LA FACTURA
         =============================================*/
+
         $rowsCustomers = \App\Models\Customer::query()->with([
             'invoices' => function ($q) {
                 return $q->where('state_id', '=', \App\Models\StateInvoice::ID_POR_PAGAR)
@@ -62,7 +63,8 @@ class OverdueSendCustomerInvoice extends Command
                 $dateNow = Carbon::now(); //Fecha actual
                 $datePayment = Carbon::parse($invoice->expiration_date); // Fecha de vencimiento de la factura
                 $diff = $datePayment->diffInDays($dateNow); // Diferencia entre la fecha de hoy y la fecha de vencimiento de la factura
-                return $customer->number_of_days_after_invoice_overdue <= $diff && $dateNow->greaterThan($datePayment);
+//                dd($diff, intval($customer->number_of_days_after_invoice_overdue));
+                return (intval($customer->number_of_days_after_invoice_overdue) - 1) <= $diff && $dateNow->greaterThan($datePayment);
             });
             $sendData = new \stdClass();
             $sendData->user = $customer->user;
