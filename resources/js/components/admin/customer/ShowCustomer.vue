@@ -541,6 +541,11 @@ export default {
               document.getElementById('txtTypeIdentifacationCustomerDataEdit').disabled = true;
             },200)
 
+          }else{
+            document.getElementById('txtIdentifacationCustomerEdit').disabled = false;
+            setTimeout(() =>{
+              document.getElementById('txtTypeIdentifacationCustomerDataEdit').disabled = false;
+            }, 200)
           }
         })
         this.$vs.loading.close()
