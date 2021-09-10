@@ -22,8 +22,8 @@ class CreatePurchaseOrderStateHistoriesTable extends Migration
             $table->unsignedBigInteger('state_order_id');
             $table->foreign('state_order_id')->references('id')->on('state_orders');
 
-            $table->text('description');
-            $table->dateTime('estimated_date');
+            $table->text('description')->nullable();
+            $table->dateTime('estimated_date')->nullable();
             $table->timestamps();
         });
     }

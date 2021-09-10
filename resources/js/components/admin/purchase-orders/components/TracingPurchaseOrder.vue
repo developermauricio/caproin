@@ -13,6 +13,9 @@
           </button>
         </div>
       </div>
+      <p v-if="seguimientos.length < 1" class="text-center">
+        Sin Seguimientos
+      </p>
       <div class="card-body">
         <form
           class="row pb-2"
@@ -102,9 +105,9 @@
                     {{ seguimiento.commentable.state_order.name }}
                   </strong>
                 </h6>
-                <span class="timeline-event-time mr-1">{{
-                  seguimiento.created_at
-                }}</span>
+                <span class="timeline-event-time mr-1">
+                  {{ parseDate(seguimiento.created_at) }}
+                </span>
               </div>
               <p>{{ seguimiento.body }}</p>
             </div>
@@ -116,6 +119,8 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   name: "TracingPurchaseOrder",
   props: {
@@ -131,8 +136,8 @@ export default {
     },
     editable: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     closeIcon() {
@@ -154,6 +159,9 @@ export default {
     };
   },
   methods: {
+    parseDate(date) {
+      return moment(date).format('YYYY-MM-DD HH:mm:ss');
+    },
     addNewSeguimiento() {
       this.newSeguimiento.created_at = new Date().toISOString();
       this.seguimientos.unshift(this.newSeguimiento);

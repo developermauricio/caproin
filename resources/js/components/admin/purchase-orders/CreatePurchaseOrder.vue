@@ -25,24 +25,10 @@
         :payments="payments"
       />
     </tab-content>
-    <tab-content title="Transportadora" :beforeChange="validarTab">
-      <conveyor-order
-        v-if="currentTab == 1"
-        :purchase_order.sync="purchase_order"
-        :conveyors="conveyors"
-      />
-    </tab-content>
-
-    <tab-content title="Estado del pedido" :beforeChange="validarTab">
-      <status-purchase-order
-        v-if="currentTab == 2"
-        :state_histories.sync="purchase_order.purchase_order_state_histories"
-      />
-    </tab-content>
 
     <tab-content title="Productos" :beforeChange="validarTab">
       <order-details
-        v-if="currentTab == 3"
+        v-if="currentTab == 1"
         :currency="purchase_order.currency"
         :order_details.sync="purchase_order.order_details"
         :type_currencies="type_currencies"
@@ -50,13 +36,30 @@
       />
     </tab-content>
 
-    <!-- <tab-content title="Seguimiento" :beforeChange="validarTab">
+    <tab-content title="Transportadora" :beforeChange="validarTab">
+      <conveyor-order
+        v-if="currentTab == 2"
+        :purchase_order.sync="purchase_order"
+        :conveyors="conveyors"
+      />
+    </tab-content>
+
+    <tab-content title="Estado del pedido" :beforeChange="validarTab">
+      <status-purchase-order
+        v-if="currentTab == 3"
+        :state_histories.sync="purchase_order.purchase_order_state_histories"
+      />
+    </tab-content>
+
+    <!--
+    <tab-content title="Seguimiento" :beforeChange="validarTab">
       <tracing-purchase-order
         v-if="currentTab == 4"
         :state_histories.sync="purchase_order.purchase_order_state_histories"
         :editable="true"
       />
-    </tab-content> -->
+    </tab-content>
+    -->
 
     <tab-content title="Detalle" :beforeChange="validarTab">
       <order-preview v-if="currentTab >= 4" :purchase_order="purchase_order" />
@@ -101,7 +104,6 @@ import HeaderPurchaseOrder from "./components/HeaderPurchaseOrder.vue";
 import OrderDetails from "./components/OrderDetails.vue";
 import OrderPreview from "./components/OrderPreview.vue";
 import StatusPurchaseOrder from "./components/StatusPurchaseOrder.vue";
-import TracingPurchaseOrder from './components/TracingPurchaseOrder.vue';
 
 export default {
   name: "CreatePurchaseOrder",
@@ -111,7 +113,6 @@ export default {
     OrderDetails,
     StatusPurchaseOrder,
     OrderPreview,
-    TracingPurchaseOrder,
   },
   props: {
     id: {
@@ -134,7 +135,6 @@ export default {
         seller: null,
         house: "",
         description: "",
-        has_blueprint: false,
         currency_id: "",
         currency: null,
         total_value: "",

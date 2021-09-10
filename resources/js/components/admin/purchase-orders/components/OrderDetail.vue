@@ -106,7 +106,7 @@
       ></input-form>
     </div>
 
-    <div class="col-12 col-md-4 col-lg-4">
+    <!-- <div class="col-12 col-md-4 col-lg-4">
       <input-form
         name="internal_quote_number"
         label="Número Cotización Interna"
@@ -117,7 +117,7 @@
         :msgServer.sync="errors.internal_quote_number"
         :required="true"
       ></input-form>
-    </div>
+    </div> -->
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
@@ -141,7 +141,7 @@
         requiredMsg="La aplicación es obligatoria"
         :modelo.sync="order_detail.application"
         :msgServer.sync="errors.application"
-        :required="true"
+        :required="false"
         type="textarea"
       ></input-form>
     </div>
@@ -155,7 +155,7 @@
         requiredMsg="El número de plano es obligatorio"
         :modelo.sync="order_detail.blueprint_number"
         :msgServer.sync="errors.blueprint_number"
-        :required="true"
+        :required="false"
       ></input-form>
     </div>
   </div>

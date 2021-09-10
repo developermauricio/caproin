@@ -163,7 +163,7 @@ export default {
         blueprint_file: "",
         currency_id: "",
         value: "",
-        internal_quote_number: "",
+        // internal_quote_number: "",
         house_quote_number: "",
         product: product,
         currency: "",

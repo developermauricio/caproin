@@ -209,10 +209,16 @@ export default {
       return this.purchase_order.expected_dispatch_date;
     },
     actual_dispatch_date() {
-      return this.purchase_order.actual_dispatch_date;
+      if (this.purchase_order.actual_dispatch_date) {
+        return this.purchase_order.actual_dispatch_date;
+      }
+      return "Sin asignar";
     },
     actual_delivery_date() {
-      return this.purchase_order.actual_delivery_date;
+      if (this.purchase_order.actual_delivery_date) {
+        return this.purchase_order.actual_delivery_date;
+      }
+      return "Sin asignar";
     },
     payment() {
       if (!this.purchase_order.payment) {

@@ -24,11 +24,15 @@
       </p>
       <p class="col col-md-6">
         <strong>Aplicación:</strong>
-        {{ order_detail.application }}
+        {{ order_detail.application?order_detail.application:'Sin aplicación' }}
       </p>
       <p class="col col-md-6">
         <strong>Numero de plano:</strong>
-        {{ order_detail.blueprint_number }}
+        {{
+          order_detail.blueprint_number
+            ? order_detail.blueprint_number
+            : "Sin plano"
+        }}
       </p>
       <p class="col col-md-6">
         <strong>Tipo de moneda:</strong>
@@ -38,10 +42,10 @@
         <strong>Valor:</strong>
         {{ order_detail.value }}
       </p>
-      <p class="col col-md-6">
+      <!-- <p class="col col-md-6">
         <strong>Numero cotización interna:</strong>
         {{ order_detail.internal_quote_number }}
-      </p>
+      </p> -->
       <p class="col col-md-6">
         <strong>Numero cotización Casa:</strong>
         {{ order_detail.house_quote_number }}
@@ -63,7 +67,7 @@ export default {
 </script>
 
 <style scoped>
-.product--item:not(:last-child){
+.product--item:not(:last-child) {
   border-bottom: 1px solid;
   margin-bottom: 1rem;
 }

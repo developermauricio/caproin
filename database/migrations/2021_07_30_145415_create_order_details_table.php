@@ -28,8 +28,8 @@ class CreateOrderDetailsTable extends Migration
 
             $table->string('customer_product_description')->nullable();
 
-            $table->string('application');
-            $table->string('blueprint_number');
+            $table->string('application')->nullable();
+            $table->string('blueprint_number')->nullable();
             $table->string('blueprint_file')->nullable();
 
             $table->unsignedBigInteger('currency_id')->nullable();
@@ -37,7 +37,7 @@ class CreateOrderDetailsTable extends Migration
 
             $table->string('value');
 
-            $table->string('internal_quote_number');
+            // $table->string('internal_quote_number');
             $table->string('house_quote_number');
 
             $table->timestamps();

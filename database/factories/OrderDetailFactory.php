@@ -21,7 +21,7 @@ $factory->define(OrderDetail::class, function (Faker $faker) {
         'blueprint_number' => $faker->numberBetween(10000),
         'blueprint_file' => 'file.pdf',
         'value' => $faker->numberBetween(10000),
-        'internal_quote_number' => $faker->numberBetween(10000),
+        // 'internal_quote_number' => $faker->numberBetween(10000),
         'house_quote_number' => $faker->numberBetween(10000),
     ];
 });

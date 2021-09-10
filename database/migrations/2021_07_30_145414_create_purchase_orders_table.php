@@ -36,7 +36,7 @@ class CreatePurchaseOrdersTable extends Migration
 
             $table->string('house');
             $table->text('description');
-            $table->boolean('has_blueprint');
+            // $table->boolean('has_blueprint');
 
             $table->unsignedBigInteger('currency_id');
             $table->foreign('currency_id')->references('id')->on('currencies');
@@ -55,8 +55,9 @@ class CreatePurchaseOrdersTable extends Migration
             $table->date('offer_delivery_date');
             $table->date('delivery_date_required_customer');
             $table->date('expected_dispatch_date');
-            $table->date('actual_dispatch_date');
-            $table->date('actual_delivery_date');
+
+            $table->date('actual_dispatch_date')->nullable();
+            $table->date('actual_delivery_date')->nullable();
 
             $table->unsignedBigInteger('payment_id');
             $table->foreign('payment_id')->references('id')->on('payment_types');
@@ -67,6 +68,9 @@ class CreatePurchaseOrdersTable extends Migration
             //o Archivo de factura (Enlace que redirija a la factura o factura Adjunta PDF)
 
             $table->enum('invoice_state', ['No subida', 'No Entregada']);
+
+            //TODO:Entregas parciales en la seccion de transporte
+            $table->boolean('partial_delivery')->default(0);
 
             $table->string('invoice_number')->nullable();
             $table->string('contact_number');

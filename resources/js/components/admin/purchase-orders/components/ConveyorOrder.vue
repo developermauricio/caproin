@@ -65,7 +65,7 @@
         requiredMsg="La fecha de despacho es obligatoria"
         :modelo.sync="purchase_order.actual_dispatch_date"
         :msgServer.sync="errors.actual_dispatch_date"
-        :required="true"
+        :required="false"
       ></input-form>
     </div>
 
@@ -80,7 +80,7 @@
         requiredMsg="La fecha de recibo es obligatoria"
         :modelo.sync="purchase_order.actual_delivery_date"
         :msgServer.sync="errors.actual_delivery_date"
-        :required="true"
+        :required="false"
       ></input-form>
     </div>
 
@@ -117,9 +117,9 @@ export default {
     conveyors: {
       type: Array,
       default: function () {
-        return []
-      }
-    }
-  }
+        return [];
+      },
+    },
+  },
 };
 </script>

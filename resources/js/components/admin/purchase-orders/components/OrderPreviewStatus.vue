@@ -5,10 +5,11 @@
       v-for="(history, index) in purchase_order_state_histories"
       :key="JSON.stringify(history)"
     >
-      <h2>{{index+1}}. {{ state_order(history) }}</h2>
+      <h2>{{ index + 1 }}. {{ state_order(history) }}</h2>
       <p><strong>Estimado:</strong> {{ estimated_date(history) }}</p>
-      <p>{{ history.description }}</p>
-    </div>purchase_order_state_histories
+      <p>{{ history.description || "Sin descripción" }}</p>
+    </div>
+    purchase_order_state_histories
   </div>
 </template>
 
@@ -35,7 +36,10 @@ export default {
       return ("0" + date.getDate()).slice(-2);
     },
     estimated_date(history) {
-      if (!history.estimated_date || !history.estimated_date.getFullYear) {
+      if (!history.estimated_date) {
+        return `Sin fecha estimada`;
+      }
+      if (!history.estimated_date.getFullYear) {
         return history.estimated_date.slice(0, 10);
       }
       const date = history.estimated_date;
@@ -47,7 +51,7 @@ export default {
 };
 </script>
 <style scoped>
-.status--item:not(:last-child){
+.status--item:not(:last-child) {
   border-bottom: 1px solid;
   margin-bottom: 1rem;
 }

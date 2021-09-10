@@ -75,7 +75,7 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
         data: "total_value",
         render: function (data, type, JsonResultRow, meta) {
           const value = JsonResultRow.total_value || 0;
-          return value.toLocaleString();
+          return `$${value.toLocaleString()}`;
         }
       },
       {

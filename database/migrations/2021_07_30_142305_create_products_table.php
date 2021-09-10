@@ -26,7 +26,7 @@ class CreateProductsTable extends Migration
             $table->enum('state', [
                 \App\Models\Product::ACTIVE,
                 \App\Models\Product::INACTIVE
-            ])->default(\App\Models\Zone::ACTIVE);
+            ])->default(\App\Models\Product::ACTIVE);
             $table->timestamps();
         });
     }

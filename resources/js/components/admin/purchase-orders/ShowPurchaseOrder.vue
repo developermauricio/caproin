@@ -61,7 +61,6 @@ export default {
         seller: null,
         house: "",
         description: "",
-        has_blueprint: false,
         currency_id: "",
         currency: null,
         total_value: "",

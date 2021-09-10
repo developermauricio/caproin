@@ -20,7 +20,7 @@
           requiredMsg="La fecha estimada es obligatoria"
           :modelo.sync="history.estimated_date"
           :msgServer.sync="errors.estimated_date"
-          :required="true"
+          :required="false"
         ></input-form>
       </div>
 
@@ -58,7 +58,7 @@
           requiredMsg="La descripción es obligatoria"
           :modelo.sync="history.description"
           :msgServer.sync="errors.description"
-          :required="true"
+          :required="false"
         ></input-form>
       </div>
     </div>

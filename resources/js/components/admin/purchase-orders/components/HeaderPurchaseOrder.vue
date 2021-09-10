@@ -74,7 +74,7 @@
         pattern="all"
         errorMsg="Factura no seleccionada"
         requiredMsg="La factura es obligatoria"
-        :required="true"
+        :required="false"
       ></input-form>
     </div>
 
@@ -241,20 +241,6 @@
         :msgServer.sync="errors.description"
         :required="true"
       ></input-form>
-    </div>
-
-    <div class="col-12 col-md-4 col-lg-4">
-      <div class="form-group">
-        <label for="has_blueprint" class="form-control-label">
-          Se incluye plano
-        </label>
-        <switch-component
-          class="d-block"
-          id="has_blueprint"
-          v-model="purchase_order.has_blueprint"
-          :size="80"
-        ></switch-component>
-      </div>
     </div>
 
     <div class="col-12 col-md-4 col-lg-4">

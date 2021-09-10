@@ -232,12 +232,12 @@ class PurchaseOrderController extends Controller
             $purchaseOrder->dispatch_guide_number = $request->input('dispatch_guide_number');
 
             $purchaseOrder->conveyor_id = $request->input('conveyor.id');
-            $purchaseOrder->order_receipt_date = \Carbon\Carbon::parse($request->input('order_receipt_date'));
-            $purchaseOrder->offer_delivery_date = \Carbon\Carbon::parse($request->input('offer_delivery_date'));
-            $purchaseOrder->delivery_date_required_customer = \Carbon\Carbon::parse($request->input('delivery_date_required_customer'));
-            $purchaseOrder->expected_dispatch_date = \Carbon\Carbon::parse($request->input('expected_dispatch_date'));
-            $purchaseOrder->actual_dispatch_date = \Carbon\Carbon::parse($request->input('actual_dispatch_date'));
-            $purchaseOrder->actual_delivery_date = \Carbon\Carbon::parse($request->input('actual_delivery_date'));
+            $purchaseOrder->order_receipt_date = $this->getDate($request->input('order_receipt_date'));
+            $purchaseOrder->offer_delivery_date = $this->getDate($request->input('offer_delivery_date'));
+            $purchaseOrder->delivery_date_required_customer = $this->getDate($request->input('delivery_date_required_customer'));
+            $purchaseOrder->expected_dispatch_date = $this->getDate($request->input('expected_dispatch_date'));
+            $purchaseOrder->actual_dispatch_date = $this->getDate($request->input('actual_dispatch_date'));
+            $purchaseOrder->actual_delivery_date = $this->getDate($request->input('actual_delivery_date'));
             $purchaseOrder->payment_id = $request->input('payment.id');
 
             $invoice = $request->input('invoice');
@@ -257,6 +257,14 @@ class PurchaseOrderController extends Controller
         }
     }
 
+    private function getDate($dateTxt){
+        if (trim($dateTxt) !== '') {
+            return \Carbon\Carbon::parse($dateTxt);
+        } else {
+            return null;
+        }
+    }
+
     private function updateStateHistory($purchaseOrder, $request)
     {
         $idsHistory = collect();
@@ -270,7 +278,11 @@ class PurchaseOrderController extends Controller
                 $purchase_order->purchase_order_id = $purchaseOrder->id;
                 $purchase_order->state_order_id = $history['state_order']['id'];
                 $purchase_order->description = $history['description'];
-                $purchase_order->estimated_date = \Carbon\Carbon::parse($history['estimated_date']);
+                if (trim($history['estimated_date']) !== '') {
+                    $purchase_order->estimated_date = \Carbon\Carbon::parse($history['estimated_date']);
+                } else {
+                    $purchase_order->estimated_date = null;
+                }
                 $purchase_order->save();
                 $idsHistory->add($purchase_order->id);
             });
@@ -304,7 +316,7 @@ class PurchaseOrderController extends Controller
                 $newDetail->application = $detail['application'];
 
                 $newDetail->blueprint_number = $detail['blueprint_number'];
-                $newDetail->internal_quote_number = $detail['internal_quote_number'];
+                // $newDetail->internal_quote_number = $detail['internal_quote_number'];
                 $newDetail->house_quote_number = $detail['house_quote_number'];
 
                 $newDetail->currency_id = $detail['currency']['id'];
