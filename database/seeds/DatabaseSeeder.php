@@ -25,6 +25,12 @@ class DatabaseSeeder extends Seeder
         $this->call(UserTableSeeder::class);
 
         /*=============================================
+           CREANDO TIPOS DE MONEDA
+        =============================================*/
+        factory(\App\Models\Currency::class)->create(['code' => 'USD']);
+        factory(\App\Models\Currency::class)->create(['code' => 'COP']);
+
+        /*=============================================
            CREANDO TIPOS DE INDENTIFICACIÓN
         =============================================*/
         factory(\App\Models\IdentificationType::class)->create(['name' => 'Cédula de Ciudadania']);
@@ -178,7 +184,20 @@ class DatabaseSeeder extends Seeder
         /*=============================================
             PRODUCTOS
         =============================================*/
-        factory(\App\Models\Product::class, 50)->create();
+        $products = factory(\App\Models\Product::class, 50)->create();
+
+        $products->each(function ($product) {
+            factory(App\Models\ProductPrice::class)->createMany([
+                [
+                    'product_id' => $product->id,
+                    'currency_id' => 1
+                ],
+                [
+                    'product_id' => $product->id,
+                    'currency_id' => 2
+                ]
+            ]);
+        });
 
         /*=============================================
             CREAMOS 10 CLIENTES
@@ -248,12 +267,6 @@ class DatabaseSeeder extends Seeder
         factory(\App\Models\StateInvoice::class)->create(['name' => 'Por Pagar']);
         factory(\App\Models\StateInvoice::class)->create(['name' => 'Pagado']);
         factory(\App\Models\StateInvoice::class)->create(['name' => 'Retrasado']);
-
-        /*=============================================
-           CREANDO TIPOS DE MONEDA
-        =============================================*/
-        factory(\App\Models\Currency::class)->create(['code' => 'USD']);
-        factory(\App\Models\Currency::class)->create(['code' => 'COP']);
 
         /*=============================================
            CREANDO 20 ACUERDOS COMERCIALES

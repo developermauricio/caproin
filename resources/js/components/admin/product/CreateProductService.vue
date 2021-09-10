@@ -121,6 +121,7 @@
             </input-form>
           </div>
         </div>
+        <product-price :product_prices="product_prices"></product-price>
       </div>
       <div class="modal-footer">
         <button @click="clearInputProduct()" type="button" data-dismiss="modal" class="btn btn-gris">Cancelar</button>
@@ -138,12 +139,14 @@ import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import vue2Dropzone from "vue2-dropzone";
 import Swal from 'sweetalert2'
+import ProductPrice from './ProductPrice.vue';
 
 export default {
   name: "CreateProductService",
   components: {
     Multiselect,
     VuePhoneNumberInput,
+    ProductPrice
   },
   data() {
     return {
@@ -153,6 +156,8 @@ export default {
       optionsTypeProductService: [],
       descriptionShort: '',
       description: '',
+
+      product_prices: [],
 
       identification: '',
       state: {
@@ -197,6 +202,7 @@ export default {
       eventBus.$emit("resetValidaciones");
     },
     createNewProductService() {
+      eventBus.$emit("resetValidaciones");
       eventBus.$emit("validarFormulario");
       setTimeout(() => {
         let resp = this;
@@ -218,6 +224,7 @@ export default {
         data.append('code', this.code);
         data.append('descriptionShort', this.descriptionShort);
         data.append('description', this.description);
+        data.append('product_prices', JSON.stringify(this.product_prices));
 
         Swal.fire({
           title: 'Confirmar',

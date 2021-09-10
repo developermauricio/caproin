@@ -122,6 +122,7 @@
             </input-form>
           </div>
         </div>
+        <product-price v-if="product_prices" :product_prices="product_prices"></product-price>
       </div>
       <div class="modal-footer">
         <button type="button" data-dismiss="modal" class="btn btn-gris">Cancelar</button>
@@ -138,15 +139,18 @@ import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import vue2Dropzone from "vue2-dropzone";
 import Swal from 'sweetalert2'
+import ProductPrice from './ProductPrice.vue';
 
 export default {
   name: "EditProductService",
   components: {
     Multiselect,
     VuePhoneNumberInput,
+    ProductPrice,
   },
   data() {
     return {
+      product_prices: null,
       name: '',
       typeProductService: null,
       code: null,
@@ -189,6 +193,7 @@ export default {
         data.append('name', this.name);
         data.append('typeProductService', JSON.stringify(this.typeProductService));
         data.append('state', JSON.stringify(this.state));
+        data.append('product_prices', JSON.stringify(this.product_prices));
         data.append('code', this.code);
         data.append('descriptionShort', this.descriptionShort);
         data.append('description', this.description);
@@ -255,6 +260,7 @@ export default {
           this.descriptionShort = resp.data.data.short_description
           this.description = resp.data.data.description
           this.typeProductService = resp.data.data.product_type
+          this.product_prices = resp.data.data.product_prices
           if (resp.data.data.state === '1') {
             this.state = {name: "Activo", id: 1}
           } else {

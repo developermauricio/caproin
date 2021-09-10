@@ -40,7 +40,7 @@ class TradeAgreementController extends Controller
     }
 
     public function getApiProducts(){
-        $products = Product::where('state', 1)->with('productType')->get();;
+        $products = Product::where('state', 1)->with('productType','productPrices')->get();;
         return response()->json(['data' => $products]);
     }
 

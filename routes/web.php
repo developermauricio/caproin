@@ -4,6 +4,7 @@ use App\Mail\Customer\SendOverdueInvoice;
 use App\Models\Comment;
 use App\Models\HistorySendPaymetClient;
 use App\Models\Invoice;
+use App\Models\Product;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -19,6 +20,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/test', function () {
+    $products = Product::with('productPrices')->limit(1)->get();
+    return response()->json($products);
+});
 
 Route::get('/data-invoice-customer', function (){
     $rol = auth()->user()->roles->first()->name; // Rol del Usuario

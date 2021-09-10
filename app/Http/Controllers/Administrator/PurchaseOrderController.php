@@ -122,7 +122,7 @@ class PurchaseOrderController extends Controller
 
     public function getAllProductByType(Request $request)
     {
-        $products = Product::where('type_products_id', $request->input('type'))->get();
+        $products = Product::with('productPrices')->where('type_products_id', $request->input('type'))->get();
         return $products;
     }
 
