@@ -71,6 +71,7 @@ class CreatePurchaseOrdersTable extends Migration
 
             //TODO:Entregas parciales en la seccion de transporte
             $table->boolean('partial_delivery')->default(0);
+            $table->double('trm');
 
             $table->string('invoice_number')->nullable();
             $table->string('contact_number');

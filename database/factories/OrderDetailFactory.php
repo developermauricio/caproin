@@ -9,6 +9,9 @@ use App\Models\PurchaseOrder;
 use Faker\Generator as Faker;
 
 $factory->define(OrderDetail::class, function (Faker $faker) {
+    $quantity = $faker->numberBetween(1, 5);
+    $value = $faker->numberBetween(10000);
+    $total = $quantity*$value;
     return [
         'purchase_order_id' => PurchaseOrder::inRandomOrder()->first()->id,
         'product_id' => Product::inRandomOrder()->first()->id,
@@ -20,7 +23,9 @@ $factory->define(OrderDetail::class, function (Faker $faker) {
         'application' => $faker->paragraph(1),
         'blueprint_number' => $faker->numberBetween(10000),
         'blueprint_file' => 'file.pdf',
-        'value' => $faker->numberBetween(10000),
+        'value' => $value,
+        'quantity' => $quantity,
+        'total_value' => $total,
         // 'internal_quote_number' => $faker->numberBetween(10000),
         'house_quote_number' => $faker->numberBetween(10000),
     ];

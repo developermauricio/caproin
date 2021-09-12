@@ -2,14 +2,22 @@
   <div>
     <accordion-component :items="order_details">
       <template v-slot:title="{ item: order_detail, index }">
-        <i
-          class="icon--close"
-          @click="removeOrderDetail(index)"
-          v-html="closeIcon"
-        ></i>
-        <span class="title">
-          {{ order_detail.product.name }} - {{ order_detail.product.code }}
-        </span>
+        <div class="header">
+          <i
+            class="icon--close"
+            @click="removeOrderDetail(index)"
+            v-html="closeIcon"
+          ></i>
+          <span class="header__title">
+            {{ order_detail.product.name }} - {{ order_detail.product.code }}
+          </span>
+          <span class="header__price">
+            <strong>Cantidad: </strong>
+            {{ order_detail.quantity }}
+            <strong class="pl-1">Total: </strong>
+            {{ order_detail.total_value | price }}
+          </span>
+        </div>
       </template>
       <template v-slot:default="{ item: order_detail }">
         <order-detail
@@ -105,6 +113,24 @@ export default {
   },
   data() {
     return {
+      order_detail: {
+        product_id: 0,
+        internal_product_code: 0,
+        manufacturer: "",
+        client_product_code: "",
+        customer_product_description: "",
+        application: "",
+        blueprint_number: "",
+        blueprint_file: "",
+        quantity: 1,
+        total_value: 0,
+        value: "",
+        // internal_quote_number: "",
+        house_quote_number: "",
+        currency_id: null,
+        product: null,
+        currency: null,
+      },
       products: [],
       columns: [
         {
@@ -151,23 +177,16 @@ export default {
       this.order_details.splice(index, 1);
     },
     addProducts(product) {
-      console.log(product);
-      this.order_details.push({
-        product_id: product.id,
-        internal_product_code: product.code,
-        manufacturer: "",
-        client_product_code: "",
-        customer_product_description: "",
-        application: "",
-        blueprint_number: "",
-        blueprint_file: "",
-        currency_id: "",
-        value: "",
-        // internal_quote_number: "",
-        house_quote_number: "",
-        product: product,
-        currency: "",
-      });
+      if (!product) {
+        return;
+      }
+      this.order_details.push(
+        Object.assign({}, this.order_detail, {
+          product_id: product.id,
+          internal_product_code: product.code,
+          product: product
+        })
+      );
     },
     getApiProducts() {
       axios.get("/api/all-products").then((resp) => {
@@ -176,7 +195,7 @@ export default {
     },
     shortText(text) {
       if (text.length > 60) {
-        return text.slice(0, 60)+"...";
+        return text.slice(0, 60) + "...";
       }
       return text;
     },
@@ -187,13 +206,24 @@ export default {
 .icon--close {
   position: absolute;
   top: 0;
-  left: 0.3rem;
+  left: 0;
   bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.title {
-  padding-left: 0.5rem;
+
+.header__title {
+  padding-left: 1.3rem;
+}
+
+.header__price {
+  position: absolute;
+  right: 0.5rem;
+}
+
+.header {
+  position: relative;
+  width: 100%;
 }
 </style>

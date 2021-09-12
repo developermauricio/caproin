@@ -30,6 +30,72 @@
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
+        type="multiselect"
+        :multiselect="{
+          selectLabel: 'Seleccionar',
+          selectedLabel: 'Seleccionado',
+          deselectLabel: 'Desmarcar',
+          placeholder: 'Tipo de moneda',
+          taggable: false,
+          label: 'name',
+          options: type_currencies,
+          'custom-label': (currency) => currency.code,
+        }"
+        :modelo.sync="order_detail.currency"
+        :msgServer.sync="errors.currency"
+        name="currency"
+        label="Tipo de Moneda"
+        pattern="all"
+        errorMsg="Tipo de moneda no seleccionada"
+        requiredMsg="El tipo de moneda es obligatoria"
+        :required="true"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        type="money"
+        label="Valor"
+        pattern="all"
+        errorMsg="Ingrese un valor válido"
+        requiredMsg="El valor es obligatorio"
+        :required="true"
+        :modelo.sync="order_detail.value"
+        :msgServer.sync="errors.value"
+        :money="moneyConfig"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        type="number"
+        label="Cantidad"
+        pattern="all"
+        errorMsg="Ingrese la cantidad"
+        requiredMsg="La cantidad es obligatoria"
+        :required="true"
+        :modelo.sync="order_detail.quantity"
+        :msgServer.sync="errors.quantity"
+        :options="{ min: 1 }"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        type="money"
+        label="Valor total"
+        pattern="all"
+        errorMsg="Ingrese un valor válido"
+        requiredMsg="El valor es obligatorio"
+        :required="true"
+        :modelo.sync="order_detail.total_value"
+        :msgServer.sync="errors.total_value"
+        :money="moneyConfig"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
         name="client_product_code"
         label="Código de producto del cliente"
         errorMsg="Ingrese código de producto del cliente valido"
@@ -67,57 +133,6 @@
         :required="true"
       ></input-form>
     </div>
-
-    <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        type="multiselect"
-        :multiselect="{
-          selectLabel: 'Seleccionar',
-          selectedLabel: 'Seleccionado',
-          deselectLabel: 'Desmarcar',
-          placeholder: 'Tipo de moneda',
-          taggable: false,
-          label: 'name',
-          options: type_currencies,
-          'custom-label': (currency) => currency.code,
-        }"
-        :modelo.sync="order_detail.currency"
-        :msgServer.sync="errors.currency"
-        name="currency"
-        label="Tipo de Moneda"
-        pattern="all"
-        errorMsg="Tipo de moneda no seleccionada"
-        requiredMsg="El tipo de moneda es obligatoria"
-        :required="true"
-      ></input-form>
-    </div>
-
-    <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        type="money"
-        label="Valor"
-        pattern="all"
-        errorMsg="Ingrese un valor válido"
-        requiredMsg="El valor es obligatorio"
-        :required="true"
-        :modelo.sync="order_detail.value"
-        :msgServer.sync="errors.value"
-        :money="moneyConfig"
-      ></input-form>
-    </div>
-
-    <!-- <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        name="internal_quote_number"
-        label="Número Cotización Interna"
-        pattern="all"
-        errorMsg="Ingrese un número cotización interna válido"
-        requiredMsg="El número cotización interna es obligatorio"
-        :modelo.sync="order_detail.internal_quote_number"
-        :msgServer.sync="errors.internal_quote_number"
-        :required="true"
-      ></input-form>
-    </div> -->
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
@@ -192,26 +207,27 @@ export default {
     },
   },
   computed: {
+    currencyId() {
+      return this.order_detail && this.order_detail.currency
+        ? this.order_detail.currency.id
+        : this.currency
+        ? this.currency.id
+        : 1;
+    },
     moneyConfig() {
-      const id =
-        this.order_detail && this.order_detail.currency
-          ? this.order_detail.currency.id
-          : this.currency
-          ? this.currency.id
-          : 1;
-      switch (id) {
+      switch (this.currencyId) {
         case 1:
           return {
-            decimal: ".",
-            thousands: ",",
+            decimal: ",",
+            thousands: ".",
             prefix: "$ ",
             suffix: "USD",
             precision: 0,
           };
         case 2:
           return {
-            decimal: ".",
-            thousands: ",",
+            decimal: ",",
+            thousands: ".",
             prefix: "$ ",
             suffix: "COP",
             precision: 0,
@@ -225,12 +241,34 @@ export default {
             precision: 0,
           };
       }
+    },
+    totalValue: function () {
+      return this.order_detail.value * this.order_detail.quantity;
+    }
+  },
+  watch: {
+    totalValue: function () {
+      this.order_detail.total_value = this.totalValue > 0 ? this.totalValue : 0;
+    },
+    currencyId: function () {
+      this.updatePriceByCurrency();
+    },
+  },
+  mounted(){
+    if (this.currency && !this.order_detail.currency){
+      this.order_detail.currency = this.currency;
+      this.updatePriceByCurrency();
     }
   },
   methods: {
-    changeTypeProduct(product_type) {
-      console.log(product_type);
-    },
-  },
+    updatePriceByCurrency(){
+      const productPrice = this.order_detail.product.product_prices.find(
+        (productPrice) => {
+          return productPrice.currency_id === this.currencyId;
+        }
+      );
+      this.order_detail.value = productPrice.price;
+    }
+  }
 };
 </script>

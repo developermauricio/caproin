@@ -159,7 +159,7 @@ class PurchaseOrderController extends Controller
             'payment',
             'invoice.state',
             'order_details' => function ($q) {
-                return $q->with('product', 'currency');
+                return $q->with('product.productPrices', 'currency');
             },
             'purchase_order_state_histories.state_order'
         ])->find($id);

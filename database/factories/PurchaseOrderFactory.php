@@ -33,6 +33,7 @@ $factory->define(PurchaseOrder::class, function (Faker $faker) {
         'manufacturer_house_quotation_number' => $faker->numberBetween(5000),
         'dispatch_guide_number' => $faker->numberBetween(5000),
         'conveyor_id' => Conveyor::inRandomOrder()->first()->id,
+        'trm' => $faker->numberBetween(3000, 4000),
         'order_receipt_date' => $faker->date(),
         'offer_delivery_date' => $faker->date(),
         'delivery_date_required_customer' => $faker->date(),

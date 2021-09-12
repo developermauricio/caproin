@@ -42,21 +42,6 @@
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
         type="date"
-        id="txt_expected_dispatch_date"
-        name="expected_dispatch_date"
-        label="Fecha esperada de despacho de la orden"
-        pattern="all"
-        errorMsg="Ingrese una fecha válida"
-        requiredMsg="La fecha de despacho esperada es obligatoria"
-        :modelo.sync="purchase_order.expected_dispatch_date"
-        :msgServer.sync="errors.expected_dispatch_date"
-        :required="true"
-      ></input-form>
-    </div>
-
-    <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        type="date"
         id="txt_actual_dispatch_date"
         name="actual_dispatch_date"
         label="Fecha de despacho de la orden"

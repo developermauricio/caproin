@@ -30,6 +30,7 @@
       :required="required"
       v-on:input="change($event.target.value)"
       v-bind="options"
+      v-on="inputListeners"
       @change="cambio"
     ></textarea>
     <multiselect
@@ -40,11 +41,13 @@
       :required="required"
       v-bind="multiselect"
       :value="modelo"
+      v-on="inputListeners"
       @input="change($event)"
     ></multiselect>
     <money
       v-else-if="type === 'money'"
       v-on:input="change($event)"
+      v-on="inputListeners"
       v-bind:value="modelo"
       v-bind="money"
       class="form-control"
@@ -166,11 +169,11 @@ export default {
     Multiselect,
   },
   computed: {
-    dateValue(){
-      if (this.type === 'date' && this.modelo) {
-        return this.$formatDate(this.modelo)
+    dateValue() {
+      if (this.type === "date" && this.modelo) {
+        return this.$formatDate(this.modelo);
       }
-      return this.modelo
+      return this.modelo;
     },
     inputListeners: function () {
       var vm = this;

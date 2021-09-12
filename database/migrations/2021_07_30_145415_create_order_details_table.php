@@ -35,7 +35,9 @@ class CreateOrderDetailsTable extends Migration
             $table->unsignedBigInteger('currency_id')->nullable();
             $table->foreign('currency_id')->references('id')->on('currencies');
 
-            $table->string('value');
+            $table->double('value');
+            $table->double('quantity');
+            $table->double('total_value');
 
             // $table->string('internal_quote_number');
             $table->string('house_quote_number');

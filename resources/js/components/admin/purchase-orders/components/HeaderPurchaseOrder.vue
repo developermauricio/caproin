@@ -270,6 +270,42 @@
 
     <div class="col-12 col-md-4 col-lg-4">
       <input-form
+        type="date"
+        id="txt_expected_dispatch_date"
+        name="expected_dispatch_date"
+        label="Fecha esperada de despacho de la orden"
+        pattern="all"
+        errorMsg="Ingrese una fecha válida"
+        requiredMsg="La fecha de despacho esperada es obligatoria"
+        :modelo.sync="purchase_order.expected_dispatch_date"
+        :msgServer.sync="errors.expected_dispatch_date"
+        :required="true"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
+        type="money"
+        label="TRM"
+        id="txt_trm"
+        pattern="all"
+        errorMsg="Ingrese un trm válido"
+        requiredMsg="El trm es obligatorio"
+        :required="true"
+        :modelo.sync="purchase_order.trm"
+        :msgServer.sync="errors.trm"
+        :money="{
+            decimal: '.',
+            thousands: ',',
+            prefix: '$ ',
+            suffix: 'COP',
+            precision: 0,
+          }"
+      ></input-form>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
+      <input-form
         type="money"
         label="Valor Total"
         id="txt_total_value"
@@ -443,10 +479,10 @@ export default {
       }
     },
   },
-  created(){
-    axios.get('/api/all-invoices-list').then(response => {
-      this.invoices = response.data
+  created() {
+    axios.get("/api/all-invoices-list").then((response) => {
+      this.invoices = response.data;
     });
-  }
+  },
 };
 </script>

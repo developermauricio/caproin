@@ -79,6 +79,7 @@ export default {
         payment_id: "",
         invoice_id: "",
         invoice_state: "",
+        trm: 0,
         invoice_number: "",
         contact_number: "",
         provider_id: "",

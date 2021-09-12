@@ -6,7 +6,6 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
 import CxltToastr from 'cxlt-vue2-toastr';
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 import 'material-icons/iconfont/material-icons.css';
@@ -22,6 +21,25 @@ import { checkForm, formatDate } from './bootstrap';
 import Gate from './permissions/Gate';
 
 Vue.prototype.$gate = new Gate(window.user);
+
+Vue.filter('price', function (value, locale = "es-CO", config = { currency: 'COP', minimumFractionDigits: 0 }) {
+  value = Number(value);
+  if (!value || isNaN(value)) {
+    value = 0;
+  }
+
+  var formatter = new Intl.NumberFormat(locale, Object.assign({ style: 'currency' }, config));
+
+  /*
+  configuración dolar
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+    });
+  */
+  return formatter.format(value);
+})
 
 Vue.use(VueFormWizard)
 Vue.use(CxltToastr)

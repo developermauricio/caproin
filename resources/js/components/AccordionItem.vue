@@ -20,7 +20,7 @@
       :id="'accordion_' + item.id"
       :aria-labelledby="item.id"
       class="collapse--custom"
-      :class="{ show: isOpen }"
+      :class="{ show: isOpen, hidden__colapse: hidden }"
       aria-expanded="false"
       :style="customStyle"
     >
@@ -50,10 +50,18 @@ export default {
   data() {
     return {
       height: 0,
+      hidden: true,
     };
   },
   computed: {
     ariaExpanded() {
+      this.checkHeight();
+      this.hidden = true;
+      setTimeout(() => {
+        if (this.isOpen) {
+          this.hidden = false;
+        }
+      }, this.seconds*1000+500);
       return this.isOpen ? "true" : "false";
     },
     seconds() {
@@ -69,7 +77,6 @@ export default {
   },
   methods: {
     changeCurrent() {
-      this.checkHeight();
       this.$emit("change-current", this.index);
     },
     checkHeight() {
@@ -88,10 +95,18 @@ export default {
 </script>
 <style scoped>
 .collapse--custom {
-  overflow: hidden;
   transition: 0.5s all ease-in-out;
 }
+
+.hidden__colapse {
+  overflow: hidden;
+}
+
 .collapse--custom:not(.show) {
   max-height: 0 !important;
+}
+
+.collapse-title {
+  width: 100%;
 }
 </style>
