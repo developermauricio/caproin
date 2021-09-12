@@ -295,12 +295,12 @@
         :modelo.sync="purchase_order.trm"
         :msgServer.sync="errors.trm"
         :money="{
-            decimal: '.',
-            thousands: ',',
-            prefix: '$ ',
-            suffix: 'COP',
-            precision: 0,
-          }"
+          decimal: '.',
+          thousands: ',',
+          prefix: '$ ',
+          suffix: 'COP',
+          precision: 0,
+        }"
       ></input-form>
     </div>
 
@@ -483,6 +483,6 @@ export default {
     axios.get("/api/all-invoices-list").then((response) => {
       this.invoices = response.data;
     });
-  },
+  }
 };
 </script>

@@ -163,16 +163,10 @@ export default {
       return moment(date).format('YYYY-MM-DD HH:mm:ss');
     },
     addNewSeguimiento() {
-      this.newSeguimiento.created_at = new Date().toISOString();
-      this.seguimientos.unshift(this.newSeguimiento);
       axios
         .post("/api/save-purchase-order-seguimiento", this.newSeguimiento)
         .then((response) => {
-          this.seguimientos.splice(
-            0,
-            1,
-            Object.assign(this.newSeguimiento, response.data)
-          );
+          this.seguimientos.unshift(Object.assign(this.newSeguimiento, response.data));
           this.reset();
         })
         .catch((err) => {

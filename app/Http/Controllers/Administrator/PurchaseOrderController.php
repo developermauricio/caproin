@@ -144,7 +144,7 @@ class PurchaseOrderController extends Controller
         $stateHistory = PurchaseOrderStateHistory::find($commentable['id']);
         $stateHistory->comments()->save($comment);
 
-        return response()->json($stateHistory, 201);
+        return response()->json($comment, 201);
     }
 
     public function getPurchaseOrderById($id)
@@ -226,6 +226,7 @@ class PurchaseOrderController extends Controller
 
             $purchaseOrder->currency_id = $request->input('currency.id');
             $purchaseOrder->total_value = $request->input('total_value');
+            $purchaseOrder->trm = $request->input('trm');
 
             $purchaseOrder->internal_quote_number = $request->input('internal_quote_number');
             $purchaseOrder->manufacturer_house_quotation_number = $request->input('manufacturer_house_quotation_number');
@@ -321,6 +322,8 @@ class PurchaseOrderController extends Controller
 
                 $newDetail->currency_id = $detail['currency']['id'];
                 $newDetail->value = $detail['value'];
+                $newDetail->quantity = $detail['quantity'];
+                $newDetail->total_value = $detail['total_value'];
 
                 $newDetail->save();
                 $idsDetails->add($newDetail->id);
