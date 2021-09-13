@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/buttons.bootstrap4.min.css">
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/file-uploaders/dropzone.min.css">
 @endpush
 @section('title', 'Actualizar orden de compra')
 @section('header_page')
@@ -30,7 +31,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card p-2">
-                <create-purchase-order :id="{{$id}}" ></create-purchase-order>
+                <create-purchase-order :id="{{$id}}"></create-purchase-order>
             </div>
         </div>
     </div>

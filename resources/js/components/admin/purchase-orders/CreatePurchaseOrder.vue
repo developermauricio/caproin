@@ -28,7 +28,6 @@
 
     <tab-content title="Productos" :beforeChange="validarTab">
       <order-details
-        v-if="currentTab == 1"
         :currency="purchase_order.currency"
         :order_details.sync="purchase_order.order_details"
         :type_currencies="type_currencies"

@@ -20,6 +20,9 @@ use App\Models\Zone;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class PurchaseOrderController extends Controller
 {
@@ -260,7 +263,8 @@ class PurchaseOrderController extends Controller
         }
     }
 
-    private function getDate($dateTxt){
+    private function getDate($dateTxt)
+    {
         if (trim($dateTxt) !== '') {
             return \Carbon\Carbon::parse($dateTxt);
         } else {
@@ -319,6 +323,7 @@ class PurchaseOrderController extends Controller
                 $newDetail->application = $detail['application'];
 
                 $newDetail->blueprint_number = $detail['blueprint_number'];
+                $newDetail->blueprint_file = $detail['blueprint_file'];
                 // $newDetail->internal_quote_number = $detail['internal_quote_number'];
                 $newDetail->house_quote_number = $detail['house_quote_number'];
 
@@ -335,4 +340,30 @@ class PurchaseOrderController extends Controller
             throw $th;
         }
     }
+
+
+    public function uploadFileBlueprint(Request $request)
+    {
+
+        $uuid = $request->input('id');
+        $archive = $request->file('archive');
+        $archiveExtension = $archive->getClientOriginalExtension();
+
+        $ramdon = Str::random(10);
+        $nameArchive = $ramdon . '-' . strtolower($archive->getClientOriginalName());
+        $path = Storage::disk('public')->put('/blueprints/' . $nameArchive, file_get_contents($archive));
+        $urlFinal = '/storage/blueprints/' . $nameArchive;
+
+        return response()->json(['data' => $urlFinal, 'uuid' => $uuid, 'extension' => $archiveExtension]);
+    }
+
+    public function removeFileBlueprint(Request $request)
+    {
+        $pathArchive = $request->get('archive');
+        $partes_ruta = pathinfo($pathArchive);
+        Storage::delete('blueprints/' . $partes_ruta['basename']);
+
+        return response()->json([], 204);
+    }
+
 }

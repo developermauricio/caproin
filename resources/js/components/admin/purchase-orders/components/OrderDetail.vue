@@ -173,15 +173,61 @@
         :required="false"
       ></input-form>
     </div>
+
+    <div class="col-12" v-show="order_detail.blueprint_number">
+      <a target="_blank" :href="order_detail.blueprint_file" v-if="order_detail.blueprint_file" class="btn btn-primary mb-1">
+        Descargar plano
+        <i v-html="iconDownload"></i>
+      </a>
+      <vue2Dropzone
+        class="dropzone upload-logo dropzone-area dz-clickable"
+        ref="myVueDropzone"
+        :duplicateCheck="true"
+        id="order_detail.product.id"
+        :options="dropZoneOptions"
+        @vdropzone-sending="sendingEvent"
+        @vdropzone-max-files-exceeded="maxFiles"
+        @vdropzone-success="addArchiveTeam"
+        @vdropzone-removed-file="removedArchiveDropzoneTeam"
+      ></vue2Dropzone>
+    </div>
   </div>
 </template>
 
 <script>
+import vue2Dropzone from "vue2-dropzone";
+
 export default {
   name: "OrderDetail",
+  components: {
+    vue2Dropzone,
+  },
   data() {
     return {
       product_type: null,
+      dropZoneOptions: {
+        url: "/api/upload-blueprint-file",
+        maxFilesize: 5, //Tamaño en MB
+        maxFiles: 1, // Catidad maxima que se puede subir
+        paramName: "archive",
+        acceptedFiles:
+          "application/pdf,.doc,.docx,.xls,.xlsx,.csv,.tsv,.ppt,.pptx,.pages,.odt,.rtf",
+        addRemoveLinks: true,
+        dictDefaultMessage: "Clic aquí o arrastra tus documentos",
+        dictMaxFilesExceeded:
+          "No es posible agregar más archivos. Limite maximo 2",
+        dictFileTooBig:
+          "El archivo es demasiado grande, su peso es" +
+          " ({{filesize}}MiB). " +
+          "Tamaño máximo del archivo:" +
+          " {{maxFilesize}}MiB.",
+        dictRemoveFile: "Remover Archivo",
+        dictInvalidFileType: "No puede cargar archivos de este tipo.",
+        headers: {
+          "X-CSRF-TOKEN": this.csrf_token, //Este token lo pasamos por los props
+        },
+        // params: {id: this.entity_get_data.id}  //Para enviar parametros
+      },
     };
   },
   props: {
@@ -207,6 +253,9 @@ export default {
     },
   },
   computed: {
+    iconDownload() {
+      return feather.icons['download-cloud'].toSvg();
+    },
     currencyId() {
       return this.order_detail && this.order_detail.currency
         ? this.order_detail.currency.id
@@ -244,7 +293,7 @@ export default {
     },
     totalValue: function () {
       return this.order_detail.value * this.order_detail.quantity;
-    }
+    },
   },
   watch: {
     totalValue: function () {
@@ -254,21 +303,81 @@ export default {
       this.updatePriceByCurrency();
     },
   },
-  mounted(){
-    if (this.currency && !this.order_detail.currency){
+  mounted() {
+    if (this.currency && !this.order_detail.currency) {
       this.order_detail.currency = this.currency;
       this.updatePriceByCurrency();
     }
   },
   methods: {
-    updatePriceByCurrency(){
+    updatePriceByCurrency() {
       const productPrice = this.order_detail.product.product_prices.find(
         (productPrice) => {
           return productPrice.currency_id === this.currencyId;
         }
       );
       this.order_detail.value = productPrice.price;
-    }
-  }
+    },
+    sendingEvent(file, xhr, formData) {
+      formData.append("blueprint_number", this.order_detail.blueprint_number);
+      formData.append("id", file.upload.uuid);
+    },
+    maxFiles(file) {
+      this.$refs.myVueDropzone.removeFile(file);
+      this.$toast.error({
+        title: "Atención",
+        message: "No es posible agregar más archivos. Limite maximo 1",
+        showDuration: 1000,
+        hideDuration: 8000,
+        position: "top right",
+      });
+    },
+    addArchiveTeam(file, response) {
+      if (this.order_detail.blueprint_file){
+        this.removeFile(this.order_detail.blueprint_file).then(res => {
+
+        });
+      }
+
+      this.order_detail.blueprint_file = response.data;
+      setTimeout(() => {
+        this.$toast.success({
+          title: "¡Muy bien!",
+          message: "Archivo subido correctamente",
+          showDuration: 1000,
+          hideDuration: 5000,
+          position: "top right",
+        });
+      }, 1000);
+    },
+    async removedArchiveDropzoneTeam(file, error, xhr) {
+      const isRemove = await this.removeFile(this.order_detail.blueprint_file);
+
+      if (isRemove) {
+        this.$toast.success({
+          title: "¡Muy bien!",
+          message: "Archivo subido correctamente",
+          showDuration: 1000,
+          hideDuration: 5000,
+          position: "top right",
+        });
+        this.order_detail.blueprint_file = "";
+      } else {
+        this.$toast.error({
+          title: "¡Fallo!",
+          message: "El archivo no se pudo eliminar",
+          showDuration: 1000,
+          hideDuration: 5000,
+          position: "top right",
+        });
+      }
+    },
+    async removeFile(fileUrl) {
+      const data = new FormData();
+      data.append("archive", fileUrl);
+      const final = await axios.post("/api/remove-blueprint-file", data);
+      return final.status === 204;
+    },
+  },
 };
 </script>

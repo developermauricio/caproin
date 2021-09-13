@@ -61,7 +61,7 @@ export default {
         if (this.isOpen) {
           this.hidden = false;
         }
-      }, this.seconds*1000+500);
+      }, this.seconds * 1000 + 500);
       return this.isOpen ? "true" : "false";
     },
     seconds() {
@@ -83,7 +83,7 @@ export default {
       if (!this.$refs.body_item) {
         return 0;
       }
-      this.height = this.$refs.body_item.clientHeight;
+      this.height = this.$refs.body_item.clientHeight + 100;
     },
   },
   mounted() {
