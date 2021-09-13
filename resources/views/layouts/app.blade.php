@@ -30,7 +30,14 @@
 <!-- END: Custom CSS-->
     @auth
         <script>
-            window.user = @json(auth()->user())
+            window.user = @json(auth()->user());
+            @php
+                $roles = "";
+                auth()->user()->roles->each(function ($rol) use (&$roles){
+                    $roles .= $rol->name.",";
+                });
+            @endphp
+            const roles = "{{$roles}}";
         </script>
     @endauth
 </head>

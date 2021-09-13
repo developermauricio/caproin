@@ -84,6 +84,7 @@ export default {
         invoice_id: "",
         invoice_state: "",
         trm: 0,
+        total_delivery: true,
         invoice_number: "",
         contact_number: "",
         provider_id: "",

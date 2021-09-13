@@ -233,6 +233,8 @@ class PurchaseOrderController extends Controller
             $purchaseOrder->dispatch_guide_number = $request->input('dispatch_guide_number');
 
             $purchaseOrder->conveyor_id = $request->input('conveyor.id');
+            $purchaseOrder->total_delivery = $request->input('total_delivery');
+
             $purchaseOrder->order_receipt_date = $this->getDate($request->input('order_receipt_date'));
             $purchaseOrder->offer_delivery_date = $this->getDate($request->input('offer_delivery_date'));
             $purchaseOrder->delivery_date_required_customer = $this->getDate($request->input('delivery_date_required_customer'));

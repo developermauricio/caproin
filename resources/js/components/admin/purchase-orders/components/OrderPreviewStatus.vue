@@ -9,7 +9,6 @@
       <p><strong>Estimado:</strong> {{ estimated_date(history) }}</p>
       <p>{{ history.description || "Sin descripción" }}</p>
     </div>
-    purchase_order_state_histories
   </div>
 </template>
 

@@ -12,7 +12,9 @@
             {{ order_detail.product.name }} - {{ order_detail.product.code }}
           </span>
           <span class="header__price">
-            <strong>Cantidad: </strong>
+            <strong>Precio unitario: </strong>
+            {{ order_detail.value | price }}
+            <strong class="pl-1">Cantidad: </strong>
             {{ order_detail.quantity }}
             <strong class="pl-1">Total: </strong>
             {{ order_detail.total_value | price }}
@@ -184,7 +186,7 @@ export default {
         Object.assign({}, this.order_detail, {
           product_id: product.id,
           internal_product_code: product.code,
-          product: product
+          product: product,
         })
       );
     },

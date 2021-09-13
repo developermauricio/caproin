@@ -25,7 +25,7 @@
       <div class="modal-body" v-if="purchase_order.id">
         <order-preview :purchase_order="purchase_order" ></order-preview>
       </div>
-      <div class="modal-footer">
+      <div v-if="$gate.allow('editPurchaseOrder', 'purchaseOrder')" class="modal-footer">
         <button
           @click="reset"
           type="button"
@@ -80,6 +80,7 @@ export default {
         invoice_id: "",
         invoice_state: "",
         trm: 0,
+        total_delivery: true,
         invoice_number: "",
         contact_number: "",
         provider_id: "",

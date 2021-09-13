@@ -279,7 +279,7 @@
         requiredMsg="La fecha de despacho esperada es obligatoria"
         :modelo.sync="purchase_order.expected_dispatch_date"
         :msgServer.sync="errors.expected_dispatch_date"
-        :required="true"
+        :required="false"
       ></input-form>
     </div>
 

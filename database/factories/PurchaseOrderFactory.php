@@ -34,6 +34,7 @@ $factory->define(PurchaseOrder::class, function (Faker $faker) {
         'dispatch_guide_number' => $faker->numberBetween(5000),
         'conveyor_id' => Conveyor::inRandomOrder()->first()->id,
         'trm' => $faker->numberBetween(3000, 4000),
+        'total_delivery' => $faker->randomElement([0, 1]),
         'order_receipt_date' => $faker->date(),
         'offer_delivery_date' => $faker->date(),
         'delivery_date_required_customer' => $faker->date(),

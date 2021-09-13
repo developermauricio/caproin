@@ -40,6 +40,22 @@
     </div>
 
     <div class="col-12 col-md-4 col-lg-4">
+      <div class="form-group">
+        <label for="total_delivery" class="form-control-label">
+          Tipo Entrega:
+        </label>
+        <switch-component
+          class="d-block"
+          id="total_delivery"
+          v-model="purchase_order.total_delivery"
+          :size="80"
+          msgTrue="Total"
+          msgFalse="Parcial"
+        ></switch-component>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-4 col-lg-4">
       <input-form
         type="date"
         id="txt_actual_dispatch_date"
@@ -86,7 +102,11 @@
 </template>
 
 <script>
+import SwitchComponent from "../../../SwitchComponent.vue";
 export default {
+  components: {
+    SwitchComponent,
+  },
   name: "ConveyorOrder",
   props: {
     errors: {

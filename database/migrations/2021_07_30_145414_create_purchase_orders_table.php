@@ -54,7 +54,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->date('order_receipt_date');
             $table->date('offer_delivery_date');
             $table->date('delivery_date_required_customer');
-            $table->date('expected_dispatch_date');
+            $table->date('expected_dispatch_date')->nullable();
 
             $table->date('actual_dispatch_date')->nullable();
             $table->date('actual_delivery_date')->nullable();
@@ -70,7 +70,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->enum('invoice_state', ['No subida', 'No Entregada']);
 
             //TODO:Entregas parciales en la seccion de transporte
-            $table->boolean('partial_delivery')->default(0);
+            $table->boolean('total_delivery')->default(1);
             $table->double('trm');
 
             $table->string('invoice_number')->nullable();

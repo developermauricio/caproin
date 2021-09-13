@@ -63,11 +63,7 @@
       </div>
     </div>
     <div class="input-group col-md-6 mb-3 p-0">
-      <select
-        class="form-control"
-        v-model="newStatus"
-        name="new_status"
-      >
+      <select class="form-control" v-model="newStatus" name="new_status">
         <option :value="null">Seleccione un nuevo estado</option>
         <option :key="state.id" :value="state" v-for="state in remainingState">
           {{ state.name }}
@@ -152,8 +148,17 @@ export default {
       });
       this.newStatus = null;
     },
+    orderPurchaseOrders() {
+      this.state_histories = this.state_histories.sort((uno, dos) => {
+        return (
+          new Date(uno.estimated_date).getTime() -
+          new Date(dos.estimated_date).getTime()
+        );
+      });
+    },
   },
   created() {
+    this.orderPurchaseOrders();
     this.getData();
   },
 };

@@ -20,7 +20,7 @@ import 'vuesax/dist/vuesax.css';
 import { checkForm, formatDate } from './bootstrap';
 import Gate from './permissions/Gate';
 
-Vue.prototype.$gate = new Gate(window.user);
+Vue.prototype.$gate = new Gate(window.user, roles);
 
 Vue.filter('price', function (value, locale = "es-CO", config = { currency: 'COP', minimumFractionDigits: 0 }) {
   value = Number(value);

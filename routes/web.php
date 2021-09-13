@@ -22,8 +22,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/test', function () {
-    $products = Product::with('productPrices')->limit(1)->get();
-    return response()->json($products);
 });
 
 Route::get('/data-invoice-customer', function (){
