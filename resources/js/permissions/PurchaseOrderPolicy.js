@@ -9,4 +9,8 @@ export default class PurchaseOrderPolicy {
   static editPurchaseOrder($user, customer) {
     return $user.rolesTxt.indexOf('Administrador') !== -1;
   }
+
+  static addSeguimiento($user, customer) {
+    return $user.rolesTxt.indexOf('Administrador') !== -1;
+  }
 }

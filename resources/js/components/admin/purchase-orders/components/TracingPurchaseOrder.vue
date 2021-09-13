@@ -6,7 +6,7 @@
           <h4 class="card-title">Seguimiento</h4>
           <button
             class="btn btn-primary"
-            v-if="!showForm && editable"
+            v-if="!showForm && editable && $gate.allow('addSeguimiento', 'purchaseOrder')"
             @click="showForm = true"
           >
             Añadir Nuevo Seguimiento

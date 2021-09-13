@@ -202,8 +202,15 @@ class DatabaseSeeder extends Seeder
         /*=============================================
             CREAMOS 10 CLIENTES
         =============================================*/
-        factory(\App\User::class, 10)->create()
-            ->each(function (\App\User $u){
+        $customer = factory(\App\User::class)->create([
+            'email' => "customer@gmail.com"
+        ]);
+        $customer->roles()->attach([7]);
+        factory(\App\Models\Customer::class, 1)->create([
+            'user_id' => $customer->id,
+        ]);
+        factory(\App\User::class, 9)->create()
+            ->each(function (\App\User $u) {
                 $u->roles()->attach([7]);
                 factory(\App\Models\Customer::class, 1)->create(
                     [
