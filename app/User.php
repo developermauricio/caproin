@@ -92,7 +92,15 @@ class User extends Authenticatable
         return auth()->user()->hasRole('Vendedor');
     }
 
-    static public function user(){
+    static public function user()
+    {
         return auth()->user();
+    }
+
+    public function scopeQuery($q, $query)
+    {
+        return $q->where(function ($q) use ($query) {
+            $q->where('identification', $query)->orWhere('email', $query);
+        });
     }
 }

@@ -11,24 +11,37 @@ use App\Models\Employee;
 use App\Models\Invoice;
 use App\Models\OrderDetail;
 use App\Models\OrderType;
+use App\Models\PaymentType;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderStateHistory;
 use App\Models\StateOrder;
 use App\Models\TypeProduct;
 use App\Models\Zone;
+use App\Traits\MessagesException;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Rap2hpoutre\FastExcel\FastExcel;
+use Rap2hpoutre\FastExcel\SheetCollection;
+use SebastianBergmann\Environment\Console;
 
 class PurchaseOrderController extends Controller
 {
+    use MessagesException;
+
     public function index()
     {
-        return view('admin.purchase-order.list-purchase-orders');
+        // Tipo de orden, Zona, Transportista, Tipo Pago, y el Tipo de Moneda
+        $order_types = OrderType::all(['id', 'name']);
+        $zones = Zone::all(['id', 'name']);
+        $conveyors = Conveyor::all(['id', 'name']);
+        $payment_types = PaymentType::all(['id', 'name']);
+        $currencies = Currency::all(['id', 'code']);
+
+        return view('admin.purchase-order.list-purchase-orders', compact('order_types', 'zones', 'conveyors', 'payment_types', 'currencies'));
     }
 
     public function create()
@@ -366,4 +379,158 @@ class PurchaseOrderController extends Controller
         return response()->json([], 204);
     }
 
+    public function importPurchaseOrders(Request $request)
+    {
+
+        $file = $request->file('archive');
+        $sheets = (new FastExcel)->importSheets($file);
+
+        $encabezado = collect();
+        $detalle = collect();
+        $total = 0;
+        // dd($sheets->get(0));
+
+        collect($sheets->get(0))->each(function ($row) use (&$encabezado, &$total) {
+            $total++;
+            try {
+                DB::beginTransaction();
+
+                $customer = Customer::whereHas('user', function ($query) use ($row) {
+                    return $query->query($row["cliente"]);
+                })->orWhere('id', $row['cliente'])->first();
+
+                $employee = Employee::whereHas('user', function ($query) use ($row) {
+                    return $query->query($row["Vendedor"]);
+                })->orWhere('id', $row['Vendedor'])->first();
+
+                $invoice = Invoice::where('invoice_number', $row["Numero de factura"])->first();
+
+                if (!$customer) {
+                    throw new \Exception("Cliente no encontrado", "-1");
+                }
+
+                if (!$employee) {
+                    throw new \Exception("Vendedor no encontrado ", "-1");
+                }
+
+                $purchaseOrder = new PurchaseOrder();
+                $purchaseOrder->internal_order_number = $row["Numero de pedido interno"];
+                $purchaseOrder->customer_order_number = $row["Numero de pedido Cliente"];
+                $purchaseOrder->customer_id = $customer->id;
+                $purchaseOrder->final_user = $row["usuario final"];
+                $purchaseOrder->order_type_id = $row["Tipo de orden"];
+                $purchaseOrder->zone_id = $row["Zona"];
+                $purchaseOrder->seller_id = $employee->id;
+                $purchaseOrder->house = $row["Casa"];
+                $purchaseOrder->description = $row["Descripcion"];
+                $purchaseOrder->currency_id = $row["Tipo de Moneda"];
+                $purchaseOrder->total_value = $row["Valor Total"];
+                $purchaseOrder->internal_quote_number = $row["numero de cotizacion interna"];
+                $purchaseOrder->manufacturer_house_quotation_number = $row["número de cotización de la casa del fabricante"];
+                $purchaseOrder->dispatch_guide_number = $row["numero de guia"];
+                $purchaseOrder->conveyor_id = $row["Transportista"];
+                $purchaseOrder->order_receipt_date = $row["fecha de recepción del pedido"];
+                $purchaseOrder->offer_delivery_date = $row["fecha de entrega ofertada"];
+                $purchaseOrder->delivery_date_required_customer = $row["fecha de entrega requerida cliente"];
+                $purchaseOrder->expected_dispatch_date = $row["fecha de envío prevista"];
+                $purchaseOrder->actual_dispatch_date = $row["fecha de envío real"];
+                $purchaseOrder->actual_delivery_date = $row["fecha de entrega real"];
+                $purchaseOrder->payment_id = $row["Tipo Pago"];
+                $purchaseOrder->total_delivery = $row["Envio Total"];
+                $purchaseOrder->trm = $row["trm"];
+                $purchaseOrder->contact_number = $row["Numero de contacto"];
+
+                $purchaseOrder->invoice_state = $invoice ? PurchaseOrder::NO_ENTREGADA : PurchaseOrder::NO_SUBIDA;
+                $purchaseOrder->invoice_id = $invoice ? $invoice->id : null;
+                $purchaseOrder->invoice_number = $invoice ? $invoice->invoice_number : '';
+
+                $purchaseOrder->save();
+
+                DB::commit();
+            } catch (\Exception $exception) {
+                DB::rollBack();
+                $row['error'] = $this->parseException($exception, $row);
+                $encabezado->add($row);
+            }
+        });
+
+        $details = collect($sheets->get(1));
+
+        $details->groupBy('Numero de pedido interno')->each(function ($details, $numeroPedido) use (&$detalle, &$total) {
+            $purchaseOrder = PurchaseOrder::select('id')->where('internal_order_number', $numeroPedido)->first();
+            if ($purchaseOrder) {
+                $details->each(function ($detail) use ($purchaseOrder, &$detalle, &$total) {
+
+                    $total++;
+                    DB::beginTransaction();
+                    try {
+                        $product = Product::where('code', $detail['Código producto interno'])->first();
+
+                        if (!$product) {
+                            throw new \Exception("Producto no encontrado (Numero de pedido interno) ", "-1");
+                        }
+
+                        $newDetail = new OrderDetail;
+
+                        $newDetail->purchase_order_id = $purchaseOrder->id;
+                        $newDetail->manufacturer = $detail['Casa'];
+
+                        $newDetail->product_id = $product->id;
+                        $newDetail->internal_product_code = $product->code;
+
+                        $newDetail->client_product_code = $detail['Código de producto del cliente'];
+                        $newDetail->customer_product_description = $detail['Descripción del producto del cliente'];
+                        $newDetail->application = $detail['Aplicacion'];
+                        $newDetail->blueprint_number = $detail['Numero de plano'];
+                        $newDetail->currency_id = $detail['Tipo Moneda'];
+                        $newDetail->value = $detail['Valor'];
+                        $newDetail->quantity = $detail['Cantidad'];
+                        $newDetail->total_value = $detail['Valor total'];
+                        $newDetail->house_quote_number = $detail['Número Cotización de Casa'];
+                        $newDetail->save();
+
+                        print_r($newDetail->getAttributes());
+
+                        DB::commit();
+                    } catch (\Exception $exception) {
+                        DB::rollBack();
+                        $detail['error'] = $this->parseException($exception, $detail);
+                        $detalle->add($detail);
+                    }
+                });
+            } else {
+                $details->each(function ($detail) use ($purchaseOrder, &$detalle, &$total) {
+                    $total++;
+                    $detail['error'] = "No se encuentra el codigo de producto";
+                    $detalle->add($detail);
+                });
+            }
+        });
+
+        $errors = $encabezado->count() + $detalle->count();
+        $success = $total - $errors;
+
+        $errors = $encabezado->count() + $detalle->count();
+        $success = $total - $errors;
+        if ($errors < 1 && $errors !== $total) {
+            return back()->with('status', "Transacción realizada existosamente");
+        } else {
+            if ($success > 0) {
+                return back()
+                    ->with('error', $errors . " datos no se importaron correctamente")
+                    ->with('status', $success . " datos se importaron correctamente")
+                    ->with('lines', [
+                        'encabezado' => $encabezado,
+                        'detalle' => $detalle
+                    ]);
+            } else {
+                return back()
+                    ->with('error', "Ningún dato se ha importado correctamente")
+                    ->with('lines', json_encode([
+                        'encabezado' => $encabezado,
+                        'detalle' => $detalle
+                    ]));
+            }
+        }
+    }
 }

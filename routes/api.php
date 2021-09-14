@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('download-excel', "ExcelController@download");
+Route::post('download-excel-sheets', "ExcelController@downloadSheets");
 
 Route::group(['namespace' => 'Administrator'], function () {
 

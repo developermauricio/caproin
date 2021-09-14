@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Rap2hpoutre\FastExcel\FastExcel;
+use Rap2hpoutre\FastExcel\SheetCollection;
 
 class ExcelController extends Controller
 {
@@ -24,5 +25,11 @@ class ExcelController extends Controller
         })->toArray();
 
         return (new FastExcel($lines))->download($request->input('name').'.xlsx');
+    }
+
+
+    public function downloadSheets(Request $request){
+        $sheets = new SheetCollection($request->input('lines'));
+        return (new FastExcel($sheets))->download($request->input('name').'.xlsx');
     }
 }

@@ -17,7 +17,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->id();
 
             //header
-            $table->string('customer_order_number')->unique();
+            $table->string('customer_order_number');
             $table->string('internal_order_number')->unique();
 
             $table->unsignedBigInteger('customer_id');

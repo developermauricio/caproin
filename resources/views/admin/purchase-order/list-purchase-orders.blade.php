@@ -39,6 +39,19 @@
 </div>
 @endsection
 @section('content')
+
+@if (session('lines'))
+<div class="row">
+    <div class="col-12">
+        <div class="card p-2">
+            <import-error-data-purchase-order
+            :lines="{{session('lines')}}"
+            ></import-error-data-purchase-order>
+        </div>
+    </div>
+</div>
+@endif
+
 <section id="basic-datatable">
     <div class="row">
         <div class="col-12">
@@ -84,6 +97,221 @@
             <modal-tracer-purchase-order ></modal-tracer-purchase-order>
         </div>
     </div>
+
+
+    <!--=====================================
+                MODAL PARA IMPORTAR ORDENES
+            ======================================-->
+        <div class="modal fade text-left modal-primary" id="modal-import-purchase-order" data-backdrop="static" tabindex="-1"
+             role="dialog" aria-labelledby="myModalLabel161" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel161">Importar Ordenes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ route('import.data.purchase_ordes') }}" method="POST" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            @csrf
+                            <h6 class="text-center">Selecciona desde tu computadora el archivo Excel tipo
+                                <strong>xlsx</strong></h6>
+                            <input type="file" name="archive" class="form-control text-center" required
+                                   accept=".xls,.xlsx">
+                            <div class="text-center pt-1">
+                            <a
+                                href="/import-excel/import-purchase-orders.xlsx"
+                                target="_blank"
+                            >Descarga el ejemplo</a>
+                            </div>
+                            <div class="collapse-default pt-1">
+                                <div class="card collapse-icon">
+                                    <div id="headingCollapse1" class="card-header" data-toggle="collapse" role="button"
+                                         data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                        <span class="lead collapse-title">Instrucciones</span>
+                                    </div>
+                                    <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1"
+                                         class="collapse">
+                                        <div class="card-body">
+                                            <p class="card-text text-justify">
+                                                Para importar ordenes de compra se debe cargar un archivo Excel en formato
+                                                <code>xlsx</code>.
+                                                <br><br>
+                                                Tenga en cuenta que el
+                                                <code>Tipo de orden</code>,
+                                                <code>Zona</code>,
+                                                <code>Transportista</code>,
+                                                <code>Tipo Pago</code>, y el
+                                                <code>Tipo de Moneda</code> debe ingresarse un numero que se encuentra en cada tabla.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="card collapse-icon">
+                                    <div id="headingCollapse2" class="card-header" data-toggle="collapse" role="button"
+                                         data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                        <span class="lead collapse-title">Tipos de ordenes</span>
+                                    </div>
+                                    <div id="collapse2" role="tabpanel" aria-labelledby="headingCollapse2"
+                                         class="collapse">
+                                        <div class="card-body">
+                                            <div class="pb-1 table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Número</th>
+                                                        <th>Nombre tipo orden</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($order_types as $order_type)
+                                                        <tr>
+                                                            <td>{{ $order_type->id }}</td>
+                                                            <td>{{ $order_type->name }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card collapse-icon">
+                                    <div id="headingCollapse3" class="card-header" data-toggle="collapse" role="button"
+                                         data-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                        <span class="lead collapse-title">Zonas</span>
+                                    </div>
+                                    <div id="collapse3" role="tabpanel" aria-labelledby="headingCollapse3"
+                                         class="collapse">
+                                        <div class="card-body">
+                                            <div class="pb-1 table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Número</th>
+                                                        <th>Nombre de las Zonas</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($zones as $zone)
+                                                        <tr>
+                                                            <td>{{ $zone->id }}</td>
+                                                            <td>{{ $zone->name }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card collapse-icon">
+                                    <div id="headingCollapse4" class="card-header" data-toggle="collapse" role="button"
+                                         data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                        <span class="lead collapse-title">Transportistas</span>
+                                    </div>
+                                    <div id="collapse4" role="tabpanel" aria-labelledby="headingCollapse4"
+                                         class="collapse">
+                                        <div class="card-body">
+                                            <div class="pb-1 table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Número</th>
+                                                        <th>Nombre Transportista</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($conveyors as $conveyor)
+                                                        <tr>
+                                                            <td>{{ $conveyor->id }}</td>
+                                                            <td>{{ $conveyor->name }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="card collapse-icon">
+                                    <div id="headingCollapse5" class="card-header" data-toggle="collapse" role="button"
+                                         data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                        <span class="lead collapse-title">Tipos de pago</span>
+                                    </div>
+                                    <div id="collapse5" role="tabpanel" aria-labelledby="headingCollapse5"
+                                         class="collapse">
+                                        <div class="card-body">
+                                            <div class="pb-1 table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Número</th>
+                                                        <th>Nombre tipo pago</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($payment_types as $payment_type)
+                                                        <tr>
+                                                            <td>{{ $payment_type->id }}</td>
+                                                            <td>{{ $payment_type->name }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="card collapse-icon">
+                                    <div id="headingCollapse6" class="card-header" data-toggle="collapse" role="button"
+                                         data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                                        <span class="lead collapse-title">Tipos de moneda</span>
+                                    </div>
+                                    <div id="collapse6" role="tabpanel" aria-labelledby="headingCollapse6"
+                                         class="collapse">
+                                        <div class="card-body">
+                                            <div class="pb-1 table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Número</th>
+                                                        <th>Nombre Moneda</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($currencies as $currency)
+                                                        <tr>
+                                                            <td>{{ $currency->id }}</td>
+                                                            <td>{{ $currency->code }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="btn_importar" type="submit" type="button" class="btn btn-primary">Importar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
 </section>
 @endsection
@@ -269,6 +497,22 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
         }
       ],
     },
+    @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal' || auth()->user()->roles->first()->name === 'Gerencia')
+    {
+        text: feather.icons['file-text'].toSvg({
+            class: 'mr-50 font-small-4'
+        }) + 'Importar'
+        , className: 'create-new btn btn-primary'
+        , attr: {
+            'data-target': '#modal-import-purchase-order'
+            , 'data-toggle': 'modal'
+            ,
+        }
+        , init: function (api, node, config) {
+            $(node).removeClass('btn-secondary');
+        }
+    },
+    @endif
     @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal' || auth()->user()->roles->first()->name === 'Gerencia')
     {
       text: feather.icons['plus'].toSvg({

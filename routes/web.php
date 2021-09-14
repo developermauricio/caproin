@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Administrator\PurchaseOrderController;
 use App\Mail\Customer\SendOverdueInvoice;
 use App\Models\Comment;
 use App\Models\HistorySendPaymetClient;
@@ -21,8 +22,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test', function () {
-});
+Route::get('/test', 'Administrator\PurchaseOrderController@importPurchaseOrders');
 
 Route::get('/data-invoice-customer', function (){
     $rol = auth()->user()->roles->first()->name; // Rol del Usuario
@@ -179,10 +179,12 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
     /*=============================================
           ORDENES DE COMPRA
         =============================================*/
+    Route::post('/import-data-purchase-ordes', 'PurchaseOrderController@importPurchaseOrders')->name('import.data.purchase_ordes');
     Route::get('/ordenes-compra', 'PurchaseOrderController@index')->name('admin.purchase_order.purchase_orders');
     Route::get('/ordenes-compra/crear', 'PurchaseOrderController@create')->name('admin.purchase_order.create');
     Route::get('/ordenes-compra/actualizar/{id}', 'PurchaseOrderController@update')->name('admin.purchase_order.update');
     Route::post('/import-data-invoice', 'InvoiceController@importDataInvoice')->name('import.data.invoices');
+
 
     /*=============================================
          RUTAS PARA LOS MODULOS DE PRODUCTOS Y SERVICIOS

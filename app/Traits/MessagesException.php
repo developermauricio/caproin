@@ -27,9 +27,7 @@ trait MessagesException
         $failKey = null;
         collect($attributes)->map(function ($attribute, $key) use (&$failData, &$failKey, $error_mensaje) {
             try {
-                echo $error_mensaje.":::".$attribute;
-                echo "<br/>";
-                if (strpos($error_mensaje, "'" . ($attribute)) || strpos($error_mensaje, '"' . ($attribute))) {
+                if (strpos($error_mensaje, "'" . ($attribute) . "'") || strpos($error_mensaje, '"' . ($attribute) . '"')) {
                     $failData = $attribute;
                     $failKey = $key;
                 }
@@ -38,7 +36,7 @@ trait MessagesException
         });
         switch ($code) {
             case "23000":
-                return $failKey." ya existe (" . $failData . ")";
+                return $failKey . " ya existe (" . $failData . ")";
         }
         return $error_mensaje;
     }

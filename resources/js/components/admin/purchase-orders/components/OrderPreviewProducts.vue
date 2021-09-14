@@ -24,7 +24,9 @@
       </p>
       <p class="col col-md-6">
         <strong>Aplicación:</strong>
-        {{ order_detail.application?order_detail.application:'Sin aplicación' }}
+        {{
+          order_detail.application ? order_detail.application : "Sin aplicación"
+        }}
       </p>
       <p class="col col-md-6">
         <strong>Numero de plano:</strong>
@@ -50,6 +52,17 @@
         <strong>Numero cotización Casa:</strong>
         {{ order_detail.house_quote_number }}
       </p>
+
+      <div class="col col-md-6" v-if="order_detail.blueprint_file">
+        <a
+          target="_blank"
+          :href="order_detail.blueprint_file"
+          class="btn btn-primary mb-1"
+        >
+          Descargar plano
+          <i v-html="iconDownload"></i>
+        </a>
+      </div>
     </div>
   </div>
 </template>
