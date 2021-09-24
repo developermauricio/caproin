@@ -17,7 +17,7 @@ import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
-import { checkForm, formatDate } from './bootstrap';
+import { checkForm, formatDate } from './common';
 import Gate from './permissions/Gate';
 
 Vue.prototype.$gate = new Gate(window.user, roles);

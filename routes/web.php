@@ -195,4 +195,9 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
      RUTAS PARA LOS MODULOS DE ACUERDOS COMERCIALES
     =============================================*/
     Route::get('/acuerdos-comerciales', 'TradeAgreementController@index')->name('admin.trade.agreement');
+
+    /*=============================================
+     RUTAS PARA LOS MODULOS DE REPORTES
+    =============================================*/
+    Route::get('/reportes', 'ReportController@index')->name('admin.report.view');
 });

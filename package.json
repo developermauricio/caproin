@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "chart.js": "^3.5.1",
         "cxlt-vue2-toastr": "^1.1.1",
         "feather-icons": "^4.28.0",
         "material-icons": "^1.0.0",

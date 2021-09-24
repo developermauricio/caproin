@@ -13,7 +13,9 @@
 <script src="/app-assets/js/scripts/components/components-tooltips.js"></script>
 <script src="/js/moment.js"></script>
 <script src="/js/moment-locale.js"></script>
+@if (!isset($customScript))
 <script src="{{ asset('js/app.js') }}"></script>
+@endif
 <!-- END: Theme JS-->
 
 <!-- BEGIN: Page JS-->
