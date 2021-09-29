@@ -7,7 +7,7 @@
 <script>
 let chartItem;
 export default {
-  name: "VerticalBarChart",
+  name: "MorosidadTotal",
   data() {
     return {
       labels: [

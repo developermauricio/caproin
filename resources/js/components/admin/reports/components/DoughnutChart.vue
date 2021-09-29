@@ -15,8 +15,8 @@ export default {
         datasets: [
           {
             label: "Dataset 1",
-            data: [80, 20],
-            backgroundColor: ["#1f78b4", "#a6cee3"],
+            data: [80, 20, 40, 50, 60],
+            backgroundColor: ["#1f78b4", "#a6cee3", "#ff0000", "#00ff00", "#0000ff"],
           },
         ],
       },
@@ -40,19 +40,17 @@ export default {
         type: "doughnut",
         data: this.data,
         options: {
-          cutout: 200,
+          maintainAspectRatio: false,
+          cutout: "80%",
           borderRadius: 0,
           borderWidth: 0,
           responsive: true,
           plugins: {
             legend: {
-              position: "top",
-              display: false,
+              position: "right",
             },
             title: {
-              display: true,
-              position: "top",
-              text: "Chart.js Doughnut Chart",
+              display: false,
             },
           },
         },

@@ -22,11 +22,13 @@ Vue.component('component-modal-profile', require('./components/admin/profile/Mod
 /*=============================================
 COMPONENTES PARA REPORTES
 =============================================*/
-Vue.component('reports-component', require('./components/admin/reports/pages/ReportsComponent.vue').default);
+Vue.component('reports-wallet-component', require('./components/admin/reports/pages/ReportsWalletComponent.vue').default);
+Vue.component('reports-logistic-component', require('./components/admin/reports/pages/ReportsLogisticComponent.vue').default);
 Vue.component('chart-js', require('./components/admin/reports/components/ChartJS.vue').default);
 
 
 Chart.register(...registerables)
+
 Vue.prototype.$chart = Chart;
 Vue.prototype.$axios = require('axios');
 Vue.prototype.$axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';

@@ -7,7 +7,7 @@
 <script>
 let chartItem;
 export default {
-  name: "VerticalBarChart",
+  name: "HorizontalBarChart",
   data() {
     return {
       labels: [
@@ -27,6 +27,18 @@ export default {
           backgroundColor: "#66c2a5",
           borderWidth: 1,
         },
+        {
+          label: "",
+          data: [50, 20, 15, 30, 32, 45, 9, 12],
+          backgroundColor: "#ff0000",
+          borderWidth: 1,
+        },
+        {
+          label: "",
+          data: [50, 20, 15, 30, 32, 45, 9, 12],
+          backgroundColor: "#00ff00",
+          borderWidth: 1,
+        },
       ],
     };
   },
@@ -44,6 +56,7 @@ export default {
           datasets: this.dataset,
         },
         options: {
+          indexAxis: 'y',
           plugins: {
             legend: {
               display: false,
@@ -52,11 +65,13 @@ export default {
           maintainAspectRatio: false,
           scales: {
             x: {
+              stacked: true,
               grid: {
                 display: false,
               },
             },
             y: {
+              stacked: true,
               max: 100,
               min: 0,
               ticks: {

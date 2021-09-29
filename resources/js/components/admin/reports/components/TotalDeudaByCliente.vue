@@ -7,24 +7,24 @@
 <script>
 let chartItem;
 export default {
-  name: "VerticalBarChart",
+  name: "MorosidadTotal",
   data() {
     return {
       labels: [
-        "2021-1",
-        "2021-2",
-        "2021-3",
-        "2021-4",
-        "2021-5",
-        "2021-6",
-        "2021-7",
-        "2021-8",
+        "Cliente 1",
+        "Cliente 2",
+        "Cliente 3",
+        "Cliente 4",
+        "Cliente 5",
+        "Cliente 6",
+        "Cliente 7",
+        "Cliente 8",
       ],
       dataset: [
         {
           label: "",
           data: [50, 20, 15, 30, 32, 45, 9, 12],
-          backgroundColor: "#66c2a5",
+          backgroundColor: "#a6cee3",
           borderWidth: 1,
         },
       ],
@@ -57,14 +57,7 @@ export default {
               },
             },
             y: {
-              max: 100,
-              min: 0,
-              ticks: {
-                stepSize: 50,
-              },
-              grid: {
-                display: false,
-              },
+              display: false,
             },
           },
         },
@@ -73,6 +66,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

@@ -7,25 +7,33 @@
 <script>
 let chartItem;
 export default {
-  name: "VerticalBarChart",
+  name: "RankingDeudores",
   data() {
     return {
       labels: [
-        "2021-1",
-        "2021-2",
-        "2021-3",
-        "2021-4",
-        "2021-5",
-        "2021-6",
-        "2021-7",
-        "2021-8",
+        "Cliente 1",
+        "Cliente 2",
+        "Cliente 3",
+        "Cliente 4",
+        "Cliente 5",
+        "Cliente 6",
+        "Cliente 7",
+        "Cliente 8",
       ],
       dataset: [
         {
-          label: "",
+          label: "Deuda total",
           data: [50, 20, 15, 30, 32, 45, 9, 12],
-          backgroundColor: "#66c2a5",
+          backgroundColor: "#a6cee3",
           borderWidth: 1,
+        },
+        {
+          label: "Venta mensual",
+          data: [50 * 2, 20 * 2, 15 * 2, 30 * 2, 32 * 2, 45 * 2, 9 * 2, 12 * 2],
+          borderColor: "#b41f42",
+          backgroundColor: "#b41f42",
+          type: "line",
+          order: 0,
         },
       ],
     };
@@ -46,7 +54,7 @@ export default {
         options: {
           plugins: {
             legend: {
-              display: false,
+              display: true,
             },
           },
           maintainAspectRatio: false,
@@ -57,10 +65,9 @@ export default {
               },
             },
             y: {
-              max: 100,
-              min: 0,
+              suggestedMin: 50,
               ticks: {
-                stepSize: 50,
+                maxTicksLimit: 6,
               },
               grid: {
                 display: false,
@@ -73,6 +80,3 @@ export default {
   },
 };
 </script>
-
-<style>
-</style>

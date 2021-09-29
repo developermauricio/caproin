@@ -3,6 +3,7 @@
 </template>
 
 <script>
+let chart = null;
 export default {
   name: "CharJS",
   props: {
@@ -12,12 +13,13 @@ export default {
     },
   },
   mounted() {
-    const chart = new this.$chart(this.$refs.graphic, this.config);
+    chart = new this.$chart(this.$refs.graphic, this.config);
     this.$emit("init", chart);
   },
   watch: {
-    config() {
-      console.log("change");
+    config: function () {
+      console.log("update", this.config);
+      chart.update();
     },
   },
 };
