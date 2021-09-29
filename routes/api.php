@@ -89,9 +89,9 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::post('register/store-invoice', 'InvoiceController@storeApiInvoice')->name('api.store.invoice');
     Route::get('data-invoice/{id}', 'InvoiceController@getApiDataInvoice')->name('api.data.invoice');
     Route::post('/register/update-invoice', 'InvoiceController@updateApiInvoice')->name('api.update.invoice');
-    Route::post('/upload-archive-invoice','InvoiceController@uploadArchiveInvoice')->name('api.upload.archive.invoice');
-    Route::post('/removed-archive-invoice','InvoiceController@removedArchiveInvoice')->name('api.removed.archive.invoice');
-    Route::post('/removed-archive-invoice-db','InvoiceController@removedArchiveInvoiceDb')->name('api.removed.archive.invoice');
+    Route::post('/upload-archive-invoice', 'InvoiceController@uploadArchiveInvoice')->name('api.upload.archive.invoice');
+    Route::post('/removed-archive-invoice', 'InvoiceController@removedArchiveInvoice')->name('api.removed.archive.invoice');
+    Route::post('/removed-archive-invoice-db', 'InvoiceController@removedArchiveInvoiceDb')->name('api.removed.archive.invoice');
 
     /*=============================================
     API PARA LAS ORDENES DE COMPRA
@@ -142,6 +142,15 @@ Route::group(['namespace' => 'Administrator'], function () {
     Route::get('/verify-consecutivo-oferta/{cosecutivo}', 'TradeAgreementController@validateConsecutivoOfert')->name('api.validate.identification');
 
 
+    /*=============================================
+      API PARA LOR REPORTES
+    =============================================*/
+    Route::group(['prefix' => 'report-wallet', 'as' => "api.report-wallet."], function () {
+        Route::get('total-facturas-vencidas', 'WalletReportController@facturasVencidas')->name('facturas-vencidas');
+        Route::get('morosidad-total', 'WalletReportController@morosidadTotal')->name('morosidad-total');
+        Route::get('facturas-vencidas-por-cliente', 'WalletReportController@facturasVencidasPorCliente')->name('facturas-vencidas-por-cliente');
+        Route::get('ranking-deudores', 'WalletReportController@rankingDeudores')->name('ranking-deudores');
+    });
 });
 
 /*=============================================
@@ -155,5 +164,3 @@ Route::get('/verify-email-company/{email}', 'Controller@validateEmailCompany')->
 Route::get('/get-identificationtype', 'Controller@getIdentificationType')->name('api.get.identification.type');
 Route::get('/get-customer-category', 'Controller@customerCategory')->name('api.get.customer.category');
 Route::get('/get-customer-position', 'Controller@customerPosition')->name('api.get.customer.position');
-
-

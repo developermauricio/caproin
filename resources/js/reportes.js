@@ -8,6 +8,36 @@ import { Chart, registerables } from 'chart.js';
 import Vue from 'vue';
 const { formatDate } = require('./common');
 
+const parsePrice = function (value, locale = "es-CO", config = { currency: 'COP', minimumFractionDigits: 0 }) {
+  value = Number(value);
+  if (!value || isNaN(value)) {
+    value = 0;
+  }
+
+  var formatter = new Intl.NumberFormat(locale, Object.assign({ style: 'currency' }, config));
+
+  /*
+  configuración dolar
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+    });
+  */
+  return formatter.format(value);
+};
+
+const shortNumber = function (value) {
+  if (value < 1000) {
+    return 100
+  } else if (value < 1000000) {
+    return (value / 1000).toFixed(1) + 'K'
+  }
+  return (value / 1000000).toFixed(1) + 'M'
+}
+
+Vue.filter('price', parsePrice)
+
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 /*COMPONENTES EXTERNOS*/
 Vue.component('input-form', require('./components/InputFormComponent.vue').default);
@@ -30,6 +60,8 @@ Vue.component('chart-js', require('./components/admin/reports/components/ChartJS
 Chart.register(...registerables)
 
 Vue.prototype.$chart = Chart;
+Vue.prototype.$price = parsePrice;
+Vue.prototype.$shortNumber = shortNumber;
 Vue.prototype.$axios = require('axios');
 Vue.prototype.$axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 

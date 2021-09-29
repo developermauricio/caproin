@@ -8,35 +8,15 @@
 let chartItem;
 export default {
   name: "RankingDeudores",
-  data() {
-    return {
-      labels: [
-        "Cliente 1",
-        "Cliente 2",
-        "Cliente 3",
-        "Cliente 4",
-        "Cliente 5",
-        "Cliente 6",
-        "Cliente 7",
-        "Cliente 8",
-      ],
-      dataset: [
-        {
-          label: "Deuda total",
-          data: [50, 20, 15, 30, 32, 45, 9, 12],
-          backgroundColor: "#a6cee3",
-          borderWidth: 1,
-        },
-        {
-          label: "Venta mensual",
-          data: [50 * 2, 20 * 2, 15 * 2, 30 * 2, 32 * 2, 45 * 2, 9 * 2, 12 * 2],
-          borderColor: "#b41f42",
-          backgroundColor: "#b41f42",
-          type: "line",
-          order: 0,
-        },
-      ],
-    };
+  props: {
+    labels: {
+      type: Array,
+      require: true,
+    },
+    dataset: {
+      type: Array,
+      require: true,
+    },
   },
   methods: {
     created(chart) {

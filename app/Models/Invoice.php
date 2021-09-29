@@ -35,6 +35,11 @@ class Invoice extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
     public function typeInvoice()
     {
         return $this->belongsTo(TypeInvoice::class, 'type_invoice_id');
@@ -60,5 +65,21 @@ class Invoice extends Model
 
     public function historySendPaymentCustomer(){
         return $this->belongsToMany(HistorySendPaymetClient::class, 'history_send_paymet_clients');
+    }
+
+    public function scopeExpired($query){
+        return $query
+        ->where('expiration_date', '<', \Carbon\Carbon::now())
+        ->where('state_id', '<>', StateInvoice::ID_PAGADO);
+    }
+
+    public function scopeDateFromTo($query, $columnName, $from, $to){
+        if ($from){
+            $query->where($columnName, '>=', $from);
+        }
+        if ($to){
+            $query->where($columnName, '<=', $to);
+        }
+        return $query;
     }
 }

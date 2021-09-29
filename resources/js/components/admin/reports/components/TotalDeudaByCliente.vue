@@ -7,28 +7,16 @@
 <script>
 let chartItem;
 export default {
-  name: "MorosidadTotal",
-  data() {
-    return {
-      labels: [
-        "Cliente 1",
-        "Cliente 2",
-        "Cliente 3",
-        "Cliente 4",
-        "Cliente 5",
-        "Cliente 6",
-        "Cliente 7",
-        "Cliente 8",
-      ],
-      dataset: [
-        {
-          label: "",
-          data: [50, 20, 15, 30, 32, 45, 9, 12],
-          backgroundColor: "#a6cee3",
-          borderWidth: 1,
-        },
-      ],
-    };
+  name: "TotalDeudaByCliente",
+  props: {
+    labels: {
+      type: Array,
+      require: true,
+    },
+    dataset: {
+      type: Array,
+      require: true,
+    },
   },
   methods: {
     created(chart) {
