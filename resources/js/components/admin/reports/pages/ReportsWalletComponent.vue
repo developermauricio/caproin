@@ -92,19 +92,19 @@
         <div class="row m-0">
           <div class="col-4 m-auto">
             <percentage-doughnut-chart
-              :percentage="25"
+              v-bind="configTotalCarteraVencida30"
             ></percentage-doughnut-chart>
             <p>30 Dias</p>
           </div>
           <div class="col-4 m-auto">
             <percentage-doughnut-chart
-              :percentage="10"
+              v-bind="configTotalCarteraVencida60"
             ></percentage-doughnut-chart>
             <p>60 Dias</p>
           </div>
           <div class="col-4 m-auto">
             <percentage-doughnut-chart
-              :percentage="5"
+              v-bind="configTotalCarteraVencida90"
             ></percentage-doughnut-chart>
             <p>90 Dias</p>
           </div>
@@ -189,6 +189,14 @@ export default {
         total_invoices: {},
         vencidas_invoices: {},
       },
+      totalCarteraVencida: {
+        total_30: 0,
+        total_60: 0,
+        total_90: 0,
+        expired_total_30: 0,
+        expired_total_60: 0,
+        expired_total_90: 0,
+      },
     };
   },
   mounted() {
@@ -200,6 +208,7 @@ export default {
       this.getMorosidadTotal();
       this.getFacturasVencidasPorCliente();
       this.getRankingDeudores();
+      this.getTotalCarteraVencida();
     },
     getDataApi(url) {
       return this.$axios.get(url + this.paramsApi);
@@ -230,9 +239,25 @@ export default {
         }
       );
     },
+    getTotalCarteraVencida() {
+      this.getDataApi("/api/report-wallet/total-cartera-vencida").then(
+        (response) => {
+          this.totalCarteraVencida = response.data;
+
+          Object.keys(this.totalCarteraVencida).forEach((key) => {
+            if (!this.totalCarteraVencida[key]) {
+              this.totalCarteraVencida[key] = 0;
+            }
+          });
+        }
+      );
+    },
     getPercentage(valor, total) {
-      if (total === 0) {
+      if (!total) {
         return 0;
+      }
+      if (!valor) {
+        valor = 0;
       }
       return (valor / total) * 100;
     },
@@ -266,6 +291,48 @@ export default {
     },
     montoFacturadoCOP() {
       return this.$shortNumber(this.facturas_vencidas.total);
+    },
+    configTotalCarteraVencida30() {
+      return {
+        description: {
+          text: this.$price(this.totalCarteraVencida.expired_total_30),
+          fontSize: 50,
+        },
+        percentage: Number(
+          this.getPercentage(
+            this.totalCarteraVencida.expired_total_30,
+            this.totalCarteraVencida.total_30
+          ).toFixed(1)
+        ),
+      };
+    },
+    configTotalCarteraVencida60() {
+      return {
+        description: {
+          text: this.$price(this.totalCarteraVencida.expired_total_60),
+          fontSize: 50,
+        },
+        percentage: Number(
+          this.getPercentage(
+            this.totalCarteraVencida.expired_total_60,
+            this.totalCarteraVencida.total_60
+          ).toFixed(1)
+        ),
+      };
+    },
+    configTotalCarteraVencida90() {
+      return {
+        description: {
+          text: this.$price(this.totalCarteraVencida.expired_total_90),
+          fontSize: 50,
+        },
+        percentage: Number(
+          this.getPercentage(
+            this.totalCarteraVencida.expired_total_90,
+            this.totalCarteraVencida.total_90
+          ).toFixed(1)
+        ),
+      };
     },
     configFacturasVencidas() {
       return {
@@ -347,7 +414,6 @@ export default {
         }
       });
 
-      console.log(total, deuda, labels);
       return {
         labels: labels,
         dataset: [

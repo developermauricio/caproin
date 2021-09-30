@@ -150,6 +150,7 @@ Route::group(['namespace' => 'Administrator'], function () {
         Route::get('morosidad-total', 'WalletReportController@morosidadTotal')->name('morosidad-total');
         Route::get('facturas-vencidas-por-cliente', 'WalletReportController@facturasVencidasPorCliente')->name('facturas-vencidas-por-cliente');
         Route::get('ranking-deudores', 'WalletReportController@rankingDeudores')->name('ranking-deudores');
+        Route::get('total-cartera-vencida', 'WalletReportController@totalCarteraVencida')->name('total-cartera-vencida');
     });
 });
 

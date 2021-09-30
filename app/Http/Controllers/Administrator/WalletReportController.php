@@ -167,4 +167,73 @@ class WalletReportController extends Controller
 
         return response()->json($response);
     }
+
+    public function totalCarteraVencida(Request $request)
+    {
+        $from = $request->input('from');
+
+        if (!$from) {
+            $now = \Carbon\Carbon::now();
+            $menos3Meses = $now->subMonths(3);
+            $from = $menos3Meses;
+        } else {
+            $from = \Carbon\Carbon::parse($from);
+        }
+
+        $dia_30 = $from->clone()->addDays(30);
+        $dia_60 = $dia_30->clone()->addDays(30);
+        $dia_90 = $dia_60->clone()->addDays(30);
+
+        $total_invoices_dia_30 = Invoice::select(DB::raw('sum(value_total) as valor_total'))
+            ->dateFromTo('date_issue', $from, $dia_30)
+            ->first();
+
+        $total_invoices_dia_60 = Invoice::select(DB::raw('sum(value_total) as valor_total'))
+            ->dateFromTo('date_issue', $from, $dia_60)
+            ->first();
+
+        $total_invoices_dia_90 = Invoice::select(DB::raw('sum(value_total) as valor_total'))
+            ->dateFromTo('date_issue', $from, $dia_90)
+            ->first();
+
+        $expired_total_invoices_dia_30 = Invoice::select(DB::raw('sum(value_total) as valor_total, sum(value_payment) as total_pagado'))
+            ->expired()
+            ->dateFromTo('date_issue', $from, $dia_30)
+            ->first();
+
+        $expired_total_invoices_dia_60 = Invoice::select(DB::raw('sum(value_total) as valor_total, sum(value_payment) as total_pagado'))
+            ->expired()
+            ->dateFromTo('date_issue', $from, $dia_60)
+            ->first();
+
+        $expired_total_invoices_dia_90 = Invoice::select(DB::raw('sum(value_total) as valor_total, sum(value_payment) as total_pagado'))
+            ->expired()
+            ->dateFromTo('date_issue', $from, $dia_90)
+            ->first();
+
+        $expired_dia_30 = $expired_total_invoices_dia_30->valor_total;
+        $expired_dia_60 = $expired_total_invoices_dia_60->valor_total;
+        $expired_dia_90 = $expired_total_invoices_dia_90->valor_total;
+
+        if ($expired_total_invoices_dia_30->total_pagado) {
+            $expired_dia_30 -= $expired_total_invoices_dia_30->total_pagado;
+        }
+
+        if ($expired_total_invoices_dia_60->total_pagado) {
+            $expired_dia_60 -= $expired_total_invoices_dia_60->total_pagado;
+        }
+
+        if ($expired_total_invoices_dia_90->total_pagado) {
+            $expired_dia_90 -= $expired_total_invoices_dia_90->total_pagado;
+        }
+
+        return response()->json([
+            'total_30' => $total_invoices_dia_30->valor_total,
+            'total_60' => $total_invoices_dia_60->valor_total,
+            'total_90' => $total_invoices_dia_90->valor_total,
+            'expired_total_30' => $expired_dia_30,
+            'expired_total_60' => $expired_dia_60,
+            'expired_total_90' => $expired_dia_90
+        ]);
+    }
 }

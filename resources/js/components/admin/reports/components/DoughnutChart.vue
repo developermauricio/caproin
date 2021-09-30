@@ -30,7 +30,6 @@ export default {
       this.dataset[0].data.push(3);
       this.dataset[0].backgroundColor.push("rgba(255, 159, 64, 0.2)");
       this.dataset[0].borderColor.push("rgba(255, 159, 64, 1)");
-      console.log(chartItem);
       chartItem.update();
     },
   },
