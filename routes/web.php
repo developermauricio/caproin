@@ -24,17 +24,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/test', 'Administrator\PurchaseOrderController@importPurchaseOrders');
 
-Route::get('/data-invoice-customer', function (){
+Route::get('/data-invoice-customer', function () {
     $rol = auth()->user()->roles->first()->name; // Rol del Usuario
     $user = auth()->user()->id; // id del Usuario
     if ($rol === "Vendedor") {
         $invoice = Invoice::whereHas('purchaseOrder.seller', function ($q) use ($user) {
             return $q->where('user_id', $user);
         })->with('customers', 'typeInvoice', 'state', 'paymentType', 'archive')->get();
-    }
-    elseif ($rol === "Cliente") {
-        $invoice = Invoice::whereHas('customers', function ($q) use ($user){
-            return $q->where('user_id', $user)->orWhereHas('sede', function ($q) use ($user){
+    } elseif ($rol === "Cliente") {
+        $invoice = Invoice::whereHas('customers', function ($q) use ($user) {
+            return $q->where('user_id', $user)->orWhereHas('sede', function ($q) use ($user) {
                 return $q->where('user_id', $user);
             });
         })->with('customers', 'typeInvoice', 'state', 'paymentType', 'archive')->get();
@@ -199,5 +198,6 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
     /*=============================================
      RUTAS PARA LOS MODULOS DE REPORTES
     =============================================*/
-    Route::get('/reportes', 'ReportController@index')->name('admin.report.view');
+    Route::get('/reportes-cartera', 'ReportController@index')->name('admin.report.cartera');
+    Route::get('/reportes-logistica', 'ReportController@logistic')->name('admin.report.logistic');
 });

@@ -8,7 +8,7 @@ use App\Models\StateInvoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class WalletReportController extends Controller
+class ReportWalletController extends Controller
 {
     public function facturasVencidas(Request $request)
     {
@@ -235,5 +235,29 @@ class WalletReportController extends Controller
             'expired_total_60' => $expired_dia_60,
             'expired_total_90' => $expired_dia_90
         ]);
+    }
+
+    public function visualizacionCartera(Request $request)
+    {
+        // $trm  = $request->input('trm');
+        $from = $request->input('from');
+        $to   = $request->input('to');
+
+        $vencidas_invoices = Invoice::selectRaw('id, customer_id, value_total, value_payment, (value_total - value_payment) as debe, expiration_date')
+            ->with('customer:id,business_name')
+            ->expired()
+            ->dateFromTo('date_issue', $from, $to)
+            ->get();
+
+        $fechaActual = \Carbon\Carbon::now();
+        $vencidas_invoices = $vencidas_invoices->map(function ($invoice) use ($fechaActual) {
+            $fechaExpiracion = \Carbon\Carbon::parse($invoice->expiration_date);
+            $diasDiferencia = $fechaActual->diffInDays($fechaExpiracion);
+            $invoice->totalDias = $diasDiferencia;
+            return $invoice;
+        });
+
+
+        return response()->json($vencidas_invoices);
     }
 }

@@ -146,11 +146,12 @@ Route::group(['namespace' => 'Administrator'], function () {
       API PARA LOR REPORTES
     =============================================*/
     Route::group(['prefix' => 'report-wallet', 'as' => "api.report-wallet."], function () {
-        Route::get('total-facturas-vencidas', 'WalletReportController@facturasVencidas')->name('facturas-vencidas');
-        Route::get('morosidad-total', 'WalletReportController@morosidadTotal')->name('morosidad-total');
-        Route::get('facturas-vencidas-por-cliente', 'WalletReportController@facturasVencidasPorCliente')->name('facturas-vencidas-por-cliente');
-        Route::get('ranking-deudores', 'WalletReportController@rankingDeudores')->name('ranking-deudores');
-        Route::get('total-cartera-vencida', 'WalletReportController@totalCarteraVencida')->name('total-cartera-vencida');
+        Route::get('total-facturas-vencidas', 'ReportWalletController@facturasVencidas')->name('facturas-vencidas');
+        Route::get('morosidad-total', 'ReportWalletController@morosidadTotal')->name('morosidad-total');
+        Route::get('facturas-vencidas-por-cliente', 'ReportWalletController@facturasVencidasPorCliente')->name('facturas-vencidas-por-cliente');
+        Route::get('ranking-deudores', 'ReportWalletController@rankingDeudores')->name('ranking-deudores');
+        Route::get('total-cartera-vencida', 'ReportWalletController@totalCarteraVencida')->name('total-cartera-vencida');
+        Route::get('visualizacion-cartera', 'ReportWalletController@visualizacionCartera')->name('visualizacion-cartera');
     });
 });
 

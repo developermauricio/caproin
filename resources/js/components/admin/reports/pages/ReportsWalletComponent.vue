@@ -124,6 +124,28 @@
       <div class="col-6 text-center">
         <h2 class="title">Visualización Cartera</h2>
         <p>Explicación de deuda y días</p>
+        <div class="cartera__container">
+          <div
+            class="cartera__item row"
+            v-for="cartera in visualizacionCartera"
+            :key="cartera.id"
+          >
+            <div class="col">
+              <p class="cartera__value">
+                {{ cartera.debe ? cartera.debe : cartera.value_total | price }}
+              </p>
+              <p class="cartera__title">Total a cobrar</p>
+            </div>
+            <div class="col">
+              <p class="cartera__value">{{ cartera.customer.business_name }}</p>
+              <p class="cartera__title">CLIENTE</p>
+            </div>
+            <div class="col">
+              <p class="cartera__value">{{ cartera.totalDias }}</p>
+              <p class="cartera__title">DIAS ATRASO</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-6 row m-0 text-center">
         <div class="col">
@@ -139,9 +161,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <vertical-bar-chart></vertical-bar-chart>
-    <stacked-bar-chart></stacked-bar-chart> -->
   </div>
 </template>
 
@@ -197,6 +216,7 @@ export default {
         expired_total_60: 0,
         expired_total_90: 0,
       },
+      visualizacionCartera: [],
     };
   },
   mounted() {
@@ -209,9 +229,17 @@ export default {
       this.getFacturasVencidasPorCliente();
       this.getRankingDeudores();
       this.getTotalCarteraVencida();
+      this.getVisualizacionCartera();
     },
     getDataApi(url) {
       return this.$axios.get(url + this.paramsApi);
+    },
+    getVisualizacionCartera() {
+      this.getDataApi("/api/report-wallet/visualizacion-cartera").then(
+        (response) => {
+          this.visualizacionCartera = response.data;
+        }
+      );
     },
     getTotalFacturasVencidas() {
       this.getDataApi("/api/report-wallet/total-facturas-vencidas").then(
@@ -496,5 +524,43 @@ export default {
   border-bottom: 0.2rem solid var(--blue-light);
   padding-bottom: 1rem;
   margin-bottom: 1rem;
+}
+
+.cartera__container {
+  background-color: white;
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+}
+
+.cartera__item {
+  margin: 0;
+  margin-bottom: 1rem;
+  box-shadow: 0 .2rem 0 #f2f1f0;
+  position: relative;
+}
+
+.cartera__item::before{
+  content: ' ';
+  background-color: #b4b0ad;
+  width: .2rem;
+  height: 90%;
+  position: absolute;
+  z-index: 20;
+  top: 0;
+}
+
+.cartera__title,
+.cartera__value{
+  color: #676767;
+  text-align: left;
+  margin: 0;
+}
+
+.cartera__value {
+  font-weight: 600;
+}
+
+.cartera__title {
+  font-weight: 400;
 }
 </style>

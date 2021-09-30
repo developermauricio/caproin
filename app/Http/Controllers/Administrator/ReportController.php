@@ -9,6 +9,11 @@ class ReportController extends Controller
 {
     public function index()
     {
-        return view('admin.reports.home');
+        return view('admin.reports.wallet');
+    }
+
+    public function logistic()
+    {
+        return view('admin.reports.logistic');
     }
 }
