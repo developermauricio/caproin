@@ -4,22 +4,22 @@
     <div class="row pt-3">
       <div class="col-6 m-0 row d-flex justify-content-around">
         <card-info class="card__item">
-          <p class="card__price">$90.6M</p>
-          <h2 class="card__title">Monto facturado en USD</h2>
+          <p class="card__price">906000</p>
+          <h2 class="card__title">Ordenes totales</h2>
         </card-info>
         <card-info class="card__item">
-          <p class="card__price">$10.4K</p>
-          <h2 class="card__title">Monto facturado en COP</h2>
+          <p class="card__price">800</p>
+          <h2 class="card__title">Ordenes en procesamiento</h2>
         </card-info>
       </div>
       <div class="col-6 m-0 row d-flex justify-content-around">
         <card-info class="card__item">
-          <p class="card__price">$10.4K</p>
-          <h2 class="card__title">Monto facturado en COP</h2>
+          <p class="card__price">860</p>
+          <h2 class="card__title">Ordenes despachadas</h2>
         </card-info>
         <card-info class="card__item">
-          <p class="card__price">$10.4K</p>
-          <h2 class="card__title">Monto facturado en COP</h2>
+          <p class="card__price">820</p>
+          <h2 class="card__title">Ordenes entregadas</h2>
         </card-info>
       </div>
     </div>
@@ -27,15 +27,15 @@
     <!-- segundo -->
     <div class="row pt-3">
       <div class="col-4 text-center">
-        <h2 class="title">Morosidad total</h2>
+        <h2 class="title">Total pedidos hechos por (periodo)</h2>
         <vertical-bar-chart style="max-height: 20rem"></vertical-bar-chart>
       </div>
       <div class="col-4 text-center">
-        <h2 class="title">Morosidad total</h2>
+        <h2 class="title">Total pedidos entregados por (periodo)</h2>
         <vertical-bar-chart style="max-height: 20rem"></vertical-bar-chart>
       </div>
       <div class="col-4 text-center">
-        <h2 class="title">Morosidad total</h2>
+        <h2 class="title">Total pedidos retrasados por periodo</h2>
         <vertical-bar-chart style="max-height: 20rem"></vertical-bar-chart>
       </div>
     </div>
@@ -51,11 +51,11 @@
     <!-- cuarto -->
     <div class="row pt-3">
       <div class="col-6 text-center">
-        <h2 class="title">Morosidad total</h2>
+        <h2 class="title">Pedidos por estatus</h2>
         <doughnut-chart style="max-height: 20rem"></doughnut-chart>
       </div>
       <div class="col-6 text-center">
-        <h2 class="title">Morosidad total</h2>
+        <h2 class="title">Promedio de entrega transportadoras</h2>
         <vertical-bar-chart style="max-height: 20rem"></vertical-bar-chart>
       </div>
     </div>
