@@ -8,39 +8,15 @@
 let chartItem;
 export default {
   name: "HorizontalBarChart",
-  data() {
-    return {
-      labels: [
-        "2021-1",
-        "2021-2",
-        "2021-3",
-        "2021-4",
-        "2021-5",
-        "2021-6",
-        "2021-7",
-        "2021-8",
-      ],
-      dataset: [
-        {
-          label: "",
-          data: [50, 20, 15, 30, 32, 45, 9, 12],
-          backgroundColor: "#66c2a5",
-          borderWidth: 1,
-        },
-        {
-          label: "",
-          data: [50, 20, 15, 30, 32, 45, 9, 12],
-          backgroundColor: "#ff0000",
-          borderWidth: 1,
-        },
-        {
-          label: "",
-          data: [50, 20, 15, 30, 32, 45, 9, 12],
-          backgroundColor: "#00ff00",
-          borderWidth: 1,
-        },
-      ],
-    };
+  props: {
+    labels: {
+      type: Array,
+      require: true,
+    },
+    dataset: {
+      type: Array,
+      require: true,
+    },
   },
   methods: {
     created(chart) {
@@ -56,7 +32,7 @@ export default {
           datasets: this.dataset,
         },
         options: {
-          indexAxis: 'y',
+          indexAxis: "y",
           plugins: {
             legend: {
               display: false,

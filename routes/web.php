@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\HistorySendPaymetClient;
 use App\Models\Invoice;
 use App\Models\Product;
+use App\Models\PurchaseOrder;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -106,17 +107,12 @@ Route::get('/ruta-prueba', function () {
 });
 
 Route::get('testing', function () {
-    $response = new \stdClass();
-    $history = \App\Models\PurchaseOrderStateHistory::find(2);
-    // $history->comments()->save(new Comment([
-    //     'title' => "Titulo del comentario 222",
-    //     'body' => "La descripción del comentario 2",
-    // ]));
-
-    // $history = \App\Models\PurchaseOrderStateHistory::with('comments')->where('purchase_order_id', 1)->get();
-    $comments = \App\Models\Comment::with('commentable.state_order')->whereByIn(\App\Models\PurchaseOrderStateHistory::class, [1, 2, 3])->get();
-
-    $response->comments = $comments;
+    $response = PurchaseOrder::selectRaw('count(state_order_id) as total, state_order_id')
+    ->join('purchase_order_state_histories', 'current_status_id', '=', 'purchase_order_state_histories.id')
+    ->groupBy('state_order_id')
+    ->get()->keyBy(function ($item) {
+        return $item['state_order_id'];
+    });
     return response()->json($response);
 });
 

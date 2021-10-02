@@ -530,19 +530,21 @@ export default {
   background-color: white;
   padding: 0.5rem;
   border-radius: 0.4rem;
+  overflow: auto;
+  max-height: 58rem;
 }
 
 .cartera__item {
   margin: 0;
   margin-bottom: 1rem;
-  box-shadow: 0 .2rem 0 #f2f1f0;
+  box-shadow: 0 0.2rem 0 #f2f1f0;
   position: relative;
 }
 
-.cartera__item::before{
-  content: ' ';
+.cartera__item::before {
+  content: " ";
   background-color: #b4b0ad;
-  width: .2rem;
+  width: 0.2rem;
   height: 90%;
   position: absolute;
   z-index: 20;
@@ -550,7 +552,7 @@ export default {
 }
 
 .cartera__title,
-.cartera__value{
+.cartera__value {
   color: #676767;
   text-align: left;
   margin: 0;

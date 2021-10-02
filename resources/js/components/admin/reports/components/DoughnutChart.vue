@@ -8,19 +8,15 @@
 let chartItem;
 export default {
   name: "DoughnutChart",
-  data() {
-    return {
-      data: {
-        labels: ["Red", "Orange", "Yellow", "Green", "Blue"],
-        datasets: [
-          {
-            label: "Dataset 1",
-            data: [80, 20, 40, 50, 60],
-            backgroundColor: ["#1f78b4", "#a6cee3", "#ff0000", "#00ff00", "#0000ff"],
-          },
-        ],
-      },
-    };
+  props: {
+    labels: {
+      type: Array,
+      require: true,
+    },
+    datasets: {
+      type: Array,
+      require: true,
+    },
   },
   methods: {
     created(chart) {
@@ -37,7 +33,10 @@ export default {
     config() {
       return {
         type: "doughnut",
-        data: this.data,
+        data: {
+          labels: this.labels,
+          datasets: this.datasets,
+        },
         options: {
           maintainAspectRatio: false,
           cutout: "80%",

@@ -280,7 +280,7 @@ class DatabaseSeeder extends Seeder
         =============================================*/
         factory(\App\Models\TradeAgreement::class, 20)->create();
 
-        factory(\App\Models\Invoice::class, 20)->create();
+        factory(\App\Models\Invoice::class, 100)->create();
 
         $this->call(PurchaseOrderSeeder::class);
     }

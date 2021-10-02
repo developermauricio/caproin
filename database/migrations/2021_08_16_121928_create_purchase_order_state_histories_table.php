@@ -26,6 +26,11 @@ class CreatePurchaseOrderStateHistoriesTable extends Migration
             $table->dateTime('estimated_date')->nullable();
             $table->timestamps();
         });
+
+        Schema::table('purchase_orders', function (Blueprint $table){
+            $table->unsignedBigInteger('current_status_id')->nullable();
+            $table->foreign('current_status_id')->references('id')->on('purchase_order_state_histories');
+        });
     }
 
     /**
@@ -36,5 +41,9 @@ class CreatePurchaseOrderStateHistoriesTable extends Migration
     public function down()
     {
         Schema::dropIfExists('purchase_order_state_histories');
+        // Schema::table('purchase_orders', function (Blueprint $table){
+        //     $table->dropForeign('current_status_id')->nullable();
+        //     $table->foreign('current_status_id')->references('id')->on('purchase_order_state_histories');
+        // });
     }
 }

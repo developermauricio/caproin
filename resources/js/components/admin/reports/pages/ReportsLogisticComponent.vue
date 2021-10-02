@@ -1,25 +1,77 @@
 <template>
   <div class="reports">
+    <div class="content-header">
+      <div class="row header__container w-12">
+        <h2 class="col-12 col-md-3 content-header-title float-left mb-0">
+          Reportes cartera
+        </h2>
+        <div class="col-12 col-md-9 d-flex filters__container">
+          <div class="col d-flex justify-content-end">
+            <label for="trm" class="px-1 col-form-label">
+              Seleccionar fechas:
+            </label>
+            <input-form
+              type="date"
+              id="fechaInicio"
+              name="fechaInicio"
+              pattern="all"
+              class="m-0 datepicker"
+              errorMsg="Ingrese una fecha válida"
+              requiredMsg="La fecha requerida por el cliente es obligatoria"
+              :modelo.sync="fechaInicio"
+              :showLabel="false"
+            ></input-form>
+            <label class="px-1 col-form-label"> - </label>
+            <input-form
+              type="date"
+              id="fechaInicio"
+              name="fechaInicio"
+              pattern="all"
+              class="m-0 datepicker datepicker--right"
+              errorMsg="Ingrese una fecha válida"
+              requiredMsg="La fecha requerida por el cliente es obligatoria"
+              :modelo.sync="fechaFin"
+              :showLabel="false"
+            ></input-form>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- primero -->
     <div class="row pt-3">
       <div class="col-6 m-0 row d-flex justify-content-around">
         <card-info class="card__item">
-          <p class="card__price">906000</p>
+          <p class="card__price">
+            {{ actividadLogisticaEnvios.purchaseOrdersTotal }}
+          </p>
           <h2 class="card__title">Ordenes totales</h2>
         </card-info>
         <card-info class="card__item">
-          <p class="card__price">800</p>
+          <p class="card__price">
+            {{ actividadLogisticaEnvios.purchaseOrdersProcessing }}
+          </p>
           <h2 class="card__title">Ordenes en procesamiento</h2>
         </card-info>
       </div>
       <div class="col-6 m-0 row d-flex justify-content-around">
         <card-info class="card__item">
-          <p class="card__price">860</p>
-          <h2 class="card__title">Ordenes despachadas</h2>
+          <p class="card__price">
+            {{ actividadLogisticaEnvios.purchaseOrdersDispatched }}
+          </p>
+          <h2 class="card__title">
+            Ordenes <br />
+            despachadas
+          </h2>
         </card-info>
         <card-info class="card__item">
-          <p class="card__price">820</p>
-          <h2 class="card__title">Ordenes entregadas</h2>
+          <p class="card__price">
+            {{ actividadLogisticaEnvios.purchaseOrdersDelivered }}
+          </p>
+          <h2 class="card__title">
+            Ordenes <br />
+            entregadas
+          </h2>
         </card-info>
       </div>
     </div>
@@ -28,15 +80,24 @@
     <div class="row pt-3">
       <div class="col-4 text-center">
         <h2 class="title">Total pedidos hechos por (periodo)</h2>
-        <vertical-bar-chart style="max-height: 20rem"></vertical-bar-chart>
+        <vertical-bar-chart
+          v-bind="configActividadLogisticaEnviosPeriodo.hechos"
+          style="max-height: 20rem"
+        ></vertical-bar-chart>
       </div>
       <div class="col-4 text-center">
         <h2 class="title">Total pedidos entregados por (periodo)</h2>
-        <vertical-bar-chart style="max-height: 20rem"></vertical-bar-chart>
+        <vertical-bar-chart
+          v-bind="configActividadLogisticaEnviosPeriodo.entregados"
+          style="max-height: 20rem"
+        ></vertical-bar-chart>
       </div>
       <div class="col-4 text-center">
         <h2 class="title">Total pedidos retrasados por periodo</h2>
-        <vertical-bar-chart style="max-height: 20rem"></vertical-bar-chart>
+        <vertical-bar-chart
+          v-bind="configActividadLogisticaEnviosPeriodo.retrasados"
+          style="max-height: 20rem"
+        ></vertical-bar-chart>
       </div>
     </div>
 
@@ -44,7 +105,10 @@
     <div class="row pt-3">
       <div class="col text-center">
         <h2 class="title">Clientes Vs Estados de pedido</h2>
-        <horizontal-bar-chart style="max-height: 20rem"></horizontal-bar-chart>
+        <horizontal-bar-chart
+          v-bind="configClienteEstadosPedido"
+          style="max-height: 20rem"
+        ></horizontal-bar-chart>
       </div>
     </div>
 
@@ -52,7 +116,10 @@
     <div class="row pt-3">
       <div class="col-6 text-center">
         <h2 class="title">Pedidos por estatus</h2>
-        <doughnut-chart style="max-height: 20rem"></doughnut-chart>
+        <doughnut-chart
+          v-bind="configEstadosPedido"
+          style="max-height: 20rem"
+        ></doughnut-chart>
       </div>
       <div class="col-6 text-center">
         <h2 class="title">Promedio de entrega transportadoras</h2>
@@ -75,6 +142,25 @@ import StackedBarChart from "../components/StackedBarChart.vue";
 import TotalDeudaByCliente from "../components/TotalDeudaByCliente.vue";
 import VerticalBarChart from "../components/VerticalBarChart.vue";
 
+const colorStatus = [
+  "#f44336",
+  "#e91e63",
+  "#9c27b0",
+  "#673ab7",
+  "#3f51b5",
+  "#2196f3",
+  "#03a9f4",
+  "#00bcd4",
+  "#009688",
+  "#4caf50",
+  "#8bc34a",
+  "#cddc39",
+  "#ffeb3b",
+  "#ffc107",
+  "#ff9800",
+  "#ff5722",
+];
+
 export default {
   name: "ReportsLogisticComponent",
   components: {
@@ -93,7 +179,225 @@ export default {
         text: `$12.000.000`,
         fontSize: 50,
       },
+      fechaInicio: null,
+      fechaFin: null,
+      actividadLogisticaEnvios: {
+        purchaseOrdersProcessing: 0,
+        purchaseOrdersDispatched: 0,
+        purchaseOrdersDelivered: 0,
+        purchaseOrdersTotal: 0,
+      },
+      actividadLogisticaEnviosPeriodo: {
+        purchaseOrdersTotal: [],
+        purchaseOrdersDelayed: [],
+        purchaseOrdersDelivered: [],
+      },
+      allStatusOrder: {},
+      estadosPedido: {},
+      clienteEstadosPedido: {},
+      allCustomers: {},
     };
+  },
+  created() {
+    this.getAllStatusOrder();
+    this.getAllCustomers();
+    this.getData();
+  },
+  methods: {
+    getDataApi(url) {
+      return this.$axios.get(url + this.paramsApi);
+    },
+    getData() {
+      this.getActividadLogisticaEnvios();
+      this.getActividadLogisticaEnviosPeriodo();
+      this.getEstadosPedido();
+      this.getClienteEstadosPedido();
+    },
+    getEstadosPedido() {
+      this.getDataApi("/api/report-logistic/estados-pedido").then(
+        (response) => {
+          this.estadosPedido = response.data;
+        }
+      );
+    },
+    getActividadLogisticaEnvios() {
+      this.getDataApi("/api/report-logistic/actividad-logistica-envios").then(
+        (response) => {
+          this.actividadLogisticaEnvios = response.data;
+        }
+      );
+    },
+    getActividadLogisticaEnviosPeriodo() {
+      this.getDataApi(
+        "/api/report-logistic/actividad-logistica-envios-periodo"
+      ).then((response) => {
+        this.actividadLogisticaEnviosPeriodo = response.data;
+      });
+    },
+    getClienteEstadosPedido() {
+      this.getDataApi("/api/report-logistic/clientes-estados-pedido").then(
+        (response) => {
+          this.clienteEstadosPedido = response.data;
+        }
+      );
+    },
+    getAllStatusOrder() {
+      this.$axios
+        .get("/api/report-logistic/get-all-status-order")
+        .then((response) => {
+          this.allStatusOrder = response.data;
+        });
+    },
+    getAllCustomers() {
+      this.$axios
+        .get("/api/report-logistic/get-all-customers")
+        .then((response) => {
+          this.allStatusOrder = response.data;
+        });
+    },
+    getAllCustomers() {
+      this.$axios
+        .get("/api/report-logistic/get-all-customers")
+        .then((response) => {
+          this.allCustomers = response.data;
+        });
+    },
+  },
+  computed: {
+    paramsApi() {
+      return ``;
+    },
+    configActividadLogisticaEnviosPeriodo() {
+      const datos = {
+        hechos: {
+          labels: [],
+          dataset: [
+            {
+              label: "",
+              data: [],
+              backgroundColor: "#66c2a5",
+              borderWidth: 1,
+            },
+          ],
+        },
+        entregados: {
+          labels: [],
+          dataset: [
+            {
+              label: "",
+              data: [],
+              backgroundColor: "#66c2a5",
+              borderWidth: 1,
+            },
+          ],
+        },
+        retrasados: {
+          labels: [],
+          dataset: [
+            {
+              label: "",
+              data: [],
+              backgroundColor: "#66c2a5",
+              borderWidth: 1,
+            },
+          ],
+        },
+      };
+
+      let max = 0;
+      this.actividadLogisticaEnviosPeriodo.purchaseOrdersTotal.forEach(
+        (item) => {
+          datos.hechos.labels.push(item.label);
+          datos.hechos.dataset[0].data.push(item.total);
+          if (max < item.total) {
+            max = item.total;
+          }
+        }
+      );
+      this.actividadLogisticaEnviosPeriodo.purchaseOrdersDelivered.forEach(
+        (item) => {
+          datos.entregados.labels.push(item.label);
+          datos.entregados.dataset[0].data.push(item.total);
+        }
+      );
+      this.actividadLogisticaEnviosPeriodo.purchaseOrdersDelayed.forEach(
+        (item) => {
+          datos.retrasados.labels.push(item.label);
+          datos.retrasados.dataset[0].data.push(item.total);
+        }
+      );
+
+      datos.hechos.max = max;
+      datos.entregados.max = max;
+      datos.retrasados.max = max;
+      return datos;
+    },
+    configEstadosPedido() {
+      const keys = Object.keys(this.estadosPedido);
+      const labels = [];
+      const data = [];
+
+      keys.forEach((key) => {
+        if (this.allStatusOrder[key] && this.estadosPedido[key]) {
+          labels.push(this.allStatusOrder[key].name);
+          data.push(this.estadosPedido[key].total);
+        }
+      });
+      return {
+        labels: labels,
+        datasets: [
+          {
+            label: "Estados por pedido",
+            data: data,
+            backgroundColor: colorStatus,
+          },
+        ],
+      };
+    },
+    configClienteEstadosPedido() {
+      console.log(this.allStatusOrder);
+      console.log(this.allCustomers);
+      console.log(this.clienteEstadosPedido);
+      const labels = [];
+      const keysCustomer = Object.keys(this.clienteEstadosPedido);
+
+      const dataStates = {};
+
+      const keyStatus = Object.keys(this.allStatusOrder);
+      keyStatus.forEach((key) => {
+        dataStates[key] = {
+          label: this.allStatusOrder[key].name,
+          data: [],
+          backgroundColor: colorStatus[+key - 1],
+          borderWidth: 1,
+        };
+      });
+
+      keysCustomer.forEach((keyCustomer) => {
+        labels.push(this.allCustomers[keyCustomer].business_name);
+        const cliente = this.clienteEstadosPedido[keyCustomer];
+        keyStatus.forEach((keyState) => {
+          const state = cliente[keyState];
+          if (state) {
+            dataStates[keyState].data.push(state.total);
+          } else {
+            dataStates[keyState].data.push(0);
+          }
+          dataStates[keyState];
+        });
+      });
+
+      const dataset = [];
+
+      keyStatus.forEach((key) => {
+        dataset.push(dataStates[key]);
+      });
+
+      return {
+        labels,
+        dataset,
+      };
+    },
   },
 };
 </script>
