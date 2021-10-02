@@ -123,12 +123,61 @@
       </div>
       <div class="col-6 text-center">
         <h2 class="title">Promedio de entrega transportadoras</h2>
-        <vertical-bar-chart style="max-height: 20rem"></vertical-bar-chart>
+        <vertical-bar-chart
+          v-bind="configPromediosEntregaTransportadoras"
+          style="max-height: 20rem"
+        ></vertical-bar-chart>
       </div>
     </div>
 
-    <!-- <vertical-bar-chart></vertical-bar-chart>
-    <stacked-bar-chart></stacked-bar-chart> -->
+    <!-- cinco -->
+    <div class="row pt-3">
+      <div class="col-6 text-center">
+        <h2 class="title">Pedidos por estatus</h2>
+        <doughnut-chart
+          v-bind="configEstadosPedido"
+          style="max-height: 20rem"
+        ></doughnut-chart>
+      </div>
+      <div class="col-6 text-center">
+        <h2 class="title">Promedio de entrega transportadoras</h2>
+        <vertical-bar-chart
+          v-bind="configPromediosEntregaTransportadoras"
+          style="max-height: 20rem"
+        ></vertical-bar-chart>
+      </div>
+    </div>
+
+    <!-- seis -->
+    <div class="row pt-3">
+      <div class="col text-center">
+        <h2 class="title">
+          Tiempos promedio de entrega (transportadora vs cliente)
+        </h2>
+        <table class="table--promedio table table-bordered">
+          <thead>
+            <tr>
+              <th>
+                <p class="title__table--diagonal px-2">
+                  <span class="transportadora">Transportadora</span>
+                  <span class="cliente">Cliente</span>
+                </p>
+              </th>
+              <th v-for="header in headerConveyors" :key="header.key">
+                {{ header.value }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="row in dataTiemposPromedioEntrega" :key="row.key">
+              <td v-for="col in row.value" :key="col.key">
+                {{ col.value }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -192,15 +241,19 @@ export default {
         purchaseOrdersDelayed: [],
         purchaseOrdersDelivered: [],
       },
-      allStatusOrder: {},
       estadosPedido: {},
       clienteEstadosPedido: {},
+      allStatusOrder: {},
       allCustomers: {},
+      allConveyors: {},
+      promediosEntregaTransportadoras: [],
+      tiemposPromedioEntrega: {},
     };
   },
   created() {
     this.getAllStatusOrder();
     this.getAllCustomers();
+    this.getAllConveyors();
     this.getData();
   },
   methods: {
@@ -212,6 +265,8 @@ export default {
       this.getActividadLogisticaEnviosPeriodo();
       this.getEstadosPedido();
       this.getClienteEstadosPedido();
+      this.getPromediosEntregaTransportadoras();
+      this.getTiemposPromedioEntrega();
     },
     getEstadosPedido() {
       this.getDataApi("/api/report-logistic/estados-pedido").then(
@@ -241,6 +296,20 @@ export default {
         }
       );
     },
+    getPromediosEntregaTransportadoras() {
+      this.getDataApi(
+        "/api/report-logistic/promedios-entrega-transportadoras"
+      ).then((response) => {
+        this.promediosEntregaTransportadoras = response.data;
+      });
+    },
+    getTiemposPromedioEntrega() {
+      this.getDataApi("/api/report-logistic/tiempos-promedio-entrega").then(
+        (response) => {
+          this.tiemposPromedioEntrega = response.data;
+        }
+      );
+    },
     getAllStatusOrder() {
       this.$axios
         .get("/api/report-logistic/get-all-status-order")
@@ -252,14 +321,14 @@ export default {
       this.$axios
         .get("/api/report-logistic/get-all-customers")
         .then((response) => {
-          this.allStatusOrder = response.data;
+          this.allCustomers = response.data;
         });
     },
-    getAllCustomers() {
+    getAllConveyors() {
       this.$axios
-        .get("/api/report-logistic/get-all-customers")
+        .get("/api/report-logistic/get-all-conveyors")
         .then((response) => {
-          this.allCustomers = response.data;
+          this.allConveyors = response.data;
         });
     },
   },
@@ -355,9 +424,6 @@ export default {
       };
     },
     configClienteEstadosPedido() {
-      console.log(this.allStatusOrder);
-      console.log(this.allCustomers);
-      console.log(this.clienteEstadosPedido);
       const labels = [];
       const keysCustomer = Object.keys(this.clienteEstadosPedido);
 
@@ -398,6 +464,77 @@ export default {
         dataset,
       };
     },
+    configPromediosEntregaTransportadoras() {
+      const labels = [];
+      const data = [];
+      this.promediosEntregaTransportadoras.forEach((item) => {
+        labels.push(item.conveyor.name);
+        data.push(item.promedio);
+      });
+      return {
+        labels: labels,
+        dataset: [
+          {
+            label: ["promedio dias"],
+            data: data,
+            backgroundColor: "#1f78b4",
+            borderWidth: 1,
+          },
+        ],
+        max: null,
+      };
+    },
+    dataTiemposPromedioEntrega() {
+      const keyCustomers = Object.keys(this.tiemposPromedioEntrega);
+
+      const body = [];
+
+      keyCustomers.forEach((keyCustomer) => {
+        const customer = this.allCustomers[keyCustomer];
+        const customerData = this.tiemposPromedioEntrega[keyCustomer];
+        if (customer) {
+          const row = [
+            { key: keyCustomer + "_0", value: customer.business_name },
+          ];
+
+          const keysConveyors = Object.keys(this.allConveyors);
+
+          keysConveyors.forEach((keyConveyor) => {
+            const conveyor = customerData[keyConveyor];
+            if (conveyor) {
+              row.push({
+                key: keyCustomer + "_" + keyConveyor,
+                value: (+conveyor.promedio).toFixed(0) + " Días",
+              });
+            } else {
+              row.push({
+                key: keyCustomer + "_" + keyConveyor,
+                value: "N/A",
+              });
+            }
+          });
+
+          body.push({ key: keyCustomer, value: row });
+        }
+      });
+      return body;
+    },
+    headerConveyors() {
+      const keysConveyors = Object.keys(this.allConveyors);
+
+      const headers = [];
+      keysConveyors.forEach((keyConveyor) => {
+        const conveyor = this.allConveyors[keyConveyor];
+        if (conveyor) {
+          headers.push({
+            key: keyConveyor,
+            value: conveyor.name,
+          });
+        }
+      });
+
+      return headers;
+    },
   },
 };
 </script>
@@ -435,5 +572,37 @@ export default {
   text-align: center;
   font-size: 2.3rem;
   font-weight: 500;
+}
+
+.table--promedio.table th {
+  padding: 0.5rem;
+}
+
+.table--promedio .title__table--diagonal {
+  position: relative;
+  flex-grow: 1;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+/*
+.table--promedio .title__table--diagonal::after {
+  content: " ";
+  border-bottom: 1px solid red;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  transform: rotateY(0deg) rotate(45deg);
+  transform: rotate(15deg);
+} */
+
+.table--promedio.table .transportadora {
+  display: block;
+  text-align: right;
+}
+
+.table--promedio.table .cliente {
+  display: block;
+  text-align: left;
 }
 </style>

@@ -161,6 +161,10 @@ Route::group(['namespace' => 'Administrator'], function () {
         Route::get('estados-pedido', 'ReportLogisticController@pedidosPorEstatus')->name('estados-pedido');
         Route::get('get-all-status-order', 'ReportLogisticController@getAllStatusOrder')->name('get-all-status-order');
         Route::get('get-all-customers', 'ReportLogisticController@getAllCustomers')->name('get-all-customers');
+        Route::get('get-all-conveyors', 'ReportLogisticController@getAllConveyors')->name('get-all-conveyors');
+        Route::get('promedios-entrega-transportadoras', 'ReportLogisticController@promediosEntregaTransportadoras')->name('promedios-entrega-transportadoras');
+        Route::get('visualizacion-estados-pedido', 'ReportLogisticController@visualizacionEstadosPedido')->name('visualizacion-estados-pedido');
+        Route::get('tiempos-promedio-entrega', 'ReportLogisticController@tiemposPromedioEntrega')->name('tiempos-promedio-entrega');
     });
 
 });

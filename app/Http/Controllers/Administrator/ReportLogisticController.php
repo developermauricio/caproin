@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
+use App\Models\Conveyor;
 use App\Models\Customer;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderStateHistory;
@@ -105,6 +106,61 @@ class ReportLogisticController extends Controller
         return response()->json($response);
     }
 
+
+    public function promediosEntregaTransportadoras(Request $request)
+    {
+        $to = $request->input('to');
+        $from = $request->input('from');
+
+        $purchaseOrders = PurchaseOrder::selectRaw("conveyor_id, AVG(ABS(DATEDIFF(actual_dispatch_date, actual_delivery_date))) as promedio")
+            ->with('conveyor:id,name')
+            ->entregado()
+            ->dateFromTo('order_receipt_date', $from, $to)
+            ->groupBy('conveyor_id')
+            ->get();
+
+        $response = $purchaseOrders;
+
+        return response()->json($response);
+    }
+
+    public function tiemposPromedioEntrega(Request $request)
+    {
+        $to = $request->input('to');
+        $from = $request->input('from');
+
+        $purchaseOrders = PurchaseOrder::selectRaw("customer_id, conveyor_id, AVG(ABS(DATEDIFF(actual_dispatch_date, actual_delivery_date))) as promedio")
+            ->entregado()
+            ->dateFromTo('order_receipt_date', $from, $to)
+            ->groupBy('customer_id')
+            ->groupBy('conveyor_id')
+            ->get()
+            ->groupBy(function ($item) {
+                return $item['customer_id'];
+            })->map(function ($item) {
+                return $item->keyBy(function ($item) {
+                    return $item['conveyor_id'];
+                });
+            });
+
+        $response = $purchaseOrders;
+
+        return response()->json($response);
+    }
+
+    public function visualizacionEstadosPedido(Request $request)
+    {
+        $to = $request->input('to');
+        $from = $request->input('from');
+
+        $response = PurchaseOrder::select("*")
+            ->with('current_status.state_order:id,name')
+            ->dateFromTo('order_receipt_date', $from, $to)
+            ->get();
+
+        return response()->json($response);
+    }
+
     public function getAllStatusOrder()
     {
         $states = StateOrder::all(['id', 'name'])->keyBy(function ($item) {
@@ -113,7 +169,16 @@ class ReportLogisticController extends Controller
         return response()->json($states);
     }
 
-    public function getAllCustomers(){
+    public function getAllConveyors()
+    {
+        $states = Conveyor::all(['id', 'name'])->keyBy(function ($item) {
+            return $item['id'];
+        });
+        return response()->json($states);
+    }
+
+    public function getAllCustomers()
+    {
         $customers = Customer::all(['id', 'business_name'])->keyBy(function ($item) {
             return $item['id'];
         });
