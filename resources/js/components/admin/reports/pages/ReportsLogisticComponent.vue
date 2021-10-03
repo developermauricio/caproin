@@ -132,19 +132,68 @@
 
     <!-- cinco -->
     <div class="row pt-3">
-      <div class="col-6 text-center">
-        <h2 class="title">Pedidos por estatus</h2>
-        <doughnut-chart
-          v-bind="configEstadosPedido"
-          style="max-height: 20rem"
-        ></doughnut-chart>
-      </div>
-      <div class="col-6 text-center">
-        <h2 class="title">Promedio de entrega transportadoras</h2>
-        <vertical-bar-chart
-          v-bind="configPromediosEntregaTransportadoras"
-          style="max-height: 20rem"
-        ></vertical-bar-chart>
+      <div class="col text-center">
+        <h2 class="title">Visualización de estados de pedido</h2>
+        <table class="table--promedio table table-bordered">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Numero de pedido</th>
+              <th>Estado del pedido</th>
+              <th>Fecha comprometida de entrega</th>
+              <th>Dias de retraso</th>
+              <th>Detalles</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="row in dataVisualizacionEstadosPedido" :key="row.id">
+              <td>
+                {{ row.customer.business_name }}
+              </td>
+              <td>
+                {{ row.internal_quote_number }}
+              </td>
+              <td>
+                {{ getStatus(row) }}
+              </td>
+              <td>
+                {{ row.offer_delivery_date }}
+              </td>
+              <td>
+                {{ row.dias_retraso }}
+              </td>
+              <td>
+                <button
+                  data-target="#modal-show-purchase-order"
+                  data-toggle="modal"
+                  data-placement="top"
+                  title="Más Información"
+                  type="button"
+                  class="btn btn-show-purchase btn-icon btn-primary"
+                  :data-id="row.id"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-eye"
+                  >
+                    <path
+                      d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                    ></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -248,6 +297,7 @@ export default {
       allConveyors: {},
       promediosEntregaTransportadoras: [],
       tiemposPromedioEntrega: {},
+      visualizacionEstadosPedido: [],
     };
   },
   created() {
@@ -267,6 +317,7 @@ export default {
       this.getClienteEstadosPedido();
       this.getPromediosEntregaTransportadoras();
       this.getTiemposPromedioEntrega();
+      this.getVisualizacionEstadosPedido();
     },
     getEstadosPedido() {
       this.getDataApi("/api/report-logistic/estados-pedido").then(
@@ -310,6 +361,13 @@ export default {
         }
       );
     },
+    getVisualizacionEstadosPedido() {
+      this.getDataApi("/api/report-logistic/visualizacion-estados-pedido").then(
+        (response) => {
+          this.visualizacionEstadosPedido = response.data;
+        }
+      );
+    },
     getAllStatusOrder() {
       this.$axios
         .get("/api/report-logistic/get-all-status-order")
@@ -331,10 +389,33 @@ export default {
           this.allConveyors = response.data;
         });
     },
+    getStatus(item) {
+      return item.dias_retraso < 1 ? "A tiempo" : "Retrasado";
+    },
   },
   computed: {
     paramsApi() {
-      return ``;
+      let params = [];
+      // if (this.trm) {
+      //   params.push(`trm=${this.trm}`);
+      // }
+      if (this.fechaInicio) {
+        const dateSplit = this.fechaInicio.toLocaleDateString().split("/");
+        params.push(
+          `from=${dateSplit[2]}-${"0" + dateSplit[0].slice(-2)}-${
+            "0" + dateSplit[1].slice(-2)
+          }`
+        );
+      }
+      if (this.fechaFin) {
+        const dateSplit = this.fechaFin.toLocaleDateString().split("/");
+        params.push(
+          `to=${dateSplit[2]}-${"0" + dateSplit[0].slice(-2)}-${
+            "0" + dateSplit[1].slice(-2)
+          }`
+        );
+      }
+      return "?" + params.join("&");
     },
     configActividadLogisticaEnviosPeriodo() {
       const datos = {
@@ -484,6 +565,9 @@ export default {
         max: null,
       };
     },
+    dataVisualizacionEstadosPedido() {
+      return this.visualizacionEstadosPedido;
+    },
     dataTiemposPromedioEntrega() {
       const keyCustomers = Object.keys(this.tiemposPromedioEntrega);
 
@@ -534,6 +618,11 @@ export default {
       });
 
       return headers;
+    },
+  },
+  watch: {
+    paramsApi() {
+      this.getData();
     },
   },
 };
@@ -604,5 +693,9 @@ export default {
 .table--promedio.table .cliente {
   display: block;
   text-align: left;
+}
+
+.datepicker--right >>> .vdp-datepicker__calendar {
+  right: 0;
 }
 </style>
