@@ -151,7 +151,7 @@
                 {{ row.customer.business_name }}
               </td>
               <td>
-                {{ row.internal_quote_number }}
+                {{ row.internal_order_number }}
               </td>
               <td>
                 {{ getStatus(row) }}
@@ -170,7 +170,7 @@
                   title="Más Información"
                   type="button"
                   class="btn btn-show-purchase btn-icon btn-primary"
-                  :data-id="row.id"
+                  @click="showPurchaseOrder(row.id)"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -307,6 +307,10 @@ export default {
     this.getData();
   },
   methods: {
+    showPurchaseOrder(id) {
+      console.log(id);
+      $("#idPurchaseOrder").val(id).click();
+    },
     getDataApi(url) {
       return this.$axios.get(url + this.paramsApi);
     },
@@ -566,7 +570,7 @@ export default {
       };
     },
     dataVisualizacionEstadosPedido() {
-      return this.visualizacionEstadosPedido;
+      return this.visualizacionEstadosPedido.filter(item => item.customer.business_name);
     },
     dataTiemposPromedioEntrega() {
       const keyCustomers = Object.keys(this.tiemposPromedioEntrega);

@@ -59,8 +59,7 @@
         <h2 class="title">Importe de facturas vencidas</h2>
         <percentage-doughnut-chart
           class="col-6 m-auto"
-          :description="description"
-          :percentage="50"
+          v-bind="configFacturasVencidas"
         ></percentage-doughnut-chart>
       </div>
     </div>
@@ -80,7 +79,7 @@
       <div class="col-6 text-center">
         <card-info class="col-8 m-auto">
           <h2 class="card__title card__title--total">Total por cobrar</h2>
-          <p class="card__price">$90.6M</p>
+          <p class="card__price">${{ getTotalVencidas }}</p>
         </card-info>
       </div>
     </div>
@@ -319,6 +318,9 @@ export default {
     },
     montoFacturadoCOP() {
       return this.$shortNumber(this.facturas_vencidas.total);
+    },
+    getTotalVencidas() {
+      return this.$shortNumber(this.facturas_vencidas.total_vencidas);
     },
     configTotalCarteraVencida30() {
       return {

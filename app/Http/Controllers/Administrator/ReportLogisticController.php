@@ -153,7 +153,7 @@ class ReportLogisticController extends Controller
         $to = $request->input('to');
         $from = $request->input('from');
 
-        $response = PurchaseOrder::selectRaw("customer_id, actual_delivery_date, offer_delivery_date, internal_quote_number, id, customer_order_number, DATEDIFF(if(actual_delivery_date is null, now(), actual_delivery_date), offer_delivery_date) as dias_retraso")
+        $response = PurchaseOrder::selectRaw("internal_order_number, customer_id, actual_delivery_date, offer_delivery_date, id, customer_order_number, DATEDIFF(if(actual_delivery_date is null, now(), actual_delivery_date), offer_delivery_date) as dias_retraso")
             ->with('customer:id,business_name')
             ->dateFromTo('order_receipt_date', $from, $to)
             ->orderBy('dias_retraso', 'DESC')
