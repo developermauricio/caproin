@@ -109,6 +109,8 @@
                     :required="true"
                     :msgServer.sync="errors.businessName"
                   ></input-form>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-character-customer-edit" class="text-danger">El nombre no puede ser de un caracter</p>
                 </div>
               </div>
               <div class="row" v-show="showEditCustomer">
@@ -149,7 +151,7 @@
                 </div>
                 <div class="col-12 col-md-6 col-lg-6">
                   <input-form
-                    id="txtIdentifacationCustomerEdit"
+                    id="txtIdentifacationCustomerEditV"
                     label="Número de Identificación"
                     pattern="all"
                     errorMsg="Ingrese un número de identificación válido"
@@ -161,6 +163,9 @@
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                      id="text-verify-identification-customer-edit" class="text-danger">El número de identificación ya
                     ha sido registrado</p>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-indentification-character-customer-edit" class="text-danger">El número de identificación no puede
+                    ser de un caracter</p>
                 </div>
                 <div class="col-12 col-md-6 col-lg-6">
                   <input-form
@@ -191,6 +196,8 @@
                                 phoneNumberLabel: 'Número',
                                 example: 'Ejemplo'
                             }"/>
+                  <p style="margin-top: 0.2rem;font-size: 0.9rem; display: none"
+                     id="text-verify-phone-customer-edit" class="text-danger">Ingrese un número de teléfono válido</p>
                 </div>
                 <div class="col-12 col-md-6 col-lg-6">
                   <input-form
@@ -219,25 +226,29 @@
                   <input-form
                     id="txtSendPaymentEmailCustomerEdit"
                     label="Número de días para enviar cobro por correo electrónico, después de generar la factura"
-                    pattern="all"
+                    pattern="num"
                     errorMsg="Ingrese un número de días válido"
                     requiredMsg="El número de días es obligatorio"
                     :modelo.sync="numberDaysAfterInvoice"
                     :required="true"
                     :msgServer.sync="errors.numberDaysAfterInvoice"
                   ></input-form>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-character-days-after-invoice-edit" class="text-danger">'0' no es un número válido</p>
                 </div>
                 <div class="col-12 col-md-6 col-lg-6">
                   <input-form
                     id="txtSendOverdueEmailCustomerEdit"
                     label="Número de días para enviar correo de cobro después de vencida la factura"
-                    pattern="all"
+                    pattern="num"
                     errorMsg="Ingrese un número de días válido"
                     requiredMsg="El número de días es obligatorio"
                     :modelo.sync="numberDaysOverdueInvoice"
                     :required="true"
                     :msgServer.sync="errors.numberDaysOverdueInvoice"
                   ></input-form>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-character-days-overdue-invoice-edit" class="text-danger">'0' no es un número válido</p>
                 </div>
               </div>
               <!--=====================================
@@ -437,6 +448,10 @@ export default {
             hideDuration: 9000,
             position: 'top right',
           })
+          if (user.phone.length < 11) {
+            document.getElementById('text-verify-phone-customer-edit').disabled = true;
+            $('#text-verify-phone-customer-edit').css("display", "block");
+          }
           return;
         }
         this.resetValidations()
@@ -612,6 +627,17 @@ export default {
           $("#text-verify-identification-customer-edit").css("display", "none");
         }
       }
+      if (val.length === 1){
+        setTimeout(() => {
+          $("#txtIdentifacationCustomerEditV").addClass("is-invalid");
+          $("#text-verify-one-indentification-character-customer-edit").css("display", "block");
+          document.getElementById('text-verify-one-indentification-character-customer-edit').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-indentification-character-customer-edit').disabled = false;
+        $("#txtIdentifacationCustomerEditV").removeClass("is-invalid");
+        $("#text-verify-one-indentification-character-customer-edit").css("display", "none");
+      }
     },
     email: function (val) {
       let data = this
@@ -645,8 +671,64 @@ export default {
         }
 
       }
-    }
-    ,
+    },
+    'customer.businessName'(val){
+      if (val.length === 1){
+        setTimeout(() => {
+          $("#txtNameUserCustomerEdit").addClass("is-invalid");
+          $("#text-verify-one-character-customer-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-customer-edit').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-customer-edit').disabled = false;
+        $("#txtNameUserCustomerEdit").removeClass("is-invalid");
+        $("#text-verify-one-character-customer-edit").css("display", "none");
+      }
+    },
+    phone: function (val) {
+      if (val !== null){
+        if (val.length < 11) {
+          setTimeout(() => {
+            $("#MazPhoneNumberInput-28_phone_number").addClass("is-invalid");
+            $(".input-tel__label").addClass("is-invalid");
+          }, 200)
+        } else {
+          document.getElementById('text-verify-phone-customer-edit').disabled = false;
+          $('#text-verify-phone-customer-edit').css("display", "none");
+          $("#MazPhoneNumberInput-28_phone_number").removeClass("is-invalid");
+          $(".input-tel__label").removeClass("is-invalid");
+
+        }
+      }
+    },
+
+    numberDaysAfterInvoice: function (val) {
+      if (val === '0' || val === 0) {
+        setTimeout(() => {
+          $("#txtSendPaymentEmailCustomerEdit").addClass("is-invalid");
+          $("#text-verify-one-character-days-after-invoice-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-days-after-invoice-edit').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-days-after-invoice-edit').disabled = false;
+        $("#txtSendPaymentEmailCustomerEdit").removeClass("is-invalid");
+        $("#text-verify-one-character-days-after-invoice-edit").css("display", "none");
+      }
+    },
+
+    numberDaysOverdueInvoice: function (val) {
+      if (val === '0' || val === 0) {
+        setTimeout(() => {
+          $("#txtSendOverdueEmailCustomerEdit").addClass("is-invalid");
+          $("#text-verify-one-character-days-overdue-invoice-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-days-overdue-invoice-edit').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-days-overdue-invoice-edit').disabled = false;
+        $("#txtSendOverdueEmailCustomerEdit").removeClass("is-invalid");
+        $("#text-verify-one-character-days-overdue-invoice-edit").css("display", "none");
+      }
+    },
   },
   mounted() {
     this.getApiTypeIdentification();

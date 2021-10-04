@@ -64,7 +64,7 @@
 {{--                                    <h1 class="brand-text text-primary ml-1">Caproin</h1>--}}
                                 </a>
 
-                                <h5 class="card-title display- mb-1">Bievenido! 👋</h5>
+                                <h5 class="card-title display- mb-1">Bienvenido! 👋</h5>
                                 <p class="card-text mb-2">Inicia Sesión con tu cuenta</p>
 
                                 <form class="auth-login-form mt-2" action="{{ route('login') }}" method="POST">

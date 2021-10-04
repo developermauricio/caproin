@@ -323,6 +323,8 @@
                                                 }"
             >
             </input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-comment-invoice" class="text-danger">El comentario debe contener mas de '10' caracteres</p>
           </div>
         </div>
         <div class="row">
@@ -594,8 +596,24 @@ export default {
         this.optionsCustomerInvoice = resp.data.data
       });
     }
-  }
-  ,
+  },
+  watch:{
+    comments: function (val) {
+
+      if (val.length <= 10){
+        setTimeout(() => {
+          $("#txtCommentsInvoice").addClass("is-invalid");
+          $("#text-verify-one-character-comment-invoice").css("display", "block");
+          document.getElementById('text-verify-one-character-comment-invoice').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-comment-invoice').disabled = false;
+        $("#txtCommentsInvoice").removeClass("is-invalid");
+        $("#text-verify-one-character-comment-invoice").css("display", "none");
+      }
+    }
+  },
+
   mounted() {
     this.getApiStateInvoice();
     this.getApiTypeInvoice();
