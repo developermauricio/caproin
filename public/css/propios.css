@@ -37,6 +37,14 @@
     width: 100% !important;
 }
 
+.input-tel__input.is-invalid:focus{
+    border-color: red !important;
+    box-shadow: 0 0 0 0.125rem rgb(235 121 121) !important;
+}
+.input-tel__label.is-invalid{
+    color: red !important;
+}
+
 @media (min-width: 992px) {
     .fullscreen-modal .modal-lg, .modal-xl {
         max-width: 10200px;

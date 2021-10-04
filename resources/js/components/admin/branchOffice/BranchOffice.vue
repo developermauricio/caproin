@@ -73,8 +73,10 @@
                     :required="true"
                     :msgServer.sync="errors.name"
                   ></input-form>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-character-branchoffices" class="text-danger">El nombre no puede ser de un caracter</p>
                   <input-form
-                    id="txtCodeBranchOffices"
+                    id="txtCodeBranchOfficesV"
                     label="Código"
                     pattern="all"
                     errorMsg="Ingrese un código válido"
@@ -86,6 +88,9 @@
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                      id="text-verify-code-branch-office" class="text-danger">El coódigo ya
                     ha sido registrado</p>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-character-code-zone" class="text-danger">El código no puede contener un
+                    caracter</p>
                 </div>
               </div>
             </div>
@@ -124,23 +129,28 @@
                     pattern="all"
                     errorMsg="Ingrese un nombre válido"
                     requiredMsg="El nombre es obligatorio"
-                    :modelo.sync="name"
+                    :modelo.sync="nameEdit"
                     :required="true"
-                    :msgServer.sync="errors.name"
+                    :msgServer.sync="errors.nameEdit"
                   ></input-form>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-character-branchoffices-edit" class="text-danger">El nombre no puede ser de un caracter</p>
                   <input-form
-                    id="txtCodeBranchOfficesEdit"
+                    id="txtCodeBranchOfficesEditV"
                     label="Código"
                     pattern="all"
                     errorMsg="Ingrese un código válido"
                     requiredMsg="El código es obligatorio"
-                    :modelo.sync="code"
+                    :modelo.sync="codeEdit"
                     :required="true"
-                    :msgServer.sync="errors.code"
+                    :msgServer.sync="errors.codeEdit"
                   ></input-form>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                      id="text-verify-code-branch-office-edit" class="text-danger">El coódigo ya
                     ha sido registrado</p>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-character-code-branchoffice-edit" class="text-danger">El código no puede contener un
+                    caracter</p>
                   <input-form
                     label="Estado"
                     id="textStateBranchOfficeEdit"
@@ -188,7 +198,9 @@ export default {
     return {
       dataBranchOffices: [],
       name: '',
+      nameEdit: '',
       code: '',
+      codeEdit: '',
       idValidateCode: null,
       codeValidet: '',
       id: null,
@@ -280,8 +292,8 @@ export default {
           return;
         }
         const data = new FormData()
-        data.append('name', this.name);
-        data.append('code', this.code);
+        data.append('name', this.nameEdit);
+        data.append('code', this.codeEdit);
         data.append('id', this.id);
         data.append('state', JSON.stringify(this.state));
 
@@ -396,8 +408,8 @@ export default {
           text: 'Cargando datos...'
         })
         // console.log(resp.data.data)
-        this.name = resp.data.data.name
-        this.code = resp.data.data.code
+        this.nameEdit = resp.data.data.name
+        this.codeEdit = resp.data.data.code
         this.id = resp.data.data.id
         this.codeValidet = resp.data.data.code
         this.idValidateCode = 1
@@ -498,7 +510,98 @@ export default {
           $("#text-verify-code-branch-office-edit").css("display", "none");
         }
       }
-    }
+
+      if (val.length === 1) {
+        setTimeout(() => {
+          $("#txtCodeBranchOfficesV").addClass("is-invalid");
+          $("#text-verify-one-character-code-zone").css("display", "block");
+          document.getElementById('text-verify-one-character-code-zone').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-code-zone').disabled = false;
+        $("#txtCodeBranchOfficesV").removeClass("is-invalid");
+        $("#text-verify-one-character-code-zone").css("display", "none");
+      }
+    },
+    codeEdit: function (val) {
+      let data = this
+      if (val) {
+        console.log('codigo propio', this.codeValidet)
+        console.log('value', val)
+        if (this.codeValidet !== val) {
+          setTimeout(() => {
+            this.$vs.loading({
+              color: '#3f4f6e',
+              text: 'Válidando código...'
+            })
+            axios.get('/api/verify-code-branch-office/' + val)
+              .then(resp => {
+                if (resp.data) {
+                  if (this.idValidateCode === 1) {
+                    $("#txtCodeBranchOfficesEdit").addClass("is-invalid");
+                    $("#text-verify-code-branch-office-edit").css("display", "block");
+                  } else {
+                    $("#txtCodeBranchOffices").addClass("is-invalid");
+                    $("#text-verify-code-branch-office").css("display", "block");
+                  }
+                } else {
+                  data.emailverify = ''
+                  $("#txtCodeBranchOffices").removeClass("is-invalid");
+                  $("#text-verify-code-branch-office").css("display", "none");
+
+                  $("#txtCodeBranchOfficesEdit").removeClass("is-invalid");
+                  $("#text-verify-code-branch-office-edit").css("display", "none");
+                }
+                this.$vs.loading.close()
+              }).catch(err => {
+            });
+          }, 200)
+          this.$vs.loading.close()
+        } else {
+          $("#txtCodeBranchOfficesEdit").removeClass("is-invalid");
+          $("#text-verify-code-branch-office-edit").css("display", "none");
+        }
+      }
+
+      if (val.length === 1) {
+        setTimeout(() => {
+          $("#txtCodeBranchOfficesEditV").addClass("is-invalid");
+          $("#text-verify-one-character-code-branchoffice-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-code-branchoffice-edit').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-code-branchoffice-edit').disabled = false;
+        $("#txtCodeBranchOfficesEditV").removeClass("is-invalid");
+        $("#text-verify-one-character-code-branchoffice-edit").css("display", "none");
+      }
+    },
+    name: function (val) {
+      if (val.length === 1){
+        setTimeout(() => {
+          $("#txtNameBranchOffices").addClass("is-invalid");
+          $("#text-verify-one-character-branchoffices").css("display", "block");
+          document.getElementById('text-verify-one-character-branchoffices').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-branchoffices').disabled = false;
+        $("#txtNameBranchOffices").removeClass("is-invalid");
+        $("#text-verify-one-character-branchoffices").css("display", "none");
+      }
+    },
+
+    nameEdit: function (val) {
+      if (val.length === 1){
+        setTimeout(() => {
+          $("#txtNameBranchOfficesEdit").addClass("is-invalid");
+          $("#text-verify-one-character-branchoffices-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-branchoffices-edit').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-branchoffices-edit').disabled = false;
+        $("#txtNameBranchOfficesEdit").removeClass("is-invalid");
+        $("#text-verify-one-character-branchoffices-edit").css("display", "none");
+      }
+    },
   }
 }
 </script>

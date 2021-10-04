@@ -11,7 +11,8 @@
                    placeholder="Buscar por nombre o código"/>
           </div>
         </div>
-        <button v-if="$gate.allow('createZone', 'zone')" data-target="#modal-new-branch-office" data-toggle="modal" class="btn btn-primary float-right"><i
+        <button v-if="$gate.allow('createZone', 'zone')" data-target="#modal-new-branch-office" data-toggle="modal"
+                class="btn btn-primary float-right"><i
           data-feather="plus" class="mr-50"></i>Nueva Zona
         </button>
       </div>
@@ -74,6 +75,8 @@
                     :required="true"
                     :msgServer.sync="errors.name"
                   ></input-form>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-character-branchoffices" class="text-danger">El nombre no puede ser de un caracter</p>
                   <input-form
                     id="txtCodeBranchOffices"
                     label="Código"
@@ -87,6 +90,9 @@
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                      id="text-verify-code-zone" class="text-danger">El código ya
                     ha sido registrado</p>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-character-code-zone" class="text-danger">El código no puede contener un
+                    caracter</p>
                 </div>
               </div>
             </div>
@@ -125,23 +131,28 @@
                     pattern="all"
                     errorMsg="Ingrese un nombre válido"
                     requiredMsg="El nombre es obligatorio"
-                    :modelo.sync="name"
+                    :modelo.sync="nameEdit"
                     :required="true"
-                    :msgServer.sync="errors.name"
+                    :msgServer.sync="errors.nameEdit"
                   ></input-form>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-character-branchoffices-edit" class="text-danger">El nombre no puede ser de un caracter</p>
                   <input-form
-                    id="txtCodeZoneEdit"
+                    id="txtCodeBranchOfficesEdit"
                     label="Código"
                     pattern="all"
                     errorMsg="Ingrese un código válido"
                     requiredMsg="El código es obligatorio"
-                    :modelo.sync="code"
+                    :modelo.sync="codeEdit"
                     :required="true"
-                    :msgServer.sync="errors.code"
+                    :msgServer.sync="errors.codeEdit"
                   ></input-form>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                      id="text-verify-code-zone-edit" class="text-danger">El coódigo ya
                     ha sido registrado</p>
+                  <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                     id="text-verify-one-character-code-zone-edit" class="text-danger">El código no puede contener un
+                    caracter</p>
                   <input-form
                     label="Estado"
                     id="textStateZonaEdit"
@@ -189,10 +200,12 @@ export default {
     return {
       dataZones: [],
       name: '',
+      nameEdit: '',
       code: '',
+      codeEdit: '',
       idValidateCode: null,
       codeValidet: '',
-      state:null,
+      state: null,
       id: null,
       searchQuery: null,
       errors: {},
@@ -209,7 +222,7 @@ export default {
     }
   },
   methods: {
-    deleteZone(id){
+    deleteZone(id) {
       console.log('eliminar', id)
       const data = new FormData()
       data.append('id', id);
@@ -242,7 +255,7 @@ export default {
             window.location = "/zonas";
           }).catch(err => {
             if (err.response.status === 301) {
-              console.log('mensaje',  err.response.data)
+              console.log('mensaje', err.response.data)
               return this.$toast.error({
                 title: 'Atención',
                 message: err.response.data,
@@ -250,7 +263,7 @@ export default {
                 hideDuration: 7000,
                 position: 'top right',
               })
-            }else {
+            } else {
               this.$toast.error({
                 title: 'Algo salio mal',
                 message: 'Comunícate con el administrador',
@@ -281,8 +294,8 @@ export default {
           return;
         }
         const data = new FormData()
-        data.append('name', this.name);
-        data.append('code', this.code);
+        data.append('name', this.nameEdit);
+        data.append('code', this.codeEdit);
         data.append('id', this.id);
         data.append('state', JSON.stringify(this.state));
 
@@ -396,8 +409,8 @@ export default {
           color: '#3f4f6e',
           text: 'Cargando datos...'
         })
-        this.name = resp.data.data.name
-        this.code = resp.data.data.code
+        this.nameEdit = resp.data.data.name
+        this.codeEdit = resp.data.data.code
         this.id = resp.data.data.id
         this.codeValidet = resp.data.data.code
         this.idValidateCode = 1
@@ -417,7 +430,7 @@ export default {
     getBranchOffices() {
       axios.get('/api/all-zones').then(resp => {
         this.dataZones = resp.data.data
-        setTimeout(()=>{
+        setTimeout(() => {
           window.feather.replace()
         }, 200)
 
@@ -473,7 +486,7 @@ export default {
               .then(resp => {
                 if (resp.data) {
                   if (this.idValidateCode === 1) {
-                    $("#txtCodeZoneEdit").addClass("is-invalid");
+                    $("#txtCodeBranchOfficesEdit").addClass("is-invalid");
                     $("#text-verify-code-zone-edit").css("display", "block");
                   } else {
                     $("#txtCodeBranchOffices").addClass("is-invalid");
@@ -484,7 +497,7 @@ export default {
                   $("#txtCodeBranchOffices").removeClass("is-invalid");
                   $("#text-verify-code-zone").css("display", "none");
 
-                  $("#txtCodeZoneEdit").removeClass("is-invalid");
+                  $("#txtCodeBranchOfficesEdit").removeClass("is-invalid");
                   $("#text-verify-code-zone-edit").css("display", "none");
                 }
                 this.$vs.loading.close()
@@ -493,11 +506,100 @@ export default {
           }, 200)
           this.$vs.loading.close()
         } else {
-          $("#txtCodeZoneEdit").removeClass("is-invalid");
+          $("#txtCodeBranchOfficesEdit").removeClass("is-invalid");
           $("#text-verify-code-zone-edit").css("display", "none");
         }
       }
-    }
+      if (val.length === 1) {
+
+        setTimeout(() => {
+          $("#txtCodeBranchOffices").addClass("is-invalid");
+          $("#text-verify-one-character-code-zone").css("display", "block");
+          document.getElementById('text-verify-one-character-code-zone').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-code-zone').disabled = false;
+        $("#txtCodeBranchOffices").removeClass("is-invalid");
+        $("#text-verify-one-character-code-zone").css("display", "none");
+      }
+    },
+    codeEdit: function (val) {
+      let data = this
+      if (val) {
+        console.log('codigo propio', this.codeValidet)
+        console.log('value', val)
+        if (this.codeValidet !== val) {
+          setTimeout(() => {
+            this.$vs.loading({
+              color: '#3f4f6e',
+              text: 'Válidando código...'
+            })
+            axios.get('/api/verify-code-zone/' + val)
+              .then(resp => {
+                if (resp.data) {
+                  if (this.idValidateCode === 1) {
+                    $("#txtCodeBranchOfficesEdit").addClass("is-invalid");
+                    $("#text-verify-code-zone-edit").css("display", "block");
+                  } else {
+                    $("#txtCodeBranchOffices").addClass("is-invalid");
+                    $("#text-verify-code-zone").css("display", "block");
+                  }
+                } else {
+                  data.emailverify = ''
+                  $("#txtCodeBranchOffices").removeClass("is-invalid");
+                  $("#text-verify-code-zone").css("display", "none");
+
+                  $("#txtCodeBranchOfficesEdit").removeClass("is-invalid");
+                  $("#text-verify-code-zone-edit").css("display", "none");
+                }
+                this.$vs.loading.close()
+              }).catch(err => {
+            });
+          }, 200)
+          this.$vs.loading.close()
+        } else {
+          $("#txtCodeBranchOfficesEdit").removeClass("is-invalid");
+          $("#text-verify-code-zone-edit").css("display", "none");
+        }
+      }
+      if (val.length === 1){
+        setTimeout(() => {
+          $("#txtCodeBranchOfficesEdit").addClass("is-invalid");
+          $("#text-verify-one-character-code-zone-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-code-zone-edit').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-code-zone-edit').disabled = false;
+        $("#txtCodeBranchOfficesEdit").removeClass("is-invalid");
+        $("#text-verify-one-character-code-zone-edit").css("display", "none");
+      }
+    },
+    name: function (val) {
+      if (val.length === 1){
+        setTimeout(() => {
+          $("#txtNameBranchOffices").addClass("is-invalid");
+          $("#text-verify-one-character-branchoffices").css("display", "block");
+          document.getElementById('text-verify-one-character-branchoffices').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-branchoffices').disabled = false;
+        $("#txtNameBranchOffices").removeClass("is-invalid");
+        $("#text-verify-one-character-branchoffices").css("display", "none");
+      }
+    },
+    nameEdit: function (val) {
+      if (val.length === 1){
+        setTimeout(() => {
+          $("#txtNameBranchOfficesEdit").addClass("is-invalid");
+          $("#text-verify-one-character-branchoffices-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-branchoffices-edit').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-branchoffices-edit').disabled = false;
+        $("#txtNameBranchOfficesEdit").removeClass("is-invalid");
+        $("#text-verify-one-character-branchoffices-edit").css("display", "none");
+      }
+    },
   }
 }
 </script>

@@ -64,16 +64,16 @@ class ZonesController extends Controller
     }
 
     public function deleteZone(Request $request){
-        DB::table('zones')->where('id', $request->id)->delete();
-        return response()->json('Se eliminó correctamente');
-//        $zones = Zone::where('id', $request->id)->with('employee')->first();
-//
-//        if (count($zones->employee) > 0){
-//            return response()->json('No se eliminó por que tiene registros asociados', 301);
-//        }else{
-//            DB::table('zones')->where('id', $request->id)->delete();
-//            return response()->json('Se eliminó correctamente');
-//
-//        }
+//        DB::table('zones')->where('id', $request->id)->delete();
+//        return response()->json('Se eliminó correctamente');
+        $zones = Zone::where('id', $request->id)->with('purchaseorder')->first();
+
+        if (count($zones->purchaseorder) > 0){
+            return response()->json('No se eliminó por que tiene registros asociados', 301);
+        }else{
+            DB::table('zones')->where('id', $request->id)->delete();
+            return response()->json('Se eliminó correctamente');
+
+        }
     }
 }

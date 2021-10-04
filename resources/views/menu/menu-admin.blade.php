@@ -35,13 +35,13 @@ MENU ADMIN
 </li>
 @endrole
 @role($role2)
-<li class="{{request()->is('usuarios') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.user.users') }}"><i data-feather='users'></i><span
-            class="menu-title text-truncate" data-i18n="Email">Usuarios</span></a>
+<li class="{{request()->is('zonas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.zones') }}"><i data-feather='map-pin'></i><span
+            class="menu-title text-truncate" data-i18n="Email">Zonas</span></a>
 </li>
 @endrole
 @role($role2)
-<li class="{{request()->is('zonas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.zones') }}"><i data-feather='map-pin'></i><span
-            class="menu-title text-truncate" data-i18n="Email">Zonas</span></a>
+<li class="{{request()->is('usuarios') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.user.users') }}"><i data-feather='users'></i><span
+            class="menu-title text-truncate" data-i18n="Email">Usuarios</span></a>
 </li>
 @endrole
 @role($role3)

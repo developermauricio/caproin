@@ -262,12 +262,12 @@ class UserController extends Controller
             $success = $total - $errors;
             if ($success > 0) {
                 return back()
-                    ->with('error', $errors . " datos no se importaron correctamente. Quizás ya estan registrados o el correo electrónico y identificación ya se encuentra registrado. Asegurate que los datos del reporte o tabla, no esten registrados o no esten duplicados.")
+                    ->with('error', $errors . " datos no se importaron correctamente. Quizás ya estén registrados o el correo electrónico y la identificación ya se encuentra registrado. Asegúrate que los datos del reporte o tabla, no esten registrados o no esten duplicados.")
                     ->with('status', $success . " datos se importaron correctamente")
                     ->with('lines', $lines);
             } else {
                 return back()
-                    ->with('error', "Ningún dato se ha importado correctamente. Quizás ya estan registrados o el correo electrónico y identificación ya se encuentra registrado. Asegurate que los datos del reporte o tabla, no esten registrados o no esten duplicados.")
+                    ->with('error', "Ningún dato se ha importado correctamente. Quizás ya estén registrados o el correo electrónico y la identificación ya se encuentra registrado. Asegúrate que los datos del reporte o tabla, no esten registrados o no esten duplicados.")
                     ->with('lines', $lines);
             }
         }

@@ -20,6 +20,8 @@
               :required="true"
               :msgServer.sync="errors.name"
             ></input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-user-name" class="text-danger">El nombre no puede ser de un caracter</p>
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
@@ -32,6 +34,9 @@
               :required="true"
               :msgServer.sync="errors.last_name"
             ></input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-user-lastName" class="text-danger">El apellido no puede ser de un
+              caracter</p>
           </div>
 
           <div class="col-12 col-md-6 col-lg-6">
@@ -132,6 +137,8 @@
                                 phoneNumberLabel: 'Número',
                                 example: 'Ejemplo'
                             }"/>
+            <p style="margin-top: 0.2rem;font-size: 0.9rem; display: none"
+               id="text-verify-phone-user" class="text-danger">Ingrese un número de teléfono válido</p>
           </div>
         </div>
       </div>
@@ -150,6 +157,7 @@ import VuePhoneNumberInput from "vue-phone-number-input";
 import "vue-phone-number-input/dist/vue-phone-number-input.css";
 import vue2Dropzone from "vue2-dropzone";
 import Swal from 'sweetalert2'
+
 export default {
   name: "CreateUser",
   components: {
@@ -171,7 +179,7 @@ export default {
 
 
       typeBranchOffice: null,
-      user:{
+      user: {
         name: '',
         last_name: '',
         phone: '',
@@ -199,6 +207,10 @@ export default {
             hideDuration: 9000,
             position: 'top right',
           })
+          if (user.phone.length < 11) {
+            document.getElementById('text-verify-phone-user').disabled = true;
+            $('#text-verify-phone-user').css("display", "block");
+          }
           return;
         }
         const data = new FormData()
@@ -276,7 +288,7 @@ export default {
       console.log(val)
       let data = this
       if (val) {
-        if (val === ''){
+        if (val === '') {
           data.identificationVerify = ''
           $("#txtIdentifacationCustomer").removeClass("is-invalid");
           $("#text-verify-identification-customer").css("display", "none");
@@ -318,6 +330,50 @@ export default {
         });
       }
     },
+    'user.name'(val) {
+      if (val.length === 1) {
+        setTimeout(() => {
+          $("#txtNameUser").addClass("is-invalid");
+          $("#text-verify-one-character-user-name").css("display", "block");
+          document.getElementById('text-verify-one-character-user-name').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-user-name').disabled = false;
+        $("#txtNameUser").removeClass("is-invalid");
+        $("#text-verify-one-character-user-name").css("display", "none");
+
+      }
+    },
+    'user.last_name'(val) {
+      if (val.length === 1) {
+        setTimeout(() => {
+          $("#txtLastNameUser").addClass("is-invalid");
+          $("#text-verify-one-character-user-lastName").css("display", "block");
+          document.getElementById('text-verify-one-character-user-lastName').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-user-lastName').disabled = false;
+        $("#txtLastNameUser").removeClass("is-invalid");
+        $("#text-verify-one-character-user-lastName").css("display", "none");
+
+      }
+    },
+    'user.phone'(val) {
+      if (val !== null) {
+        if (val.length < 11) {
+          setTimeout(() => {
+            $("#MazPhoneNumberInput-18_phone_number").addClass("is-invalid");
+            $(".input-tel__label").addClass("is-invalid");
+          }, 200)
+        } else {
+          document.getElementById('text-verify-phone-user').disabled = false;
+          $('#text-verify-phone-user').css("display", "none");
+          $("#MazPhoneNumberInput-18_phone_number").removeClass("is-invalid");
+          $(".input-tel__label").removeClass("is-invalid");
+
+        }
+      }
+    }
   },
   mounted() {
     this.getApiTypeBranchoffice();

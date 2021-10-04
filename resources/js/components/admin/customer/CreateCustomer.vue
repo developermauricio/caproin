@@ -16,10 +16,12 @@
               pattern="all"
               errorMsg="Ingrese nombre o razón social válido"
               requiredMsg="El nombre o razón social es obligatorio"
-              :modelo.sync="customer.businessName"
+              :modelo.sync="businessName"
               :required="true"
               :msgServer.sync="errors.businessName"
             ></input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character" class="text-danger">El nombre no puede ser de un caracter</p>
           </div>
         </div>
         <div class="row">
@@ -116,6 +118,9 @@
             <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                id="text-verify-identification-customer" class="text-danger">El número de identificación ya
               ha sido registrado</p>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-indentification-character" class="text-danger">El número de identificación no puede
+              ser de un caracter</p>
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
@@ -145,30 +150,37 @@
                                 phoneNumberLabel: 'Número',
                                 example: 'Ejemplo'
                             }"/>
+            <p style="margin-top: 0.2rem;font-size: 0.9rem; display: none"
+               id="text-verify-phone-customer" class="text-danger">Ingrese un número de teléfono válido</p>
+
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
               id="txtSendPaymentEmailCustomer"
               label="Número de días para enviar cobro por correo electrónico, después de generar la factura"
-              pattern="all"
+              pattern="num"
               errorMsg="Ingrese un número de días válido"
               requiredMsg="El número de días es obligatorio"
               :modelo.sync="numberDaysAfterInvoice"
               :required="true"
               :msgServer.sync="errors.numberDaysAfterInvoice"
             ></input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-days-after-invoice" class="text-danger">'0' no es un número válido</p>
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
               id="txtSendOverdueEmailCustomer"
               label="Número de días para enviar correo de cobro después de vencida la factura"
-              pattern="all"
+              pattern="num"
               errorMsg="Ingrese un número de días válido"
               requiredMsg="El número de días es obligatorio"
               :modelo.sync="numberDaysOverdueInvoice"
               :required="true"
               :msgServer.sync="errors.numberDaysOverdueInvoice"
             ></input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-days-overdue-invoice" class="text-danger">'0' no es un número válido</p>
           </div>
         </div>
       </div>
@@ -202,8 +214,8 @@ export default {
       email: '',
       customerType: null,
       identificationVerify: '',
-      identificationTypePrincipal:null,
-      identificationTypePrincipalId:null,
+      identificationTypePrincipal: null,
+      identificationTypePrincipalId: null,
       codeVerify: '',
       code: null,
       principal: '0',
@@ -211,8 +223,8 @@ export default {
       user: {
         phone: '',
       },
+      businessName: '',
       customer: {
-        businessName: '',
         typeIdentification: null,
       },
       optionsTypeIdentification: [],
@@ -233,7 +245,7 @@ export default {
 
         document.getElementById('txtIdentifacationCustomer').disabled = true;
 
-      }else{
+      } else {
         document.getElementById('txtIdentifacationCustomer').disabled = false;
         this.identification = ''
         this.identificationTypePrincipal = null
@@ -254,10 +266,14 @@ export default {
             hideDuration: 9000,
             position: 'top right',
           })
+          if (user.phone.length < 11) {
+            document.getElementById('text-verify-phone-customer').disabled = true;
+            $('#text-verify-phone-customer').css("display", "block");
+          }
           return;
         }
         const data = new FormData()
-        data.append('businessName', this.customer.businessName);
+        data.append('businessName', this.businessName);
         data.append('typeIdentification', JSON.stringify(this.customer.typeIdentification));
         data.append('typeCustomer', JSON.stringify(this.customerType));
         data.append('identification', this.identification);
@@ -330,7 +346,6 @@ export default {
   },
   watch: {
     identification: function (val) {
-      console.log(val)
       let data = this
       if (this.customerType === null) {
         if (val) {
@@ -359,6 +374,17 @@ export default {
           });
         }
       }
+      if (val.length === 1) {
+        setTimeout(() => {
+          $("#txtIdentifacationCustomer").addClass("is-invalid");
+          $("#text-verify-one-indentification-character").css("display", "block");
+          document.getElementById('text-verify-one-indentification-character').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-indentification-character').disabled = false;
+        $("#txtIdentifacationCustomer").removeClass("is-invalid");
+        $("#text-verify-one-indentification-character").css("display", "none");
+      }
     },
     email: function (val) {
       let data = this
@@ -377,23 +403,81 @@ export default {
         });
       }
     },
-    principal: function (val){
-      if (val === '1'){
+    principal: function (val) {
+      if (val === '1') {
         this.identification = ''
         document.getElementById('txtIdentifacationCustomer').disabled = true;
-        setTimeout(() =>{
+        setTimeout(() => {
           document.getElementById('txtTypePrincipalIdentifacationCustomer').disabled = true;
-        },200)
+        }, 200)
 
         $("#txtIdentifacationCustomer").removeClass("is-invalid");
         $("#text-verify-identification-customer").css("display", "none");
-      }else{
+      } else {
         this.identification = ''
         this.customerType = null
         this.identificationTypePrincipalId = null
         this.identificationTypePrincipal = null
         document.getElementById('txtIdentifacationCustomer').disabled = false;
         document.getElementById('txtTypePrincipalIdentifacationCustomer').disabled = false;
+      }
+    },
+    businessName: function (val) {
+      let data = this
+      let character = val;
+      if (character.length === 1) {
+        setTimeout(() => {
+          $("#txtNameUserCustomer").addClass("is-invalid");
+          $("#text-verify-one-character").css("display", "block");
+          document.getElementById('text-verify-one-character').disabled = true;
+        }, 200)
+
+      } else {
+        document.getElementById('text-verify-one-character').disabled = false;
+        $("#txtNameUserCustomer").removeClass("is-invalid");
+        $("#text-verify-one-character").css("display", "none");
+      }
+    },
+    numberDaysAfterInvoice: function (val) {
+      if (val === '0' || val === 0) {
+        setTimeout(() => {
+          $("#txtSendPaymentEmailCustomer").addClass("is-invalid");
+          $("#text-verify-one-character-days-after-invoice").css("display", "block");
+          document.getElementById('text-verify-one-character-days-after-invoice').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-days-after-invoice').disabled = false;
+        $("#txtSendPaymentEmailCustomer").removeClass("is-invalid");
+        $("#text-verify-one-character-days-after-invoice").css("display", "none");
+      }
+    },
+    numberDaysOverdueInvoice: function (val) {
+      if (val === '0' || val === 0) {
+        setTimeout(() => {
+          $("#txtSendOverdueEmailCustomer").addClass("is-invalid");
+          $("#text-verify-one-character-days-overdue-invoice").css("display", "block");
+          document.getElementById('text-verify-one-character-days-overdue-invoice').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-days-after-invoice').disabled = false;
+        $("#txtSendOverdueEmailCustomer").removeClass("is-invalid");
+        $("#text-verify-one-character-days-overdue-invoice").css("display", "none");
+      }
+    },
+    'user.phone'(val) {
+      if (val !== null) {
+        if (val.length < 11) {
+          setTimeout(() => {
+            $("#MazPhoneNumberInput-16_phone_number").addClass("is-invalid");
+            $(".input-tel__label").addClass("is-invalid");
+          }, 200)
+        } else {
+          document.getElementById('text-verify-phone-customer').disabled = false;
+          $('#text-verify-phone-customer').css("display", "none");
+          $("#MazPhoneNumberInput-16_phone_number").removeClass("is-invalid");
+          $(".input-tel__label").removeClass("is-invalid");
+
+        }
       }
     }
   },
@@ -416,4 +500,5 @@ export default {
 .multiselect__option--highlight {
   background: #0082FB !important;
 }
+
 </style>

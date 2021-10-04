@@ -20,17 +20,14 @@
       href="{{ route('admin.branch_offices') }}"><i data-feather='map'></i><span
           class="menu-title text-truncate" data-i18n="Email">Sucursales</span></a>
 </li>
-
+<li class="{{request()->is('zonas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center"
+                                                                    href="{{ route('admin.zones') }}"><i data-feather='map-pin'></i><span
+            class="menu-title text-truncate" data-i18n="Email">Zonas</span></a>
+</li>
 <li class="{{request()->is('usuarios') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center"
       href="{{ route('admin.user.users') }}"><i data-feather='users'></i><span
           class="menu-title text-truncate" data-i18n="Email">Usuarios</span></a>
 </li>
-
-<li class="{{request()->is('zonas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center"
-      href="{{ route('admin.zones') }}"><i data-feather='map-pin'></i><span
-          class="menu-title text-truncate" data-i18n="Email">Zonas</span></a>
-</li>
-
 <li class="{{request()->is('facturas') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center"
       href="{{ route('admin.invoice') }}"><i data-feather='clipboard'></i><span
           class="menu-title text-truncate" data-i18n="Email">Facturas</span></a>

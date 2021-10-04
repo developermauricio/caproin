@@ -22,6 +22,9 @@
                 :required="true"
                 :msgServer.sync="errors.name"
               ></input-form>
+              <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                 id="text-verify-one-character-user-name-edit" class="text-danger">El nombre no puede ser de un
+                caracter</p>
             </div>
             <div class="col-12 col-md-6 col-lg-6">
               <input-form
@@ -34,6 +37,9 @@
                 :required="true"
                 :msgServer.sync="errors.last_name"
               ></input-form>
+              <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+                 id="text-verify-one-character-user-lastName-edit" class="text-danger">El apellido no puede ser de un
+                caracter</p>
             </div>
 
             <div class="col-12 col-md-6 col-lg-6">
@@ -137,6 +143,8 @@
                                 phoneNumberLabel: 'Número',
                                 example: 'Ejemplo'
                             }"/>
+              <p style="margin-top: 0.2rem;font-size: 0.9rem; display: none"
+                 id="text-verify-phone-user-edit" class="text-danger">Ingrese un número de teléfono válido</p>
             </div>
             <div class="col-12 col-md-6 col-lg-6">
               <input-form
@@ -396,8 +404,52 @@ export default {
         }
 
       }
+    },
+
+    'user.name'(val) {
+      if (val.length === 1) {
+        setTimeout(() => {
+          $("#txtNameUserEdit").addClass("is-invalid");
+          $("#text-verify-one-character-user-name-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-user-name-edit').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-user-name-edit').disabled = false;
+        $("#txtNameUserEdit").removeClass("is-invalid");
+        $("#text-verify-one-character-user-name-edit").css("display", "none");
+
+      }
+    },
+    'user.last_name'(val) {
+      if (val.length === 1) {
+        setTimeout(() => {
+          $("#txtLastNameUserEdit").addClass("is-invalid");
+          $("#text-verify-one-character-user-lastName-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-user-lastName-edit').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-user-lastName-edit').disabled = false;
+        $("#txtLastNameUserEdit").removeClass("is-invalid");
+        $("#text-verify-one-character-user-lastName-edit").css("display", "none");
+
+      }
+    },
+    'user.phone'(val) {
+      if (val !== null) {
+        if (val.length < 11) {
+          setTimeout(() => {
+            $("#MazPhoneNumberInput-40_phone_number").addClass("is-invalid");
+            $(".input-tel__label").addClass("is-invalid");
+          }, 200)
+        } else {
+          document.getElementById('text-verify-phone-user-edit').disabled = false;
+          $('#text-verify-phone-user-edit').css("display", "none");
+          $("#MazPhoneNumberInput-40_phone_number").removeClass("is-invalid");
+          $(".input-tel__label").removeClass("is-invalid");
+
+        }
+      }
     }
-    ,
   },
   mounted() {
     this.getApiTypeBranchoffice();

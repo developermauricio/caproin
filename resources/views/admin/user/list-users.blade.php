@@ -61,7 +61,7 @@
                         <thead>
                         <tr>
                             <th style="max-width: 30% !important;">#</th>
-                            <th>Nombre o Apellidos</th>
+                            <th>Nombres y Apellidos</th>
                             <th>Correo Empresarial</th>
                             <th>Teléfono</th>
                             <th>Sucursal</th>
