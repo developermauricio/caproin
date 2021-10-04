@@ -177,7 +177,21 @@ class CustomerController extends Controller
             DB::beginTransaction();
             try {
                 $ramdon = Str::random(10);
-                $slug = Str::slug($line['nombre o razon social'] . '-' . $ramdon, '-');
+                $name = $line['nombre o razon social'];
+
+                if (!isset($name[2])){
+                    throw new \Exception("Nombre de usuario invalido", "-1");
+                }
+
+                if (!strpos($line['email'], "@")){
+                    throw new \Exception("El correo es invalido", "-1");
+                }
+
+                if (!isset($line['telefono'][2])){
+                    throw new \Exception("Telefono invalido", "-1");
+                }
+
+                $slug = Str::slug($name . '-' . $ramdon, '-');
 
                 $tipoIdentificacion = IdentificationType::select('id')->find($line['tipo de identificacion']);
                 if (!$tipoIdentificacion) {
@@ -185,7 +199,7 @@ class CustomerController extends Controller
                 }
 
                 $user = User::create([
-                    'name' => $line['nombre o razon social'],
+                    'name' => $name,
                     'email' => $line['email'],
                     'phone' => $line['telefono'],
                     'identification' => $line['identificacion'],
