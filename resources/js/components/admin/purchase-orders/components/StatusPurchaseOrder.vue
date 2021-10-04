@@ -53,7 +53,7 @@
           type="textarea"
           name="description"
           label="Descripción"
-          pattern="all"
+          pattern="^.{10,}$"
           errorMsg="Ingrese una descripción válida"
           requiredMsg="La descripción es obligatoria"
           :modelo.sync="history.description"
