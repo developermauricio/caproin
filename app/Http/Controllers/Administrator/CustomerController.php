@@ -179,15 +179,15 @@ class CustomerController extends Controller
                 $ramdon = Str::random(10);
                 $name = $line['nombre o razon social'];
 
-                if (!isset($name[2])){
+                if (!isset($name[2])) {
                     throw new \Exception("Nombre de usuario invalido", "-1");
                 }
 
-                if (!strpos($line['email'], "@")){
+                if (!strpos($line['email'], "@")) {
                     throw new \Exception("El correo es invalido", "-1");
                 }
 
-                if (!isset($line['telefono'][2])){
+                if (!isset($line['telefono'][2])) {
                     throw new \Exception("Telefono invalido", "-1");
                 }
 
