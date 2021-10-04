@@ -59,8 +59,7 @@
         <h2 class="title">Importe de facturas vencidas</h2>
         <percentage-doughnut-chart
           class="col-6 m-auto"
-          :description="description"
-          :percentage="50"
+          v-bind="configFacturasVencidas"
         ></percentage-doughnut-chart>
       </div>
     </div>
@@ -80,7 +79,7 @@
       <div class="col-6 text-center">
         <card-info class="col-8 m-auto">
           <h2 class="card__title card__title--total">Total por cobrar</h2>
-          <p class="card__price">$90.6M</p>
+          <p class="card__price">${{ getTotalVencidas }}</p>
         </card-info>
       </div>
     </div>
@@ -320,6 +319,9 @@ export default {
     montoFacturadoCOP() {
       return this.$shortNumber(this.facturas_vencidas.total);
     },
+    getTotalVencidas() {
+      return this.$shortNumber(this.facturas_vencidas.total_vencidas);
+    },
     configTotalCarteraVencida30() {
       return {
         description: {
@@ -530,19 +532,21 @@ export default {
   background-color: white;
   padding: 0.5rem;
   border-radius: 0.4rem;
+  overflow: auto;
+  max-height: 58rem;
 }
 
 .cartera__item {
   margin: 0;
   margin-bottom: 1rem;
-  box-shadow: 0 .2rem 0 #f2f1f0;
+  box-shadow: 0 0.2rem 0 #f2f1f0;
   position: relative;
 }
 
-.cartera__item::before{
-  content: ' ';
+.cartera__item::before {
+  content: " ";
   background-color: #b4b0ad;
-  width: .2rem;
+  width: 0.2rem;
   height: 90%;
   position: absolute;
   z-index: 20;
@@ -550,7 +554,7 @@ export default {
 }
 
 .cartera__title,
-.cartera__value{
+.cartera__value {
   color: #676767;
   text-align: left;
   margin: 0;

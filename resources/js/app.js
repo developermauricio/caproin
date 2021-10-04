@@ -6,6 +6,7 @@
 
 require('./bootstrap');
 
+import { Chart, registerables } from 'chart.js';
 import CxltToastr from 'cxlt-vue2-toastr';
 import 'cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css';
 import 'material-icons/iconfont/material-icons.css';
@@ -20,9 +21,13 @@ import 'vuesax/dist/vuesax.css';
 import { checkForm, formatDate } from './common';
 import Gate from './permissions/Gate';
 
+Chart.register(...registerables)
+
+
 Vue.prototype.$gate = new Gate(window.user, roles);
 
-Vue.filter('price', function (value, locale = "es-CO", config = { currency: 'COP', minimumFractionDigits: 0 }) {
+
+const parsePrice = function (value, locale = "es-CO", config = { currency: 'COP', minimumFractionDigits: 0 }) {
   value = Number(value);
   if (!value || isNaN(value)) {
     value = 0;
@@ -39,7 +44,24 @@ Vue.filter('price', function (value, locale = "es-CO", config = { currency: 'COP
     });
   */
   return formatter.format(value);
-})
+};
+
+const getNumberParse = function (value) {
+  value += "";
+  const partes = value.split(/[.,]{1}/);
+  return `${partes[0]}.${partes[1][0]}`
+}
+const shortNumber = function (value) {
+  if (value < 1000) {
+    return 100
+  } else if (value < 1000000) {
+    return getNumberParse(value / 1000) + 'K'
+  }
+  return getNumberParse(value / 1000000) + 'M'
+}
+
+Vue.filter('price', parsePrice)
+
 
 Vue.use(VueFormWizard)
 Vue.use(CxltToastr)
@@ -123,6 +145,19 @@ Vue.component('show-purchase-order', require('./components/admin/purchase-orders
 Vue.component('modal-tracer-purchase-order', require('./components/admin/purchase-orders/ModalTracerPurchaseOrder.vue').default);
 Vue.component('import-error-data-purchase-order', require('./components/admin/purchase-orders/components/ImportErrorDataPurchaseOrder.vue').default);
 
+
+/*=============================================
+COMPONENTES PARA REPORTES
+=============================================*/
+Vue.component('chart-js', require('./components/admin/reports/components/ChartJS.vue').default);
+Vue.component('reports-wallet-component', require('./components/admin/reports/pages/ReportsWalletComponent.vue').default);
+Vue.component('reports-logistic-component', require('./components/admin/reports/pages/ReportsLogisticComponent.vue').default);
+
+Vue.prototype.$chart = Chart;
+Vue.prototype.$price = parsePrice;
+Vue.prototype.$shortNumber = shortNumber;
+Vue.prototype.$axios = require('axios');
+Vue.prototype.$axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 Vue.prototype.$checkForm = checkForm;
 Vue.prototype.$formatDate = formatDate;
 

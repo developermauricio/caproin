@@ -254,7 +254,10 @@ export default {
   },
   computed: {
     iconDownload() {
-      return feather.icons['download-cloud'].toSvg();
+      if (feather){
+        return feather.icons['download-cloud'].toSvg();
+      }
+      return ''
     },
     currencyId() {
       return this.order_detail && this.order_detail.currency

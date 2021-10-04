@@ -153,6 +153,20 @@ Route::group(['namespace' => 'Administrator'], function () {
         Route::get('total-cartera-vencida', 'ReportWalletController@totalCarteraVencida')->name('total-cartera-vencida');
         Route::get('visualizacion-cartera', 'ReportWalletController@visualizacionCartera')->name('visualizacion-cartera');
     });
+
+    Route::group(['prefix' => 'report-logistic', 'as' => "api.report-logistic."], function () {
+        Route::get('actividad-logistica-envios', 'ReportLogisticController@actividadLogisticaEnvios')->name('actividad-logistica-envios');
+        Route::get('actividad-logistica-envios-periodo', 'ReportLogisticController@actividadLogisticaEnviosByPeriodo')->name('actividad-logistica-envios-periodo');
+        Route::get('clientes-estados-pedido', 'ReportLogisticController@clientesEstadosPedido')->name('clientes-estados-pedido');
+        Route::get('estados-pedido', 'ReportLogisticController@pedidosPorEstatus')->name('estados-pedido');
+        Route::get('get-all-status-order', 'ReportLogisticController@getAllStatusOrder')->name('get-all-status-order');
+        Route::get('get-all-customers', 'ReportLogisticController@getAllCustomers')->name('get-all-customers');
+        Route::get('get-all-conveyors', 'ReportLogisticController@getAllConveyors')->name('get-all-conveyors');
+        Route::get('promedios-entrega-transportadoras', 'ReportLogisticController@promediosEntregaTransportadoras')->name('promedios-entrega-transportadoras');
+        Route::get('visualizacion-estados-pedido', 'ReportLogisticController@visualizacionEstadosPedido')->name('visualizacion-estados-pedido');
+        Route::get('tiempos-promedio-entrega', 'ReportLogisticController@tiemposPromedioEntrega')->name('tiempos-promedio-entrega');
+    });
+
 });
 
 /*=============================================

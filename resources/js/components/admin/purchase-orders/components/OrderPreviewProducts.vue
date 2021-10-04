@@ -76,6 +76,14 @@ export default {
       require: true,
     },
   },
+  computed: {
+    iconDownload() {
+      if (feather){
+        return feather.icons['download-cloud'].toSvg();
+      }
+      return ''
+    },
+  }
 };
 </script>
 

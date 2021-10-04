@@ -1,6 +1,3 @@
-@php
-$customScript = 1
-@endphp
 @extends('layouts.app')
 @section('title', 'Reportes')
 @push('css')
@@ -13,6 +10,3 @@ $customScript = 1
 @section('content')
 <reports-wallet-component></reports-wallet-component>
 @endsection
-@push('js')
-<script src="{{ asset('js/reportes.js') }}"></script>
-@endpush

@@ -15,22 +15,23 @@ $factory->define(Invoice::class, function (Faker $faker) {
     if ($payment_type_id === 2) {
         $value_payment = $faker->numberBetween(10000, $total_value - 30000);
     }
+    $date_issue = $faker->dateTimeBetween('-9 month');
     return [
         'invoice_number' => $this->faker->numberBetween(),
-        'date_issue' => $faker->dateTime(),
+        'date_issue' => $date_issue,
         'customer_id' => \App\Models\Customer::all()->random()->id,
         'type_invoice_id' => \App\Models\TypeInvoice::all()->random()->id,
         'payment_type_id' => $payment_type_id,
         'state_id' => \App\Models\StateInvoice::all()->random()->id,
         'value_total' => $total_value,
         'value_payment' => $value_payment,
-        'date_payment_client' => $faker->dateTime(),
+        'date_payment_client' => $faker->dateTimeBetween($date_issue),
         'electronic_invoice_number' => $this->faker->numberBetween(),
-        'expiration_date' => $faker->dateTime(),
-        'date_received_client' => $faker->dateTime(),
-        'invoice_date_house_manufacturer' => $faker->dateTime(),
-        'commission_receipt_date' => $faker->dateTime(),
-        'new_agreed_payment_date' => $faker->dateTime(),
+        'expiration_date' => $faker->dateTimeBetween($date_issue),
+        'date_received_client' => $faker->dateTimeBetween($date_issue),
+        'invoice_date_house_manufacturer' => $faker->dateTimeBetween($date_issue),
+        'commission_receipt_date' => $faker->dateTimeBetween($date_issue),
+        'new_agreed_payment_date' => $faker->dateTimeBetween($date_issue),
         'invoice_number_house_representative' => $this->faker->numberBetween(),
         'commission_value' => 450000,
         'comments' => $faker->sentence,

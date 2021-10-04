@@ -40,17 +40,25 @@ class PurchaseOrderSeeder extends Seeder
         $this->setDataFaker();
     }
 
-    private function setDataFaker() {
-        $purchaseOrders = factory(PurchaseOrder::class, 10)->create();
+    private function setDataFaker()
+    {
+        $purchaseOrders = factory(PurchaseOrder::class, 100)->create();
 
         foreach ($purchaseOrders as $purchaseOrder) {
-            factory(OrderDetail::class, random_int(1, 4))->create([
+            $cantidad = random_int(1, 4);
+            factory(OrderDetail::class, $cantidad)->create([
                 'purchase_order_id' => $purchaseOrder->id
             ]);
 
-            factory(PurchaseOrderStateHistory::class, random_int(3, 6))->create([
+            $cantidad = random_int(3, 6);
+
+            $histories = factory(PurchaseOrderStateHistory::class, $cantidad)->create([
                 'purchase_order_id' => $purchaseOrder->id
             ]);
+
+            $position = random_int(0, $cantidad - 1);
+            $purchaseOrder->current_status_id = $histories[$position]->id;
+            $purchaseOrder->save();
         }
     }
 }
