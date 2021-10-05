@@ -253,7 +253,7 @@
                       type="textarea"
                       label=""
                       id="txtDescriptionProduc"
-                      pattern="all"
+                      pattern="^.{3,}$"
                       errorMsg="Ingrese una descripción válida"
                       requiredMsg="La descripción es requerida"
                       :required="true"

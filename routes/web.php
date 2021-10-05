@@ -180,7 +180,7 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
     Route::get('/ordenes-compra/crear', 'PurchaseOrderController@create')->name('admin.purchase_order.create')->middleware('ModelePurchaseOrder');
     Route::get('/ordenes-compra/actualizar/{id}', 'PurchaseOrderController@update')->name('admin.purchase_order.update');
     Route::post('/import-data-invoice', 'InvoiceController@importDataInvoice')->name('import.data.invoices');
-    
+
     /*=============================================
          RUTAS PARA LOS MODULOS DE PRODUCTOS Y SERVICIOS
     =============================================*/
