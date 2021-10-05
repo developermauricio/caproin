@@ -141,7 +141,7 @@
               <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                  id="text-verify-consecutivo-oferta-edit" class="text-danger">El consecutivo de oferta ya ha sido registrado</p>
               <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                 id="text-verify-one-character-consecutive-offer-edit" class="text-danger">El consecutivo oferta no puede contener un caracter</p>
+                 id="text-verify-one-character-consecutive-offer-edit" class="text-danger">El consecutivo oferta no puede contener menos de 5 caracteres</p>
             </div>
             <div class="col-12 col-md-4 col-lg-4">
               <input-form
@@ -815,7 +815,7 @@ export default {
           $("#text-verify-consecutivo-oferta-edit").css("display", "none");
         }
       }
-      if (val.length === 1) {
+      if (val.length <= 5) {
         setTimeout(() => {
           $("#txtConsecutiveOfferEditV").addClass("is-invalid");
           $("#text-verify-one-character-consecutive-offer-edit").css("display", "block");

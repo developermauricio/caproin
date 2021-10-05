@@ -76,7 +76,7 @@
                     :msgServer.sync="errors.name"
                   ></input-form>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                     id="text-verify-one-character-branchoffices" class="text-danger">El nombre no puede ser de un caracter</p>
+                     id="text-verify-one-character-branchoffices" class="text-danger">El nombre no puede contener menos de 5 caracteres</p>
                   <input-form
                     id="txtCodeBranchOffices"
                     label="Código"
@@ -91,8 +91,7 @@
                      id="text-verify-code-zone" class="text-danger">El código ya
                     ha sido registrado</p>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                     id="text-verify-one-character-code-zone" class="text-danger">El código no puede contener un
-                    caracter</p>
+                     id="text-verify-one-character-code-zone" class="text-danger">El código no puede contener menos de 5 caracteres</p>
                 </div>
               </div>
             </div>
@@ -136,7 +135,7 @@
                     :msgServer.sync="errors.nameEdit"
                   ></input-form>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                     id="text-verify-one-character-branchoffices-edit" class="text-danger">El nombre no puede ser de un caracter</p>
+                     id="text-verify-one-character-branchoffices-edit" class="text-danger">El nombre no puede contener menos de 5 caracteres</p>
                   <input-form
                     id="txtCodeBranchOfficesEdit"
                     label="Código"
@@ -151,8 +150,7 @@
                      id="text-verify-code-zone-edit" class="text-danger">El coódigo ya
                     ha sido registrado</p>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                     id="text-verify-one-character-code-zone-edit" class="text-danger">El código no puede contener un
-                    caracter</p>
+                     id="text-verify-one-character-code-zone-edit" class="text-danger">El código no puede contener menos de 5 caracteres</p>
                   <input-form
                     label="Estado"
                     id="textStateZonaEdit"
@@ -510,7 +508,7 @@ export default {
           $("#text-verify-code-zone-edit").css("display", "none");
         }
       }
-      if (val.length === 1) {
+      if (val.length <= 5) {
 
         setTimeout(() => {
           $("#txtCodeBranchOffices").addClass("is-invalid");
@@ -562,7 +560,7 @@ export default {
           $("#text-verify-code-zone-edit").css("display", "none");
         }
       }
-      if (val.length === 1){
+      if (val.length <= 5){
         setTimeout(() => {
           $("#txtCodeBranchOfficesEdit").addClass("is-invalid");
           $("#text-verify-one-character-code-zone-edit").css("display", "block");
@@ -575,7 +573,7 @@ export default {
       }
     },
     name: function (val) {
-      if (val.length === 1){
+      if (val.length <= 5){
         setTimeout(() => {
           $("#txtNameBranchOffices").addClass("is-invalid");
           $("#text-verify-one-character-branchoffices").css("display", "block");
@@ -588,7 +586,7 @@ export default {
       }
     },
     nameEdit: function (val) {
-      if (val.length === 1){
+      if (val.length <= 5){
         setTimeout(() => {
           $("#txtNameBranchOfficesEdit").addClass("is-invalid");
           $("#text-verify-one-character-branchoffices-edit").css("display", "block");

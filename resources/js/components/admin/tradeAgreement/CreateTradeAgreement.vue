@@ -23,7 +23,7 @@
             <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                id="text-verify-consecutivo-oferta" class="text-danger">El consecutivo de oferta ya ha sido registrado</p>
             <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-               id="text-verify-one-character-consecutive-offer" class="text-danger">El consecutivo oferta no puede contener un caracter</p>
+               id="text-verify-one-character-consecutive-offer" class="text-danger">El consecutivo oferta no puede contener menos de 5 caracteres</p>
           </div>
           <div class="col-12 col-md-4 col-lg-4">
             <input-form
@@ -37,7 +37,7 @@
               :msgServer.sync="errors.version"
             ></input-form>
             <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-               id="text-verify-one-character-version" class="text-danger">La versión no puede contener un caracter</p>
+               id="text-verify-one-character-version" class="text-danger">La versión no puede contener menos de 5 caracteres</p>
           </div>
           <div class="col-12 col-md-4 col-lg-4">
             <input-form
@@ -577,7 +577,7 @@ export default {
           }).catch(err => {
         });
       }
-      if (val.length === 1) {
+      if (val.length <= 5) {
         setTimeout(() => {
           $("#txtConsecutiveOffer").addClass("is-invalid");
           $("#text-verify-one-character-consecutive-offer").css("display", "block");
@@ -590,7 +590,7 @@ export default {
       }
     },
     version: function (val) {
-      if (val.length === 1){
+      if (val.length <= 5){
         setTimeout(() => {
           $("#txtVersion").addClass("is-invalid");
           $("#text-verify-one-character-version").css("display", "block");
