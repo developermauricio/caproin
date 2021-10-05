@@ -21,6 +21,8 @@
               :required="true"
               :msgServer.sync="errors.name"
             ></input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-name-product-edit" class="text-danger">El nombre del producto no puede contener un caracter</p>
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
@@ -47,7 +49,7 @@
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
-              id="txtCodeProductServiceEdit"
+              id="txtCodeProductServiceEditV"
               label="Código"
               pattern="all"
               errorMsg="Ingrese un código válido"
@@ -59,6 +61,8 @@
             <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                id="text-verify-code-product-service-edit" class="text-danger">El código ya
               ha sido registrado</p>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-code-product-edit" class="text-danger">El código del producto no puede contener un caracter</p>
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
@@ -101,6 +105,8 @@
                                                 }"
             >
             </input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-description-short-edit" class="text-danger">La descripción corta del producto no puede contener un caracter</p>
           </div>
         </div>
         <div class="row">
@@ -120,6 +126,8 @@
                                                 }"
             >
             </input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-description-edit" class="text-danger">La descripción del producto no puede contener un caracter</p>
           </div>
         </div>
         <product-price v-if="product_prices" :product_prices="product_prices"></product-price>
@@ -321,6 +329,56 @@ export default {
           $("#txtCodeProductServiceEdit").removeClass("is-invalid");
           $("#text-verify-code-product-service-edit").css("display", "none");
         }
+      }
+      if (val.length === 1) {
+        setTimeout(() => {
+          $("#txtCodeProductServiceEditV").addClass("is-invalid");
+          $("#text-verify-one-character-code-product-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-code-product-edit').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-code-product-edit').disabled = false;
+        $("#txtCodeProductServiceEditV").removeClass("is-invalid");
+        $("#text-verify-one-character-code-product-edit").css("display", "none");
+      }
+    },
+    name: function (val) {
+      if (val.length === 1){
+        setTimeout(() => {
+          $("#txtNameProductEdit").addClass("is-invalid");
+          $("#text-verify-one-character-name-product-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-name-product-edit').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-name-product-edit').disabled = false;
+        $("#txtNameProductEdit").removeClass("is-invalid");
+        $("#text-verify-one-character-name-product-edit").css("display", "none");
+      }
+    },
+    descriptionShort: function (val) {
+      if (val.length === 1){
+        setTimeout(() => {
+          $("#txtDescriptionShortEdit").addClass("is-invalid");
+          $("#text-verify-one-character-description-short-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-description-short-edit').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-description-short-edit').disabled = false;
+        $("#txtDescriptionShortEdit").removeClass("is-invalid");
+        $("#text-verify-one-character-description-short-edit").css("display", "none");
+      }
+    },
+    description: function (val) {
+      if (val.length === 1){
+        setTimeout(() => {
+          $("#txtDescriptionEdit").addClass("is-invalid");
+          $("#text-verify-one-character-description-edit").css("display", "block");
+          document.getElementById('text-verify-one-character-description-edit').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-description-edit').disabled = false;
+        $("#txtDescriptionEdit").removeClass("is-invalid");
+        $("#text-verify-one-character-description-edit").css("display", "none");
       }
     }
   },

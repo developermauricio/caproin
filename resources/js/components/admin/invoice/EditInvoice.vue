@@ -159,7 +159,7 @@
       ======================================-->
       <form class="" id="validateCreateInvoiceEdit" method="post">
         <div v-show="showEditInvoice" class="row" style="display: none">
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               id="txtInvoiceNumberEdit"
               label="Número de factura"
@@ -171,7 +171,7 @@
               :msgServer.sync="errors.invoice_number"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" >
             <input-form
               label="Estado"
               id="txtInvoiceStateEdit"
@@ -194,7 +194,7 @@
                                         }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               label="Tipo de Pago"
               id="txtInvoicePaymentTypeEdit"
@@ -217,7 +217,7 @@
                                         }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4" v-if="paymentType.id === 2">
+          <div class="col-12 col-md-4 col-lg-4" v-if="paymentType.id === 2 || $gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               type="money"
               label="Valor Pagado"
@@ -231,7 +231,7 @@
               :money="money"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               id="txtInvoiceElectronicNumberEdit"
               label="Número de factura electrónica"
@@ -243,7 +243,7 @@
               :msgServer.sync="errors.electronic_invoice_number"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               label="Fecha de emisión de la factura"
               id="txtDateIssueInvoice"
@@ -261,7 +261,7 @@
                                                 }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               label="Fecha de vencimiento de la factura"
               id="txtExpirationDateInvoice"
@@ -279,7 +279,7 @@
                                                 }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               label="Tipo de Factura"
               id="txtInvoiceTypeEdit"
@@ -302,7 +302,7 @@
                                         }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               label="Cliente"
               id="txtInvoiceCustomerEdit"
@@ -325,7 +325,7 @@
                                         }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               type="money"
               label="Valor"
@@ -339,7 +339,7 @@
               :money="money"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               label="Fecha de recibo por parte del cliente"
               id="txtDateReceivedClient"
@@ -357,7 +357,7 @@
                                                 }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               label="Fecha de pago por parte del cliente"
               id="txtDatePaymentClient"
@@ -375,7 +375,7 @@
                                                 }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               label="Fecha de factura casa representante"
               id="txtInvoiceDateHouseManufacturer"
@@ -393,7 +393,7 @@
                                                 }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               id="txtInvoiceNumberHouseRepresentativeEdit"
               label="Número de factura casa representate"
@@ -405,7 +405,7 @@
               :msgServer.sync="errors.invoice_number_house_representative"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               type="money"
               label="Valor de la comisión"
@@ -419,7 +419,7 @@
               :money="money"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               label="Fecha de recibo de comisión"
               id="txtCommissionReceiptDate"
@@ -437,7 +437,7 @@
                                                 }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4">
+          <div class="col-12 col-md-4 col-lg-4" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               label="Nueva fecha concertada de pago"
               id="txtNewAgreedPaymentDate"
@@ -456,7 +456,7 @@
             ></input-form>
           </div>
         </div>
-        <div v-show="showEditInvoice" class="row">
+        <div v-show="showEditInvoice" class="row" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')"">
           <div class="col-12" v-if="urlsArchiveInvoice">
             <div class="form-group">
               <label>Archivos:</label>
@@ -487,7 +487,7 @@
               </div>
             </div>
           </div>
-          <div class="col-12">
+          <div class="col-12" v-if="$gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               type="textarea"
               label="Comentarios u observaciones"

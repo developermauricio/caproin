@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class ModuleBranchOffices
+class ModelPurchaseOrder
 {
     /**
      * Handle an incoming request.
@@ -18,11 +18,10 @@ class ModuleBranchOffices
     {
         if (Auth::user()) {
             if (Auth::user()->hasRole('Administrador') ||
-                Auth::user()->hasRole('Gerencia')
+                Auth::user()->hasRole('Asistente Sucursal')
             ) {
                 return $next($request);
             } else {
-
                 return back()->with('error', 'No tiene permisos para acceder a esta parte del sistema, consulte con el administrador');
             }
         }

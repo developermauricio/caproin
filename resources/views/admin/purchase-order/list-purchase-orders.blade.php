@@ -497,7 +497,7 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
         }
       ],
     },
-    @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal' || auth()->user()->roles->first()->name === 'Gerencia')
+    @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal')
     {
         text: feather.icons['file-text'].toSvg({
             class: 'mr-50 font-small-4'
@@ -513,7 +513,7 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
         }
     },
     @endif
-    @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal' || auth()->user()->roles->first()->name === 'Gerencia')
+    @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal')
     {
       text: feather.icons['plus'].toSvg({
         class: 'mr-50 font-small-4'

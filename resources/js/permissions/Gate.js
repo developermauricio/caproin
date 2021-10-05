@@ -4,6 +4,7 @@ import InvoicePolicy from "./InvoicePolicy";
 import PurchaseOrderPolicy from "./PurchaseOrderPolicy";
 import TradeAgreement from "./TradeAgreement";
 import ZonePolicy from "./ZonePolicy";
+import EditStateInvoicePolicy from "./EditStateInvoicePolicy";
 
 export default class Gate
 {
@@ -19,6 +20,7 @@ export default class Gate
       branch: BranchOfficesPolicy,
       customer: CustomerPolicy,
       purchaseOrder: PurchaseOrderPolicy,
+      editStateInvoice: EditStateInvoicePolicy
     };
   }
 
