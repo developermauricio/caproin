@@ -149,7 +149,7 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
     /*=============================================
           RUTAS PARA LOS MODULOS PROVEEDOR
         =============================================*/
-    Route::get('/providers', 'ProviderController@index')->name('admin.provider.providers')->middleware('ModeleProvider');;
+    Route::get('/providers', 'ProviderController@index')->name('admin.provider.providers')->middleware('ModeleProvider');
 
     /*=============================================
           RUTAS PARA LOS MODULOS SUSCURSALES
@@ -169,16 +169,16 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
     /*=============================================
           RUTAS PARA LOS MODULOS FACTURAS
         =============================================*/
-    Route::get('/facturas', 'InvoiceController@index')->name('admin.invoice')->middleware('ModeleInvoices');;
+    Route::get('/facturas', 'InvoiceController@index')->name('admin.invoice')->middleware('ModeleInvoices');
 
     /*=============================================
           ORDENES DE COMPRA
         =============================================*/
-    Route::post('/import-data-purchase-ordes', 'PurchaseOrderController@importPurchaseOrders')->name('import.data.purchase_ordes');
+    Route::post('/import-data-purchase-ordes', 'PurchaseOrderController@importPurchaseOrders')->name('import.data.purchase_ordes')->middleware('ModulePurchaseOrder');
     Route::get('/ordenes-compra', 'PurchaseOrderController@index')->name('admin.purchase_order.purchase_orders');
-    Route::get('/ordenes-compra/crear', 'PurchaseOrderController@create')->name('admin.purchase_order.create');
-    Route::get('/ordenes-compra/actualizar/{id}', 'PurchaseOrderController@update')->name('admin.purchase_order.update');
-    Route::post('/import-data-invoice', 'InvoiceController@importDataInvoice')->name('import.data.invoices');
+    Route::get('/ordenes-compra/crear', 'PurchaseOrderController@create')->name('admin.purchase_order.create')->middleware('ModulePurchaseOrder');
+    Route::get('/ordenes-compra/actualizar/{id}', 'PurchaseOrderController@update')->name('admin.purchase_order.update')->middleware('ModulePurchaseOrder');
+    Route::post('/import-data-invoice', 'InvoiceController@importDataInvoice')->name('import.data.invoices')->middleware('ModulePurchaseOrder');
 
 
     /*=============================================
