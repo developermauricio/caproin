@@ -8,7 +8,7 @@
           selectLabel: 'Seleccionar',
           selectedLabel: 'Seleccionado',
           deselectLabel: 'Desmarcar',
-          placeholder: 'Seleccionar cliente',
+          placeholder: 'Seleccionar transportador',
           taggable: false,
           label: 'name',
           options: conveyors,
@@ -30,7 +30,7 @@
         id="txt_dispatch_guide_number"
         name="dispatch_guide_number"
         label="Número de guía de despacho despacho"
-        pattern="all"
+        pattern="^.{4,}$"
         errorMsg="Ingrese un número de cotización válido"
         requiredMsg="El número de cotización del fabricante es obligatorio"
         :modelo.sync="purchase_order.dispatch_guide_number"
@@ -90,7 +90,7 @@
         id="txt_contact_number"
         name="contact_number"
         label="Número de Contacto"
-        pattern="all"
+        pattern="^[0-9]{3,}$"
         errorMsg="Ingrese un número de contacto válido"
         requiredMsg="El número de contacto es obligatorio"
         :modelo.sync="purchase_order.contact_number"

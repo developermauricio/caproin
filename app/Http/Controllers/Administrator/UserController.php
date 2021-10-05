@@ -96,37 +96,36 @@ class UserController extends Controller
         ]);
         Mail::to($user->email)->send(new NewUser($user->name, $password, $user->email));
         return response()->json('Registro Exitoso!');
-//        $name = $request->name;
-//        $last_name = $request->last_name;
-//        $email = $request->email;
-//        $phone = $request->phone;
-//        $branch_office = json_decode($request->branch_office);
-//        $type_user = json_decode($request->type_user);
-//        $role = json_decode($request->role);
-//
-//        $errors = $this->createUser(
-//            $name,
-//            $last_name,
-//            $email,
-//            $phone,
-//            [$role->id],
-//            $type_user->id,
-//            $branch_office->id
-//        );
-//
-//        if (!$errors) {
-//            return response()->json('Registro Exitoso!');
-//        }
+        //        $name = $request->name;
+        //        $last_name = $request->last_name;
+        //        $email = $request->email;
+        //        $phone = $request->phone;
+        //        $branch_office = json_decode($request->branch_office);
+        //        $type_user = json_decode($request->type_user);
+        //        $role = json_decode($request->role);
+        //
+        //        $errors = $this->createUser(
+        //            $name,
+        //            $last_name,
+        //            $email,
+        //            $phone,
+        //            [$role->id],
+        //            $type_user->id,
+        //            $branch_office->id
+        //        );
+        //
+        //        if (!$errors) {
+        //            return response()->json('Registro Exitoso!');
+        //        }
     }
 
     private function getRoles($roles)
     {
-        $roles = collect($roles);
-        return $this->roles->filter(function ($role) use ($roles) {
-            return $roles->contains($role->id);
-        })->map(function ($role) {
-            return $role->id;
+        $roles = "_" . collect($roles)->join('_') . "_";
+        $rolesFinales = $this->roles->filter(function ($role) use ($roles) {
+            return strpos($roles, "_" . $role->id . "_") !== false;
         });
+        return $rolesFinales;
     }
 
 
@@ -223,16 +222,40 @@ class UserController extends Controller
         $file = $request->file('archive');
         $total = 0;
         $lines = collect();
-        try {
-            (new FastExcel())->import($file, function ($line) use (&$lines, &$total) {
+        (new FastExcel())->import($file, function ($line) use (&$lines, &$total) {
+            try {
                 $total += 1;
                 $name = $line['nombres'];
                 $last_name = $line['apellidos'];
                 $email = $line["correo"];
-                $phone = $line["teléfono"];
+                $phone = $line["teléfono"] . "";
                 $roles = explode(',', $line["roles"]);
                 $type_user_id = $line["tipo usuario"];
                 $branch_office_id = $line["oficina"];
+
+                $type_user = TypeEmployee::find($type_user_id);
+
+                if (!$type_user) {
+                    throw new \Exception("Tipo de usuario invalido", "-1");
+                }
+
+                $branch_office = BranchOffice::find($branch_office_id);
+
+                if (!$branch_office) {
+                    throw new \Exception("Oficina invalida", "-1");
+                }
+
+                if (!isset($last_name[2])) {
+                    throw new \Exception("Apellido invalido", "-1");
+                }
+
+                if (!strpos($email, '@')) {
+                    throw new \Exception("Correo invalido", "-1");
+                }
+
+                if (!isset($phone[2])) {
+                    throw new \Exception("Teléfono invalido", "-1");
+                }
 
                 $exception = $this->createUser(
                     $name,
@@ -248,11 +271,11 @@ class UserController extends Controller
                     $line['error'] = $this->parseException($exception, $line);
                     $lines->add($line);
                 }
-            });
-        } catch (\Throwable $th) {
-            $line['error'] = "El excel es invalido (".$th->getMessage().")";
-            $lines->add($line);
-        }
+            } catch (\Throwable $th) {
+                $line['error'] = $this->parseException($th, $line);
+                $lines->add($line);
+            }
+        });
 
 
         if (!isset($lines[0])) {

@@ -72,32 +72,32 @@
 
     <p class="col col-md-6">
       <strong>Fecha de Recibo de la orden:</strong>
-      {{ order_receipt_date }}
+      {{ order_receipt_date | formatDMY }}
     </p>
 
     <p class="col col-md-6">
       <strong>Fecha de entrega ofertada:</strong>
-      {{ offer_delivery_date }}
+      {{ offer_delivery_date | formatDMY }}
     </p>
 
     <p class="col col-md-6">
       <strong>Fecha de entrega requerida por el cliente:</strong>
-      {{ delivery_date_required_customer }}
+      {{ delivery_date_required_customer | formatDMY }}
     </p>
 
     <p class="col col-md-6">
       <strong>Fecha esperada de despacho:</strong>
-      {{ expected_dispatch_date }}
+      {{ expected_dispatch_date | formatDMY }}
     </p>
 
     <p class="col col-md-6">
       <strong>Fecha de despacho Real:</strong>
-      {{ actual_dispatch_date }}
+      {{ actual_dispatch_date | formatDMY }}
     </p>
 
     <p class="col col-md-6">
       <strong>Fecha entrega real:</strong>
-      {{ actual_delivery_date }}
+      {{ actual_delivery_date | formatDMY }}
     </p>
 
     <p class="col col-md-6">

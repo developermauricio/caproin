@@ -103,7 +103,7 @@
         :modelo.sync="order_detail.client_product_code"
         :msgServer.sync="errors.client_product_code"
         :required="true"
-        pattern="all"
+        pattern="^[0-9]{3,}$"
       ></input-form>
     </div>
 
@@ -111,7 +111,7 @@
       <input-form
         name="customer_product_description"
         label="Descripción del producto del cliente"
-        pattern="all"
+        pattern="^.{10,}$"
         errorMsg="Ingrese una descripción valida"
         requiredMsg="La descripción es obligatoria"
         :modelo.sync="order_detail.customer_product_description"
@@ -125,7 +125,7 @@
       <input-form
         name="manufacturer"
         label="Casa"
-        pattern="all"
+        pattern="^.{3,}$"
         errorMsg="Ingrese una casa válido"
         requiredMsg="La casa es obligatoria"
         :modelo.sync="order_detail.manufacturer"
@@ -138,7 +138,7 @@
       <input-form
         name="house_quote_number"
         label="Número Cotización de Casa"
-        pattern="all"
+        pattern="^[0-9]{3,}$"
         errorMsg="Ingrese un número cotización de casa válido"
         requiredMsg="El número cotización de casa es obligatorio"
         :modelo.sync="order_detail.house_quote_number"
@@ -151,7 +151,7 @@
       <input-form
         name="application"
         label="Aplicación"
-        pattern="all"
+        pattern="^.{10,}$"
         errorMsg="Ingrese una aplicación valida"
         requiredMsg="La aplicación es obligatoria"
         :modelo.sync="order_detail.application"
@@ -165,7 +165,7 @@
       <input-form
         name="blueprint_number"
         label="Número de Plano"
-        pattern="all"
+        pattern="^[0-9]{3,}$"
         errorMsg="Ingrese un número de plano válido"
         requiredMsg="El número de plano es obligatorio"
         :modelo.sync="order_detail.blueprint_number"

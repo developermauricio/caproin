@@ -16,3 +16,11 @@ export const checkForm = async (selectorParent) => {
 export const formatDate = (date) => {
   return moment(date).format();
 }
+
+
+export const formatDateUTC = (date) => {
+  if (!date) {
+    return "";
+  }
+  return moment.utc(date);
+};

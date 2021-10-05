@@ -271,10 +271,6 @@ class PurchaseOrderController extends Controller
             $purchaseOrder->contact_number = $request->input('contact_number');
 
             $purchaseOrder->save();
-
-            $currentStatus = PurchaseOrderStateHistory::selectRaw('id, if (estimated_date is null, now(), estimated_date) as total')->where('purchase_order_id', $purchaseOrder->id)->orderBy('total', 'DESC')->orderBy('id', 'DESC')->first();
-            $purchaseOrder->current_status_id = $currentStatus->id;
-            $purchaseOrder->save();
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -311,6 +307,10 @@ class PurchaseOrderController extends Controller
                 $idsHistory->add($purchase_order->id);
             });
             PurchaseOrderStateHistory::where('purchase_order_id', $purchaseOrder->id)->whereNotIn('id', $idsHistory->toArray())->delete();
+
+            $currentStatus = PurchaseOrderStateHistory::selectRaw('id, if (estimated_date is null, now(), estimated_date) as total')->where('purchase_order_id', $purchaseOrder->id)->orderBy('total', 'DESC')->orderBy('id', 'DESC')->first();
+            $purchaseOrder->current_status_id = $currentStatus->id;
+            $purchaseOrder->save();
         } catch (\Throwable $th) {
             throw $th;
         }

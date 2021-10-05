@@ -8,6 +8,7 @@ use App\Mail\Customer\NewCustomer;
 use App\Models\Customer;
 use App\Models\CustomerType;
 use App\Models\HistorySendPaymetClient;
+use App\Models\IdentificationType;
 use App\Models\Invoice;
 use App\Traits\MessagesException;
 use App\User;
@@ -80,7 +81,7 @@ class CustomerController extends Controller
         $principal = $request->principal;
         $numberDaysAfterInvoice = $request->numberDaysAfterInvoice;
         $numberDaysOverdueInvoice = $request->numberDaysOverdueInvoice;
-//        $typeIdentificationData = json_decode($request->typeIdentification);
+        //        $typeIdentificationData = json_decode($request->typeIdentification);
         $typeCustomerData = json_decode($request->typeCustomer);
 
         if ($idTypeIndentification !== "null") {
@@ -142,11 +143,11 @@ class CustomerController extends Controller
 
         $sedes = Customer::where('sub_sede_of', $idCustomer)->with('user')->get();
 
-        foreach ($sedes as $sede){
-           $sede->user->update([
-               "identification_type_id" => $typeIdentification->id,
-               "identification" => $identification
-           ]);
+        foreach ($sedes as $sede) {
+            $sede->user->update([
+                "identification_type_id" => $typeIdentification->id,
+                "identification" => $identification
+            ]);
         }
 
         $user = User::where('id', $idUser)->update([
@@ -176,15 +177,35 @@ class CustomerController extends Controller
             DB::beginTransaction();
             try {
                 $ramdon = Str::random(10);
-                $slug = Str::slug($line['nombre o razon social'] . '-' . $ramdon, '-');
+                $name = $line['nombre o razon social'];
+
+                if (!isset($name[2])) {
+                    throw new \Exception("Nombre de usuario invalido", "-1");
+                }
+
+                if (!strpos($line['email'], "@")) {
+                    throw new \Exception("El correo es invalido", "-1");
+                }
+
+                if (!isset($line['telefono'][2])) {
+                    throw new \Exception("Telefono invalido", "-1");
+                }
+
+                $slug = Str::slug($name . '-' . $ramdon, '-');
+
+                $tipoIdentificacion = IdentificationType::select('id')->find($line['tipo de identificacion']);
+                if (!$tipoIdentificacion) {
+                    throw new \Exception("Tipo de identificación invalida", "-1");
+                }
+
                 $user = User::create([
-                    'name' => $line['nombre o razon social'],
+                    'name' => $name,
                     'email' => $line['email'],
                     'phone' => $line['telefono'],
                     'identification' => $line['identificacion'],
                     'slug' => $slug,
                     "picture" => '/images/user-profile.png',
-                    "identification_type_id" => $line['tipo de identificacion'],
+                    "identification_type_id" => $tipoIdentificacion->id,
                     'password' => ''
                 ]);
 
@@ -200,6 +221,7 @@ class CustomerController extends Controller
             } catch (\Exception $exception) {
                 DB::rollBack();
                 $line['error'] = $this->parseException($exception, $line);
+                // $line['fullError'] = $exception->getMessage();
                 $lines->add($line);
             }
         });

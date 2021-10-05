@@ -26,7 +26,7 @@
       />
     </tab-content>
 
-    <tab-content title="Productos" :beforeChange="validarTab">
+    <tab-content title="Productos" :beforeChange="validarTabProductos">
       <order-details
         :currency="purchase_order.currency"
         :order_details.sync="purchase_order.order_details"
@@ -204,6 +204,28 @@ export default {
     },
     async validarTab() {
       return await this.$checkForm("#wizard__order");
+    },
+    async validarTabProductos() {
+      let check = await this.$checkForm("#wizard__order");
+      if (check) {
+        check = this.purchase_order.order_details.length > 0;
+        if (!check) {
+          this.$toast.error({
+            title: "Falta agregar productos",
+            message: "Ingrese por lo menos un producto",
+            showDuration: 1000,
+            hideDuration: 8000,
+          });
+        }
+      } else {
+        this.$toast.error({
+          title: "Datos erroneos en productos",
+          message: "Revisa los datos de los productos",
+          showDuration: 1000,
+          hideDuration: 8000,
+        });
+      }
+      return check;
     },
     cambioPagina(prevIndex, nextIndex) {
       this.currentTab = nextIndex;

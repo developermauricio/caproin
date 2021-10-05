@@ -5,7 +5,7 @@
         name="internal_order_number"
         id="txt_internal_order_number"
         label="Número de Pedido Interno"
-        pattern="all"
+        pattern="^[0-9]{3,}$"
         errorMsg="Ingrese un número de pedido interno válido"
         requiredMsg="El número pedido interno es obligatorio"
         :modelo.sync="purchase_order.internal_order_number"
@@ -19,7 +19,7 @@
         id="txtCustomerOrderNumber"
         name="customer_order_number"
         label="Número de Pedido Cliente"
-        pattern="all"
+        pattern="^[0-9]{3,}$"
         errorMsg="Ingrese un número de pedido cliente válido"
         requiredMsg="El número pedido cliente es obligatorio"
         :modelo.sync="purchase_order.customer_order_number"
@@ -174,7 +174,7 @@
         id="txt_house"
         name="house"
         label="Casa"
-        pattern="all"
+        pattern="^.{3,}$"
         errorMsg="Ingrese una casa válida"
         requiredMsg="La casa es obligatoria"
         :modelo.sync="purchase_order.house"
@@ -234,7 +234,7 @@
         id="txt_description"
         name="description"
         label="Aplicación"
-        pattern="all"
+        pattern="^.{10,}$"
         errorMsg="Ingrese una aplicación válida"
         requiredMsg="La aplicación es obligatoria"
         :modelo.sync="purchase_order.description"
@@ -324,7 +324,7 @@
         id="txt_internal_quote_number"
         name="internal_quote_number"
         label="Numero de cotización interna"
-        pattern="all"
+        pattern="^[0-9]{3,}$"
         errorMsg="Ingrese un número de cotización válido"
         requiredMsg="El número de cotización interno es obligatorio"
         :modelo.sync="purchase_order.internal_quote_number"
@@ -338,7 +338,7 @@
         id="txt_manufacturer_house_quotation_number"
         name="manufacturer_house_quotation_number"
         label="Numero de cotización casa fabricante"
-        pattern="all"
+        pattern="^[0-9]{3,}$"
         errorMsg="Ingrese un número de cotización válido"
         requiredMsg="El número de cotización del fabricante es obligatorio"
         :modelo.sync="purchase_order.manufacturer_house_quotation_number"
@@ -377,7 +377,7 @@
         id="txt_contact_number"
         name="contact_number"
         label="Número de Contacto"
-        pattern="all"
+        pattern="^[0-9]{9,}$"
         errorMsg="Ingrese un número de contacto válido"
         requiredMsg="El número de contacto es obligatorio"
         :modelo.sync="purchase_order.contact_number"
@@ -389,9 +389,7 @@
 </template>
 
 <script>
-import SwitchComponent from "../../../SwitchComponent.vue";
 export default {
-  components: { SwitchComponent },
   name: "HeaderPurchaseOrder",
   props: {
     errors: {
@@ -483,6 +481,6 @@ export default {
     axios.get("/api/all-invoices-list").then((response) => {
       this.invoices = response.data;
     });
-  }
+  },
 };
 </script>

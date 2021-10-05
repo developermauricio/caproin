@@ -18,7 +18,7 @@ import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
 import Vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
-import { checkForm, formatDate } from './common';
+import { checkForm, formatDate, formatDateUTC } from './common';
 import Gate from './permissions/Gate';
 
 Chart.register(...registerables)
@@ -26,6 +26,22 @@ Chart.register(...registerables)
 
 Vue.prototype.$gate = new Gate(window.user, roles);
 
+
+const formatDMY = (value) => {
+  if (typeof value === 'string') {
+    value = formatDateUTC(value);
+  }
+
+  if (!value.getDate){
+    return value.format("DD-MM-YYYY");
+  } else {
+    const day = value.getDate()
+    const month = value.getMonth() + 1
+    const year = value.getFullYear()
+
+    return `${("0" + day).slice(-2)}-${("0" + month).slice(-2)}-${year}`
+  }
+};
 
 const parsePrice = function (value, locale = "es-CO", config = { currency: 'COP', minimumFractionDigits: 0 }) {
   value = Number(value);
@@ -60,6 +76,7 @@ const shortNumber = function (value) {
   return getNumberParse(value / 1000000) + 'M'
 }
 
+Vue.filter('formatDMY', formatDMY)
 Vue.filter('price', parsePrice)
 
 
