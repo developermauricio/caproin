@@ -63,22 +63,22 @@ class DatabaseSeeder extends Seeder
             CREAMOS 6 EMPLEADOS ASISTENTE SUCURSAL
         =============================================*/
         factory(\App\User::class, 6)->create()
-        ->each(function (\App\User $u){
-            $u->roles()->attach([2]);
-            factory(\App\Models\Employee::class, 1)->create(
-                [
-                    'user_id' => $u->id,
-                    'type_employee_id' => \App\Models\TypeEmployee::all()->random()->id,
-                    'branch_offices_id' => \App\Models\BranchOffice::all()->random()->id,
-                ]
-            );
-        });
+            ->each(function (\App\User $u) {
+                $u->roles()->attach([2]);
+                factory(\App\Models\Employee::class, 1)->create(
+                    [
+                        'user_id' => $u->id,
+                        'type_employee_id' => \App\Models\TypeEmployee::all()->random()->id,
+                        'branch_offices_id' => \App\Models\BranchOffice::all()->random()->id,
+                    ]
+                );
+            });
 
         /*=============================================
             CREAMOS 6 EMPLEADOS GERENCIA
         =============================================*/
         factory(\App\User::class, 6)->create()
-            ->each(function (\App\User $u){
+            ->each(function (\App\User $u) {
                 $u->roles()->attach([3]);
                 factory(\App\Models\Employee::class, 1)->create(
                     [
@@ -93,7 +93,7 @@ class DatabaseSeeder extends Seeder
             CREAMOS 6 VENDEDORES
         =============================================*/
         factory(\App\User::class, 6)->create()
-            ->each(function (\App\User $u){
+            ->each(function (\App\User $u) {
                 $u->roles()->attach([4]);
                 factory(\App\Models\Employee::class, 1)->create(
                     [
@@ -108,7 +108,7 @@ class DatabaseSeeder extends Seeder
             CREAMOS 6 LOGISTICA
         =============================================*/
         factory(\App\User::class, 6)->create()
-            ->each(function (\App\User $u){
+            ->each(function (\App\User $u) {
                 $u->roles()->attach([5]);
                 factory(\App\Models\Employee::class, 1)->create(
                     [
@@ -123,7 +123,7 @@ class DatabaseSeeder extends Seeder
             CREAMOS 6 FINANZAS
         =============================================*/
         factory(\App\User::class, 6)->create()
-            ->each(function (\App\User $u){
+            ->each(function (\App\User $u) {
                 $u->roles()->attach([6]);
                 factory(\App\Models\Employee::class, 1)->create(
                     [
@@ -146,7 +146,7 @@ class DatabaseSeeder extends Seeder
             CREAMOS 10 PROVEEDORES
         =============================================*/
         factory(\App\User::class, 500)->create()
-            ->each(function (\App\User $u){
+            ->each(function (\App\User $u) {
                 $u->roles()->attach([8]);
                 factory(\App\Models\Provider::class, 1)->create(
                     [
@@ -202,13 +202,7 @@ class DatabaseSeeder extends Seeder
         /*=============================================
             CREAMOS 10 CLIENTES
         =============================================*/
-        $customer = factory(\App\User::class)->create([
-            'email' => "customer@gmail.com"
-        ]);
-        $customer->roles()->attach([7]);
-        factory(\App\Models\Customer::class, 1)->create([
-            'user_id' => $customer->id,
-        ]);
+        $this->createUsers();
         factory(\App\User::class, 9)->create()
             ->each(function (\App\User $u) {
                 $u->roles()->attach([7]);
@@ -223,7 +217,7 @@ class DatabaseSeeder extends Seeder
             CREAMOS 1 SEDE
         =============================================*/
         factory(\App\User::class, 1)->create()
-            ->each(function (\App\User $u){
+            ->each(function (\App\User $u) {
                 $u->roles()->attach([7]);
                 factory(\App\Models\Customer::class, 1)->create(
                     [
@@ -244,7 +238,7 @@ class DatabaseSeeder extends Seeder
                 'last_name' => 'Sistema',
                 'email' => 'admin@admin.co',
             ]
-        )->each(function (\App\User $u){
+        )->each(function (\App\User $u) {
             $u->roles()->attach([1]);
             factory(\App\Models\Employee::class, 1)->create(
                 [
@@ -283,5 +277,34 @@ class DatabaseSeeder extends Seeder
         factory(\App\Models\Invoice::class, 100)->create();
 
         $this->call(PurchaseOrderSeeder::class);
+    }
+
+    private function createUsers()
+    {
+        $users = [
+            2 => "asistente@gmail.com",
+            3 => "gerencia@gmail.com",
+            4 => "vendedor@gmail.com",
+            5 => "logistica@gmail.com",
+            6 => "finanzas@gmail.com",
+            7 => "cliente@gmail.com",
+            8 => "proveedor@gmail.com",
+        ];
+
+        foreach ($users as $rol => $email) {
+            $user = factory(\App\User::class)->create([
+                'email' => $email
+            ]);
+            $user->roles()->attach([$rol]);
+            if ($rol === 7) {
+                factory(\App\Models\Customer::class, 1)->create([
+                    'user_id' => $user->id,
+                ]);
+            }else {
+                factory(\App\Models\Employee::class, 1)->create([
+                    'user_id' => $user->id,
+                ]);
+            }
+        }
     }
 }
