@@ -59,7 +59,7 @@
         <h2 class="title">Importe de facturas vencidas</h2>
         <percentage-doughnut-chart
           class="col-6 m-auto"
-          v-bind="configFacturasVencidas"
+          v-bind="configImporteFacturasVencidas"
         ></percentage-doughnut-chart>
       </div>
     </div>
@@ -216,6 +216,11 @@ export default {
         expired_total_90: 0,
       },
       visualizacionCartera: [],
+      importeFacturasVencidas: {
+        valor_total: 0,
+        valor_pagado: 0,
+        valor_restante: 0,
+      },
     };
   },
   mounted() {
@@ -229,6 +234,7 @@ export default {
       this.getRankingDeudores();
       this.getTotalCarteraVencida();
       this.getVisualizacionCartera();
+      this.getImporteFacturasVencidas();
     },
     getDataApi(url) {
       return this.$axios.get(url + this.paramsApi);
@@ -244,6 +250,13 @@ export default {
       this.getDataApi("/api/report-wallet/total-facturas-vencidas").then(
         (response) => {
           this.facturas_vencidas = response.data;
+        }
+      );
+    },
+    getImporteFacturasVencidas() {
+      this.getDataApi("/api/report-wallet/importe-facturas-vencidas").then(
+        (response) => {
+          this.importeFacturasVencidas = response.data;
         }
       );
     },
@@ -320,7 +333,7 @@ export default {
       return this.$shortNumber(this.facturas_vencidas.total);
     },
     getTotalVencidas() {
-      return this.$shortNumber(this.facturas_vencidas.total_vencidas);
+      return this.$shortNumber(this.importeFacturasVencidas.valor_restante);
     },
     configTotalCarteraVencida30() {
       return {
@@ -374,6 +387,20 @@ export default {
           this.getPercentage(
             this.facturas_vencidas.total_vencidas,
             this.facturas_vencidas.total
+          ).toFixed(1)
+        ),
+      };
+    },
+    configImporteFacturasVencidas() {
+      return {
+        description: {
+          text: this.$price(this.importeFacturasVencidas.valor_pagado),
+          fontSize: 50,
+        },
+        percentage: Number(
+          this.getPercentage(
+            this.importeFacturasVencidas.valor_pagado,
+            this.importeFacturasVencidas.valor_total
           ).toFixed(1)
         ),
       };

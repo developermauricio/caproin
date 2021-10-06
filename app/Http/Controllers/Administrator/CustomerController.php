@@ -187,7 +187,7 @@ class CustomerController extends Controller
                     throw new \Exception("El correo es invalido", "-1");
                 }
 
-                if (!isset($line['telefono'][2])) {
+                if (!isset(($line['telefono'] . "")[2])) {
                     throw new \Exception("Telefono invalido", "-1");
                 }
 

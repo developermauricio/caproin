@@ -147,6 +147,7 @@ Route::group(['namespace' => 'Administrator'], function () {
     =============================================*/
     Route::group(['prefix' => 'report-wallet', 'as' => "api.report-wallet."], function () {
         Route::get('total-facturas-vencidas', 'ReportWalletController@facturasVencidas')->name('facturas-vencidas');
+        Route::get('importe-facturas-vencidas', 'ReportWalletController@importeFacturasVencidas')->name('importe-facturas-vencidas');
         Route::get('morosidad-total', 'ReportWalletController@morosidadTotal')->name('morosidad-total');
         Route::get('facturas-vencidas-por-cliente', 'ReportWalletController@facturasVencidasPorCliente')->name('facturas-vencidas-por-cliente');
         Route::get('ranking-deudores', 'ReportWalletController@rankingDeudores')->name('ranking-deudores');

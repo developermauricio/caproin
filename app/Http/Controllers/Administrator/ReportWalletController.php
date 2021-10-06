@@ -39,6 +39,23 @@ class ReportWalletController extends Controller
         ]);
     }
 
+    public function importeFacturasVencidas(Request $request)
+    {
+        $from = $request->input('from');
+        $to   = $request->input('to');
+
+        $vencidas_invoices = Invoice::select(DB::raw('sum(value_total) as valor_total, sum(value_payment) as valor_pagado'))
+            ->expired()
+            ->dateFromTo('date_issue', $from, $to)
+            ->first();
+
+        return response()->json([
+            'valor_total' => $vencidas_invoices->valor_total,
+            'valor_pagado' => $vencidas_invoices->valor_pagado,
+            'valor_restante' => $vencidas_invoices->valor_total - $vencidas_invoices->valor_pagado,
+        ]);
+    }
+
     public function morosidadTotal(Request $request)
     {
         // $trm  = $request->input('trm');

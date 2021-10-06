@@ -1,6 +1,6 @@
 <template>
   <div>
-    <chart-js @init="created" :config="config"></chart-js>
+    <canvas ref="graphic" width="400" height="400"></canvas>
   </div>
 </template>
 
@@ -15,13 +15,9 @@ export default {
       require: true,
     },
   },
-  methods: {
-    created(chart) {
-      this.chartItem = chart;
-    },
-  },
   computed: {
     config() {
+      const self = this;
       return {
         type: "bar",
         data: {
@@ -29,6 +25,12 @@ export default {
           datasets: this.dataset,
         },
         options: {
+          animations: {
+            onAnimationComplete(a){
+              console.log(self);
+              // console.log(a,b,c,d,e,f);
+            }
+          },
           plugins: {
             legend: {
               display: false,
@@ -56,8 +58,26 @@ export default {
       };
     },
   },
+  methods: {
+    drawChart() {
+      if (this.chart) {
+        this.chart.destroy();
+      }
+      const chart = new this.$chart(this.$refs.graphic, this.config);
+      this.$emit("init", chart);
+      this.chart = chart;
+    },
+  },
+  mounted() {
+    this.drawChart();
+  },
+  watch: {
+    config: function () {
+      this.drawChart();
+    },
+  },
   created() {
-    this.chartItem = null;
+    this.chart = null;
   },
 };
 </script>
