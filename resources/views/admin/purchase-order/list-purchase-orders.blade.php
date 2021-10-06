@@ -62,10 +62,10 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Numero de pedido</th>
+                            <th>Numero de {{$title}}</th>
                             <th style="max-width: 30% !important;">Cliente</th>
                             <th>Fecha Requerida</th>
-                            <th>Estado del pedido</th>
+                            <th>Estado de {{$title}}</th>
                             <th>Descripcion</th>
                             <th>Valor total</th>
                             <th>Opciones</th>

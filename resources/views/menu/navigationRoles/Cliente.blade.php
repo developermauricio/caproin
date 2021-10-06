@@ -7,7 +7,7 @@
 <li class="{{request()->is('purchase_orders') ? 'active' : '' }} nav-item">
     <a class="d-flex align-items-center" href="{{ route('admin.purchase_order.purchase_orders') }}">
         <i data-feather='shopping-cart'></i>
-        <span class="menu-title text-truncate" data-i18n="Email">Ordenes de Pedido</span>
+        <span class="menu-title text-truncate" data-i18n="Email">Ordenes de Compra</span>
     </a>
 </li>
 <li class="{{request()->is('acuerdos-comerciales') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center" href="{{ route('admin.trade.agreement') }}"><i data-feather='thumbs-up'></i><span
