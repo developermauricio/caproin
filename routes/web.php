@@ -176,10 +176,10 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
         =============================================*/
     Route::post('/import-data-purchase-ordes', 'PurchaseOrderController@importPurchaseOrders')->name('import.data.purchase_ordes')->middleware('ModulePurchaseOrder');
     Route::get('/ordenes-compra', 'PurchaseOrderController@index')->name('admin.purchase_order.purchase_orders');
-    Route::get('/ordenes-compra/crear', 'PurchaseOrderController@create')->name('admin.purchase_order.create')->middleware('ModulePurchaseOrder');
-    Route::get('/ordenes-compra/actualizar/{id}', 'PurchaseOrderController@update')->name('admin.purchase_order.update')->middleware('ModulePurchaseOrder');
-    Route::post('/import-data-invoice', 'InvoiceController@importDataInvoice')->name('import.data.invoices')->middleware('ModulePurchaseOrder');
 
+    Route::get('/ordenes-compra/crear', 'PurchaseOrderController@create')->name('admin.purchase_order.create')->middleware('ModelePurchaseOrder');
+    Route::get('/ordenes-compra/actualizar/{id}', 'PurchaseOrderController@update')->name('admin.purchase_order.update');
+    Route::post('/import-data-invoice', 'InvoiceController@importDataInvoice')->name('import.data.invoices');
 
     /*=============================================
          RUTAS PARA LOS MODULOS DE PRODUCTOS Y SERVICIOS

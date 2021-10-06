@@ -5,10 +5,10 @@ const find = function (array, name) {
   return false;
 }
 
-export default class CustomerPolicy
+export default class EditStateInvoicePolicy
 {
-  static editCustomer($user, customer){
-    return find(user.roles,'Administrador') || find(user.roles,'Asistente Sucursal');
+  static editStateInvoice($user, invoice){
+    return find(user.roles,'Administrador');
   }
 
 }

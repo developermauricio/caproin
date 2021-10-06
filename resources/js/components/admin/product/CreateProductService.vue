@@ -20,6 +20,8 @@
               :required="true"
               :msgServer.sync="errors.name"
             ></input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-name-product" class="text-danger">El nombre del producto no puede contener menos de 5 caracteres</p>
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
@@ -58,6 +60,8 @@
             <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                id="text-verify-code-product-service" class="text-danger">El código ya
               ha sido registrado</p>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-code-product" class="text-danger">El código del producto no puede contener menos de 5 caracteres</p>
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
@@ -100,6 +104,8 @@
                                                 }"
             >
             </input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-description-short-product" class="text-danger">La descripción corta del producto no puede contener menos de 5 caracteres</p>
           </div>
         </div>
         <div class="row">
@@ -119,6 +125,8 @@
                                                 }"
             >
             </input-form>
+            <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
+               id="text-verify-one-character-description-product" class="text-danger">La descripción del producto no puede contener menos de 5 caracteres</p>
           </div>
         </div>
         <product-price :product_prices="product_prices"></product-price>
@@ -293,7 +301,57 @@ export default {
           }).catch(err => {
         });
       }
+      if (val.length <= 5) {
+        setTimeout(() => {
+          $("#txtCodeProductService").addClass("is-invalid");
+          $("#text-verify-one-character-code-product").css("display", "block");
+          document.getElementById('text-verify-one-character-code-product').disabled = true;
+        }, 200)
+      } else {
+        document.getElementById('text-verify-one-character-code-product').disabled = false;
+        $("#txtCodeProductService").removeClass("is-invalid");
+        $("#text-verify-one-character-code-product").css("display", "none");
+      }
     },
+    name: function (val) {
+      if (val.length <= 5){
+        setTimeout(() => {
+          $("#txtNameProduct").addClass("is-invalid");
+          $("#text-verify-one-character-name-product").css("display", "block");
+          document.getElementById('text-verify-one-character-name-product').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-name-product').disabled = false;
+        $("#txtNameProduct").removeClass("is-invalid");
+        $("#text-verify-one-character-name-product").css("display", "none");
+      }
+    },
+    descriptionShort: function (val) {
+      if (val.length <= 5){
+        setTimeout(() => {
+          $("#txtDescriptionShort").addClass("is-invalid");
+          $("#text-verify-one-character-description-short-product").css("display", "block");
+          document.getElementById('text-verify-one-character-description-short-product').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-description-short-product').disabled = false;
+        $("#txtDescriptionShort").removeClass("is-invalid");
+        $("#text-verify-one-character-description-short-product").css("display", "none");
+      }
+    },
+    description: function (val) {
+      if (val.length <= 5){
+        setTimeout(() => {
+          $("#txtDescription").addClass("is-invalid");
+          $("#text-verify-one-character-description-product").css("display", "block");
+          document.getElementById('text-verify-one-character-description-product').disabled = true;
+        }, 200)
+      }else{
+        document.getElementById('text-verify-one-character-description-product').disabled = false;
+        $("#txtDescription").removeClass("is-invalid");
+        $("#text-verify-one-character-description-product").css("display", "none");
+      }
+    }
   },
   mounted() {
     this.getApiTypeProductService();

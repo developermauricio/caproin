@@ -42,7 +42,9 @@
                             <th>Nombre</th>
                             <th>Descripción</th>
                             <th>Estado</th>
-                            <th>Acciones</th>
+                            @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal')
+                                <th>Acciones</th>
+                            @endif
                         </tr>
                         <tr class="tr-filter-dekstop-provider">
                             <th></th>
@@ -50,7 +52,9 @@
                             <th></th>
                             <th></th>
                             <th class="filter-4" style="max-width: 30% !important;"></th>
-                            <th></th>
+                            @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal')
+                                <th></th>
+                            @endif
                         </tr>
                         </thead>
                     </table>
@@ -70,7 +74,8 @@
         <!--=====================================
                 MODAL PARA EDITAR LAS FACTURAS
             ======================================-->
-        <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-show-product-service" data-backdrop="static" tabindex="-1"
+        <div class="modal fullscreen-modal fade text-left modal-primary" id="modal-show-product-service"
+             data-backdrop="static" tabindex="-1"
              role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <edit-product-service id="component-edit-product-service" id-product-service></edit-product-service>
@@ -303,7 +308,7 @@
                                 }
                             }
                             ,
-                        },{
+                        }, {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.description === null) {
                                     return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
@@ -324,11 +329,12 @@
                             },
                         },
                         {
+                            @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal')
                             render: function (data, type, JsonResultRow, meta) {
                                 return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-product-service" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-invoice btn-icon btn-primary"><i data-feather="edit-2"></i></button></div>'
 
-                            }
-                            ,
+                            },
+                            @endif
                         }
                         ,]
                     ,

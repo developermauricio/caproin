@@ -675,7 +675,7 @@
                         //     }, 50);
                         // }
                     },
-                            @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal' || auth()->user()->roles->first()->name === 'Gerencia' || auth()->user()->roles->first()->name === 'Finanzas'){
+                            @if(auth()->user()->roles->first()->name === 'Administrador'){
                              text: feather.icons['file-text'].toSvg({
                                  class: 'mr-50 font-small-4'
                              }) + 'Importar'
@@ -689,7 +689,7 @@
                                  $(node).removeClass('btn-secondary');
                              }
                          }@endif
-                         , @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal' || auth()->user()->roles->first()->name === 'Gerencia' || auth()->user()->roles->first()->name === 'Finanzas'){
+                         , @if(auth()->user()->roles->first()->name === 'Administrador'){
                             text: feather.icons['plus'].toSvg({
                                 class: 'mr-50 font-small-4'
                             }) + 'Nueva Factura '

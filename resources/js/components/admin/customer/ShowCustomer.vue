@@ -110,7 +110,7 @@
                     :msgServer.sync="errors.businessName"
                   ></input-form>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                     id="text-verify-one-character-customer-edit" class="text-danger">El nombre no puede ser de un caracter</p>
+                     id="text-verify-one-character-customer-edit" class="text-danger">El nombre no puede contener menos de 5 caracteres</p>
                 </div>
               </div>
               <div class="row" v-show="showEditCustomer">
@@ -164,8 +164,7 @@
                      id="text-verify-identification-customer-edit" class="text-danger">El número de identificación ya
                     ha sido registrado</p>
                   <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                     id="text-verify-one-indentification-character-customer-edit" class="text-danger">El número de identificación no puede
-                    ser de un caracter</p>
+                     id="text-verify-one-indentification-character-customer-edit" class="text-danger">El número de identificación no puede contener menos de 5 caracteres</p>
                 </div>
                 <div class="col-12 col-md-6 col-lg-6">
                   <input-form
@@ -627,7 +626,7 @@ export default {
           $("#text-verify-identification-customer-edit").css("display", "none");
         }
       }
-      if (val.length === 1){
+      if (val.length <= 5){
         setTimeout(() => {
           $("#txtIdentifacationCustomerEditV").addClass("is-invalid");
           $("#text-verify-one-indentification-character-customer-edit").css("display", "block");
@@ -673,7 +672,7 @@ export default {
       }
     },
     'customer.businessName'(val){
-      if (val.length === 1){
+      if (val.length <= 5){
         setTimeout(() => {
           $("#txtNameUserCustomerEdit").addClass("is-invalid");
           $("#text-verify-one-character-customer-edit").css("display", "block");

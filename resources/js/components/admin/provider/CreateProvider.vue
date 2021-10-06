@@ -21,7 +21,7 @@
               :msgServer.sync="errors.businessName"
             ></input-form>
             <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-               id="text-verify-one-character-provider" class="text-danger">El nombre o razón social no puede ser de un caracter</p>
+               id="text-verify-one-character-provider" class="text-danger">El nombre o razón social no puede contener menos de 5 caracteres</p>
           </div>
         </div>
         <div class="row">
@@ -63,7 +63,7 @@
                id="text-verify-identification-provider" class="text-danger">El número de identificación ya
               ha sido registrado</p>
             <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-               id="text-verify-one-character-identification-provider" class="text-danger">El número de identificación no puede ser de un caracter</p>
+               id="text-verify-one-character-identification-provider" class="text-danger">El número de identificación no puede contener menos de 5 caracteres</p>
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
@@ -103,7 +103,7 @@
                id="text-verify-code-provider" class="text-danger">El código ya
               ha sido registrado</p>
             <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-               id="text-verify-one-character-code-provider" class="text-danger">El código no puede ser de un caracter</p>
+               id="text-verify-one-character-code-provider" class="text-danger">El código no puede contener menos de 5 caracteres</p>
           </div>
         </div>
       </div>
@@ -258,7 +258,7 @@ export default {
           }).catch(err => {
         });
       }
-      if (val.length === 1) {
+      if (val.length <= 5) {
         setTimeout(() => {
           $("#txtIdentifacationProvider").addClass("is-invalid");
           $("#text-verify-one-character-identification-provider").css("display", "block");
@@ -298,7 +298,7 @@ export default {
           }).catch(err => {
         });
       }
-      if (val.length === 1) {
+      if (val.length <= 5) {
         setTimeout(() => {
           $("#txtCodeProvider").addClass("is-invalid");
           $("#text-verify-one-character-code-provider").css("display", "block");
@@ -312,7 +312,7 @@ export default {
     },
 
     'provider.businessName'(val) {
-      if (val.length === 1) {
+      if (val.length <= 5) {
         setTimeout(() => {
           $("#txtNameUserProvider").addClass("is-invalid");
           $("#text-verify-one-character-provider").css("display", "block");

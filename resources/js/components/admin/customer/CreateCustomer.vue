@@ -21,7 +21,7 @@
               :msgServer.sync="errors.businessName"
             ></input-form>
             <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-               id="text-verify-one-character" class="text-danger">El nombre no puede ser de un caracter</p>
+               id="text-verify-one-character" class="text-danger">El nombre no puede contener menos de 5 caracteres</p>
           </div>
         </div>
         <div class="row">
@@ -120,7 +120,7 @@
               ha sido registrado</p>
             <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
                id="text-verify-one-indentification-character" class="text-danger">El número de identificación no puede
-              ser de un caracter</p>
+              contener menos de 5 caracteres</p>
           </div>
           <div class="col-12 col-md-6 col-lg-6">
             <input-form
@@ -374,7 +374,7 @@ export default {
           });
         }
       }
-      if (val.length === 1) {
+      if (val.length <= 5) {
         setTimeout(() => {
           $("#txtIdentifacationCustomer").addClass("is-invalid");
           $("#text-verify-one-indentification-character").css("display", "block");
@@ -425,7 +425,7 @@ export default {
     businessName: function (val) {
       let data = this
       let character = val;
-      if (character.length === 1) {
+      if (character.length <= 5) {
         setTimeout(() => {
           $("#txtNameUserCustomer").addClass("is-invalid");
           $("#text-verify-one-character").css("display", "block");

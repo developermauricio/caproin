@@ -23,8 +23,7 @@
                 :msgServer.sync="errors.name"
               ></input-form>
               <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                 id="text-verify-one-character-user-name-edit" class="text-danger">El nombre no puede ser de un
-                caracter</p>
+                 id="text-verify-one-character-user-name-edit" class="text-danger">El nombre no puede contener menos de 5 caracteres</p>
             </div>
             <div class="col-12 col-md-6 col-lg-6">
               <input-form
@@ -38,8 +37,7 @@
                 :msgServer.sync="errors.last_name"
               ></input-form>
               <p style="margin-top: -1rem;font-size: 0.9rem; display: none"
-                 id="text-verify-one-character-user-lastName-edit" class="text-danger">El apellido no puede ser de un
-                caracter</p>
+                 id="text-verify-one-character-user-lastName-edit" class="text-danger">El apellido no puede contener menos de 5 caracter</p>
             </div>
 
             <div class="col-12 col-md-6 col-lg-6">
@@ -407,7 +405,7 @@ export default {
     },
 
     'user.name'(val) {
-      if (val.length === 1) {
+      if (val.length <= 5) {
         setTimeout(() => {
           $("#txtNameUserEdit").addClass("is-invalid");
           $("#text-verify-one-character-user-name-edit").css("display", "block");
@@ -421,7 +419,7 @@ export default {
       }
     },
     'user.last_name'(val) {
-      if (val.length === 1) {
+      if (val.length <= 5) {
         setTimeout(() => {
           $("#txtLastNameUserEdit").addClass("is-invalid");
           $("#text-verify-one-character-user-lastName-edit").css("display", "block");
