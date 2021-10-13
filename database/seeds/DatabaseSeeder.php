@@ -231,23 +231,29 @@ class DatabaseSeeder extends Seeder
         /*=============================================
           CREAMOS EL ADMINISTRADOR DEL SISTEMA
         =============================================*/
-
         factory(\App\User::class, 1)->create(
             [
                 'name' => 'Admin',
                 'last_name' => 'Sistema',
                 'email' => 'admin@admin.co',
             ]
-        )->each(function (\App\User $u) {
-            $u->roles()->attach([1]);
-            factory(\App\Models\Employee::class, 1)->create(
-                [
-                    'user_id' => $u->id,
-                    'type_employee_id' => \App\Models\TypeEmployee::all()->random()->id,
-                    'branch_offices_id' => \App\Models\BranchOffice::all()->random()->id,
-                ]
-            );
-        });
+        );
+//        factory(\App\User::class, 1)->create(
+//            [
+//                'name' => 'Admin',
+//                'last_name' => 'Sistema',
+//                'email' => 'admin@admin.co',
+//            ]
+//        )->each(function (\App\User $u) {
+//            $u->roles()->attach([1]);
+//            factory(\App\Models\Employee::class, 1)->create(
+//                [
+//                    'user_id' => $u->id,
+//                    'type_employee_id' => \App\Models\TypeEmployee::all()->random()->id,
+//                    'branch_offices_id' => \App\Models\BranchOffice::all()->random()->id,
+//                ]
+//            );
+//        });
 
         /*=============================================
            CREANDO TIPOS DE FACTURA
