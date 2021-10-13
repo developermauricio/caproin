@@ -37,7 +37,7 @@ class PurchaseOrderSeeder extends Seeder
             ['name' => 'Pagado'],
         ]);
 
-        $this->setDataFaker();
+//        $this->setDataFaker();
     }
 
     private function setDataFaker()
