@@ -237,7 +237,7 @@
                         {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.code === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.code}</span>`;
                                 }
@@ -248,7 +248,7 @@
                             data: "type_providers.name",
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.type_providers.name === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.type_providers.name}</span>`;
                                 }
@@ -259,7 +259,7 @@
                             data: "users.identification_type.name",
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.users.identification_type === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.users.identification_type.name}</span>`;
                                 }
@@ -268,7 +268,7 @@
                         {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.users.identification === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.users.identification}</span>`;
                                 }
@@ -277,7 +277,7 @@
                         {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.business_name === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.business_name}</span>`;
                                 }
