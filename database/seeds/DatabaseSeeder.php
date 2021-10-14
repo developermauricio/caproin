@@ -237,7 +237,10 @@ class DatabaseSeeder extends Seeder
                 'last_name' => 'Sistema',
                 'email' => 'admin@admin.co',
             ]
-        );
+        )->each(function (\App\User $u) {
+            $u->roles()->attach([1]);
+        });
+
 //        factory(\App\User::class, 1)->create(
 //            [
 //                'name' => 'Admin',
