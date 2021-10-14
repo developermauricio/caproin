@@ -14,16 +14,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::post('login', "AuthController@authenticate");
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('download-excel', "ExcelController@download");
+    Route::post('download-excel-sheets', "ExcelController@downloadSheets");
+    Route::post('logout', "AuthController@logout");
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
 
-Route::post('download-excel', "ExcelController@download");
-Route::post('download-excel-sheets', "ExcelController@downloadSheets");
-
-Route::group(['namespace' => 'Administrator'], function () {
-
-
+Route::group(['namespace' => 'Administrator', 'middleware' => 'auth:sanctum'], function () {
 
     /*=============================================
       API LISTA COMPLETA DE CLIENTES
@@ -167,17 +170,18 @@ Route::group(['namespace' => 'Administrator'], function () {
         Route::get('visualizacion-estados-pedido', 'ReportLogisticController@visualizacionEstadosPedido')->name('visualizacion-estados-pedido');
         Route::get('tiempos-promedio-entrega', 'ReportLogisticController@tiemposPromedioEntrega')->name('tiempos-promedio-entrega');
     });
-
 });
 
-/*=============================================
-      API RUTAS GLOBALES
-=============================================*/
-Route::get('get-countries', 'Controller@getCountries')->name('api.get.countries');
-Route::get('get-cities/{country}', 'Controller@getCities')->name('api.get.cities');
-Route::get('/verify-email-user/{email}', 'Controller@validateEmail')->name('api.validate.email');
-Route::get('/verify-identification-user/{indentification}', 'Controller@validateIdentification')->name('api.validate.identification');
-Route::get('/verify-email-company/{email}', 'Controller@validateEmailCompany')->name('api.validate.email.company');
-Route::get('/get-identificationtype', 'Controller@getIdentificationType')->name('api.get.identification.type');
-Route::get('/get-customer-category', 'Controller@customerCategory')->name('api.get.customer.category');
-Route::get('/get-customer-position', 'Controller@customerPosition')->name('api.get.customer.position');
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    /*=============================================
+        API RUTAS GLOBALES
+    =============================================*/
+    Route::get('get-countries', 'Controller@getCountries')->name('api.get.countries');
+    Route::get('get-cities/{country}', 'Controller@getCities')->name('api.get.cities');
+    Route::get('/verify-email-user/{email}', 'Controller@validateEmail')->name('api.validate.email');
+    Route::get('/verify-identification-user/{indentification}', 'Controller@validateIdentification')->name('api.validate.identification');
+    Route::get('/verify-email-company/{email}', 'Controller@validateEmailCompany')->name('api.validate.email.company');
+    Route::get('/get-identificationtype', 'Controller@getIdentificationType')->name('api.get.identification.type');
+    Route::get('/get-customer-category', 'Controller@customerCategory')->name('api.get.customer.category');
+    Route::get('/get-customer-position', 'Controller@customerPosition')->name('api.get.customer.position');
+});

@@ -20,6 +20,8 @@ return [
 
     'driver' => env('SESSION_DRIVER', 'file'),
 
+    'domain' => env('DOMAIN', '.domain.com'),
+
     /*
     |--------------------------------------------------------------------------
     | Session Lifetime
