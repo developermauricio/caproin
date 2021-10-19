@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
         factory(\App\Models\IdentificationType::class)->create(['name' => 'Cédula de Extranjeria']);
         factory(\App\Models\IdentificationType::class)->create(['name' => 'Pasaporte']);
         factory(\App\Models\IdentificationType::class)->create(['name' => 'Nit']);
+        factory(\App\Models\IdentificationType::class)->create(['name' => 'TIN', 'description' => "Taxpayer Identification Number"]);
 
 
         /*=============================================
