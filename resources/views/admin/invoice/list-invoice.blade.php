@@ -461,7 +461,7 @@
                         {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.invoice_number === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.invoice_number}</span>`;
                                 }
@@ -471,7 +471,7 @@
                         , {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.date_issue === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_issue).locale('es').format("MM-DD-YYYY")}</span>`;
                                 }
@@ -481,7 +481,7 @@
                         , {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.customers.business_name === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.customers.business_name}</span>`;
                                 }
@@ -492,7 +492,7 @@
                             data: "type_invoice.name",
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.type_invoice.name === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.type_invoice.name}</span>`;
                                 }
@@ -503,7 +503,7 @@
                             data: "payment_type.name",
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.payment_type.name === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.payment_type.name}</span>`;
                                 }
@@ -513,7 +513,7 @@
                         , {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.value_total === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">$${dollarUSLocale.format(JsonResultRow.value_total)}</span>`;
                                 }
@@ -524,7 +524,7 @@
                         {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.date_payment_client === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${moment(JsonResultRow.date_payment_client).locale('es').format("MM-DD-YYYY")}</span>`;
                                 }
@@ -536,7 +536,7 @@
                             data: "state.name",
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.state.name === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.state.name}</span>`;
                                 }

@@ -246,6 +246,7 @@ export default {
                 hideDuration: 7000,
                 position: 'top right',
               })
+              this.$vs.loading.close()
               window.location = "/usuarios";
             }).catch(err => {
               console.log('mostrando el error', err)
@@ -255,10 +256,8 @@ export default {
                 showDuration: 1000,
                 hideDuration: 8000,
               })
-            });
-            setTimeout(() => {
               this.$vs.loading.close()
-            }, 2000)
+            });
           }
         })
 

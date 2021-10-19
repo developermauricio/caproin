@@ -351,7 +351,7 @@
                         {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.id === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.id}</span>`;
                                 }
@@ -361,7 +361,7 @@
                         , {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.business_name === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.business_name}</span>`;
                                 }
@@ -372,7 +372,7 @@
                             data: "user.identification_type.name"
                             , render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.user.identification_type === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.user.identification_type.name}</span>`;
                                 }
@@ -382,7 +382,7 @@
                         , {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.user.identification === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.user.identification}</span>`;
                                 }
@@ -392,7 +392,7 @@
                         , {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.user.email === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.user.email}</span>`;
                                 }
@@ -403,7 +403,7 @@
                         {
                             render: function (data, type, JsonResultRow, meta) {
                                 if (JsonResultRow.user.phone === null) {
-                                    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+                                    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.user.phone}</span>`;
                                 }

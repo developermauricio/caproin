@@ -338,7 +338,7 @@
 const getRow = function (json, attribute) {
   const data = json[attribute];
   if (!data) {
-    return '<span class="label label-danger text-center" style="color:#0082FB !important">Ningún valor por defecto</span>'
+    return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
   } else {
     return `<span class="label text-center font-weight-bold">${data}</span>`;
   }

@@ -231,13 +231,18 @@ class DatabaseSeeder extends Seeder
         /*=============================================
           CREAMOS EL ADMINISTRADOR DEL SISTEMA
         =============================================*/
+        $pass = bcrypt('pD&YdHZS9xtKSEfjYy');
         factory(\App\User::class, 1)->create(
             [
                 'name' => 'Admin',
                 'last_name' => 'Sistema',
                 'email' => 'admin@admin.co',
+                'password' => $pass
             ]
-        );
+        )->each(function (\App\User $u) {
+            $u->roles()->attach([1]);
+        });
+
 //        factory(\App\User::class, 1)->create(
 //            [
 //                'name' => 'Admin',

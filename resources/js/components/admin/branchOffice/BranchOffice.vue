@@ -575,7 +575,7 @@ export default {
       }
     },
     name: function (val) {
-      if (val.length <= 5){
+      if (val.length <= 3){
         setTimeout(() => {
           $("#txtNameBranchOffices").addClass("is-invalid");
           $("#text-verify-one-character-branchoffices").css("display", "block");
@@ -589,7 +589,7 @@ export default {
     },
 
     nameEdit: function (val) {
-      if (val.length <= 5){
+      if (val.length <= 3){
         setTimeout(() => {
           $("#txtNameBranchOfficesEdit").addClass("is-invalid");
           $("#text-verify-one-character-branchoffices-edit").css("display", "block");
