@@ -152,6 +152,11 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
     Route::get('/providers', 'ProviderController@index')->name('admin.provider.providers')->middleware('ModeleProvider');
 
     /*=============================================
+        RUTAS PARA LOS MODULOS PROVEEDOR
+    =============================================*/
+    Route::get('/conveyors', 'ConveyorController@index')->name('admin.conveyor.conveyors')->middleware('ModeleConveyor');
+
+    /*=============================================
           RUTAS PARA LOS MODULOS SUSCURSALES
         =============================================*/
     Route::get('/sucursales', 'BranchOfficesController@index')->name('admin.branch_offices')->middleware('ModeleBranchOffices');

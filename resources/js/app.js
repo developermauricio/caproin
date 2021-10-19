@@ -113,6 +113,14 @@ COMPONENTES PARA LOS MODULOS PROVEEDORES
 Vue.component('create-provider', require('./components/admin/provider/CreateProvider.vue').default);
 Vue.component('show-provider', require('./components/admin/provider/ShowProvider.vue').default);
 
+
+/*=============================================
+COMPONENTES PARA LOS MODULOS TRANSPORTISTA
+=============================================*/
+Vue.component('create-conveyor', require('./components/admin/conveyor/CreateConveyor.vue').default);
+Vue.component('show-conveyor', require('./components/admin/conveyor/ShowConveyor.vue').default);
+
+
 /*=============================================
 COMPONENTES PARA LOS MODULOS DE SUCURSALES
 =============================================*/

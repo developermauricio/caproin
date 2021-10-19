@@ -49,6 +49,16 @@ Route::group(['namespace' => 'Administrator', 'middleware' => 'auth:sanctum'], f
     Route::get('all-type-providers', 'ProviderController@getApiTypeProviders')->name('api.all.type.providers');
     Route::get('/verify-code-provider/{code}', 'ProviderController@validateCode')->name('api.validate.code.provider');
 
+
+
+    /*=============================================
+      API LISTA COMPLETA DE TRANSPORTADORES
+    =============================================*/
+    Route::get('all-conveyors', 'ConveyorController@getApiConveyors')->name('api.all.conveyors');
+    Route::get('data-conveyor/{id}', 'ConveyorController@getApiDataConveyors')->name('api.data.conveyors');
+    Route::post('register/store-conveyor', 'ConveyorController@storeApiConveyor')->name('api.store.conveyor');
+    Route::post('update-conveyor', 'ConveyorController@updateApiConveyor')->name('api.update.conveyor');
+
     /*=============================================
       API PARA LAS SUCURSALES
     =============================================*/

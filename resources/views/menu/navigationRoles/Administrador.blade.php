@@ -15,6 +15,10 @@
       href="{{ route('admin.provider.providers') }}"><i data-feather='thumbs-up'></i><span
           class="menu-title text-truncate" data-i18n="Email">Proveedores</span></a>
 </li>
+<li class="{{request()->is('conveyors') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center"
+    href="{{ route('admin.conveyor.conveyors') }}"><i data-feather='truck'></i><span
+        class="menu-title text-truncate" data-i18n="Conveyors">Transportadores</span></a>
+</li>
 
 <li class="{{request()->is('sucursales') ? 'active' : '' }} nav-item"><a class="d-flex align-items-center"
       href="{{ route('admin.branch_offices') }}"><i data-feather='map'></i><span
