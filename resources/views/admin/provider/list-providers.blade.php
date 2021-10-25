@@ -32,6 +32,115 @@
     </div>
 @endsection
 @section('content')
+
+@if (session('lines'))
+<div class="row">
+    <div class="col-12">
+        <div class="card p-2">
+            <import-error-data-provider
+            :lines="{{session('lines')}}"
+            ></import-error-data-provider>
+        </div>
+    </div>
+</div>
+@endif
+
+<!--=====================================
+    MODAL PARA IMPORTAR PROVEEDOR
+======================================-->
+<div class="modal fade text-left modal-primary" id="modal-import-provider" data-backdrop="static" tabindex="-1"
+        role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel160">Importar Proveedores</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('import.data.providers') }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    @csrf
+                    <h6 class="text-center">Selecciona desde tu computadora el archivo Excel tipo
+                        <strong>xlsx</strong></h6>
+                    <input type="file" name="archive" class="form-control text-center" required
+                            accept=".xls,.xlsx">
+                    <div class="text-center pt-1"><a href="/import-excel-provider/caproin-import-provider.xlsx"
+                                                        target="_blank">Descarga el ejemplo</a></div>
+                    <div class="collapse-default pt-1">
+                        <div class="card collapse-icon">
+                            <div id="headingCollapse1" class="card-header" data-toggle="collapse" role="button"
+                                    data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                <span class="lead collapse-title">Instrucciones</span>
+                            </div>
+                            <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1"
+                                    class="collapse">
+                                <div class="card-body">
+                                    <p class="card-text text-justify">
+                                        Para importar proveedores debe cargar un archivo Excel en formato
+                                        <code>xlsx</code>. Tenga en cuenta que el
+                                        <code>correo electrónico</code> y el
+                                        <code>número de identificación</code> es único, asi que
+                                        verifique que en su archivo de excel no existan correos
+                                        electrónicos o números de identificación iguales.
+                                    </p>
+                                    <p class="card-text text-justify">
+                                        Para el <code>tipo de idenficación</code> o <code>tipo de proveedor</code> debe ingresar un
+                                        número como se muestra en el archivo excel de ejemplo. A
+                                        continuación la tabla con el nombre del tipo de identificación
+                                        y el número.
+                                    </p>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Número</th>
+                                                <th>Nombre tipo identificación</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($identificationTypes as $identificationType)
+                                                <tr>
+                                                    <td>{{ $identificationType->id }}</td>
+                                                    <td>{{ $identificationType->name }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Número</th>
+                                                <th>Tipo de proveedor</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($providerTypes as $providerType)
+                                                <tr>
+                                                    <td>{{ $providerType->id }}</td>
+                                                    <td>{{ $providerType->name }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_importar" type="submit" type="button" class="btn btn-primary">Importar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
     <section id="basic-datatable">
         <div class="row">
             <div class="col-12">
@@ -399,6 +508,21 @@
                             //     }, 50);
                             // }
                         },
+                        @if(auth()->user()->roles->first()->name === 'Administrador')
+                        {
+                            text: feather.icons['file-text'].toSvg({
+                                class: 'mr-50 font-small-4'
+                            }) + 'Importar',
+                            className: 'btn btn-primary',
+                            attr: {
+                                'data-target': '#modal-import-provider',
+                                'data-toggle': 'modal'
+                            },
+                            init: function (api, node, config) {
+                                $(node).removeClass('btn-secondary');
+                            }
+                        },
+                        @endif
                             @if(auth()->user()->roles->first()->name === 'Administrador')
 
                         {

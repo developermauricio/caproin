@@ -25,7 +25,8 @@ class CustomerController extends Controller
 
     public function index()
     {
-        return view('admin.customer.list-customers');
+        $identificationTypes = IdentificationType::all('id', 'name');
+        return view('admin.customer.list-customers', compact('identificationTypes'));
     }
 
     public function indexCreateCustomer()

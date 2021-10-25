@@ -162,22 +162,12 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr>
-                                                        <td>1</td>
-                                                        <td>Cédula de Ciudadania</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>2</td>
-                                                        <td>Cédula de Extranjeria</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>3</td>
-                                                        <td>Pasaporte</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>4</td>
-                                                        <td>Nit</td>
-                                                    </tr>
+                                                        @foreach ($identificationTypes as $identificationType)
+                                                        <tr>
+                                                            <td>{{ $identificationType->id }}</td>
+                                                            <td>{{ $identificationType->name }}</td>
+                                                        </tr>
+                                                        @endforeach
                                                     </tbody>
                                                 </table>
                                             </div>

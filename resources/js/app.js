@@ -112,6 +112,7 @@ COMPONENTES PARA LOS MODULOS PROVEEDORES
 =============================================*/
 Vue.component('create-provider', require('./components/admin/provider/CreateProvider.vue').default);
 Vue.component('show-provider', require('./components/admin/provider/ShowProvider.vue').default);
+Vue.component('import-error-data-provider', require('./components/admin/provider/ImportErrorDataProvider.vue').default);
 
 
 /*=============================================
