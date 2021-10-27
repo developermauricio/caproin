@@ -3,7 +3,7 @@
     <div class="content-header">
       <div class="row header__container w-12">
         <h2 class="col-12 col-md-3 content-header-title float-left mb-0">
-          Reportes cartera
+          Reportes logistica
         </h2>
         <div class="col-12 col-md-9 d-flex filters__container">
           <div class="col d-flex justify-content-end">

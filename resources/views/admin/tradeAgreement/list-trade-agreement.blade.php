@@ -12,13 +12,13 @@
     <link rel="stylesheet" type="text/css"
           href="https://cdn.datatables.net/datetime/1.1.0/css/dataTables.dateTime.min.css">
 @endpush
-@section('title', 'Lista de Acuerdos Comerciales')
+@section('title', 'Acuerdos Comerciales')
 @section('header_page')
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Lista de Acuerdos Comerciales</h2>
+                    <h2 class="content-header-title float-left mb-0">Administrar Acuerdos Comerciales</h2>
                     <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb">
                             {{-- <li class="breadcrumb-item"><a href="index.html">Home</a>--}}
@@ -444,7 +444,7 @@
 
                         {
                             render: function (data, type, JsonResultRow, meta) {
-                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-trade-agreement" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-user btn-icon btn-primary"><i data-feather="eye"></i></button></div>'
+                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-trade-agreement" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-user btn-icon btn-primary"><i data-feather="eye"></i><span class="mt-2">Ver</span></button></div>'
 
                             },
                         },

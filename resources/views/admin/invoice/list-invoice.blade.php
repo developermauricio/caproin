@@ -11,13 +11,13 @@
     <link rel="stylesheet" type="text/css" href="/app-assets/css/plugins/forms/form-file-uploader.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/datetime/1.1.0/css/dataTables.dateTime.min.css">
 @endpush
-@section('title', 'Lista de Facturas')
+@section('title', 'Facturas')
 @section('header_page')
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Lista de Facturas</h2>
+                    <h2 class="content-header-title float-left mb-0">Administrar Facturas</h2>
                     <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb">
                             {{-- <li class="breadcrumb-item"><a href="index.html">Home</a>--}}
@@ -557,7 +557,7 @@
                         // },
                         {
                             render: function (data, type, JsonResultRow, meta) {
-                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-customer" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-invoice btn-icon btn-primary"><i data-feather="eye"></i></button></div>'
+                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-customer" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-invoice btn-icon btn-primary"><i data-feather="eye"></i><span class="mt-2">Ver</span></button></div>'
 
                             }
                             ,

@@ -146,6 +146,11 @@ pre code {
     color: #fff !important;
 }
 
+.create-new.btn-primary:focus{
+    background-color: #0473b9 !important;
+    color: #fff !important;
+}
+
 .table::-webkit-scrollbar-thumb
 {
     border-radius: 10px;
@@ -1024,7 +1029,7 @@ input[type='number']::-webkit-outer-spin-button {
     visibility: hidden; } }
 
 .header-navbar .navbar-container ul.navbar-nav li > a.nav-link {
-  color: #6e6b7b;
+  color: #ffffff;
   padding: 0 0.5rem;
   position: relative; }
 
@@ -1078,11 +1083,11 @@ input[type='number']::-webkit-outer-spin-button {
   height: 1.5rem;
   width: 1.5rem;
   font-size: 1.5rem;
-  color: #6e6b7b; }
+  color: #ffffff; }
 
 .header-navbar .navbar-container ul.navbar-nav li i.ficon:hover,
 .header-navbar .navbar-container ul.navbar-nav li svg.ficon:hover {
-  color: #D9393D; }
+  color: #d7d4d4; }
 
 .header-navbar .navbar-container ul.navbar-nav li .media-list {
   max-height: 25rem; }
@@ -1132,7 +1137,7 @@ input[type='number']::-webkit-outer-spin-button {
   z-index: 11; }
 
 .navbar-light {
-  background: #fff; }
+  background: #D9393D !important; }
 
 .navbar-light.navbar-horizontal {
   background: #fff; }

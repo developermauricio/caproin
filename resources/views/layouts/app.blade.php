@@ -104,6 +104,16 @@
                 </li>
 {{--                @dd(\App\User::navigation())--}}
                 @include('menu.navigationRoles.'.\App\User::navigation())
+
+                <li class="nav-item pt-4 pl-1">
+                    <form type="submit" method="POST" action="{{ route('logout') }}">
+                        @csrf
+                    <button class="btn btn-flat-primary waves-effect btn-menu-logout" style="font-size: 1.5rem; font-weight: bold">
+                        <i data-feather='power' style="width: 20px; height: 20px; font-weight: bold"></i>
+                        <span class="menu-title font-weight-bold" data-i18n="Email">Cerrar Sesión</span>
+                    </button>
+                    </form>
+                </li>
             </ul>
         </div>
     </div>

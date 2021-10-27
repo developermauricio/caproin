@@ -6,13 +6,13 @@
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
 @endpush
-@section('title', 'Lista de Clientes')
+@section('title', 'Usuarios')
 @section('header_page')
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Lista de Usuarios</h2>
+                    <h2 class="content-header-title float-left mb-0">Administrar Usuarios</h2>
                     <div class="breadcrumb-wrapper">
                         <ol class="breadcrumb">
                             {{--                            <li class="breadcrumb-item"><a href="index.html">Home</a>--}}
@@ -492,7 +492,7 @@
                         // },
                         {
                             render: function (data, type, JsonResultRow, meta) {
-                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-customer" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-user btn-icon btn-primary"><i data-feather="edit-2"></i></button></div>'
+                                return '<div class="demo-inline-spacing text-center"><button data-target="#modal-show-customer" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="btn btn-show-user btn-icon btn-primary"><i data-feather="edit-2"></i><span class="mt-2">Ver</span></button></div>'
 
                             },
                         },
