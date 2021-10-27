@@ -28,6 +28,109 @@
     </div>
 @endsection
 @section('content')
+@if (session('lines'))
+<div class="row">
+    <div class="col-12">
+        <div class="card p-2">
+            <import-error-data-product
+            :lines="{{session('lines')}}"
+            ></import-error-data-product>
+        </div>
+    </div>
+</div>
+@endif
+
+<!--=====================================
+    MODAL PARA IMPORTAR PRODUCTOS
+======================================-->
+<div class="modal fade text-left modal-primary" id="modal-import-products" data-backdrop="static" tabindex="-1"
+        role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel160">Importar Productos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('import.data.products') }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    @csrf
+                    <h6 class="text-center">Selecciona desde tu computadora el archivo Excel tipo
+                        <strong>xlsx</strong></h6>
+                    <input type="file" name="archive" class="form-control text-center" required
+                            accept=".xls,.xlsx">
+                    <div class="text-center pt-1"><a href="/import-excel-products/caproin-import-product.xlsx"
+                                                        target="_blank">Descarga el ejemplo</a></div>
+                    <div class="collapse-default pt-1">
+                        <div class="card collapse-icon">
+                            <div id="headingCollapse1" class="card-header" data-toggle="collapse" role="button"
+                                    data-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                                <span class="lead collapse-title">Instrucciones</span>
+                            </div>
+                            <div id="collapse1" role="tabpanel" aria-labelledby="headingCollapse1"
+                                    class="collapse">
+                                <div class="card-body">
+                                    <p class="card-text text-justify">
+                                        Para importar productos y servicios debe cargar un archivo Excel en formato
+                                        <code>xlsx</code>. Tenga en cuenta que el
+                                        <code>Codigo de producto</code> es único, asi que
+                                        verifique que en su archivo de excel no existan codigos repetidos.
+                                    </p>
+                                    <p class="card-text text-justify">
+                                        Para el <code>Tipo Producto</code> y <code>Estado</code> debe ingresar un
+                                        número como se muestra en el archivo excel de ejemplo. A
+                                        continuación la tabla con el nombre y el número.
+                                    </p>
+                                    <div class="table-responsive mb-2">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Número</th>
+                                                <th>Tipo Producto</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach ($productTypes as $productType)
+                                            <tr>
+                                                <td>{{ $productType->id }}</td>
+                                                <td>{{ $productType->name }}</td>
+                                            </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Número</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach ($status as $key => $state)
+                                            <tr>
+                                                <td>{{ $key }}</td>
+                                                <td>{{ $state }}</td>
+                                            </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn_importar" type="submit" type="button" class="btn btn-primary">Importar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
     <section id="basic-datatable">
         <div class="row">
             <div class="col-12">
@@ -79,38 +182,6 @@
              role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <edit-product-service id="component-edit-product-service" id-product-service></edit-product-service>
-            </div>
-        </div>
-
-        <!--=====================================
-                MODAL PARA IMPORTAR CLIENTES
-            ======================================-->
-        <div class="modal fade text-left modal-primary" id="modal-import-customer" data-backdrop="static" tabindex="-1"
-             role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                {{-- <import-data-customers></import-data-customers> --}}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="myModalLabel160">Importar Clientes</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="{{ route('import.data.customers') }}" method="POST" enctype="multipart/form-data">
-                        <div class="modal-body">
-                            @csrf
-                            <h6 class="text-center">Selecciona desde tu computadora el archivo Excel tipo
-                                <strong>xlsx</strong></h6>
-                            <input type="file" name="archive" class="form-control text-center" required
-                                   accept=".xls,.xlsx">
-                            <div class="text-center pt-1"><a href="/storage/import-excel-customers/data.xlsx"
-                                                             target="_blank">Descarga el ejemplo</a></div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" type="button" class="btn btn-primary">Importar</button>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
     </section>
@@ -449,20 +520,21 @@
                         //     }, 50);
                         // }
                     }
-                        // , {
-                        //     text: feather.icons['file-text'].toSvg({
-                        //         class: 'mr-50 font-small-4'
-                        //     }) + 'Importar'
-                        //     , className: 'create-new btn btn-primary'
-                        //     , attr: {
-                        //         'data-target': '#modal-import-customer'
-                        //         , 'data-toggle': 'modal'
-                        //         ,
-                        //     }
-                        //     , init: function (api, node, config) {
-                        //         $(node).removeClass('btn-secondary');
-                        //     }
-                        // }
+                    @if(auth()->user()->roles->first()->name === 'Administrador')
+                    , {
+                        text: feather.icons['file-text'].toSvg({
+                            class: 'mr-50 font-small-4'
+                        }) + 'Importar',
+                        className: 'btn btn-primary',
+                        attr: {
+                            'data-target': '#modal-import-products',
+                            'data-toggle': 'modal'
+                        },
+                        init: function (api, node, config) {
+                            $(node).removeClass('btn-secondary');
+                        }
+                    }
+                    @endif
                         @if(auth()->user()->roles->first()->name === 'Administrador' || auth()->user()->roles->first()->name === 'Asistente Sucursal')
                         , {
 

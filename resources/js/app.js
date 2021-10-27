@@ -151,6 +151,7 @@ COMPONENTES PARA LOS MODULOS PRODUCTOS Y SERVICIOS
 =============================================*/
 Vue.component('component-create-product-service', require('./components/admin/product/CreateProductService.vue').default);
 Vue.component('edit-product-service', require('./components/admin/product/EditProductService.vue').default);
+Vue.component('import-error-data-product', require('./components/admin/product/ImportErrorDataProduct.vue').default);
 
 /*=============================================
 COMPONENTES PARA EL PERFIL
