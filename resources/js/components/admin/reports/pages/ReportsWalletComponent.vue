@@ -1,162 +1,170 @@
 <template>
   <div class="reports">
     <div class="content-header">
-      <div class="row header__container w-12">
-        <h2 class="col-12 col-md-3 content-header-title float-left mb-0">
-          Reportes cartera
-        </h2>
-        <div class="col-12 col-md-9 d-flex filters__container">
-          <label for="trm" class="px-0 col-1"> TRM USD: </label>
-          <input
-            type="text"
-            class="col-2 form-control"
-            id="trm"
-            placeholder="4100"
-            v-model="trm"
-          />
-          <div class="col d-flex">
-            <label for="trm" class="px-1 col-form-label">
-              Seleccionar fechas:
-            </label>
-            <input-form
-              type="date"
-              id="fechaInicio"
-              name="fechaInicio"
-              pattern="all"
-              class="m-0 datepicker"
-              errorMsg="Ingrese una fecha válida"
-              requiredMsg="La fecha requerida por el cliente es obligatoria"
-              :modelo.sync="fechaInicio"
-              :showLabel="false"
-            ></input-form>
-            <label class="px-1 col-form-label"> - </label>
-            <input-form
-              type="date"
-              id="fechaInicio"
-              name="fechaInicio"
-              pattern="all"
-              class="m-0 datepicker datepicker--right"
-              errorMsg="Ingrese una fecha válida"
-              requiredMsg="La fecha requerida por el cliente es obligatoria"
-              :modelo.sync="fechaFin"
-              :showLabel="false"
-            ></input-form>
-          </div>
+      <div class="row w-12">
+        <div class="col-12">
+          <h2 class="float-left mb-0 pb-1 border-title">
+            Reportes cartera
+          </h2>
         </div>
       </div>
     </div>
-
+    <div class="mb-2" style="border-bottom: 3px solid #d7d4d4; top:-2rem"></div>
     <!-- primero -->
-    <div class="row">
-      <div class="col-6 text-center">
-        <h2 class="title">Facturas vencidas</h2>
-        <percentage-doughnut-chart
-          class="col-6 m-auto"
-          v-bind="configFacturasVencidas"
-        ></percentage-doughnut-chart>
-      </div>
-      <div class="col-6 text-center">
-        <h2 class="title">Importe de facturas vencidas</h2>
-        <percentage-doughnut-chart
-          class="col-6 m-auto"
-          v-bind="configImporteFacturasVencidas"
-        ></percentage-doughnut-chart>
-      </div>
-    </div>
-
-    <!-- segundo -->
-    <div class="row pt-3">
-      <div class="col-6 m-0 row d-flex justify-content-around">
-        <card-info class="card__item">
-          <h2 class="card__title">Monto facturado en USD</h2>
-          <p class="card__price">{{ montoFacturadoUSD }}</p>
-        </card-info>
-        <card-info class="card__item">
-          <h2 class="card__title">Monto facturado en COP</h2>
-          <p class="card__price">{{ montoFacturadoCOP }}</p>
-        </card-info>
-      </div>
-      <div class="col-6 text-center">
-        <card-info class="col-8 m-auto">
-          <h2 class="card__title card__title--total">Total por cobrar</h2>
-          <p class="card__price">${{ getTotalVencidas }}</p>
-        </card-info>
-      </div>
-    </div>
-
-    <!-- tercero -->
-    <div class="row pt-3">
-      <div class="col-6 text-center">
-        <h2 class="title">Total cartera vencida</h2>
-        <div class="row m-0">
-          <div class="col-4 m-auto">
-            <percentage-doughnut-chart
-              v-bind="configTotalCarteraVencida30"
-            ></percentage-doughnut-chart>
-            <p>30 Dias</p>
-          </div>
-          <div class="col-4 m-auto">
-            <percentage-doughnut-chart
-              v-bind="configTotalCarteraVencida60"
-            ></percentage-doughnut-chart>
-            <p>60 Dias</p>
-          </div>
-          <div class="col-4 m-auto">
-            <percentage-doughnut-chart
-              v-bind="configTotalCarteraVencida90"
-            ></percentage-doughnut-chart>
-            <p>90 Dias</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-6 text-center">
-        <h2 class="title">Morosidad total</h2>
-        <morosidad-total
-          v-bind="configMorosidadTotal"
-          style="max-height: 20rem"
-        ></morosidad-total>
-      </div>
-    </div>
-
-    <!-- cuarto -->
-    <div class="row pt-3">
-      <div class="col-6 text-center">
-        <h2 class="title">Visualización Cartera</h2>
-        <p>Explicación de deuda y días</p>
-        <div class="cartera__container">
-          <div
-            class="cartera__item row"
-            v-for="cartera in visualizacionCartera"
-            :key="cartera.id"
-          >
-            <div class="col">
-              <p class="cartera__value">
-                {{ cartera.debe ? cartera.debe : cartera.value_total | price }}
-              </p>
-              <p class="cartera__title">Total a cobrar</p>
-            </div>
-            <div class="col">
-              <p class="cartera__value">{{ cartera.customer.business_name }}</p>
-              <p class="cartera__title">CLIENTE</p>
-            </div>
-            <div class="col">
-              <p class="cartera__value">{{ cartera.totalDias }}</p>
-              <p class="cartera__title">DIAS ATRASO</p>
+    <div class="card">
+      <div class="card-body">
+        <div class="row pb-4 pt-2">
+          <div class="col-12 col-md-9 d-flex filters__container">
+            <label for="trm" class="px-0 col-1"> TRM USD: </label>
+            <input
+              type="text"
+              class="col-2 form-control"
+              id="trm"
+              placeholder="4100"
+              v-model="trm"
+            />
+            <div class="col d-flex">
+              <label for="trm" class="px-1 col-form-label">
+                Seleccionar fechas:
+              </label>
+              <input-form
+                type="date"
+                id="fechaInicio"
+                name="fechaInicio"
+                pattern="all"
+                class="m-0 datepicker"
+                errorMsg="Ingrese una fecha válida"
+                requiredMsg="La fecha requerida por el cliente es obligatoria"
+                :modelo.sync="fechaInicio"
+                :showLabel="false"
+              ></input-form>
+              <label class="px-1 col-form-label"> - </label>
+              <input-form
+                type="date"
+                id="fechaInicio"
+                name="fechaInicio"
+                pattern="all"
+                class="m-0 datepicker datepicker--right"
+                errorMsg="Ingrese una fecha válida"
+                requiredMsg="La fecha requerida por el cliente es obligatoria"
+                :modelo.sync="fechaFin"
+                :showLabel="false"
+              ></input-form>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-6 row m-0 text-center">
-        <div class="col">
-          <h2 class="title">Total deuda por cliente</h2>
-          <total-deuda-by-cliente
-            v-bind="configFacturasVencidasPorCliente"
-            style="max-height: 20rem"
-          ></total-deuda-by-cliente>
+        <div class="row">
+          <div class="col-6 text-center">
+            <h2 class="title">Facturas vencidas</h2>
+            <percentage-doughnut-chart
+              class="col-6 m-auto report-circle"
+              v-bind="configFacturasVencidas"
+            ></percentage-doughnut-chart>
+          </div>
+          <div class="col-6 text-center">
+            <h2 class="title">Importe de facturas vencidas</h2>
+            <percentage-doughnut-chart
+              class="col-6 m-auto"
+              v-bind="configImporteFacturasVencidas"
+            ></percentage-doughnut-chart>
+          </div>
         </div>
-        <div class="col pt-3">
-          <h2 class="title">Ranking deudores</h2>
-          <ranking-deudores v-bind="configRankingDeudores"></ranking-deudores>
+
+        <!-- segundo -->
+        <div class="row pt-3">
+          <div class="col-6 m-0 row d-flex justify-content-around">
+            <card-info class="card__item">
+              <h2 class="card__title">Monto facturado en USD</h2>
+              <p class="card__price">{{ montoFacturadoUSD }}</p>
+            </card-info>
+            <card-info class="card__item">
+              <h2 class="card__title">Monto facturado en COP</h2>
+              <p class="card__price">{{ montoFacturadoCOP }}</p>
+            </card-info>
+          </div>
+          <div class="col-6 text-center">
+            <card-info class="col-8 m-auto">
+              <h2 class="card__title card__title--total">Total por cobrar</h2>
+              <p class="card__price">${{ getTotalVencidas }}</p>
+            </card-info>
+          </div>
+        </div>
+
+        <!-- tercero -->
+        <div class="row pt-3">
+          <div class="col-6 text-center">
+            <h2 class="title">Total cartera vencida</h2>
+            <div class="row m-0">
+              <div class="col-4 m-auto">
+                <percentage-doughnut-chart
+                  v-bind="configTotalCarteraVencida30"
+                ></percentage-doughnut-chart>
+                <p>30 Dias</p>
+              </div>
+              <div class="col-4 m-auto">
+                <percentage-doughnut-chart
+                  v-bind="configTotalCarteraVencida60"
+                ></percentage-doughnut-chart>
+                <p>60 Dias</p>
+              </div>
+              <div class="col-4 m-auto">
+                <percentage-doughnut-chart
+                  v-bind="configTotalCarteraVencida90"
+                ></percentage-doughnut-chart>
+                <p>90 Dias</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 text-center">
+            <h2 class="title">Morosidad total</h2>
+            <morosidad-total
+              v-bind="configMorosidadTotal"
+              style="max-height: 20rem"
+            ></morosidad-total>
+          </div>
+        </div>
+
+        <!-- cuarto -->
+        <div class="row pt-3">
+          <div class="col-6 text-center">
+            <h2 class="title">Visualización Cartera</h2>
+            <p>Explicación de deuda y días</p>
+            <div class="cartera__container">
+              <div
+                class="cartera__item row"
+                v-for="cartera in visualizacionCartera"
+                :key="cartera.id"
+              >
+                <div class="col">
+                  <p class="cartera__value">
+                    {{ cartera.debe ? cartera.debe : cartera.value_total | price }}
+                  </p>
+                  <p class="cartera__title title-black">Total a cobrar</p>
+                </div>
+                <div class="col">
+                  <p class="cartera__value">{{ cartera.customer.business_name }}</p>
+                  <p class="cartera__title title-black">CLIENTE</p>
+                </div>
+                <div class="col">
+                  <p class="cartera__value">{{ cartera.totalDias }}</p>
+                  <p class="cartera__title title-black">DIAS ATRASO</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 row m-0 text-center">
+            <div class="col">
+              <h2 class="title">Total deuda por cliente</h2>
+              <total-deuda-by-cliente
+                v-bind="configFacturasVencidasPorCliente"
+                style="max-height: 20rem"
+              ></total-deuda-by-cliente>
+            </div>
+            <div class="col pt-3">
+              <h2 class="title">Ranking deudores</h2>
+              <ranking-deudores v-bind="configRankingDeudores"></ranking-deudores>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -430,7 +438,7 @@ export default {
           {
             label: "",
             data: data,
-            backgroundColor: "#66c2a5",
+            backgroundColor: "rgba(210,39,48,0.33)",
             borderWidth: 1,
           },
         ],
@@ -449,7 +457,7 @@ export default {
           {
             label: "",
             data: data,
-            backgroundColor: "#a6cee3",
+            backgroundColor: "rgba(0,84,139,0.34)",
             borderWidth: 1,
           },
         ],
@@ -485,7 +493,7 @@ export default {
           {
             label: "Deuda total",
             data: deuda,
-            backgroundColor: "#a6cee3",
+            backgroundColor: "rgba(0,84,139,0.34)",
             borderWidth: 1,
           },
         ],
@@ -502,7 +510,7 @@ export default {
 
 <style scoped>
 .reports {
-  --blue: #1f78b4;
+  --blue: #d22730;
   --blue-light: #a6cee3;
   --gray: #707070;
 }
@@ -582,7 +590,7 @@ export default {
 
 .cartera__title,
 .cartera__value {
-  color: #676767;
+  color: #d22730;
   text-align: left;
   margin: 0;
 }
@@ -593,5 +601,8 @@ export default {
 
 .cartera__title {
   font-weight: 400;
+}
+.cartera__title.title-black {
+  color: #000000;
 }
 </style>

@@ -12,10 +12,10 @@ export default {
 .card{
   border-radius: .6rem;
   padding: 1rem;
-  background-color: var(--blue-light);
+  background-color: #00548b;
   border: 1px solid var(--gray);
 }
 .card *{
-  color: var(--blue);
+  color: #ffffff;
 }
 </style>
