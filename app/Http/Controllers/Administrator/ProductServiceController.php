@@ -144,8 +144,6 @@ class ProductServiceController extends Controller
             return $item->id;
         })->join(',').",";
 
-        dd($currencies);
-
         $encabezado = collect();
         $detalle = collect();
         $total = 0;
