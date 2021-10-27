@@ -523,10 +523,10 @@ class PurchaseOrderController extends Controller
                 return back()
                     ->with('error', $errors . " datos no se importaron correctamente")
                     ->with('status', $success . " datos se importaron correctamente")
-                    ->with('lines', [
+                    ->with('lines', json_encode([
                         'encabezado' => $encabezado,
                         'detalle' => $detalle
-                    ]);
+                    ]));
             } else {
                 return back()
                     ->with('error', "Ningún dato se ha importado correctamente")
