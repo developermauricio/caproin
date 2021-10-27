@@ -162,6 +162,7 @@ COMPONENTES PARA EL ACUERDO COMERCIAL
 =============================================*/
 Vue.component('create-trade-agreement', require('./components/admin/tradeAgreement/CreateTradeAgreement.vue').default);
 Vue.component('show-edit-trade-agreement', require('./components/admin/tradeAgreement/ShowEditTradeAgreement.vue').default);
+Vue.component('import-error-data-trade', require('./components/admin/tradeAgreement/ImportErrorDataTrade.vue').default);
 
 /*=============================================
 COMPONENTES PARA MODULOS ORDENES DE COMPRA
