@@ -11,7 +11,7 @@
                    placeholder="Buscar por nombre o código"/>
           </div>
         </div>
-        <button v-if="$gate.allow('createBranch', 'branch')" data-target="#modal-new-branch-office" data-toggle="modal" class="btn btn-primary float-right"><i
+        <button v-if="$gate.allow('createBranch', 'branch')" data-target="#modal-new-branch-office" data-toggle="modal" class="btn btn-primary create-new float-right"><i
           data-feather="plus" class="mr-50"></i>Nueva Sucursal
         </button>
       </div>

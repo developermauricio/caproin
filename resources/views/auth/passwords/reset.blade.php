@@ -46,7 +46,7 @@
 <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click"
       data-menu="vertical-menu-modern" data-col="blank-page">
 <!-- BEGIN: Content-->
-<div class="app-content content ">
+<div class="app-content content " style="background-image: url(/images/background.png); background-repeat: no-repeat; background-size: cover">
     <div class="content-overlay"></div>
     <div class="header-navbar-shadow"></div>
     <div class="content-wrapper">
@@ -91,6 +91,13 @@
                             <h4 class="card-title mb-1">Restablecer Contraseña 🔒</h4>
                             <p class="card-text mb-2">Su nueva contraseña debe ser diferente de las contraseñas
                                 utilizadas anteriormente</p>
+                            <strong>La contraseña debe contener como mínimo:</strong>
+                            <ul>
+                                <li>Una mayúscula</li>
+                                <li>Una minúscula</li>
+                                <li>Un número</li>
+                                <li>Un carácter alfanumérico</li>
+                            </ul>
 
                             <form class="auth-reset-password-form mt-2" action="{{ route('password.update') }}"
                                   method="POST">

@@ -21,24 +21,25 @@
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
 @endpush
-@section('title', 'Lista de las ordenes de'.$titleL)
+@section('title', 'Ordenes de '.$titleL)
 @section('header_page')
 <div class="content-header row">
-    <div class="content-header-left col-md-9 col-12 mb-2">
-        <div class="row breadcrumbs-top">
+    <div class="content-header-left col-md-9 col-12">
+        <div class="row">
             <div class="col-12">
-                <h2 class="content-header-title float-left mb-0">Lista de Ordenes de {{$title}}</h2>
-                <div class="breadcrumb-wrapper">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item active">
-                            Orden de {{$title}}
-                        </li>
-                    </ol>
-                </div>
+                <h2 class="float-left mb-0 pb-1 border-title">Administrar Ordenes de {{$title}}</h2>
+{{--                <div class="breadcrumb-wrapper">--}}
+{{--                    <ol class="breadcrumb">--}}
+{{--                        <li class="breadcrumb-item active">--}}
+{{--                            Orden de {{$title}}--}}
+{{--                        </li>--}}
+{{--                    </ol>--}}
+{{--                </div>--}}
             </div>
         </div>
     </div>
 </div>
+<div class="mb-2" style="border-bottom: 3px solid #d7d4d4; top:-2rem"></div>
 @endsection
 @section('content')
 
@@ -424,7 +425,7 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
             </button>
 
             <button data-target="#modal-trace-purchase-order" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Más Información" type="button" class="ml-1 btn btn-trace-purchase btn-icon btn-primary">
-              <i data-feather="activity"></i>
+              <i data-feather="activity"></i><span class="mt-2">Ver</span>
             </button>
           </div>`
         },
@@ -504,7 +505,7 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
         text: feather.icons['file-text'].toSvg({
             class: 'mr-50 font-small-4'
         }) + 'Importar'
-        , className: 'create-new btn btn-primary'
+        , className: 'btn btn-primary'
         , attr: {
             'data-target': '#modal-import-purchase-order'
             , 'data-toggle': 'modal'

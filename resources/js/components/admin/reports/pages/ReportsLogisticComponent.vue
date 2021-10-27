@@ -1,230 +1,238 @@
 <template>
   <div class="reports">
     <div class="content-header">
-      <div class="row header__container w-12">
-        <h2 class="col-12 col-md-3 content-header-title float-left mb-0">
-          Reportes cartera
-        </h2>
-        <div class="col-12 col-md-9 d-flex filters__container">
-          <div class="col d-flex justify-content-end">
-            <label for="trm" class="px-1 col-form-label">
-              Seleccionar fechas:
-            </label>
-            <input-form
-              type="date"
-              id="fechaInicio"
-              name="fechaInicio"
-              pattern="all"
-              class="m-0 datepicker"
-              errorMsg="Ingrese una fecha válida"
-              requiredMsg="La fecha requerida por el cliente es obligatoria"
-              :modelo.sync="fechaInicio"
-              :showLabel="false"
-            ></input-form>
-            <label class="px-1 col-form-label"> - </label>
-            <input-form
-              type="date"
-              id="fechaInicio"
-              name="fechaInicio"
-              pattern="all"
-              class="m-0 datepicker datepicker--right"
-              errorMsg="Ingrese una fecha válida"
-              requiredMsg="La fecha requerida por el cliente es obligatoria"
-              :modelo.sync="fechaFin"
-              :showLabel="false"
-            ></input-form>
-          </div>
+      <div class="row w-12">
+        <div class="col-12">
+          <h2 class="pb-1 border-title float-left mb-0">
+            Reportes logistica
+          </h2>
         </div>
       </div>
     </div>
+    <div class="mb-2" style="border-bottom: 3px solid #d7d4d4; top:-2rem"></div>
+    <div class="card">
+      <div class="card-body">
+        <div class="row pb-2 pt-2">
+          <div class="col-12 col-md-9 d-flex filters__container float-right">
+            <div class="col d-flex">
+              <label for="trm" class="px-1 col-form-label">
+                Seleccionar fechas:
+              </label>
+              <input-form
+                type="date"
+                id="fechaInicio"
+                name="fechaInicio"
+                pattern="all"
+                class="m-0 datepicker"
+                errorMsg="Ingrese una fecha válida"
+                requiredMsg="La fecha requerida por el cliente es obligatoria"
+                :modelo.sync="fechaInicio"
+                :showLabel="false"
+              ></input-form>
+              <label class="px-1 col-form-label"> - </label>
+              <input-form
+                type="date"
+                id="fechaInicio"
+                name="fechaInicio"
+                pattern="all"
+                class="m-0 datepicker datepicker--right"
+                errorMsg="Ingrese una fecha válida"
+                requiredMsg="La fecha requerida por el cliente es obligatoria"
+                :modelo.sync="fechaFin"
+                :showLabel="false"
+              ></input-form>
+            </div>
+          </div>
+        </div>
+        <!-- primero -->
+        <div class="row pt-3">
+          <div class="col-6 m-0 row d-flex justify-content-around">
+            <card-info class="card__item">
+              <p class="card__price">
+                {{ actividadLogisticaEnvios.purchaseOrdersTotal }}
+              </p>
+              <h2 class="card__title">Ordenes totales</h2>
+            </card-info>
+            <card-info class="card__item">
+              <p class="card__price">
+                {{ actividadLogisticaEnvios.purchaseOrdersProcessing }}
+              </p>
+              <h2 class="card__title">Ordenes en procesamiento</h2>
+            </card-info>
+          </div>
+          <div class="col-6 m-0 row d-flex justify-content-around">
+            <card-info class="card__item">
+              <p class="card__price">
+                {{ actividadLogisticaEnvios.purchaseOrdersDispatched }}
+              </p>
+              <h2 class="card__title">
+                Ordenes <br/>
+                despachadas
+              </h2>
+            </card-info>
+            <card-info class="card__item">
+              <p class="card__price">
+                {{ actividadLogisticaEnvios.purchaseOrdersDelivered }}
+              </p>
+              <h2 class="card__title">
+                Ordenes <br/>
+                entregadas
+              </h2>
+            </card-info>
+          </div>
+        </div>
 
-    <!-- primero -->
-    <div class="row pt-3">
-      <div class="col-6 m-0 row d-flex justify-content-around">
-        <card-info class="card__item">
-          <p class="card__price">
-            {{ actividadLogisticaEnvios.purchaseOrdersTotal }}
-          </p>
-          <h2 class="card__title">Ordenes totales</h2>
-        </card-info>
-        <card-info class="card__item">
-          <p class="card__price">
-            {{ actividadLogisticaEnvios.purchaseOrdersProcessing }}
-          </p>
-          <h2 class="card__title">Ordenes en procesamiento</h2>
-        </card-info>
-      </div>
-      <div class="col-6 m-0 row d-flex justify-content-around">
-        <card-info class="card__item">
-          <p class="card__price">
-            {{ actividadLogisticaEnvios.purchaseOrdersDispatched }}
-          </p>
-          <h2 class="card__title">
-            Ordenes <br />
-            despachadas
-          </h2>
-        </card-info>
-        <card-info class="card__item">
-          <p class="card__price">
-            {{ actividadLogisticaEnvios.purchaseOrdersDelivered }}
-          </p>
-          <h2 class="card__title">
-            Ordenes <br />
-            entregadas
-          </h2>
-        </card-info>
-      </div>
-    </div>
+        <!-- segundo -->
+        <div class="row pt-3">
+          <div class="col-4 text-center">
+            <h2 class="title">Total pedidos hechos por (periodo)</h2>
+            <vertical-bar-chart
+              v-bind="configActividadLogisticaEnviosPeriodo.hechos"
+              style="max-height: 20rem"
+            ></vertical-bar-chart>
+          </div>
+          <div class="col-4 text-center">
+            <h2 class="title">Total pedidos entregados por (periodo)</h2>
+            <vertical-bar-chart
+              v-bind="configActividadLogisticaEnviosPeriodo.entregados"
+              style="max-height: 20rem"
+            ></vertical-bar-chart>
+          </div>
+          <div class="col-4 text-center">
+            <h2 class="title">Total pedidos retrasados por periodo</h2>
+            <vertical-bar-chart
+              v-bind="configActividadLogisticaEnviosPeriodo.retrasados"
+              style="max-height: 20rem"
+            ></vertical-bar-chart>
+          </div>
+        </div>
 
-    <!-- segundo -->
-    <div class="row pt-3">
-      <div class="col-4 text-center">
-        <h2 class="title">Total pedidos hechos por (periodo)</h2>
-        <vertical-bar-chart
-          v-bind="configActividadLogisticaEnviosPeriodo.hechos"
-          style="max-height: 20rem"
-        ></vertical-bar-chart>
-      </div>
-      <div class="col-4 text-center">
-        <h2 class="title">Total pedidos entregados por (periodo)</h2>
-        <vertical-bar-chart
-          v-bind="configActividadLogisticaEnviosPeriodo.entregados"
-          style="max-height: 20rem"
-        ></vertical-bar-chart>
-      </div>
-      <div class="col-4 text-center">
-        <h2 class="title">Total pedidos retrasados por periodo</h2>
-        <vertical-bar-chart
-          v-bind="configActividadLogisticaEnviosPeriodo.retrasados"
-          style="max-height: 20rem"
-        ></vertical-bar-chart>
-      </div>
-    </div>
+        <!-- tercero -->
+        <div class="row pt-3">
+          <div class="col text-center">
+            <h2 class="title">Clientes Vs Estados de pedido</h2>
+            <horizontal-bar-chart
+              v-bind="configClienteEstadosPedido"
+              style="max-height: 20rem"
+            ></horizontal-bar-chart>
+          </div>
+        </div>
 
-    <!-- tercero -->
-    <div class="row pt-3">
-      <div class="col text-center">
-        <h2 class="title">Clientes Vs Estados de pedido</h2>
-        <horizontal-bar-chart
-          v-bind="configClienteEstadosPedido"
-          style="max-height: 20rem"
-        ></horizontal-bar-chart>
-      </div>
-    </div>
+        <!-- cuarto -->
+        <div class="row pt-3">
+          <div class="col-6 text-center">
+            <h2 class="title">Pedidos por estatus</h2>
+            <doughnut-chart
+              v-bind="configEstadosPedido"
+              style="max-height: 20rem"
+            ></doughnut-chart>
+          </div>
+          <div class="col-6 text-center">
+            <h2 class="title">Promedio de entrega transportadoras</h2>
+            <vertical-bar-chart
+              v-bind="configPromediosEntregaTransportadoras"
+              style="max-height: 20rem"
+            ></vertical-bar-chart>
+          </div>
+        </div>
 
-    <!-- cuarto -->
-    <div class="row pt-3">
-      <div class="col-6 text-center">
-        <h2 class="title">Pedidos por estatus</h2>
-        <doughnut-chart
-          v-bind="configEstadosPedido"
-          style="max-height: 20rem"
-        ></doughnut-chart>
-      </div>
-      <div class="col-6 text-center">
-        <h2 class="title">Promedio de entrega transportadoras</h2>
-        <vertical-bar-chart
-          v-bind="configPromediosEntregaTransportadoras"
-          style="max-height: 20rem"
-        ></vertical-bar-chart>
-      </div>
-    </div>
-
-    <!-- cinco -->
-    <div class="row pt-3">
-      <div class="col text-center">
-        <h2 class="title">Visualización de estados de pedido</h2>
-        <table class="table--promedio table table-bordered">
-          <thead>
-            <tr>
-              <th>Cliente</th>
-              <th>Numero de pedido</th>
-              <th>Estado del pedido</th>
-              <th>Fecha comprometida de entrega</th>
-              <th>Dias de retraso</th>
-              <th>Detalles</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in dataVisualizacionEstadosPedido" :key="row.id">
-              <td>
-                {{ row.customer.business_name }}
-              </td>
-              <td>
-                {{ row.internal_order_number }}
-              </td>
-              <td>
-                {{ getStatus(row) }}
-              </td>
-              <td>
-                {{ row.offer_delivery_date }}
-              </td>
-              <td>
-                {{ row.dias_retraso }}
-              </td>
-              <td>
-                <button
-                  data-target="#modal-show-purchase-order"
-                  data-toggle="modal"
-                  data-placement="top"
-                  title="Más Información"
-                  type="button"
-                  class="btn btn-show-purchase btn-icon btn-primary"
-                  @click="showPurchaseOrder(row.id)"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="feather feather-eye"
+        <!-- cinco -->
+        <div class="row pt-3">
+          <div class="col text-center">
+            <h2 class="title">Visualización de estados de pedido</h2>
+            <table class="table--promedio table table-bordered">
+              <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Numero de pedido</th>
+                <th>Estado del pedido</th>
+                <th>Fecha comprometida de entrega</th>
+                <th>Dias de retraso</th>
+                <th>Detalles</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="row in dataVisualizacionEstadosPedido" :key="row.id">
+                <td>
+                  {{ row.customer.business_name }}
+                </td>
+                <td>
+                  {{ row.internal_order_number }}
+                </td>
+                <td>
+                  {{ getStatus(row) }}
+                </td>
+                <td>
+                  {{ row.offer_delivery_date }}
+                </td>
+                <td>
+                  {{ row.dias_retraso }}
+                </td>
+                <td>
+                  <button
+                    data-target="#modal-show-purchase-order"
+                    data-toggle="modal"
+                    data-placement="top"
+                    title="Más Información"
+                    type="button"
+                    class="btn btn-show-purchase btn-icon btn-primary"
+                    @click="showPurchaseOrder(row.id)"
                   >
-                    <path
-                      d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
-                    ></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="feather feather-eye"
+                    >
+                      <path
+                        d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                      ></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-    <!-- seis -->
-    <div class="row pt-3">
-      <div class="col text-center">
-        <h2 class="title">
-          Tiempos promedio de entrega (transportadora vs cliente)
-        </h2>
-        <table class="table--promedio table table-bordered">
-          <thead>
-            <tr>
-              <th>
-                <p class="title__table--diagonal px-2">
-                  <span class="transportadora">Transportadora</span>
-                  <span class="cliente">Cliente</span>
-                </p>
-              </th>
-              <th v-for="header in headerConveyors" :key="header.key">
-                {{ header.value }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="row in dataTiemposPromedioEntrega" :key="row.key">
-              <td v-for="col in row.value" :key="col.key">
-                {{ col.value }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <!-- seis -->
+        <div class="row pt-3">
+          <div class="col text-center">
+            <h2 class="title">
+              Tiempos promedio de entrega (transportadora vs cliente)
+            </h2>
+            <table class="table--promedio table table-bordered">
+              <thead>
+              <tr>
+                <th>
+                  <p class="title__table--diagonal px-2">
+                    <span class="transportadora">Transportadora</span>
+                    <span class="cliente">Cliente</span>
+                  </p>
+                </th>
+                <th v-for="header in headerConveyors" :key="header.key">
+                  {{ header.value }}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="row in dataTiemposPromedioEntrega" :key="row.key">
+                <td v-for="col in row.value" :key="col.key">
+                  {{ col.value }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -582,7 +590,7 @@ export default {
         const customerData = this.tiemposPromedioEntrega[keyCustomer];
         if (customer) {
           const row = [
-            { key: keyCustomer + "_0", value: customer.business_name },
+            {key: keyCustomer + "_0", value: customer.business_name},
           ];
 
           const keysConveyors = Object.keys(this.allConveyors);
@@ -602,7 +610,7 @@ export default {
             }
           });
 
-          body.push({ key: keyCustomer, value: row });
+          body.push({key: keyCustomer, value: row});
         }
       });
       return body;
@@ -678,6 +686,7 @@ export default {
   margin: 0;
   overflow: hidden;
 }
+
 /*
 .table--promedio .title__table--diagonal::after {
   content: " ";

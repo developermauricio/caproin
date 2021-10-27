@@ -12,7 +12,7 @@
           </div>
         </div>
         <button v-if="$gate.allow('createZone', 'zone')" data-target="#modal-new-branch-office" data-toggle="modal"
-                class="btn btn-primary float-right"><i
+                class="btn btn-primary create-new float-right"><i
           data-feather="plus" class="mr-50"></i>Nueva Zona
         </button>
       </div>

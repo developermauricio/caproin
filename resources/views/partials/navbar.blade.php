@@ -5,6 +5,7 @@
                                                                                                data-feather="menu"></i></a>
             </li>
         </ul>
+        <h2 class="text-white pl-1">@yield('title')</h2>
         {{--        <ul class="nav navbar-nav bookmark-icons">--}}
         {{--            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="app-email.html" data-toggle="tooltip" data-placement="top" title="Email"><i class="ficon" data-feather="mail"></i></a></li>--}}
         {{--            <li class="nav-item d-none d-lg-block"><a class="nav-link" href="app-chat.html" data-toggle="tooltip" data-placement="top" title="Chat"><i class="ficon" data-feather="message-square"></i></a></li>--}}

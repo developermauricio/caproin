@@ -30,7 +30,7 @@ export default {
           {
             label: "full",
             data: [],
-            backgroundColor: ["#1f78b4", "#a6cee3"],
+            backgroundColor: ["#d22730", "#ededed"],
           },
         ],
       },
@@ -50,7 +50,7 @@ export default {
           ctx.save();
           ctx.textBaseline = "top";
           ctx.textAlign = "center";
-          ctx.fillStyle = "#1f78b4";
+          ctx.fillStyle = "#d22730";
           const fontSize = chart.width / 5;
           ctx.font = `${fontSize}px Arial`;
           const x = chart.width / 2;

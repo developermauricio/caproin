@@ -56,7 +56,15 @@ body {
   line-height: 1.45;
   color: #6e6b7b;
   text-align: left;
-  background-color: #f8f8f8; }
+  background-color: #f8f8f8;
+    scrollbar-face-color:fuchsia;
+    scrollbar-highlight-color:yellow;
+    scrollbar-3dlight-color:orange;
+    scrollbar-darkshadow-color:darkblue;
+    scrollbar-shadow-color:gray;
+    scrollbar-arrow-color:yellow;
+    scrollbar-track-color:aqua;
+}
 
 [tabindex="-1"]:focus:not(:focus-visible) {
   outline: 0 !important; }
