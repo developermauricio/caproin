@@ -143,6 +143,9 @@ class ProductServiceController extends Controller
         $currencies = ",".Currency::all('id')->map(function ($item){
             return $item->id;
         })->join(',').",";
+
+        dd($currencies);
+
         $encabezado = collect();
         $detalle = collect();
         $total = 0;
@@ -193,15 +196,19 @@ class ProductServiceController extends Controller
 
         $details = collect($sheets->get(1));
 
-        $details->groupBy('Codigo Producto')->each(function ($details, $code) use (&$detalle, &$total) {
+        $details->groupBy('Codigo Producto')->each(function ($details, $code) use (&$detalle, &$total, $currencies) {
             $product = Product::select('id')->where('code', $code)->first();
             if ($product) {
-                $details->each(function ($detail) use ($product, &$detalle, &$total) {
+                $details->each(function ($detail) use ($product, &$detalle, &$total, $currencies) {
                     $total++;
                     try {
                         DB::beginTransaction();
                         $moneda = $detail['Moneda'];
                         $valor = $detail['Valor'];
+
+                        if (strpos($currencies, ",".$moneda) === false){
+                            throw new \Exception("Moneda no valida ", "-1");
+                        }
 
                         $productPrice = ProductPrice::where('currency_id', $moneda)
                             ->where('product_id', $product->id)
