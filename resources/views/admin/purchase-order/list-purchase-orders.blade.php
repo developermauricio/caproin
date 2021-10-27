@@ -504,7 +504,7 @@ const initTable = function (urlListPurchaseOrders, urlCreate) {
         text: feather.icons['file-text'].toSvg({
             class: 'mr-50 font-small-4'
         }) + 'Importar'
-        , className: 'create-new btn btn-primary'
+        , className: 'btn btn-primary'
         , attr: {
             'data-target': '#modal-import-purchase-order'
             , 'data-toggle': 'modal'

@@ -44,7 +44,7 @@
 
 <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
     <!-- BEGIN: Content-->
-    <div class="app-content content ">
+    <div class="app-content content " style="background-image: url(/images/background.png); background-repeat: no-repeat; background-size: cover">
         <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
         <div class="content-wrapper">

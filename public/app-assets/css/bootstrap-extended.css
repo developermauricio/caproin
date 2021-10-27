@@ -129,7 +129,28 @@ pre code {
 
 .table:not(.table-dark):not(.table-light) thead:not(.thead-dark) th,
 .table:not(.table-dark):not(.table-light) tfoot:not(.thead-dark) th {
-  background-color: #eeeeee; }
+  background-color: #d2273042; }
+
+.row th {
+    color: #d22730 !important;
+}
+
+.table::-webkit-scrollbar
+{
+    width: 6px;
+}
+
+.create-new.btn-primary{
+    border-color: #00548b !important;
+    background-color: #00548b !important;
+    color: #fff !important;
+}
+
+.table::-webkit-scrollbar-thumb
+{
+    border-radius: 10px;
+    background-color: #d22730;
+}
 
 .table-hover tbody tr {
   cursor: pointer; }
