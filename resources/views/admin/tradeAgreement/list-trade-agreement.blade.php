@@ -49,14 +49,14 @@
 @endif
 
 <!--=====================================
-    MODAL PARA IMPORTAR CLIENTES
+    MODAL PARA IMPORTAR ACUERDOS COMERCIALES
 ======================================-->
 <div class="modal fade text-left modal-primary" id="modal-import-trade" data-backdrop="static" tabindex="-1"
         role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel160">Importar Clientes</h5>
+                <h5 class="modal-title" id="myModalLabel160">Importar Acuerdos Comerciales</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -80,44 +80,50 @@
                                     class="collapse">
                                 <div class="card-body">
                                     <p class="card-text text-justify">
-                                        Para importar clientes debe cargar un archivo Excel en formato
-                                        <code>xlsx</code>. Tenga en cuenta que el
-                                        <code>correo electrónico</code> y el
-                                        <code>número de identificación</code> es único, asi que
-                                        verifique que en su archivo de excel no existan correos
-                                        electrónicos o números de identificación iguales.
+                                        Para importar acuerdos comerciales debe cargar un archivo Excel en formato
+                                        <code>xlsx</code>.
+                                        En el campo de <code>Cliente</code> se puede ingresar el correo electronico de la persona
                                     </p>
                                     <p class="card-text text-justify">
-                                        Para el <code>tipo de idenficación</code> debe ingresar un
+                                        Para  <code>Moneda</code> o <code>Estado</code> debe ingresar un
                                         número como se muestra en el archivo excel de ejemplo. A
-                                        continuación la tabla con el nombre del tipo de identificación
-                                        y el número.
+                                        continuación la tabla con el nombre y el número a cual corresponde.
                                     </p>
+                                    <div class="mb-2 table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Número</th>
+                                                <th>Moneda</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($currencies as $currency)
+                                                <tr>
+                                                    <td>{{ $currency->id }}</td>
+                                                    <td>{{ $currency->code }}</td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
                                             <tr>
                                                 <th>Número</th>
-                                                <th>Nombre tipo identificación</th>
+                                                <th>Estado</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Cédula de Ciudadania</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Cédula de Extranjeria</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Pasaporte</td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Nit</td>
-                                            </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>VIGENTE</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td>FINALIZADO</td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>

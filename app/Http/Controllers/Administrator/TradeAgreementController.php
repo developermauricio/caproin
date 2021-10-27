@@ -18,7 +18,8 @@ class TradeAgreementController extends Controller
     use MessagesException;
 
     public function index(){
-        return view('admin.tradeAgreement.list-trade-agreement');
+        $currencies = Currency::all(['id', 'code']);
+        return view('admin.tradeAgreement.list-trade-agreement', compact('currencies'));
     }
 
     public function getApiTradeAgreement(){
@@ -200,6 +201,13 @@ class TradeAgreementController extends Controller
 
                 if (!$currency) {
                     throw new \Exception("Tipo de moneda no encontrado", "-1");
+                }
+
+                if (
+                    $row['Estado'] != TradeAgreement::VIGENTE &&
+                    $row['Estado'] != TradeAgreement::FINALIZADO
+                ){
+                    throw new \Exception("Estado invalido", "-1");
                 }
 
 
