@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
+use App\Models\Currency;
 use App\Models\Product;
 use App\Models\ProductPrice;
 use App\Models\TypeProduct;
@@ -22,7 +23,8 @@ class ProductServiceController extends Controller
             \App\Models\Product::ACTIVE => "Activo",
             \App\Models\Product::INACTIVE => "Inactivo"
         ];
-        return view('admin.product.list-products', compact('productTypes', 'status'));
+        $currencies = Currency::all('id', 'code');
+        return view('admin.product.list-products', compact('productTypes', 'status', 'currencies'));
     }
 
     public function getApiInvoices()
@@ -138,7 +140,9 @@ class ProductServiceController extends Controller
             return $item->id;
         })->join(',').",";
         $status = ",".\App\Models\Product::ACTIVE.','.\App\Models\Product::INACTIVE.",";
-
+        $currencies = ",".Currency::all('id')->map(function ($item){
+            return $item->id;
+        })->join(',').",";
         $encabezado = collect();
         $detalle = collect();
         $total = 0;

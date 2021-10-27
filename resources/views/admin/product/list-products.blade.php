@@ -79,7 +79,7 @@
                                         verifique que en su archivo de excel no existan codigos repetidos.
                                     </p>
                                     <p class="card-text text-justify">
-                                        Para el <code>Tipo Producto</code> y <code>Estado</code> debe ingresar un
+                                        Para el <code>Tipo Producto</code>, <code>Moneda</code> y <code>Estado</code> debe ingresar un
                                         número como se muestra en el archivo excel de ejemplo. A
                                         continuación la tabla con el nombre y el número.
                                     </p>
@@ -101,7 +101,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="table-responsive">
+                                    <div class="table-responsive mb-2">
                                         <table class="table">
                                             <thead>
                                             <tr>
@@ -114,6 +114,24 @@
                                             <tr>
                                                 <td>{{ $key }}</td>
                                                 <td>{{ $state }}</td>
+                                            </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="table-responsive mb-2">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Número</th>
+                                                <th>Moneda</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach ($currencies as $currency)
+                                            <tr>
+                                                <td>{{ $currency->id }}</td>
+                                                <td>{{ $currency->code }}</td>
                                             </tr>
                                             @endforeach
                                             </tbody>
