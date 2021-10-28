@@ -29,7 +29,7 @@
       <input-form
         id="txt_dispatch_guide_number"
         name="dispatch_guide_number"
-        label="Número de guía de despacho despacho"
+        label="Número de guía de despacho"
         pattern="^.{4,}$"
         errorMsg="Ingrese un número de cotización válido"
         requiredMsg="El número de cotización del fabricante es obligatorio"

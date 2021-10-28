@@ -94,7 +94,7 @@ class UserController extends Controller
             'type_employee_id' => $type_user->id,
             'branch_offices_id' => $branch_office->id,
         ]);
-        Mail::to($user->email)->send(new NewUser($user->name, $password, $user->email));
+        // Mail::to($user->email)->send(new NewUser($user->name, $password, $user->email));
         return response()->json('Registro Exitoso!');
         //        $name = $request->name;
         //        $last_name = $request->last_name;

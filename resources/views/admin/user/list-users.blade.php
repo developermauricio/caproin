@@ -436,9 +436,8 @@
                             },
                         },
                         {
-                            data: "employes.branch_offices.name",
                             render: function (data, type, JsonResultRow, meta) {
-                                if (JsonResultRow.employes === null) {
+                                if (!JsonResultRow.employes || !JsonResultRow.employes.branch_offices) {
                                     return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.employes.branch_offices.name}</span>`;
@@ -473,7 +472,7 @@
                         {
                             data: "employes.type_employe.name",
                             render: function (data, type, JsonResultRow, meta) {
-                                if (JsonResultRow.employes === null) {
+                                if (!JsonResultRow.employes || !JsonResultRow.employes.type_employe) {
                                     return '<span class="label label-danger text-center" style="color:#D9393D !important">Ningún valor por defecto</span>'
                                 } else {
                                     return `<span class="label text-center font-weight-bold">${JsonResultRow.employes.type_employe.name}</span>`;

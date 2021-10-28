@@ -128,7 +128,7 @@
               v-model="user.phone"
               :required="true"
               requiredMsg="El teléfono es obligatorio"
-              @update="user.phoneI=$event.formatInternational"
+              @update="changePhone($event)"
               :fetch-country="true"
               :translations="{
                                 countrySelectorLabel: 'Código País',
@@ -182,6 +182,7 @@ export default {
         name: '',
         last_name: '',
         phone: '',
+        phoneI: '',
       },
       rol: null,
       typeUser: null,
@@ -193,6 +194,16 @@ export default {
     }
   },
   methods: {
+    changePhone(e) {
+      if (e.isValid){
+        console.log(e.isValid);
+      }
+      if (e.formatInternational){
+        this.user.phoneI = e.formatInternational;
+      } else {
+        this.user.phoneI = '';
+      }
+    },
     createNewCustomer() {
       eventBus.$emit("validarFormulario");
       setTimeout(() => {
