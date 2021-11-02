@@ -178,12 +178,12 @@ class ProviderController extends Controller
             $success = $total - $errors;
             if ($success > 0) {
                 return back()
-                    ->with('error', $errors . " datos no se importaron correctamente. Quizás ya estan registrados o el correo electrónico y identificación ya se encuentra registrado. Asegurate que los datos del reporte o tabla, no esten registrados o no esten duplicados.")
+                    ->with('error', $errors . " datos no se importaron correctamente. Asegúrate que los datos del reporte o tabla, no estén registrados o no estén duplicados.")
                     ->with('status', $success . " datos se importaron correctamente")
                     ->with('lines', $lines);
             } else {
                 return back()
-                    ->with('error', "Ningún dato se ha importado correctamente. Quizás ya estan registrados o el correo electrónico y identificación ya se encuentra registrado. Asegurate que los datos del reporte o tabla, no esten registrados o no esten duplicados.")
+                    ->with('error', "Ningún dato se ha importado correctamente. Asegúrate que los datos del reporte o tabla, no estén registrados o no estén duplicados.")
                     ->with('lines', $lines);
             }
         }

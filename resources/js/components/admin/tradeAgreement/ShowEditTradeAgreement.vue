@@ -376,9 +376,9 @@
                       <input-form
                         id="txtCodeInterClientEdit"
                         label=""
-                        pattern="num"
+                        pattern="all"
                         errorMsg="Ingrese un código interno del cliente válido"
-                        requiredMsg="La código interno del cliente es obligatorio"
+                        requiredMsg="El código interno del cliente es obligatorio"
                         :modelo.sync="product.pivot.client_product_code"
                         :msgServer.sync="errors.product"
                         :required="true"
