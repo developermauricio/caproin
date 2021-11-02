@@ -128,6 +128,7 @@ Route::group(['namespace' => 'Administrator', 'middleware' => 'auth:sanctum'], f
     Route::post('/save-purchase-order-seguimiento', "PurchaseOrderController@saveNewSeguimiento");
     Route::post('/upload-blueprint-file', "PurchaseOrderController@uploadFileBlueprint");
     Route::post('/remove-blueprint-file', "PurchaseOrderController@removeFileBlueprint");
+    Route::post('/check-purchase-internal-order', "PurchaseOrderController@checkPurchaseInternalOrder");
     // Route::get('/get-state-invoice', 'InvoiceController@getApiGetStateInvoices')->name('api.all.state.invoices');
     // Route::get('/get-type-invoice', 'InvoiceController@getApiGetTypeInvoices')->name('api.all.type.invoices');
     // Route::post('register/store-invoice', 'InvoiceController@storeApiInvoice')->name('api.store.invoice');

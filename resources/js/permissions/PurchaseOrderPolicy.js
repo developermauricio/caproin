@@ -7,7 +7,7 @@ const find = function (array, name) {
 
 export default class PurchaseOrderPolicy {
   static editPurchaseOrder($user, customer) {
-    return $user.rolesTxt.indexOf('Administrador') !== -1;
+    return $user.rolesTxt.indexOf('Administrador') !== -1 || $user.rolesTxt.indexOf('Logistica') !== -1;
   }
 
   static addSeguimiento($user, customer) {

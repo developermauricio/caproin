@@ -31,7 +31,11 @@
     <div class="row">
         <div class="col-12">
             <div class="card p-2">
-                <create-purchase-order :id="{{$id}}"></create-purchase-order>
+                @if(auth()->user()->roles->first()->name === 'Administrador')
+                    <create-purchase-order :id="{{$id}}"></create-purchase-order>
+                @elseif(auth()->user()->roles->first()->name === 'Logistica')
+                    <purchase-order-logistic :id="{{$id}}"></purchase-order-logistic>
+                @endif
             </div>
         </div>
     </div>

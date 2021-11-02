@@ -86,17 +86,16 @@
     </div>
 
     <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        id="txt_contact_number"
-        name="contact_number"
-        label="Número de Contacto"
-        pattern="^[0-9]{3,}$"
-        errorMsg="Ingrese un número de contacto válido"
-        requiredMsg="El número de contacto es obligatorio"
-        :modelo.sync="purchase_order.contact_number"
-        :msgServer.sync="errors.contact_number"
-        :required="true"
-      ></input-form>
+      <div class="form-group txt_contact_number">
+        <label for="txt_contact_number" class="form-control-label"
+          ><span>Número de Contacto</span>
+          <span class="text-danger asterisco">*</span>
+        </label>
+        <celular-component
+          v-model="purchase_order.contact_number"
+          :required="true"
+        />
+      </div>
     </div>
   </div>
 </template>

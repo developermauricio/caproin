@@ -11,6 +11,7 @@
         :modelo.sync="purchase_order.internal_order_number"
         :msgServer.sync="errors.internal_order_number"
         :required="true"
+        @keyup="changeInternalNumber"
       ></input-form>
     </div>
 
@@ -373,17 +374,16 @@
     </div>
 
     <div class="col-12 col-md-4 col-lg-4">
-      <input-form
-        id="txt_contact_number"
-        name="contact_number"
-        label="Número de Contacto"
-        pattern="^[0-9]{9,}$"
-        errorMsg="Ingrese un número de contacto válido"
-        requiredMsg="El número de contacto es obligatorio"
-        :modelo.sync="purchase_order.contact_number"
-        :msgServer.sync="errors.contact_number"
-        :required="true"
-      ></input-form>
+      <div class="form-group txt_contact_number">
+        <label for="txt_contact_number" class="form-control-label"
+          ><span>Número de Contacto</span>
+          <span class="text-danger asterisco">*</span>
+        </label>
+        <celular-component
+          v-model="purchase_order.contact_number"
+          :required="true"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -481,6 +481,28 @@ export default {
     axios.get("/api/all-invoices-list").then((response) => {
       this.invoices = response.data;
     });
+    this.timeoutCheck = null;
+  },
+  methods: {
+    changeInternalNumber() {
+      if (!this.purchase_order || !this.purchase_order.internal_order_number) {
+        return;
+      }
+      clearTimeout(this.timeoutCheck);
+      this.timeoutCheck = setTimeout(() => {
+        const code = this.purchase_order.internal_order_number;
+        axios
+          .post("/api/check-purchase-internal-order", {
+            internal_order_number: code,
+          })
+          .then((response) => {
+            // console.log(response);
+            if (response.data && !response.data.length) {
+              this.errors = Object.assign({}, response.data);
+            }
+          });
+      }, 300);
+    },
   },
 };
 </script>

@@ -218,6 +218,7 @@ export default {
     validate(value = null, change = false) {
       if (change) {
         if (value !== this.valorActual) {
+          this.$emit("update:msgServer", null);
           this.$emit("update:modelo", value);
           this.$emit("updatedValue", value);
         } else {
@@ -281,7 +282,6 @@ export default {
       return this.noValue;
     },
     cambio() {
-      this.$emit("update:msgServer", null);
       this.$emit("update:modelo", this.valorActual);
       this.validate();
     },

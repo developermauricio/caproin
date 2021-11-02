@@ -96,7 +96,7 @@ Vue.use(VueGoodTablePlugin);
 /*COMPONENTES EXTERNOS*/
 Vue.component('input-form', require('./components/InputFormComponent.vue').default);
 Vue.component('accordion-component', require('./components/AccordionComponent.vue').default);
-
+Vue.component('celular-component', require('./components/CelularComponent.vue').default);
 /*=============================================
 COMPONENTES PARA LOS MODULOS CLIENTES
 =============================================*/
@@ -169,6 +169,7 @@ Vue.component('import-error-data-trade', require('./components/admin/tradeAgreem
 COMPONENTES PARA MODULOS ORDENES DE COMPRA
 =============================================*/
 Vue.component('create-purchase-order', require('./components/admin/purchase-orders/CreatePurchaseOrder.vue').default);
+Vue.component('purchase-order-logistic', require('./components/admin/purchase-orders/PurchaseOrderLogistic.vue').default);
 Vue.component('show-purchase-order', require('./components/admin/purchase-orders/ShowPurchaseOrder.vue').default);
 Vue.component('modal-tracer-purchase-order', require('./components/admin/purchase-orders/ModalTracerPurchaseOrder.vue').default);
 Vue.component('import-error-data-purchase-order', require('./components/admin/purchase-orders/components/ImportErrorDataPurchaseOrder.vue').default);

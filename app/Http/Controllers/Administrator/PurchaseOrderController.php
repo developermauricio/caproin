@@ -23,6 +23,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Rap2hpoutre\FastExcel\SheetCollection;
@@ -205,7 +206,13 @@ class PurchaseOrderController extends Controller
 
     public function updatePurchaseOrder($id, Request $request)
     {
-
+        $rol = auth()->user()->roles->first()->name;
+        if ($rol === 'Logistica') {
+            return $this->updatePurchaseOrderLogistic($id, $request);
+        }
+        if ($rol !== 'Administrador') {
+            return response()->json([], 405);
+        }
         try {
             DB::beginTransaction();
             $purchaseOrder = PurchaseOrder::findOrFail($id);
@@ -220,6 +227,40 @@ class PurchaseOrderController extends Controller
                 'msg' => $th->getMessage(),
                 'error' => $th->getTrace()
             ], 500);
+        }
+    }
+
+    public function updatePurchaseOrderLogistic($id, Request $request)
+    {
+        try {
+            DB::beginTransaction();
+            $purchaseOrder = PurchaseOrder::findOrFail($id);
+            $this->updateConveyorPurchaseOrder($purchaseOrder, $request);
+            $this->updateStateHistory($purchaseOrder, $request);
+            DB::commit();
+            return response()->json([], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return response()->json([
+                'msg' => $th->getMessage(),
+                'error' => $th->getTrace()
+            ], 500);
+        }
+    }
+
+    private function updateConveyorPurchaseOrder(&$purchaseOrder, $request)
+    {
+        try {
+            $purchaseOrder->dispatch_guide_number = $request->input('dispatch_guide_number');
+            $purchaseOrder->conveyor_id = $request->input('conveyor.id');
+            $purchaseOrder->total_delivery = $request->input('total_delivery');
+            $purchaseOrder->actual_dispatch_date = $this->getDate($request->input('actual_dispatch_date'));
+            $purchaseOrder->actual_delivery_date = $this->getDate($request->input('actual_delivery_date'));
+            $purchaseOrder->contact_number = $request->input('contact_number');
+
+            $purchaseOrder->save();
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 
@@ -536,5 +577,16 @@ class PurchaseOrderController extends Controller
                     ]));
             }
         }
+    }
+
+    public function checkPurchaseInternalOrder(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'internal_order_number' => 'unique:purchase_orders,internal_order_number'
+        ], [
+            'internal_order_number.unique' => "El número de pedido interno ya ha sido registrado"
+        ])->errors();
+
+        return response()->json($validation);
     }
 }
