@@ -180,7 +180,7 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
     /*=============================================
           ORDENES DE COMPRA
         =============================================*/
-    Route::post('/import-data-purchase-ordes', 'PurchaseOrderController@importPurchaseOrders')->name('import.data.purchase_ordes')->middleware('ModulePurchaseOrder');
+    Route::post('/import-data-purchase-ordes', 'PurchaseOrderController@importPurchaseOrders')->name('import.data.purchase_ordes')->middleware('ModelePurchaseOrder');
     Route::get('/ordenes-compra', 'PurchaseOrderController@index')->name('admin.purchase_order.purchase_orders');
 
     Route::get('/ordenes-compra/crear', 'PurchaseOrderController@create')->name('admin.purchase_order.create')->middleware('ModelePurchaseOrder');
