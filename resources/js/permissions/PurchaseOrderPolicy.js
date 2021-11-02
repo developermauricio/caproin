@@ -11,6 +11,6 @@ export default class PurchaseOrderPolicy {
   }
 
   static addSeguimiento($user, customer) {
-    return $user.rolesTxt.indexOf('Administrador') !== -1;
+    return $user.rolesTxt.indexOf('Administrador') !== -1 || $user.rolesTxt.indexOf('Logistica') !== -1;
   }
 }
