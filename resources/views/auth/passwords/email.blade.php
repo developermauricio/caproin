@@ -63,7 +63,7 @@
                                 @endif
                                 <a href="javascript:void(0);" class="brand-logo">
                                     <span class="pb-1">
-                                     <img src="/images/logo-caproin-horizontal-v2.png" width="300" alt="">
+                                     <img src="/images/logo-caproin-horizontal-v2.svg" width="300" alt="">
                                      </span>
                                 </a>
 

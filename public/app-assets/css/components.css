@@ -1179,12 +1179,15 @@ footer.footer-border {
   position : relative;
   padding : 0.35rem 1rem 0.3rem 1.64rem;
   transition : 300ms ease all, background 0s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-menu .navbar-header .navbar-brand {
   display : flex;
   align-items : center;
-  margin-top : 1.35rem;
+  *margin-top : 1.35rem;
   font-size : inherit;
 }
 

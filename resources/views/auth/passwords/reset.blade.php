@@ -60,7 +60,7 @@
                         <div class="card-body">
                             <a href="javascript:void(0);" class="brand-logo">
                                  <span class="pb-1">
-                                     <img src="/images/logo-caproin-horizontal-v2.png" width="300" alt="">
+                                     <img src="/images/logo-caproin-horizontal-v2.svg" width="300" alt="">
                                      </span>
                                 {{--                                <svg viewbox="0 0 139 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="28">--}}
                                 {{--                                    <defs>--}}

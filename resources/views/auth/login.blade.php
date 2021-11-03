@@ -59,7 +59,7 @@
                             <div class="card-body">
                                 <a href="javascript:void(0);" class="brand-logo">
                                      <span class="pb-1">
-                                     <img src="/images/logo-caproin-horizontal-v2.png" width="300" alt="">
+                                     <img src="/images/logo-caproin-horizontal-v2.svg" width="300" alt="">
                                      </span>
 {{--                                    <h1 class="brand-text text-primary ml-1">Caproin</h1>--}}
                                 </a>
