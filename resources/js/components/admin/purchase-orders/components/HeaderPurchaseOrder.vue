@@ -5,7 +5,7 @@
         name="internal_order_number"
         id="txt_internal_order_number"
         label="Número de Pedido Interno"
-        pattern="^[\w -]{3,}$"
+        pattern="^[A-Z a-z]{3}(-){0,1}[0-9]{2}(-){0,1}[0-9]{3}(-){0,1}(imp|IMP){0,1}$"
         errorMsg="Ingrese un número de pedido interno válido"
         requiredMsg="El número pedido interno es obligatorio"
         :modelo.sync="purchase_order.internal_order_number"
@@ -235,7 +235,7 @@
         id="txt_description"
         name="description"
         label="Aplicación"
-        pattern="^.{10,}$"
+        pattern="^.{3,}$"
         errorMsg="Ingrese una aplicación válida"
         requiredMsg="La aplicación es obligatoria"
         :modelo.sync="purchase_order.description"
@@ -324,8 +324,8 @@
       <input-form
         id="txt_internal_quote_number"
         name="internal_quote_number"
-        label="Numero de cotización interna"
-        pattern="^[\w -]{3,}$"
+        label="Número de cotización interna"
+        pattern="^(F|C){1}(-){0,1}[0-9]{2,4}(-){0,1}[1-4]{1}(-){0,1}[A-Z a-z]{3}(-){0,1}.{0,3}$"
         errorMsg="Ingrese un número de cotización válido"
         requiredMsg="El número de cotización interno es obligatorio"
         :modelo.sync="purchase_order.internal_quote_number"
@@ -344,7 +344,7 @@
         requiredMsg="El número de cotización del fabricante es obligatorio"
         :modelo.sync="purchase_order.manufacturer_house_quotation_number"
         :msgServer.sync="errors.manufacturer_house_quotation_number"
-        :required="true"
+        :required="false"
       ></input-form>
     </div>
 
@@ -392,12 +392,6 @@
 export default {
   name: "HeaderPurchaseOrder",
   props: {
-    errors: {
-      type: Object,
-      default: function () {
-        return {};
-      },
-    },
     purchase_order: {
       type: Object,
       require: true,
@@ -442,6 +436,7 @@ export default {
   data() {
     return {
       invoices: [],
+      errors: {},
     };
   },
   computed: {
@@ -497,8 +492,9 @@ export default {
           })
           .then((response) => {
             // console.log(response);
+            this.errors.internal_order_number = null;
             if (response.data && !response.data.length) {
-              this.errors = Object.assign({}, response.data);
+              this.errors = Object.assign(response.data);
             }
           });
       }, 300);
