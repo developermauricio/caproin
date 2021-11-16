@@ -243,10 +243,11 @@ class InvoiceController extends Controller
             try {
                 $invoice_number = $line["Número de Factura"];
                 $electronic_invoice_number = $line["Número Factura electrónica"];
-                $state = $line["Estado"];
+                $state_id = $line["Estado"];
                 $date_issue = $line["Fecha de emisión"];
                 $expiration_date = $line["Fecha de expiración"];
-                $invoice_type = $line["Tipo de Factura"];
+                $invoice_type_id = $line["Tipo de Factura"];
+
                 $customer = $customer = Customer::whereHas('user', function ($q) use ($line) {
                     $query = $line["Cliente"];
                     return $q->where('id', $query)
@@ -256,6 +257,7 @@ class InvoiceController extends Controller
                 if (!$customer) {
                     throw new \Exception("Cliente no encontrado", "-1");
                 }
+
                 $value = $line["Valor"];
                 $date_received_client = $line["Fecha de recibo por parte del cliente"];
                 $date_payment_client = $line["Fecha de pago por parte del cliente"];
@@ -269,14 +271,34 @@ class InvoiceController extends Controller
                 $paymentTypeId = $line['Tipo de pago'];
                 $valuePaymentParcial = $line['Valor Pagado'];
 
+
+                $paymentType = PaymentType::find($paymentTypeId);
+                if (!$paymentType){
+                    throw new \Exception("El tipo de pago es invalido", -1);
+                }
+
+                $invoice_type = TypeInvoice::find($invoice_type_id);
+                if (!$invoice_type){
+                    throw new \Exception("El tipo de factura es invalido", -1);
+                }
+
+                $state = StateInvoice::find($state_id);
+                if (!$state){
+                    throw new \Exception("El tipo de estado es invalido", -1);
+                }
+
+                if(strlen(trim($invoice_number)) < 1){
+                    throw new \Exception("El numero de factura es requerido", -1);
+                }
+
                 $invoice = new Invoice();
                 $invoice->payment_type_id = $paymentTypeId;
                 $invoice->value_payment = $valuePaymentParcial;
                 $invoice->invoice_number = $invoice_number;
                 $invoice->date_issue = $date_issue;
                 $invoice->customer_id = $customer->id;
-                $invoice->type_invoice_id = $invoice_type;
-                $invoice->state_id = $state;
+                $invoice->type_invoice_id = $invoice_type_id;
+                $invoice->state_id = $state_id;
                 $invoice->value_total = $value;
                 $invoice->date_payment_client = $date_payment_client;
                 $invoice->electronic_invoice_number = $electronic_invoice_number;
