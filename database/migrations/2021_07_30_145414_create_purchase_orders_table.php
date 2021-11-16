@@ -45,7 +45,7 @@ class CreatePurchaseOrdersTable extends Migration
 
 
             $table->string('internal_quote_number');
-            $table->string('manufacturer_house_quotation_number');
+            $table->string('manufacturer_house_quotation_number')->nullable();
 
             $table->string('dispatch_guide_number');
             $table->unsignedBigInteger('conveyor_id');
