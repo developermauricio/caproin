@@ -325,7 +325,7 @@
         id="txt_internal_quote_number"
         name="internal_quote_number"
         label="Número de cotización interna"
-        pattern="^(F|C){1}(-){0,1}[0-9]{2,4}(-){0,1}[1-4]{1}(-){0,1}[A-Z a-z]{3}(-){0,1}.{0,3}$"
+        pattern="^(F|f|C|c){1}(-){0,1}[0-9]{2,4}(-){0,1}[1-4]{1}(-){0,1}[A-Z a-z]{3}(-){0,1}.{0,}$"
         errorMsg="Ingrese un número de cotización válido"
         requiredMsg="El número de cotización interno es obligatorio"
         :modelo.sync="purchase_order.internal_quote_number"
