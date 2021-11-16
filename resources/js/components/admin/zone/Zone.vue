@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="row pt-2">
-      <div v-if="resultQuery" v-for="zones in resultQuery" :key="zones.id"
+      <div v-for="zones in resultQuery" :key="zones.id"
            class="col-md-6 col-lg-4 col-12">
         <div class="card card-employee-task">
           <div class="card-header">
@@ -454,15 +454,14 @@ export default {
   },
   computed: {
     resultQuery() {
+      window.feather.replace()
       if (this.searchQuery) {
-        window.feather.replace()
         return this.dataZones.filter((item) => {
           return this.searchQuery.toLowerCase().split(' ').every(v =>
             item.code.toLowerCase().includes(v) || item.name.toLowerCase().includes(v),
           )
         })
       } else {
-        window.feather.replace()
         return this.dataZones;
       }
     }
@@ -508,7 +507,7 @@ export default {
           $("#text-verify-code-zone-edit").css("display", "none");
         }
       }
-      if (val.length <= 5) {
+      if (val.length < 2) {
 
         setTimeout(() => {
           $("#txtCodeBranchOffices").addClass("is-invalid");
@@ -560,7 +559,7 @@ export default {
           $("#text-verify-code-zone-edit").css("display", "none");
         }
       }
-      if (val.length <= 5){
+      if (val.length < 2){
         setTimeout(() => {
           $("#txtCodeBranchOfficesEdit").addClass("is-invalid");
           $("#text-verify-one-character-code-zone-edit").css("display", "block");
@@ -573,7 +572,7 @@ export default {
       }
     },
     name: function (val) {
-      if (val.length <= 5){
+      if (val.length < 2){
         setTimeout(() => {
           $("#txtNameBranchOffices").addClass("is-invalid");
           $("#text-verify-one-character-branchoffices").css("display", "block");
@@ -586,7 +585,7 @@ export default {
       }
     },
     nameEdit: function (val) {
-      if (val.length <= 5){
+      if (val.length < 2){
         setTimeout(() => {
           $("#txtNameBranchOfficesEdit").addClass("is-invalid");
           $("#text-verify-one-character-branchoffices-edit").css("display", "block");
