@@ -55,7 +55,7 @@ export default {
   },
   computed: {
     ariaExpanded() {
-      this.checkHeight();
+      // this.checkHeight();
       this.hidden = true;
       setTimeout(() => {
         if (this.isOpen) {
@@ -70,8 +70,6 @@ export default {
     },
     customStyle() {
       return {
-        maxHeight: `${this.height}px`,
-        transition: `${this.seconds}s all ease-in`,
       };
     },
   },
@@ -86,11 +84,11 @@ export default {
       this.height = this.$refs.body_item.clientHeight + 100;
     },
   },
-  mounted() {
-    setTimeout(() => {
-      this.checkHeight();
-    }, 200);
-  },
+  // mounted() {
+  //   // setTimeout(() => {
+  //   //   // this.checkHeight();
+  //   // }, 200);
+  // },
 };
 </script>
 <style scoped>

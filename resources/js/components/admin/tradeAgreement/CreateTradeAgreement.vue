@@ -589,19 +589,19 @@ export default {
         $("#text-verify-one-character-consecutive-offer").css("display", "none");
       }
     },
-    version: function (val) {
-      if (val.length <= 5){
-        setTimeout(() => {
-          $("#txtVersion").addClass("is-invalid");
-          $("#text-verify-one-character-version").css("display", "block");
-          document.getElementById('text-verify-one-character-version').disabled = true;
-        }, 200)
-      }else{
-        document.getElementById('text-verify-one-character-version').disabled = false;
-        $("#txtVersion").removeClass("is-invalid");
-        $("#text-verify-one-character-version").css("display", "none");
-      }
-    },
+    // version: function (val) {
+    //   if (val.length <= 5){
+    //     setTimeout(() => {
+    //       $("#txtVersion").addClass("is-invalid");
+    //       $("#text-verify-one-character-version").css("display", "block");
+    //       document.getElementById('text-verify-one-character-version').disabled = true;
+    //     }, 200)
+    //   }else{
+    //     document.getElementById('text-verify-one-character-version').disabled = false;
+    //     $("#txtVersion").removeClass("is-invalid");
+    //     $("#text-verify-one-character-version").css("display", "none");
+    //   }
+    // },
     deliveryTime: function (val) {
       if (val.length <= 5){
         setTimeout(() => {

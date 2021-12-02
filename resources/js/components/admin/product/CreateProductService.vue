@@ -301,17 +301,17 @@ export default {
           }).catch(err => {
         });
       }
-      if (val.length <= 5) {
-        setTimeout(() => {
-          $("#txtCodeProductService").addClass("is-invalid");
-          $("#text-verify-one-character-code-product").css("display", "block");
-          document.getElementById('text-verify-one-character-code-product').disabled = true;
-        }, 200)
-      } else {
-        document.getElementById('text-verify-one-character-code-product').disabled = false;
-        $("#txtCodeProductService").removeClass("is-invalid");
-        $("#text-verify-one-character-code-product").css("display", "none");
-      }
+      // if (val.length <= 5) {
+      //   setTimeout(() => {
+      //     $("#txtCodeProductService").addClass("is-invalid");
+      //     $("#text-verify-one-character-code-product").css("display", "block");
+      //     document.getElementById('text-verify-one-character-code-product').disabled = true;
+      //   }, 200)
+      // } else {
+      //   document.getElementById('text-verify-one-character-code-product').disabled = false;
+      //   $("#txtCodeProductService").removeClass("is-invalid");
+      //   $("#text-verify-one-character-code-product").css("display", "none");
+      // }
     },
     name: function (val) {
       if (val.length <= 5){

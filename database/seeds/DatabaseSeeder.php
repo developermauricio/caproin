@@ -328,8 +328,11 @@ class DatabaseSeeder extends Seeder
         /*=============================================
            CREANDO TIPOS DE PAGOS
         =============================================*/
-        factory(\App\Models\PaymentType::class)->create(['name' => 'Pago Completo']);
-        factory(\App\Models\PaymentType::class)->create(['name' => 'Pago Parcial']);
+        factory(\App\Models\PaymentType::class)->create(['name' => 'Anticipo']);
+        factory(\App\Models\PaymentType::class)->create(['name' => 'Contado']);
+        factory(\App\Models\PaymentType::class)->create(['name' => '30 días ff']);
+        factory(\App\Models\PaymentType::class)->create(['name' => '45 dias ff']);
+        factory(\App\Models\PaymentType::class)->create(['name' => '60 días ff']);
 
         /*=============================================
            CREANDO ESTADOS DE FACTURA

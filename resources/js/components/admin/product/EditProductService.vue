@@ -330,17 +330,17 @@ export default {
           $("#text-verify-code-product-service-edit").css("display", "none");
         }
       }
-      if (val.length <= 5) {
-        setTimeout(() => {
-          $("#txtCodeProductServiceEditV").addClass("is-invalid");
-          $("#text-verify-one-character-code-product-edit").css("display", "block");
-          document.getElementById('text-verify-one-character-code-product-edit').disabled = true;
-        }, 200)
-      } else {
-        document.getElementById('text-verify-one-character-code-product-edit').disabled = false;
-        $("#txtCodeProductServiceEditV").removeClass("is-invalid");
-        $("#text-verify-one-character-code-product-edit").css("display", "none");
-      }
+      // if (val.length <= 5) {
+      //   setTimeout(() => {
+      //     $("#txtCodeProductServiceEditV").addClass("is-invalid");
+      //     $("#text-verify-one-character-code-product-edit").css("display", "block");
+      //     document.getElementById('text-verify-one-character-code-product-edit').disabled = true;
+      //   }, 200)
+      // } else {
+      //   document.getElementById('text-verify-one-character-code-product-edit').disabled = false;
+      //   $("#txtCodeProductServiceEditV").removeClass("is-invalid");
+      //   $("#text-verify-one-character-code-product-edit").css("display", "none");
+      // }
     },
     name: function (val) {
       if (val.length <= 5){
