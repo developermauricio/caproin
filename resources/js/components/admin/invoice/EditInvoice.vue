@@ -32,7 +32,7 @@
             <p>{{ paymentTypeDetail.name }}</p>
           </div>
         </div>
-        <div class="col-12 col-md-4 col-lg-4" v-if="paymentTypeDetail.id === 2">
+        <div class="col-12 col-md-4 col-lg-4" v-if="paymentTypeDetail.id !== 2">
           <div class="form-group">
             <label class="font-weight-bold">Valor Pagado:</label>
             <p>${{ dollarUSLocale.format(valuePaymentDetail) }}</p>
@@ -217,7 +217,7 @@
                                         }"
             ></input-form>
           </div>
-          <div class="col-12 col-md-4 col-lg-4" v-if="paymentType.id === 2 || $gate.allow('editStateInvoice', 'editStateInvoice')">
+          <div class="col-12 col-md-4 col-lg-4" v-if="paymentType.id !== 2 || $gate.allow('editStateInvoice', 'editStateInvoice')">
             <input-form
               type="money"
               label="Valor Pagado"
@@ -225,7 +225,7 @@
               pattern="num"
               errorMsg="Ingrese un valor válido"
               requiredMsg="Agregar el valor pagado"
-              :required="true"
+              :required="false"
               :modelo.sync="valuePaymentParcial"
               :msgServer.sync="errors.valuePaymentParcial"
               :money="money"
@@ -413,7 +413,7 @@
               pattern="all"
               errorMsg="Ingrese un valor de comisión válido"
               requiredMsg="El valor de la comisión es obligatorio"
-              :required="true"
+              :required="false"
               :modelo.sync="commission_value"
               :msgServer.sync="errors.commission_value"
               :money="money"

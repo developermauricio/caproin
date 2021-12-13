@@ -28,12 +28,22 @@ Vue.prototype.$gate = new Gate(window.user, roles);
 
 
 const formatDMY = (value) => {
+  if (!value){
+    return 'Sin valor';
+  }
   if (typeof value === 'string') {
+    if (value.length < 2){
+      return;
+    }
     value = formatDateUTC(value);
   }
 
   if (!value.getDate){
-    return value.format("DD-MM-YYYY");
+    if (value.isValid()){
+      return value.format("DD-MM-YYYY");
+    } else {
+      return `Sin valor`;
+    }
   } else {
     const day = value.getDate()
     const month = value.getMonth() + 1

@@ -15,6 +15,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Rap2hpoutre\FastExcel\FastExcel;
@@ -71,59 +72,82 @@ class CustomerController extends Controller
 
     public function storeApiCustomer(Request $request)
     {
-        $ramdon = Str::random(10);
-        $password = Str::random(8);
-        $pass = bcrypt($password);
+        try {
+            DB::beginTransaction();
+            $ramdon = Str::random(10);
+            $password = Str::random(8);
+            $pass = bcrypt($password);
 
-        $businessName = $request->businessName;
-        $email = $request->email;
-        $phone = $request->phone;
-        $idTypeIndentification = $request->idTypeIndentification;
-        $principal = $request->principal;
-        $numberDaysAfterInvoice = $request->numberDaysAfterInvoice;
-        $numberDaysOverdueInvoice = $request->numberDaysOverdueInvoice;
-        //        $typeIdentificationData = json_decode($request->typeIdentification);
-        $typeCustomerData = json_decode($request->typeCustomer);
+            $businessName = $request->businessName;
+            $email = $request->email;
+            $phone = $request->phone;
+            $idTypeIndentification = $request->idTypeIndentification;
+            $principal = $request->principal;
+            $numberDaysAfterInvoice = $request->numberDaysAfterInvoice;
+            $numberDaysOverdueInvoice = $request->numberDaysOverdueInvoice;
+            //        $typeIdentificationData = json_decode($request->typeIdentification);
+            $typeCustomerData = json_decode($request->typeCustomer);
 
-        if ($idTypeIndentification !== "null") {
-            $idTypeIndeti = $idTypeIndentification;
-        } else {
-            $typeIdentificationData = json_decode($request->typeIdentification);
-            $idTypeIndeti = $typeIdentificationData->id;
+            if ($idTypeIndentification !== "null") {
+                $idTypeIndeti = $idTypeIndentification;
+            } else {
+                $typeIdentificationData = json_decode($request->typeIdentification);
+                $idTypeIndeti = $typeIdentificationData->id;
+            }
+
+            if ($request->typeCustomer != "null") {
+                $typeCustomer = $typeCustomerData->id;
+            } else {
+                $typeCustomer = null;
+            }
+
+            $identification = $request->identification;
+
+            $slug = Str::slug($businessName . '-' . $ramdon, '-');
+
+            $user = User::create([
+                "name" => $businessName,
+                "email" => $email,
+                "password" => $pass,
+                "slug" => $slug,
+                "picture" => '/images/user-profile.png',
+                "phone" => $phone,
+                "identification_type_id" => $idTypeIndeti,
+                "identification" => $identification
+            ]);
+            $user->roles()->attach([7]);
+
+            $customer = Customer::create([
+                "business_name" => $businessName,
+                "user_id" => $user->id,
+                "principal" => $principal,
+                "sub_sede_of" => $typeCustomer,
+                "number_of_days_after_generating_invoice" => $numberDaysAfterInvoice,
+                "number_of_days_after_invoice_overdue" => $numberDaysOverdueInvoice,
+            ]);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $response = [
+                'msg' => $th->getMessage(),
+                'trace' => $th->getTrace()
+            ];
+
+            Log::error('Error al crear cliente.', $response);
+            return response()->json($response, 501);
         }
-
-        if ($request->typeCustomer != "null") {
-            $typeCustomer = $typeCustomerData->id;
-        } else {
-            $typeCustomer = null;
+        try {
+            Mail::to($user->email)->send(new NewCustomer($user->name, $password, $user->email));
+        } catch (\Throwable $th) {
+            $response = [
+                'msg' => 'Registro Exitoso',
+                'error' => $th->getMessage(),
+                'trace' => $th->getTrace()
+            ];
+            Log::error('Error al enviar correos.', $response);
+            return response()->json($response, 501);
         }
-
-        $identification = $request->identification;
-
-        $slug = Str::slug($businessName . '-' . $ramdon, '-');
-
-        $user = User::create([
-            "name" => $businessName,
-            "email" => $email,
-            "password" => $pass,
-            "slug" => $slug,
-            "picture" => '/images/user-profile.png',
-            "phone" => $phone,
-            "identification_type_id" => $idTypeIndeti,
-            "identification" => $identification
-        ]);
-        $user->roles()->attach([7]);
-
-        $customer = Customer::create([
-            "business_name" => $businessName,
-            "user_id" => $user->id,
-            "principal" => $principal,
-            "sub_sede_of" => $typeCustomer,
-            "number_of_days_after_generating_invoice" => $numberDaysAfterInvoice,
-            "number_of_days_after_invoice_overdue" => $numberDaysOverdueInvoice,
-        ]);
-        Mail::to($user->email)->send(new NewCustomer($user->name, $password, $user->email));
-        return response()->json('Registro Exitoso!');
+        return response()->json('Registro Exitoso!', 201);
     }
 
     public function updateApiCustomer(Request $request)

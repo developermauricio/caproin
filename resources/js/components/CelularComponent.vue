@@ -1,24 +1,24 @@
 <template>
-  <!-- <div> -->
-  <!-- :class="{ 'is-invalid': !isValid }"  -->
-  <VuePhoneNumberInput
-    v-model="initValue"
-    :required="required"
-    requiredMsg="El teléfono es obligatorio"
-    @phone-number-focused="focus($event)"
-    @update="changePhone($event)"
-    :fetch-country="true"
-    :translations="{
-      countrySelectorLabel: 'Código País',
-      countrySelectorError: 'Selecciona un País',
-      phoneNumberLabel: 'Número',
-      example: 'Ejemplo',
-    }"
-  />
-  <!-- <div class="invalid-feedback">
-      El número de cotización del fabricante es obligatorio
+  <div>
+    <VuePhoneNumberInput
+      v-model="initValue"
+      :required="required"
+      :class="{ 'is-invalid': addClassInvalid }"
+      requiredMsg="El teléfono es obligatorio"
+      @phone-number-focused="focus($event)"
+      @update="changePhone($event)"
+      :fetch-country="true"
+      :translations="{
+        countrySelectorLabel: 'Código País',
+        countrySelectorError: 'Selecciona un País',
+        phoneNumberLabel: 'Número',
+        example: 'Ejemplo',
+      }"
+    />
+    <div class="invalid-feedback">
+      {{ msgError }}
     </div>
-  </div> -->
+  </div>
 </template>
 
 <script>
@@ -30,6 +30,7 @@ export default {
       initValue: null,
       init: false,
       isValid: false,
+      showErrors: false,
     };
   },
   props: {
@@ -41,12 +42,24 @@ export default {
       type: Boolean,
       default: true,
     },
+    msgError: {
+      type: String,
+      default: "Ingrese un numero valido",
+    },
   },
   components: {
     VuePhoneNumberInput,
   },
   created() {
     this.initValue = this.value;
+
+    eventBus.$on("validarFormulario", () => {
+      this.showErrors = true;
+    });
+
+    eventBus.$on("resetValidaciones", () => {
+      this.showErrors = false;
+    });
   },
   watch: {
     value(next) {
@@ -66,6 +79,11 @@ export default {
     },
     focus(e) {
       this.init = true;
+    },
+  },
+  computed: {
+    addClassInvalid() {
+      return this.showErrors && !this.isValid;
     },
   },
 };

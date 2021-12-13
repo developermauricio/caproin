@@ -323,7 +323,8 @@ export default {
               })
               window.location = "/customers";
             }).catch(err => {
-              console.log('mostrando el error', err)
+              console.log('mostrando el error: ')
+              console.log(err);
               this.$toast.error({
                 title: 'Algo salio mal',
                 message: 'Comunícate con el administrador',
