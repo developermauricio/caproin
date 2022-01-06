@@ -21,7 +21,7 @@
         pattern="all"
         errorMsg="Transportadora no seleccionada"
         requiredMsg="La transportadora es obligatoria"
-        :required="true"
+        :required="false"
       ></input-form>
     </div>
 

@@ -252,7 +252,9 @@ class PurchaseOrderController extends Controller
     {
         try {
             $purchaseOrder->dispatch_guide_number = $request->input('dispatch_guide_number');
-            $purchaseOrder->conveyor_id = $request->input('conveyor.id');
+            if ($request->input('conveyor')){
+                $purchaseOrder->conveyor_id = $request->input('conveyor.id');
+            }
             $purchaseOrder->total_delivery = $request->input('total_delivery');
             $purchaseOrder->actual_dispatch_date = $this->getDate($request->input('actual_dispatch_date'));
             $purchaseOrder->actual_delivery_date = $this->getDate($request->input('actual_delivery_date'));
@@ -289,7 +291,9 @@ class PurchaseOrderController extends Controller
             $purchaseOrder->manufacturer_house_quotation_number = $request->input('manufacturer_house_quotation_number');
             $purchaseOrder->dispatch_guide_number = $request->input('dispatch_guide_number');
 
-            $purchaseOrder->conveyor_id = $request->input('conveyor.id');
+            if ($request->input('conveyor')){
+                $purchaseOrder->conveyor_id = $request->input('conveyor.id');
+            }
             $purchaseOrder->total_delivery = $request->input('total_delivery');
 
             $purchaseOrder->order_receipt_date = $this->getDate($request->input('order_receipt_date'));
