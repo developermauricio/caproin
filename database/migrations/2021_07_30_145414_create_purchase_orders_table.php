@@ -48,7 +48,7 @@ class CreatePurchaseOrdersTable extends Migration
             $table->string('manufacturer_house_quotation_number')->nullable();
 
             $table->string('dispatch_guide_number')->nullable();
-            $table->unsignedBigInteger('conveyor_id');
+            $table->unsignedBigInteger('conveyor_id')->nullable();
             $table->foreign('conveyor_id')->references('id')->on('conveyors');
 
             $table->date('order_receipt_date');
