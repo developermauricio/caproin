@@ -199,7 +199,7 @@ class PurchaseOrderController extends Controller
             DB::rollBack();
             return response()->json([
                 'msg' => $th->getMessage(),
-                'error' => $th->getTrace()
+                'error' => $th->getTraceAsString()
             ], 500);
         }
     }
@@ -225,7 +225,7 @@ class PurchaseOrderController extends Controller
             DB::rollBack();
             return response()->json([
                 'msg' => $th->getMessage(),
-                'error' => $th->getTrace()
+                'error' => $th->getTraceAsString()
             ], 500);
         }
     }
@@ -243,7 +243,7 @@ class PurchaseOrderController extends Controller
             DB::rollBack();
             return response()->json([
                 'msg' => $th->getMessage(),
-                'error' => $th->getTrace()
+                'error' => $th->getTraceAsString()
             ], 500);
         }
     }

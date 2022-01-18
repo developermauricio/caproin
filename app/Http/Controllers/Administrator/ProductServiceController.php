@@ -78,7 +78,7 @@ class ProductServiceController extends Controller
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response()->json(['msg' => $th->getMessage(), 'trace' => $th->getTrace()], 500);
+            return response()->json(['msg' => $th->getMessage(), 'trace' => $th->getTraceAsString()], 500);
         }
 
         return response()->json('Registro Exitoso!');
@@ -118,7 +118,7 @@ class ProductServiceController extends Controller
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response()->json(['msg' => $th->getMessage(), 'trace' => $th->getTrace()], 500);
+            return response()->json(['msg' => $th->getMessage(), 'trace' => $th->getTraceAsString()], 500);
         }
 
         return response()->json('Se actualizó correctamente!');

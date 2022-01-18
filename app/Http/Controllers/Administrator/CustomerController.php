@@ -130,7 +130,7 @@ class CustomerController extends Controller
             DB::rollBack();
             $response = [
                 'msg' => $th->getMessage(),
-                'trace' => $th->getTrace()
+                'trace' => $th->getTraceAsString()
             ];
 
             Log::error('Error al crear cliente.', $response);
@@ -142,7 +142,7 @@ class CustomerController extends Controller
             $response = [
                 'msg' => 'Registro Exitoso',
                 'error' => $th->getMessage(),
-                'trace' => $th->getTrace()
+                'trace' => $th->getTraceAsString()
             ];
             Log::error('Error al enviar correos.', $response);
             return response()->json($response, 501);
