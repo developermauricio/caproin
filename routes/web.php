@@ -191,6 +191,9 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
          RUTAS PARA LOS MODULOS DE PRODUCTOS Y SERVICIOS
     =============================================*/
     Route::get('/productos-servicios', 'ProductServiceController@index')->name('admin.products,services');
+
+    Route::get('/servicios', 'ServiceController@index')->name('cliente.services');
+
     Route::post('/import-data-product', 'ProductServiceController@importDataProduct')->name('import.data.products');
 
     /*=============================================

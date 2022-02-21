@@ -17,23 +17,25 @@ class TradeAgreementController extends Controller
 
     use MessagesException;
 
-    public function index(){
+    public function index()
+    {
         $currencies = Currency::all(['id', 'code']);
         return view('admin.tradeAgreement.list-trade-agreement', compact('currencies'));
     }
 
-    public function getApiTradeAgreement(){
+    public function getApiTradeAgreement()
+    {
 
         $rol = auth()->user()->roles->first()->name; // Rol del Usuario
         $user = auth()->user()->id; // id del Usuario
 
         if ($rol === "Cliente") {
-            $tradeAgreement = TradeAgreement::whereHas('customer', function ($q) use ($user){
+            $tradeAgreement = TradeAgreement::whereHas('customer', function ($q) use ($user) {
                 return $q->where('user_id', $user)->orWhereHas('sede', function ($q) use ($user) {
                     return $q->where('user_id', $user);
                 });
             })->with('customer', 'currency')->get();
-        }else{
+        } else {
             $tradeAgreement = TradeAgreement::with('customer', 'currency')->get();
         }
 
@@ -41,17 +43,20 @@ class TradeAgreementController extends Controller
         return datatables()->of($tradeAgreement)->toJson();
     }
 
-    public function getApiCurrency(){
+    public function getApiCurrency()
+    {
         $currency = Currency::all();
         return response()->json(['data' => $currency]);
     }
 
-    public function getApiProducts(){
-        $products = Product::where('state', 1)->with('productType','productPrices')->get();;
+    public function getApiProducts()
+    {
+        $products = Product::where('state', 1)->with('productType', 'productPrices')->get();;
         return response()->json(['data' => $products]);
     }
 
-    public function storeApiTradeAgreement(Request $request){
+    public function storeApiTradeAgreement(Request $request)
+    {
         $consecutive_Offer = $request->consecutive_Offer;
         $version = $request->version;
         $customer = json_decode($request->customer);
@@ -74,7 +79,11 @@ class TradeAgreementController extends Controller
         $tradeAgreement->creation_date = $creation_date;
         $tradeAgreement->final_date = $final_date;
         $tradeAgreement->delivery_time = $delivery_time;
-        $tradeAgreement->TRM = $TRM;
+        if (is_numeric($TRM)) {
+            $tradeAgreement->TRM = $TRM;
+        } else {
+            $tradeAgreement->TRM = null;
+        }
         $tradeAgreement->save();
 
         foreach ($products as $value) {
@@ -93,7 +102,8 @@ class TradeAgreementController extends Controller
         return response()->json('Acuerdo Comercial Creado Correctamente');
     }
 
-    public function updateApiTradeAgreement(Request $request){
+    public function updateApiTradeAgreement(Request $request)
+    {
 
         $consecutive_Offer = $request->consecutive_Offer;
         $version = $request->version;
@@ -121,10 +131,10 @@ class TradeAgreementController extends Controller
         $tradeAgreement->TRM = $TRM;
         $tradeAgreement->update();
 
-//        dd($products->pivot->minimum_amount);
+        //        dd($products->pivot->minimum_amount);
         $arrayProducts = [];
         foreach ($products as $product) {
-            array_push($arrayProducts,[
+            array_push($arrayProducts, [
                 'product_id' => $product->id,
                 'minimum_amount' => $product->pivot->minimum_amount,
                 'client_product_code' => $product->pivot->client_product_code,
@@ -155,7 +165,8 @@ class TradeAgreementController extends Controller
         return response()->json(['data' => $tradeAgreement]);
     }
 
-    public function validateConsecutivoOfert($consecutivo){
+    public function validateConsecutivoOfert($consecutivo)
+    {
         $check = TradeAgreement::where('consecutive_Offer', $consecutivo)->first();
         if ($check) {
             return response()->json('El consecutivo de oferta ya ha sido registrado, por favor ingrese otro', 200);
@@ -206,7 +217,7 @@ class TradeAgreementController extends Controller
                 if (
                     $row['Estado'] != TradeAgreement::VIGENTE &&
                     $row['Estado'] != TradeAgreement::FINALIZADO
-                ){
+                ) {
                     throw new \Exception("Estado invalido", "-1");
                 }
 
@@ -249,7 +260,7 @@ class TradeAgreementController extends Controller
 
                         $check = DB::table('product_tradeeagreement')->where('tradeagreement_id', $trade->id)->where('product_id', $product->id)->first();
 
-                        if($check){
+                        if ($check) {
                             // dd($check);
                             throw new \Exception("Producto ya registrado ", "-1");
                         }
@@ -271,7 +282,7 @@ class TradeAgreementController extends Controller
 
                         $saved = DB::table('product_tradeeagreement')->insert($datos);
 
-                        if (!$saved){
+                        if (!$saved) {
                             throw new \Exception("Error al guardar", "-1");
                         }
                         DB::commit();
@@ -315,5 +326,4 @@ class TradeAgreementController extends Controller
             }
         }
     }
-
 }

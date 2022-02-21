@@ -138,6 +138,8 @@ Route::group(['namespace' => 'Administrator', 'middleware' => 'auth:sanctum'], f
                API PARA LOS PRODUCTOS
     =============================================*/
     Route::get('/all-products-services', 'ProductServiceController@getApiInvoices')->name('api.all.products.services');
+
+    Route::get('/all-services', 'ServiceController@getAllServices')->name('api.all.services');
     Route::get('/verify-code-product/{code}', 'ProductServiceController@validateCode')->name('api.validate.code.product.service');
     Route::get('/get-product-service', 'ProductServiceController@getApiTypeProductService')->name('api.type.product.service');
     Route::post('register/store-product-service', 'ProductServiceController@storeApiProductService')->name('api.store.product.service');
