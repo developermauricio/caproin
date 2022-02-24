@@ -192,7 +192,7 @@ Route::group(['middleware' => 'auth', 'namespace' => 'Administrator'], function 
     =============================================*/
     Route::get('/productos-servicios', 'ProductServiceController@index')->name('admin.products,services');
 
-    Route::get('/servicios', 'ServiceController@index')->name('cliente.services');
+    Route::get('/servicios-productos', 'ServiceController@index')->name('cliente.products-services');
 
     Route::post('/import-data-product', 'ProductServiceController@importDataProduct')->name('import.data.products');
 

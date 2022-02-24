@@ -10,6 +10,7 @@ use App\Models\TypeProduct;
 use App\Traits\MessagesException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use NunoMaduro\Collision\Adapters\Phpunit\State;
 use Rap2hpoutre\FastExcel\FastExcel;
 
 class ServiceController extends Controller
@@ -29,7 +30,7 @@ class ServiceController extends Controller
 
     public function getAllServices()
     {
-        $products = Product::with('productType')->where('type_products_id', '<>', TypeProduct::ID_PRODUCT)->get();
+        $products = Product::with('productType')->where('state', '=', PRODUCT::ACTIVE)->get();
         return datatables()->of($products)->toJson();
     }
 }

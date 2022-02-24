@@ -8,13 +8,13 @@
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/tables/datatable/rowGroup.bootstrap4.min.css">
 <link rel="stylesheet" type="text/css" href="/app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css">
 @endpush
-@section('title', 'Servicios')
+@section('title', 'Productos y Servicios')
 @section('header_page')
 <div class="content-header row">
     <div class="content-header-left col-md-9 col-12">
         <div class="row">
             <div class="col-12">
-                <h2 class="pb-1 border-title float-left mb-0">Administrar Servicios</h2>
+                <h2 class="pb-1 border-title float-left mb-0">Administrar Productos y Servicios</h2>
                 {{-- <div class="breadcrumb-wrapper">--}}
                     {{-- <ol class="breadcrumb">--}}
                         {{-- <li class="breadcrumb-item active">--}}

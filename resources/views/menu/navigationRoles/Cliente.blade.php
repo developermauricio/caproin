@@ -1,7 +1,7 @@
 <li class="{{request()->is('servicios') ? 'active' : '' }} nav-item">
-    <a class="d-flex align-items-center" href="{{ route('cliente.services') }}">
+    <a class="d-flex align-items-center" href="{{ route('cliente.products-services') }}">
         <i data-feather='box'></i>
-        <span class="menu-title text-truncate" data-i18n="Email">Servicios</span>
+        <span class="menu-title text-truncate" data-i18n="Email">Productos y servicios</span>
     </a>
 </li>
 <li class="{{request()->is('facturas') ? 'active' : '' }} nav-item">
