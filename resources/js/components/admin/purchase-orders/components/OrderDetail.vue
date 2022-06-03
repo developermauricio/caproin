@@ -162,10 +162,20 @@
     </div>
 
     <div class="col-12 col-md-4 col-lg-4">
+<!--      <input-form-->
+<!--        name="blueprint_number"-->
+<!--        label="Número de Plano (si no exite plano, dejar el campo en blanco"-->
+<!--        pattern="^[\w -]{3,}$"-->
+<!--        errorMsg="Ingrese un número de plano válido"-->
+<!--        requiredMsg="El número de plano es obligatorio"-->
+<!--        :modelo.sync="order_detail.blueprint_number"-->
+<!--        :msgServer.sync="errors.blueprint_number"-->
+<!--        :required="false"-->
+<!--      ></input-form> -->
       <input-form
         name="blueprint_number"
         label="Número de Plano"
-        pattern="^[\w -]{3,}$"
+        pattern="all"
         errorMsg="Ingrese un número de plano válido"
         requiredMsg="El número de plano es obligatorio"
         :modelo.sync="order_detail.blueprint_number"

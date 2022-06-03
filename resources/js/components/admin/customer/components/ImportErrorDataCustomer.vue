@@ -40,6 +40,7 @@ export default {
   props: ["lines"],
   data() {
     return {
+      hrefDownload: null,
       nameReportDownload: "errors-customer",
     };
   },
